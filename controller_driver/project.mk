@@ -1,8 +1,6 @@
-
-PROJECT_CSRC 	= main.c
+PROJECT_CSRC 	= src/main.c
 PROJECT_CPPSRC 	= 
 
-PROJECT_INCDIR	= 
+PROJECT_INCDIR	= include
 
 PROJECT_LIBS	=
-
