@@ -1,6 +1,5 @@
-#include <ch.h>
-#include <hal.h>
-
+#include <common.h>
+#include <tests.h>
 #include <chprintf.h>
 
 static THD_WORKING_AREA(waThread, 128);
@@ -19,10 +18,17 @@ int main(void)
     chSysInit();
     halInit();
 
+#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BREAK_SENSOR)
+
+    testBreakSensorRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
+
     chThdCreateStatic(waThread, sizeof(waThread), NORMALPRIO, Thread, NULL /* arg is NULL */);
 
     while (true)
     {
         chThdSleepSeconds(1);
     }
+#endif
 }
