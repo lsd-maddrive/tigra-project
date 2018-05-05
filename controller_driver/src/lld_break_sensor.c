@@ -25,7 +25,12 @@ bool breakSensorIsPressed ( void )
  */
 breakPressPower_t breakSensorGetPressPower ( void )
 {
-	breakPressPower_t value;
+	breakPressPower_t value = 0;
 
+	if ( breakSensorIsPressed() )
+	{
 
+	}
+
+	return value;
 }

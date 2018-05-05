@@ -3,6 +3,13 @@
 
 #include <common.h>
 
+/*** Hardware description ***/
+
+/*
+ * PAL driver uses input P??
+ * ADC driver uses input P?? (AN?)
+ */
+
 /*** Variables ***/
 
 typedef int16_t breakPressPower_t;
