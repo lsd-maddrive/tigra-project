@@ -2,10 +2,10 @@
 
 /*** Additional ADC constants ***/
 
-#define ADC_CR1_12B_RESOLUTION      0
-#define ADC_CR1_10B_RESOLUTION      ADC_CR1_RES_0
-#define ADC_CR1_8B_RESOLUTION       ADC_CR1_RES_1
-#define ADC_CR1_6B_RESOLUTION       ADC_CR1_RES_0 | ADC_CR1_RES_1
+#define ADC_CR1_12B_RESOLUTION      (0)
+#define ADC_CR1_10B_RESOLUTION      (ADC_CR1_RES_0)
+#define ADC_CR1_8B_RESOLUTION       (ADC_CR1_RES_1)
+#define ADC_CR1_6B_RESOLUTION       (ADC_CR1_RES_0 | ADC_CR1_RES_1)
 
 /*** Hardware configuration ***/
 
@@ -15,26 +15,8 @@
 #define breakSensorAnalogInput  ADC_CHANNEL_IN7
 #define adcResolutionConfig     ADC_CR1_10B_RESOLUTION
 
-#if ( adcResolutionConfig == ADC_CR1_6B_RESOLUTION )
-
-static float        adcValue2Perc       = 100.0 / ((1 << 6) - 1);
-
-#elif ( adcResolutionConfig == ADC_CR1_8B_RESOLUTION )
-
-static float        adcValue2Perc       = 100.0 / ((1 << 8) - 1);
-
-#elif ( adcResolutionConfig == ADC_CR1_10B_RESOLUTION )
-
-static float        adcValue2Perc       = 100.0 / ((1 << 10) - 1);
-
-#elif ( adcResolutionConfig == ADC_CR1_12B_RESOLUTION )
-
-static float        adcValue2Perc       = 100.0 / ((1 << 12) - 1);
-
-#endif
-
-static ADCDriver          *breakSensorDriver  = &ADCD2;
-static GPTDriver          *adcTriggerDriver   = &GPTD4;
+static ADCDriver                *breakSensorDriver  = &ADCD2;
+static GPTDriver                *adcTriggerDriver   = &GPTD4;
 
 /*** Hardware configuration end ***/
 
@@ -79,6 +61,16 @@ static const GPTConfig trigger_cfg = {
 /*** Module variables ***/
 
 static uint16_t     breakPowerPercent   = 0;
+
+#if ( adcResolutionConfig == ADC_CR1_6B_RESOLUTION )
+static float        adcValue2Perc       = 100.0 / ((1 << 6) - 1);
+#elif ( adcResolutionConfig == ADC_CR1_8B_RESOLUTION )
+static float        adcValue2Perc       = 100.0 / ((1 << 8) - 1);
+#elif ( adcResolutionConfig == ADC_CR1_10B_RESOLUTION )
+static float        adcValue2Perc       = 100.0 / ((1 << 10) - 1);
+#elif ( adcResolutionConfig == ADC_CR1_12B_RESOLUTION )
+static float        adcValue2Perc       = 100.0 / ((1 << 12) - 1);
+#endif
 
 /*** ADC callback ***/
 
