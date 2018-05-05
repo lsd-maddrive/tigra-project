@@ -3,11 +3,11 @@
 
 #include <common.h>
 
-/*** Hardware description ***/
-
 /*
- * PAL driver uses input P??
- * ADC driver uses input P?? (AN?)
+ * Hardware description
+ * ------------------------------------
+ * PAL driver uses input PB0
+ * ADC2 driver uses input PA7 (AN7) and GPT4 trigger
  */
 
 /*** Variables ***/

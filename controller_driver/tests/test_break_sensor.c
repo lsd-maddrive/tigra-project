@@ -2,12 +2,10 @@
 #include <chprintf.h>
 #include <lld_break_sensor.h>
 
-#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BREAK_SENSOR)
 static const SerialConfig sdcfg = {
   .speed = 115200,
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
-#endif
 
 /*
  * @brief	Routine of break sensor testing
@@ -16,9 +14,6 @@ static const SerialConfig sdcfg = {
  */
 void testBreakSensorRoutine( void )
 {
-/* Cover into #if to avoid code size growth */
-#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BREAK_SENSOR)
-
 	sdStart( &SD7, &sdcfg );
 	palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );	// TX
 	palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );	// RX
@@ -35,6 +30,4 @@ void testBreakSensorRoutine( void )
 
 		chThdSleepMilliseconds( 100 );
 	}
-
-#endif
 }
