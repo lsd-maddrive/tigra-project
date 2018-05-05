@@ -8,6 +8,7 @@
 /*
  * @brief	Routine of break sensor testing
  * @note	The routine has internal infinite loop
+ * @note 	SD7 is used for testing (PE7, PE8)
  */
 void testBreakSensorRoutine( void );
 
