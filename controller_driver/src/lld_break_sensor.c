@@ -1,11 +1,37 @@
 #include <lld_break_sensor.h>
 
+/*** Additional ADC constants ***/
+
+#define ADC_CR1_12B_RESOLUTION      0
+#define ADC_CR1_10B_RESOLUTION      ADC_CR1_RES_0
+#define ADC_CR1_8B_RESOLUTION       ADC_CR1_RES_1
+#define ADC_CR1_6B_RESOLUTION       ADC_CR1_RES_0 | ADC_CR1_RES_1
+
 /*** Hardware configuration ***/
 
 #define breakSensorClickLine	PAL_LINE(GPIOB, 0)
-#define breakSensolPowerLine    PAL_LINE(GPIOA, 7)
+#define breakSensolAnalogLine   PAL_LINE(GPIOA, 7)
 /* ADC channels - DS p65 */
 #define breakSensorAnalogInput  ADC_CHANNEL_IN7
+#define adcResolutionConfig     ADC_CR1_10B_RESOLUTION
+
+#if ( adcResolutionConfig == ADC_CR1_6B_RESOLUTION )
+
+static float        adcValue2Perc       = 100.0 / ((1 << 6) - 1);
+
+#elif ( adcResolutionConfig == ADC_CR1_8B_RESOLUTION )
+
+static float        adcValue2Perc       = 100.0 / ((1 << 8) - 1);
+
+#elif ( adcResolutionConfig == ADC_CR1_10B_RESOLUTION )
+
+static float        adcValue2Perc       = 100.0 / ((1 << 10) - 1);
+
+#elif ( adcResolutionConfig == ADC_CR1_12B_RESOLUTION )
+
+static float        adcValue2Perc       = 100.0 / ((1 << 12) - 1);
+
+#endif
 
 static ADCDriver          *breakSensorDriver  = &ADCD2;
 static GPTDriver          *adcTriggerDriver   = &GPTD4;
@@ -31,12 +57,7 @@ static const ADCConversionGroup  conv_group = {
     .error_cb       = NULL,
     .num_channels   = ADC_CHANNELS_NUMBER,
 
-#define ADC_CR1_12B_RESOLUTION      0
-#define ADC_CR1_10B_RESOLUTION      ADC_CR1_RES_0
-#define ADC_CR1_8B_RESOLUTION       ADC_CR1_RES_1
-#define ADC_CR1_6B_RESOLUTION       ADC_CR1_RES_0 | ADC_CR1_RES_1
-
-    .cr1            = ADC_CR1_10B_RESOLUTION,
+    .cr1            = adcResolutionConfig,
     .cr2            = ADC_CR2_EXTEN_RISING | ADC_CR2_EXTSEL_SRC(0b1100),
 
     /* Input dependent variables */
@@ -49,7 +70,7 @@ static const ADCConversionGroup  conv_group = {
 };
 
 static const GPTConfig trigger_cfg = {
-    .frequency      =  1000000,
+    .frequency      =  1000000,         // 1 MHz
     .callback       =  NULL,
     .cr2            =  TIM_CR2_MMS_1,
     .dier           =  0U
@@ -57,7 +78,7 @@ static const GPTConfig trigger_cfg = {
 
 /*** Module variables ***/
 
-static uint16_t breakPowerPercent = 0;
+static uint16_t     breakPowerPercent   = 0;
 
 /*** ADC callback ***/
 
@@ -65,7 +86,7 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 {
     adcp = adcp; n = n;
 
-    breakPowerPercent = buffer[0];
+    breakPowerPercent = buffer[0] * adcValue2Perc;
 }
 
 /*
@@ -74,7 +95,7 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 void breakSensorInit ( void )
 {
     adcStart( breakSensorDriver, NULL );
-    palSetLineMode( breakSensolPowerLine, PAL_MODE_INPUT_ANALOG );
+    palSetLineMode( breakSensolAnalogLine, PAL_MODE_INPUT_ANALOG );
 
     adcStartConversion( breakSensorDriver, &conv_group, adc_buffer, ADC_BUFFER_DEPTH );
 
