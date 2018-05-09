@@ -7,7 +7,7 @@
 /*** Configuration ***/
 
 /* Program routine selection */
-#define PROGRAM_ROUTINE_MASTER				0
+#define PROGRAM_ROUTINE_MASTER				0		// Base routine
 #define PROGRAM_ROUTINE_TEST_BREAK_SENSOR	1
 
 #define MAIN_PROGRAM_ROUTINE				PROGRAM_ROUTINE_MASTER

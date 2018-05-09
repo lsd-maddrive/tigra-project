@@ -24,7 +24,7 @@ int main(void)
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
 
-    chThdCreateStatic(waThread, sizeof(waThread), NORMALPRIO, Thread, NULL /* arg is NULL */);
+    chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO, Thread, NULL );
 
     while (true)
     {

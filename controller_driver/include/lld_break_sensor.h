@@ -32,6 +32,7 @@ bool breakSensorIsPressed ( void );
  * @brief	Get press power value
  * @return	[0, 100] - Press power percentage
  * 			< 0 	 - Sensor not initialized
+ * @note    Depends on pressed state, get power only if pressed
  */
 breakPressPower_t breakSensorGetPressPower ( void );
 

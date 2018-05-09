@@ -9,7 +9,7 @@
 
 /*** Hardware configuration ***/
 
-#define breakSensorClickLine	PAL_LINE(GPIOB, 0)
+#define breakSensorClickLine	PAL_LINE(GPIOA, 0)
 #define breakSensolAnalogLine   PAL_LINE(GPIOA, 7)
 /* ADC channels - DS p65 */
 #define breakSensorAnalogInput  ADC_CHANNEL_IN7
@@ -92,6 +92,7 @@ void breakSensorInit ( void )
     adcStartConversion( breakSensorDriver, &conv_group, adc_buffer, ADC_BUFFER_DEPTH );
 
     gptStart( adcTriggerDriver, &trigger_cfg );
+    /* 10ms trigger */
     gptStartContinuous( adcTriggerDriver, 10000 );
 }
 
@@ -110,6 +111,7 @@ bool breakSensorIsPressed ( void )
  * @brief	Get press power value
  * @return	[0, 100] - Press power percentage
  * 			< 0 	 - Sensor not initialized
+ * @note    Depends on pressed state, get power only if pressed
  */
 breakPressPower_t breakSensorGetPressPower ( void )
 {

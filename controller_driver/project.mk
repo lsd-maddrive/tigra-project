@@ -8,4 +8,4 @@ PROJECT_CPPSRC 	=
 
 PROJECT_INCDIR	= include tests
 
-PROJECT_LIBS	=
+PROJECT_LIBS	= -lm

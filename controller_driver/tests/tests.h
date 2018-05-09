@@ -3,7 +3,16 @@
 
 #include <common.h>
 
-/*** Prototypes ***/
+/*** Break Sensor tests ***/
+
+/* If defined - simulation is used to generated signals for sensor */
+/*
+ *	Hardware connection for simulation
+ * 	PA4 (DAC) <-> PA7				| Direct connection acts strangely, but it wokrs
+ *	Direct control of PA0
+ */
+
+#define TEST_BREAK_SENSOR_SIMULATED
 
 /*
  * @brief	Routine of break sensor testing
