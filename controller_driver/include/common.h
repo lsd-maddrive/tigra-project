@@ -7,11 +7,14 @@
 /*** Configuration ***/
 
 /* Program routine selection */
-#define PROGRAM_ROUTINE_MASTER				0		// Base routine
-#define PROGRAM_ROUTINE_TEST_BREAK_SENSOR	1
+typedef enum {
+	PROGRAM_ROUTINE_MASTER,
+	PROGRAM_ROUTINE_TEST_BREAK_SENSOR
+
+} program_routine_t;
 
 #define MAIN_PROGRAM_ROUTINE				PROGRAM_ROUTINE_MASTER
 
-/** Prototypes ***/
+/*** Prototypes ***/
 
 #endif /* INCLUDE_COMMON_H_ */
