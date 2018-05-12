@@ -6,6 +6,14 @@ static void extcb(EXTDriver *extp, expchannel_t channel);
 static EXTConfig extcfg;
 uint32_t impulseCounter = 0;
 
+static GPTDriver                *timeIntervalsDriver   = &GPTD3;
+static const GPTConfig timeIntervals_cfg = {
+    .frequency      =  1000000,         // 1 MHz
+    .callback       =  NULL,
+    .cr2            =  TIM_CR2_MMS_1,
+    .dier           =  0U
+};
+
 
 /*===========================================================================*/
 /* Application code.                                                         */
@@ -18,7 +26,6 @@ void wheelPosSensorInit (void)
         extcfg.channels[ch].mode  = EXT_CH_MODE_DISABLED;
         extcfg.channels[ch].cb    = NULL;
     }
-    chprintf("Hi");
 
     /* Start working EXT driver, current STM has only one driver */
     extStart( &EXTD1, &extcfg );
@@ -32,6 +39,12 @@ void wheelPosSensorInit (void)
 
     /* Set channel (second arg) mode with filled configuration */
     extSetChannelMode( &EXTD1, 7, &ch_conf );
+
+    gptStart( timeIntervalsDriver, &timeIntervals_cfg );
+    /* 10ms trigger */
+    gptStartContinuous( timeIntervalsDriver, 10000 );
+
+
 }
 
 
