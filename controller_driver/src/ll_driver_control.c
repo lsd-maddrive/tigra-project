@@ -63,7 +63,7 @@ void drControlSetSteerPower ( uint8_t drSteerPower )
 {
     int16_t  powerInDutyK  =    2;
     int16_t  powerInDutyB  =   -2;
-    uint16_t drSteerDuty  =   drSteerPower * powerInDuty + powerInDutyB;
+    uint16_t drSteerDuty  =    drSteerPower * powerInDuty + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 }
@@ -76,7 +76,7 @@ void drSetBrakePower ( uint8_t drBrakePower )
 {
     int16_t  powerInDutyK  =    2;
     int16_t  powerInDutyB  =   -2;
-    uint16_t drBkareDuty  =   drBrakePower * powerInDuty + powerInDutyB;
+    uint16_t drBkareDuty  =    drBrakePower * powerInDuty + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, brakePWMch, drSteerDuty );
 }
