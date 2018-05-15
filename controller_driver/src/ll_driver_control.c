@@ -1,4 +1,5 @@
 #include <ll_driver_control.h>
+
 /*** Hardware configuration ***/
 
 /***  PE9 - Steering       ***/
@@ -16,7 +17,7 @@
 #define PE14_DISABLE    PWM_OUTPUT_DISABLED
 
 static PWMDriver        *pwmDriver      = &PWMD1;
-
+static DACDriver        *dacDriver      = &DACD1;
 /*** Configuration structures ***/
 
 PWMConfig pwm1conf = {
@@ -34,17 +35,40 @@ PWMConfig pwm1conf = {
     .dier       = 0
 };
 
+static const DACConfig dac_cfg = {
+    /* Initial value of DAC out */
+    .init         = 0,
+    /*
+     * Mode of DAC:
+     *      DAC_DHRM_12BIT_RIGHT - 12 bit with right alignment
+     *      DAC_DHRM_12BIT_LEFT  - 12 bit with left alignment
+     *      DAC_DHRM_8BIT_RIGHT  - 8 bit no alignment (half of dacsample_t [uint16_t] type)
+     */
+    .datamode     = DAC_DHRM_12BIT_RIGHT,
+    /* Direct register set, future used for triggering DAC */
+    .cr           = 0
+};
+
 /*
  * @brief   Initialize periphery connected to driver control
  */
 void llDriverControlInit ( void )
 {
-  palSetPadMode(GPIOE, 9,  PAL_MODE_ALTERNATE(2));
-  palSetPadMode(GPIOE, 11, PAL_MODE_ALTERNATE(2));
+    palSetPadMode( GPIOE, 9,  PAL_MODE_ALTERNATE(2) );
+    palSetPadMode( GPIOE, 11, PAL_MODE_ALTERNATE(2) );
 
-  pwmStart( pwmDriver, &pwm1conf );
+    /*
+    * DAC has two channels
+    * Datasheet p69, PA4 - DACout1, PA5 - DACout2
+    * Pin configuration for 1st channel
+    */
+    palSetPadMode( GPIOA, 4, PAL_MODE_INPUT_ANALOG );
+
+    /* Start DAC driver with configuration */
+    dacStart( dacDriver, &dac_cfg );
+
+    pwmStart( pwmDriver, &pwm1conf );
 }
-
 
 /*
  * @brief   Set power for driving motor
@@ -52,6 +76,14 @@ void llDriverControlInit ( void )
  */
 void drControlSetMotorPower ( uint8_t drMotorPower )
 {
+    /*
+    * Write value to DAC channel
+    * Arguments:   <dacDriver>      - pointer to DAC driver
+    *              <0>              - channel number (first)
+    *              <drMotorPower>   - output value (according to mode/size)
+    */
+    // need to fix drMotorPower for DAC
+    dacPutChannelX( dacDriver, 0, drMotorPower );
 
 }
 
