@@ -22,6 +22,13 @@ int main(void)
 
     testBreakSensorRoutine();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
+
+    palToggleLine( LINE_LED1 );
+    testWheelPosSensorRoutine();
+
+    //chThdSleepMilliseconds( 100 );
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
 
     chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO, Thread, NULL );

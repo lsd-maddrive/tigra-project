@@ -12,6 +12,7 @@
  * ICU driver uses input GPT1
  */
 
+
 /*** Variables ***/
 typedef uint32_t wheelVelocity;
 typedef uint32_t wheelPosition;

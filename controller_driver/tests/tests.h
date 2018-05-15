@@ -21,4 +21,10 @@
  */
 void testBreakSensorRoutine( void );
 
+
+
+#define TEST_WHEEL_POS_SENSOR_SIMULATED
+void testWheelPosSensorRoutine( void );
+
+
 #endif /* TESTS_TESTS_H_ */
