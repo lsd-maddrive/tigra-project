@@ -4,6 +4,8 @@ static clutchLeverCb_t m_callback = NULL;
 
 static void extcb(EXTDriver *extp, expchannel_t channel)
 {
+    extp = extp; channel = channel;
+
     if ( m_callback )
         m_callback();
 }

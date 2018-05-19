@@ -1,6 +1,10 @@
 #include <tests.h>
-#include <lld_break_sensor.h>
+#include <lld_clutch_lever.h>
 
+void async_func ( void )
+{
+    palToggleLine( LINE_LED1 );
+}
 
 /**
  * @brief   Routine of clutch level of quadrocycle
@@ -9,10 +13,10 @@
  */
 void testClutchLeverRoutine( void )
 {
-
+    clutchLeverInit( async_func );
 
     while ( 1 )
     {
-
+        chThdSleepSeconds( 1 );
     }
 }
