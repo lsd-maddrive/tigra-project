@@ -15,7 +15,11 @@ static THD_FUNCTION(PosSensorOutThd, arg)
     while ( 1 )
     {
         palTogglePad( GPIOF, 14 );
-        chThdSleepMilliseconds( 100 );
+        chThdSleepMilliseconds( 500 );
+        /*if (palReadPad(GPIOF, 14) == 1)
+        {
+            palToggleLine( LINE_LED2 );
+        }*/
     }
 }
 
@@ -41,6 +45,7 @@ void testWheelPosSensorRoutine( void )
 {
 #ifdef TEST_WHEEL_POS_SENSOR_SIMULATED
     simulation_init();
+    palClearLine(LINE_LED1);
 #endif
 
     sdStart( &SD7, &sdcfg );
@@ -51,13 +56,24 @@ void testWheelPosSensorRoutine( void )
     uint16_t serial_test = 0;
     while ( 1 )
     {
-        palToggleLine( LINE_LED2 );
-        wheelVelocity velocity   =   wheelPosSensorGetVelocity ( 4 );
-        wheelPosition position   =   wheelPosSensorGetPosition ( 4 );
 
-        chprintf( (BaseSequentialStream *)&SD7, "%s\n" , velocity );
-        chprintf( (BaseSequentialStream *)&SD7, "%s\n" , "Hello world\n\r" );
+        wheelVelocity_t velocity   =   wheelPosSensorGetVelocity ( 4 );
+        wheelPosition_t position   =   wheelPosSensorGetPosition ( 4 );
 
+        /*if (position != 0)
+        {
+          palCearLine(LINE_LED1);
+
+        }*/
+
+
+
+        //chprintf( (BaseSequentialStream *)&SD7, "%U" , (unsigned long) velocity );
+        chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n" , "pos:", position, "vel:", velocity);
+        //chnWriteTimeout();
+        sendTestInformation ();
         chThdSleepMilliseconds( 500 );
+
+
     }
 }

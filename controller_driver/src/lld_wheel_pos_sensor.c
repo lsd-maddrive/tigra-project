@@ -1,7 +1,8 @@
 #include <lld_wheel_pos_sensor.h>
-
+#include <chprintf.h>
 
 #define wheelPosSensorInLine       PAL_LINE(GPIOE, 9)
+#define TimerPeriod                1000
 
 static void extcb(EXTDriver *extp, expchannel_t channel);
 static EXTConfig extcfg;
@@ -35,6 +36,10 @@ static const ICUConfig icuCfg = {
                                   /* Timer direct register */
                                   .dier           = 0
 };
+static const SerialConfig sdcfg = {
+  .speed = 115200,
+  .cr1 = 0, .cr2 = 0, .cr3 = 0
+};
 
 void wheelPosSensorInit (void)
 {
@@ -59,18 +64,23 @@ void wheelPosSensorInit (void)
     extSetChannelMode( &EXTD1, 7, &ch_conf );
 
     palSetLineMode( wheelPosSensorInLine, PAL_MODE_INPUT_PULLUP );
+
     /* Start ICU driver */
-    icuStart( icuDriver, &icuCfg );
+    //icuStart( icuDriver, &icuCfg );
     /* Start capture */
-    icuStartCapture( icuDriver );
+    //icuStartCapture( icuDriver );
     /* Enable notifications (callbacks) */
-    icuEnableNotifications( icuDriver );
+    //icuEnableNotifications( icuDriver );
 
 
     gptStart( timeIntervalsDriver, &timeIntervalsCfg );
     /* 10ms trigger */
-    gptStartContinuous( timeIntervalsDriver, 10000 );
+    gptStartContinuous( timeIntervalsDriver, TimerPeriod );
 
+
+    sdStart( &SD7, &sdcfg );
+    palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
 }
 
@@ -83,13 +93,32 @@ void wheelPosSensorInit (void)
  *                    if trigger was from PD_0 - channel equals 0,
  *                    if from PB_3 - channel equals 3, like index in array
  */
+
+uint32_t current_time = 0, prev_time = 0, time_interval = 0;
+
 static void extcb(EXTDriver *extp, expchannel_t channel)
 {
 /* The input arguments are not used now */
 /* Just to avoid Warning from compiler */
     extp = extp; channel = channel;
-    //palToggleLine( LINE_LED1 );
+    palToggleLine( LINE_LED1 );
     impulseCounter ++;
+    current_time = gptGetCounterX(timeIntervalsDriver);
+   // chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n" , "timer val:", current_time);
+   /* if (current_time > 0)
+    {
+        palToggleLine( LINE_LED1 );
+    }*/
+    if ( prev_time > current_time )
+    {
+        measured_width = TimerPeriod - prev_time + current_time;
+    }
+    else
+    {
+        measured_width = current_time - prev_time;
+    }
+    prev_time =  current_time;
+    //current_interval = gptGetIntervalX(timeIntervalsDriver);
 }
 
 /* Callback of ICU module, here used for width callback */
@@ -109,13 +138,20 @@ static void icu_width_cb ( ICUDriver *icup )
  * @ return                           Current wheel velocity value [rpm]
  *
  */
-wheelVelocity wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity )
+wheelVelocity_t wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity )
 {
-    wheelVelocity  velocity = 0;
-    velocity = ( 60 * ( 1 / ImpsPerRevQuantity ) ) / S2ST(measured_width);
+    wheelVelocity_t  velocity = 0;
+    velocity = 1000*1000*( 60 * ( 1 / ImpsPerRevQuantity ) )/ ST2US(measured_width);
     return velocity;
+   // chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n" , "time width:", measured_width);
+   // chThdSleepMilliseconds( 200 );
 }
 
+void sendTestInformation (void)
+{
+    chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n" , "current time:", current_time, "time width (tick):", measured_width, "time width (us):" ,ST2US(measured_width));
+    chThdSleepMilliseconds( 500 );
+}
 /**
  * @ brief                           Gets wheel current position value
  *                                   [revolutions]
@@ -124,9 +160,9 @@ wheelVelocity wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity )
  * @ return                          Current wheel position value [revolutions]
  *
  */
-wheelPosition wheelPosSensorGetPosition ( uint16_t ImpsPerRevQuantity )
+wheelPosition_t wheelPosSensorGetPosition ( uint16_t ImpsPerRevQuantity )
 {
-    wheelPosition position = 0;
+    wheelPosition_t position = 0;
     position = impulseCounter/ImpsPerRevQuantity;
     return position;
 }

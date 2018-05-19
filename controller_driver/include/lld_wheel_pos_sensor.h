@@ -14,8 +14,8 @@
 
 
 /*** Variables ***/
-typedef uint32_t wheelVelocity;
-typedef uint32_t wheelPosition;
+typedef uint32_t   wheelVelocity_t;
+typedef uint32_t   wheelPosition_t;
 
 
 /*** Prototypes ***/
@@ -33,7 +33,7 @@ void wheelPosSensorInit (void);
  * @ return                          Current wheel position value [revolutions]
  *
  */
-wheelPosition wheelPosSensorGetPosition ( uint16_t ImpsPerRevQuantity );
+wheelPosition_t wheelPosSensorGetPosition ( uint16_t ImpsPerRevQuantity );
 
 /**
  * @ brief                                Gets wheel current velocity value
@@ -43,6 +43,8 @@ wheelPosition wheelPosSensorGetPosition ( uint16_t ImpsPerRevQuantity );
  * @ return                               Current wheel velocity value [rpm]
  *
  */
-wheelVelocity wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity );
+wheelVelocity_t wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity );
+
+void sendTestInformation ( void );
 
 #endif /* INCLUDE_LLD_WHEEL_POS_SENSOR_H_ */
