@@ -21,4 +21,11 @@
 
 /*** Prototypes ***/
 
+/**
+ * @brief   Initialize EXT driver with empty config
+ * @note    Safe to call any times, it checks state of previous call
+ * @note    Must be called before EXT driver work
+ */
+void commonExtDriverInit ( void );
+
 #endif /* INCLUDE_COMMON_H_ */
