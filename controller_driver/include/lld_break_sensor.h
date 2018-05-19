@@ -22,9 +22,9 @@ typedef int16_t breakPressPower_t;
 void breakSensorInit ( void );
 
 /*
- * @brief	Check if break is pressed
- * @return 	true  - break is pressed
- * 			false - break is not pressed
+ * @brief   Check if break is pressed
+ * @return  true  - break is pressed
+ *          false - break is not pressed (or not initialized)
  */
 bool breakSensorIsPressed ( void );
 

@@ -60,6 +60,7 @@ static const GPTConfig trigger_cfg = {
 
 /*** Module variables ***/
 
+static bool         isInitialized       = false;
 static uint16_t     breakPowerPercent   = 0;
 
 #if ( adcResolutionConfig == ADC_CR1_6B_RESOLUTION )
@@ -94,16 +95,24 @@ void breakSensorInit ( void )
     gptStart( adcTriggerDriver, &trigger_cfg );
     /* 10ms trigger */
     gptStartContinuous( adcTriggerDriver, 10000 );
+
+    isInitialized = true;
 }
 
 /*
  * @brief	Check if break is pressed
  * @return 	true  - break is pressed
- * 			false - break is not pressed
+ * 			false - break is not pressed (or not initialized)
  */
 bool breakSensorIsPressed ( void )
 {
-    bool result = palReadLine( breakSensorClickLine );
+    bool result = false;
+
+    if ( !isInitialized )
+        return false;
+
+    result = palReadLine( breakSensorClickLine );
+
 	return result;
 }
 
@@ -117,10 +126,10 @@ breakPressPower_t breakSensorGetPressPower ( void )
 {
 	breakPressPower_t value = 0;
 
-	if ( breakSensorIsPressed() )
-	{
-	    value = breakPowerPercent;
-	}
+	if ( !isInitialized )
+	    return -1;
+
+    value = breakPowerPercent;
 
 	return value;
 }
