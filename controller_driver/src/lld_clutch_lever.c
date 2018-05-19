@@ -23,15 +23,7 @@ void clutchLeverInit ( clutchLeverCb_t callback )
         .cb = extcb
     };
 
-    /* Common function, must be moved to common init */
-    EXTConfig extcfg;
-    for ( expchannel_t ch = 0; ch < EXT_MAX_CHANNELS; ch++ )
-    {
-        extcfg.channels[ch].mode  = EXT_CH_MODE_DISABLED;
-        extcfg.channels[ch].cb    = NULL;
-    }
-    extStart( &EXTD1, &extcfg );
-    /* Common function end */
+    commonExtDriverInit();
 
     extSetChannelMode( &EXTD1, 1, &ch_conf );
 
