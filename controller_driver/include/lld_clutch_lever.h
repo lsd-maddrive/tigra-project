@@ -6,7 +6,7 @@
 /*
  * Hardware description
  * ------------------------------------
- * PAL driver -> input PA1
+ * EXT driver -> input PA1
  */
 
 /*** Variables ***/
