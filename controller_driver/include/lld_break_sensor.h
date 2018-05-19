@@ -6,8 +6,8 @@
 /*
  * Hardware description
  * ------------------------------------
- * PAL driver uses input PA0
- * ADC2 driver uses input PA7 (AN7) and GPT4 trigger
+ * PAL driver -> input PA0
+ * ADC2 driver -> input PA7 (AN7) and GPT4 trigger
  */
 
 /*** Variables ***/

@@ -9,7 +9,7 @@
 
 /*** Hardware configuration ***/
 
-#define breakSensorClickLine	PAL_LINE(GPIOA, 0)
+#define breakSensorClickLine    PAL_LINE(GPIOA, 0)
 #define breakSensolAnalogLine   PAL_LINE(GPIOA, 7)
 /* ADC channels - DS p65 */
 #define breakSensorAnalogInput  ADC_CHANNEL_IN7
@@ -83,7 +83,7 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 }
 
 /*
- * @brief 	                Initialize periphery connected to break sensor
+ * @brief                   Initialize periphery connected to break sensor
  */
 void breakSensorInit ( void )
 {
@@ -100,9 +100,9 @@ void breakSensorInit ( void )
 }
 
 /*
- * @brief	                Check if break is pressed
- * @return 	true            break is pressed
- * 			false           break is not pressed (or not initialized)
+ * @brief                   Check if break is pressed
+ * @return  true            break is pressed
+ *          false           break is not pressed (or not initialized)
  */
 bool breakSensorIsPressed ( void )
 {
@@ -113,23 +113,23 @@ bool breakSensorIsPressed ( void )
 
     result = palReadLine( breakSensorClickLine );
 
-	return result;
+    return result;
 }
 
 /*
- * @brief	                Get press power value
- * @return	[0, 100]        Press power percentage
- * 			< 0             Sensor is not initialized
+ * @brief                   Get press power value
+ * @return  [0, 100]        Press power percentage
+ *          < 0             Sensor is not initialized
  * @note                    Depends on pressed state, get power only if pressed
  */
 breakPressPower_t breakSensorGetPressPower ( void )
 {
-	breakPressPower_t value = 0;
+    breakPressPower_t value = 0;
 
-	if ( !isInitialized )
-	    return -1;
+    if ( !isInitialized )
+        return -1;
 
     value = breakPowerPercent;
 
-	return value;
+    return value;
 }
