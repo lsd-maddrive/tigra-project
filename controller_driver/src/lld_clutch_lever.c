@@ -23,7 +23,7 @@ void clutchLeverInit ( clutchLeverCb_t callback )
         .cb = extcb
     };
 
-    /* Common function, must be moved to commen functions */
+    /* Common function, must be moved to common init */
     EXTConfig extcfg;
     for ( expchannel_t ch = 0; ch < EXT_MAX_CHANNELS; ch++ )
     {

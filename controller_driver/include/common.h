@@ -15,6 +15,7 @@
  */
 #define     PROGRAM_ROUTINE_MASTER                  0
 #define     PROGRAM_ROUTINE_TEST_BREAK_SENSOR       1
+#define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       10
 
 #define     MAIN_PROGRAM_ROUTINE				    PROGRAM_ROUTINE_MASTER
 
