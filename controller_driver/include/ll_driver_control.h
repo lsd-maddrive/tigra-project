@@ -30,4 +30,19 @@ void drSetBrakePower ( uint8_t drBrakePower );
  */
 void drControlSetMotorDirection ( bool drMotorDirection );
 
+/*
+ * @brief   Set braking motor direction
+ * @param   drMotorDirection    Motor direction true - forward
+ *                                              false - backward
+ */
+void drControlSetBrakeDirection ( bool drBrakeDirection );
+
+/*
+ * @brief   Set steering motor direction
+ * @param   drMotorDirection    Motor direction true - forward
+ *                                              false - backward
+ */
+void drControlSetSteerDirection ( bool drSteerDirection );
+
+
 #endif /* INCLUDE_LL_DRIVER_CONTROL_H_ */

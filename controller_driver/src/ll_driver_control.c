@@ -16,8 +16,19 @@
 #define PE14_ACTIVE     PWM_OUTPUT_ACTIVE_HIGH
 #define PE14_DISABLE    PWM_OUTPUT_DISABLED
 
-static PWMDriver        *pwmDriver      = &PWMD1;
-static DACDriver        *dacDriver      = &DACD1;
+static  PWMDriver        *pwmDriver      = &PWMD1;
+static  DACDriver        *dacDriver      = &DACD1;
+
+/*** F_12 for Driving Wheels Set Direction ***/
+#define portMotorDir    GPIOF
+#define padMotorDir     12
+/*** E_15 for Braking Set Direction ***/
+#define portBrakeDir    GPIOE
+#define padBrakeDir     15
+/*** E_3 for Steering Set Direction ***/
+#define portSteerDir    GPIOE
+#define padSteerDir     3
+
 /*** Configuration structures ***/
 
 PWMConfig pwm1conf = {
@@ -76,6 +87,9 @@ void llDriverControlInit ( void )
  */
 void drControlSetMotorPower ( uint8_t drMotorPower )
 {
+    int16_t  powerInDutyK  =    2;
+    int16_t  powerInDutyB  =   -2;
+    uint16_t drDriveDuty   = drMotorPower * powerInDutyK + powerInDutyB;
     /*
     * Write value to DAC channel
     * Arguments:   <dacDriver>      - pointer to DAC driver
@@ -83,7 +97,7 @@ void drControlSetMotorPower ( uint8_t drMotorPower )
     *              <drMotorPower>   - output value (according to mode/size)
     */
     // need to fix drMotorPower for DAC
-    dacPutChannelX( dacDriver, 0, drMotorPower );
+    dacPutChannelX( dacDriver, 0, drDriveDuty );
 
 }
 
@@ -95,7 +109,7 @@ void drControlSetSteerPower ( uint8_t drSteerPower )
 {
     int16_t  powerInDutyK  =    2;
     int16_t  powerInDutyB  =   -2;
-    uint16_t drSteerDuty  =    drSteerPower * powerInDuty + powerInDutyB;
+    uint16_t drSteerDuty  =    drSteerPower * powerInDutyK + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 }
@@ -108,7 +122,7 @@ void drSetBrakePower ( uint8_t drBrakePower )
 {
     int16_t  powerInDutyK  =    2;
     int16_t  powerInDutyB  =   -2;
-    uint16_t drBkareDuty  =    drBrakePower * powerInDuty + powerInDutyB;
+    uint16_t drBkareDuty  =    drBrakePower * powerInDutyK + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, brakePWMch, drSteerDuty );
 }
@@ -120,5 +134,34 @@ void drSetBrakePower ( uint8_t drBrakePower )
  */
 void drControlSetMotorDirection ( bool drMotorDirection )
 {
+    if(drMotorDirection)
+        palSetPad( portMotorDir, padMotorDir );
+    else
+        palClearPad( portMotorDir, padMotorDir );
+}
 
+/*
+ * @brief   Set braking motor direction
+ * @param   drMotorDirection    Motor direction true - forward
+ *                                              false - backward
+ */
+void drControlSetBrakeDirection ( bool drBrakeDirection )
+{
+    if(drBrakeDirection)
+        palSetPad( portBrakeDir, padBrakeDir );
+    else
+        palClearPad( portBrakeDir, padBrakeDir );
+}
+
+/*
+ * @brief   Set steering motor direction
+ * @param   drMotorDirection    Motor direction true - forward
+ *                                              false - backward
+ */
+void drControlSetSteerDirection ( bool drSteerDirection )
+{
+    if(drSteerDirection)
+        palSetPad( portSteerDir, padSteerDir );
+    else
+        palClearPad( portSteerDir, padSteerDir );
 }
