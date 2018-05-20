@@ -15,11 +15,8 @@ static THD_FUNCTION(PosSensorOutThd, arg)
     while ( 1 )
     {
         palTogglePad( GPIOF, 14 );
-        chThdSleepMilliseconds( 500 );
-        /*if (palReadPad(GPIOF, 14) == 1)
-        {
-            palToggleLine( LINE_LED2 );
-        }*/
+        chThdSleepMilliseconds( 250 );
+
     }
 }
 
@@ -57,20 +54,11 @@ void testWheelPosSensorRoutine( void )
     while ( 1 )
     {
 
-        wheelVelocity_t velocity   =   wheelPosSensorGetVelocity ( 4 );
-        wheelPosition_t position   =   wheelPosSensorGetPosition ( 4 );
+        wheelVelocity_t velocity   =   wheelPosSensorGetVelocity ();
+        wheelPosition_t position   =   wheelPosSensorGetPosition ();
 
-        /*if (position != 0)
-        {
-          palCearLine(LINE_LED1);
-
-        }*/
-
-
-
-        //chprintf( (BaseSequentialStream *)&SD7, "%U" , (unsigned long) velocity );
-        chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n" , "pos:", position, "vel:", velocity);
-        //chnWriteTimeout();
+        chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n" , "pos:",
+                  position, "vel:", velocity);
         sendTestInformation ();
         chThdSleepMilliseconds( 500 );
 

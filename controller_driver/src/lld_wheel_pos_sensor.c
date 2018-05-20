@@ -2,7 +2,7 @@
 #include <chprintf.h>
 
 #define wheelPosSensorInLine       PAL_LINE(GPIOE, 9)
-#define TimerPeriod                1000
+const   uint32_t PartOfWheelRevPerMinute =    60 * ( 1 / ImpsPerRevQuantity );
 
 static void extcb(EXTDriver *extp, expchannel_t channel);
 static EXTConfig extcfg;
@@ -18,7 +18,6 @@ static const GPTConfig timeIntervalsCfg = {
 
 static void icu_width_cb(ICUDriver *icup);
 static ICUDriver                     *icuDriver =   &ICUD1;
-icucnt_t measured_width = 0;
 static const ICUConfig icuCfg = {
                                   .frequency    = 1000000,
                                   .mode         = ICU_INPUT_ACTIVE_HIGH,
@@ -36,6 +35,10 @@ static const ICUConfig icuCfg = {
                                   /* Timer direct register */
                                   .dier           = 0
 };
+
+icucnt_t measured_width = 0;
+
+
 static const SerialConfig sdcfg = {
   .speed = 115200,
   .cr1 = 0, .cr2 = 0, .cr3 = 0
@@ -138,10 +141,10 @@ static void icu_width_cb ( ICUDriver *icup )
  * @ return                           Current wheel velocity value [rpm]
  *
  */
-wheelVelocity_t wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity )
+wheelVelocity_t wheelPosSensorGetVelocity ( void )
 {
     wheelVelocity_t  velocity = 0;
-    velocity = 1000*1000*( 60 * ( 1 / ImpsPerRevQuantity ) )/ ST2US(measured_width);
+    velocity = ( PartOfWheelRevPerMinute )/ ( measured_width / timeIntervalsCfg.frequency );
     return velocity;
    // chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n" , "time width:", measured_width);
    // chThdSleepMilliseconds( 200 );
@@ -149,7 +152,9 @@ wheelVelocity_t wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity )
 
 void sendTestInformation (void)
 {
-    chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n" , "current time:", current_time, "time width (tick):", measured_width, "time width (us):" ,ST2US(measured_width));
+    chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n" ,
+              "current time:", current_time, "time width (tick):", measured_width,
+              "time width (s):" , ( measured_width / timeIntervalsCfg.frequency ) );
     chThdSleepMilliseconds( 500 );
 }
 /**
@@ -160,7 +165,7 @@ void sendTestInformation (void)
  * @ return                          Current wheel position value [revolutions]
  *
  */
-wheelPosition_t wheelPosSensorGetPosition ( uint16_t ImpsPerRevQuantity )
+wheelPosition_t wheelPosSensorGetPosition ( void )
 {
     wheelPosition_t position = 0;
     position = impulseCounter/ImpsPerRevQuantity;

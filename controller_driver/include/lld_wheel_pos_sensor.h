@@ -14,9 +14,10 @@
 
 
 /*** Variables ***/
-typedef uint32_t   wheelVelocity_t;
-typedef uint32_t   wheelPosition_t;
-
+typedef float                   wheelVelocity_t;
+typedef uint32_t                wheelPosition_t;
+#define ImpsPerRevQuantity      4
+#define TimerPeriod             1000
 
 /*** Prototypes ***/
 
@@ -24,6 +25,7 @@ typedef uint32_t   wheelPosition_t;
  * @brief   Initialize periphery connected to wheel position sensor
  */
 void wheelPosSensorInit (void);
+
 
 /**
  * @ brief                           Gets wheel current position value
@@ -33,18 +35,23 @@ void wheelPosSensorInit (void);
  * @ return                          Current wheel position value [revolutions]
  *
  */
-wheelPosition_t wheelPosSensorGetPosition ( uint16_t ImpsPerRevQuantity );
+wheelPosition_t wheelPosSensorGetPosition ( void );
+
+
 
 /**
- * @ brief                                Gets wheel current velocity value
- *                                        [revolutions per minute (rpm)]
- * @ param [in] ImpsPerRevQuantity        Number of impulses per revolution
- *                                        depends on given sensor
- * @ return                               Current wheel velocity value [rpm]
+ * @ brief                           Gets wheel current velocity value
+ *                                   [revolutions per minute (rpm)]
+ * @ param [in] ImpsPerRevQuantity   Number of impulses per revolution
+ *                                   depends on given sensor
+ * @ return                          Current wheel velocity value [rpm]
  *
  */
-wheelVelocity_t wheelPosSensorGetVelocity ( uint16_t ImpsPerRevQuantity );
+wheelVelocity_t wheelPosSensorGetVelocity ( void );
 
+/*
+ * @ brief         Sends test information (gpt counter)
+ */
 void sendTestInformation ( void );
 
 #endif /* INCLUDE_LLD_WHEEL_POS_SENSOR_H_ */
