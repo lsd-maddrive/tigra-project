@@ -60,6 +60,10 @@ MMCDriver   MMCD1;
 MMCDriver   *blackBoxDrv    = &MMCD1;
 
 FATFS       MMC_FS;
+FIL         fd;
+bool        isFileOpened    = false;
+
+#define     BASE_PATH   "/"
 
 /**
  * @brief           Black box module intialization
@@ -110,9 +114,9 @@ int blackBoxCardConnect( void )
     if ( mmcConnect( blackBoxDrv ) )
         return EIO;
 
-    err = f_mount( &MMC_FS, "/", 1 );
+    err = f_mount( &MMC_FS, BASE_PATH, 1 );
 
-    if (err != FR_OK) 
+    if ( err != FR_OK ) 
     {
         mmcDisconnect( blackBoxDrv );
         return EFAULT;
@@ -126,11 +130,46 @@ int blackBoxCardConnect( void )
  */
 void blackBoxCardDisconnect( void )
 {
+    if ( isFileOpened )
+    {
+        f_close( &fd );
+        isFileOpened = false;
+    }
+    
+    f_unmount( BASE_PATH );
     mmcDisconnect( blackBoxDrv );
 }
 
-#include <chprintf.h>
 #include <string.h>
+
+int blackBoxWriteData( void )
+{
+    char        *hello_str  = "Hello!\n";
+    int32_t     write_bytes = 0;
+    FRESULT     err;
+
+    if ( !isFileOpened )
+    {
+        err = f_open( &fd, "/road1.log", FA_WRITE );
+        if ( err != FR_OK )
+        {
+            return EACCES;
+        }
+
+        isFileOpened = true;
+    }
+
+    f_write( &fd, hello_str, strlen(hello_str), &write_bytes );
+
+    if ( write_bytes != strlen(hello_str) )
+        return EFAULT;
+
+    return EOK;
+}
+
+/*** Service function ***/
+
+#include <chprintf.h>
 
 int blackBoxListFiles( BaseSequentialStream *chp, char *path )
 {
@@ -140,7 +179,6 @@ int blackBoxListFiles( BaseSequentialStream *chp, char *path )
     int i;
     char *fn;
 
-
     res = f_opendir(&dir, path);
     if (res == FR_OK) 
     {
@@ -148,13 +186,16 @@ int blackBoxListFiles( BaseSequentialStream *chp, char *path )
         for (;;) 
         {
             res = f_readdir(&dir, &fno);
+            
             if (res != FR_OK || fno.fname[0] == 0)
                 break;
+            
             if (fno.fname[0] == '.')
                 continue;
+
             fn = fno.fname;
             
-            if (fno.fattrib & AM_DIR) 
+            if (fno.fattrib & AM_DIR)
             {
                 path[i++] = '/';
                 strcpy( &path[i], fn );

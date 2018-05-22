@@ -33,6 +33,8 @@ void blackBoxCardDisconnect( void );
 
 /*** TODO - Undocumented ***/
 
+int blackBoxWriteData( void );
+
 int blackBoxListFiles( BaseSequentialStream *chp, char *path );
 
 #endif /* INCLUDE_BLACK_BOX_H_ */
