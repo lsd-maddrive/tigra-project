@@ -1,6 +1,5 @@
-#include <common.h>
-#include <ff.h>
 #include <black_box.h>
+#include <ff.h>
 
 #define blackBoxCSLine      PAL_LINE(GPIOD, 2)
 
@@ -64,8 +63,7 @@ FATFS       MMC_FS;
 
 /**
  * @brief           Black box module intialization
- * @return  0       Intialized
- *          < 0     Intialization failed
+ * @return  EOK     Intialized
  */
 int blackBoxInit( void )
 {
@@ -95,42 +93,37 @@ int blackBoxInit( void )
     mmcObjectInit( blackBoxDrv );
     mmcStart( blackBoxDrv, &mmccfg );
 
-    return 0;
+    return EOK;
 }
 
-int blackBoxIsCardInserted( void )
-{
-    BaseBlockDevice *bbdp = (BaseBlockDevice *)blackBoxDrv;
-
-    blkstate_t state = blkGetDriverState( bbdp );
-
-    if ((state != BLK_READING) && (state != BLK_WRITING)) 
-    {
-        return blkIsInserted(bbdp) ? 1 : 0;
-    }
-
-    return -1;
-}
-
+/**
+ * @brief           Connect to black box SD card
+ * 
+ * @return  EOK     Connected
+ *          EIO     SPI bus connection failed
+ *          EFAULT  FS mount failed
+ */
 int blackBoxCardConnect( void )
 {
     FRESULT err;
 
     if ( mmcConnect( blackBoxDrv ) )
-        return -1;
+        return EIO;
 
-    err = f_mount( &MMC_FS, "/", 0 );
+    err = f_mount( &MMC_FS, "/", 1 );
 
     if (err != FR_OK) 
     {
         mmcDisconnect( blackBoxDrv );
-        return -1;
+        return EFAULT;
     }
 
-    return 0;
+    return EOK;
 }
 
-
+/**
+ * @brief           Disconnect from SD card
+ */
 void blackBoxCardDisconnect( void )
 {
     mmcDisconnect( blackBoxDrv );

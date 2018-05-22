@@ -36,7 +36,7 @@ void testBlackBoxRoutine( void )
 
     chThdCreateStatic( waBlinker, sizeof(waBlinker), NORMALPRIO, Blinker, NULL );
 
-    if ( blackBoxInit() < 0 )
+    if ( blackBoxInit() != EOK )
     {
     	chprintf( (BaseSequentialStream *)&SD7, "Initialization failed\n" );
     	chSysHalt( "Test failed" );
@@ -48,8 +48,8 @@ void testBlackBoxRoutine( void )
     {
         int res = blackBoxCardConnect();
 
-        chprintf( (BaseSequentialStream *)&SD7, "Connection test: %s\n", res < 0 ? "Err" : "Done" );
-        if ( res < 0 )
+        chprintf( (BaseSequentialStream *)&SD7, "Connection test: %s\n", res != EOK ? "Err" : "Done" );
+        if ( res != EOK )
         {
             chThdSleepSeconds( 1 );
             chSysHalt( "Test failed" );
@@ -61,6 +61,9 @@ void testBlackBoxRoutine( void )
         blackBoxListFiles( (BaseSequentialStream *)&SD7, buffer );
 
         blackBoxCardDisconnect();
+
+        chThdSleepSeconds( 1 );
+        chSysHalt( "Test passed" );
 
         chThdSleepMilliseconds( 1000 );
     }

@@ -1,6 +1,8 @@
 #ifndef INCLUDE_BLACK_BOX_H_
 #define INCLUDE_BLACK_BOX_H_
 
+#include <common.h>
+
 /*
  * Hardware description
  * ------------------------------------
@@ -11,19 +13,25 @@
 
 /**
  * @brief           Black box module intialization
- * @return  0       Intialized
- *          < 0     Intialization failed
+ * @return  EOK     Intialized
  */
 int blackBoxInit( void );
 
+/**
+ * @brief           Connect to black box SD card
+ * 
+ * @return  EOK     Connected
+ *          EIO     SPI bus connection failed
+ *          EFAULT  FS mount failed
+ */
+int blackBoxCardConnect( void );
+
+/**
+ * @brief           Disconnect from SD card
+ */
+void blackBoxCardDisconnect( void );
 
 /*** TODO - Undocumented ***/
-
-/* Not working - no realization */
-int blackBoxIsCardInserted( void );
-
-int blackBoxCardConnect( void );
-void blackBoxCardDisconnect( void );
 
 int blackBoxListFiles( BaseSequentialStream *chp, char *path );
 

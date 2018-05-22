@@ -4,6 +4,13 @@
 #include <hal.h>
 #include <ch.h>
 
+/* Header for errors */
+#include <errno.h>
+/* Sometimes this error code is not defined */
+#ifndef EOK
+	#define EOK 	0
+#endif
+
 /*** Configuration ***/
 
 /* Program routine selection */
