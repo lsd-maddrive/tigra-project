@@ -16,4 +16,15 @@
  */
 int blackBoxInit( void );
 
+
+/*** TODO - Undocumented ***/
+
+/* Not working - no realization */
+int blackBoxIsCardInserted( void );
+
+int blackBoxCardConnect( void );
+void blackBoxCardDisconnect( void );
+
+int blackBoxListFiles( BaseSequentialStream *chp, char *path );
+
 #endif /* INCLUDE_BLACK_BOX_H_ */

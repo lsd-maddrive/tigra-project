@@ -1,9 +1,10 @@
 #include <common.h>
+#include <ff.h>
 #include <black_box.h>
 
 #define blackBoxCSLine      PAL_LINE(GPIOD, 2)
 
-static const SPIConfig hs_spicfg = {
+static const SPIConfig  hs_spicfg = {
     .end_cb     = NULL,
     .ssport     = PAL_PORT( blackBoxCSLine ),
     .sspad      = PAL_PAD( blackBoxCSLine ),
@@ -39,13 +40,27 @@ static const SPIConfig hs_spicfg = {
      * 1101: 14-bit
      * 1110: 15-bit
      * 1111: 16-bit
-     * If software attempts to write one of the “Not used” values, they are forced to the value “0111”(8-
-     * bit).
+     * If software attempts to write one of the “Not used” values, 
+     * they are forced to the value “0111”(8-bit).
      */
-    .cr2        = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
+    .cr2        = 0     // SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
-static const SPIDriver  *blackBoxDrv    = &SPID3;
+static const SPIConfig  ls_spicfg = {
+    .end_cb     = NULL,
+    .ssport     = PAL_PORT( blackBoxCSLine ),
+    .sspad      = PAL_PAD( blackBoxCSLine ),
+    .cr1        = SPI_CR1_BR_2 | SPI_CR1_BR_1,
+    .cr2        = 0     // SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
+};
+
+/* MMC/SD over SPI driver configuration.*/
+static const MMCConfig  mmccfg = { &SPID3, &ls_spicfg, &hs_spicfg };
+
+MMCDriver   MMCD1;
+MMCDriver   *blackBoxDrv    = &MMCD1;
+
+FATFS       MMC_FS;
 
 /**
  * @brief           Black box module intialization
@@ -70,12 +85,97 @@ int blackBoxInit( void )
     palSetLineMode( PAL_LINE(GPIOC, 12U),
                     PAL_MODE_ALTERNATE(6) |
                     PAL_STM32_OSPEED_HIGHEST);
+
     /* CS */
     palSetLine( blackBoxCSLine );
     palSetLineMode( blackBoxCSLine,
                     PAL_MODE_OUTPUT_PUSHPULL );
 
-    spiStart(&SPID2, &hs_spicfg);
+    /* MMC init */
+    mmcObjectInit( blackBoxDrv );
+    mmcStart( blackBoxDrv, &mmccfg );
 
     return 0;
+}
+
+int blackBoxIsCardInserted( void )
+{
+    BaseBlockDevice *bbdp = (BaseBlockDevice *)blackBoxDrv;
+
+    blkstate_t state = blkGetDriverState( bbdp );
+
+    if ((state != BLK_READING) && (state != BLK_WRITING)) 
+    {
+        return blkIsInserted(bbdp) ? 1 : 0;
+    }
+
+    return -1;
+}
+
+int blackBoxCardConnect( void )
+{
+    FRESULT err;
+
+    if ( mmcConnect( blackBoxDrv ) )
+        return -1;
+
+    err = f_mount( &MMC_FS, "/", 0 );
+
+    if (err != FR_OK) 
+    {
+        mmcDisconnect( blackBoxDrv );
+        return -1;
+    }
+
+    return 0;
+}
+
+
+void blackBoxCardDisconnect( void )
+{
+    mmcDisconnect( blackBoxDrv );
+}
+
+#include <chprintf.h>
+#include <string.h>
+
+int blackBoxListFiles( BaseSequentialStream *chp, char *path )
+{
+    FRESULT res;
+    FILINFO fno;
+    DIR dir;
+    int i;
+    char *fn;
+
+
+    res = f_opendir(&dir, path);
+    if (res == FR_OK) 
+    {
+        i = strlen(path);
+        for (;;) 
+        {
+            res = f_readdir(&dir, &fno);
+            if (res != FR_OK || fno.fname[0] == 0)
+                break;
+            if (fno.fname[0] == '.')
+                continue;
+            fn = fno.fname;
+            
+            if (fno.fattrib & AM_DIR) 
+            {
+                path[i++] = '/';
+                strcpy( &path[i], fn );
+                res = blackBoxListFiles(chp, path);
+                if (res != FR_OK)
+                  break;
+                path[--i] = 0;
+            }
+            else 
+            {
+                chprintf(chp, "%s/%s\n", path, fn);
+            }
+        }
+    }
+    
+    return res;
 }
