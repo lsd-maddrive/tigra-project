@@ -30,4 +30,13 @@ void testBreakSensorRoutine( void );
  */
 void testClutchLeverRoutine( void );
 
+/*** Black box tests ***/
+
+/*
+ * @brief   Routine of black box testing
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testBlackBoxRoutine( void );
+
 #endif /* TESTS_TESTS_H_ */

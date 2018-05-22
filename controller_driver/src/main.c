@@ -30,6 +30,10 @@ int main(void)
 
     testClutchLeverRoutine();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BLACK_BOX)
+
+    testBlackBoxRoutine();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
 
     chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO, Thread, NULL );
