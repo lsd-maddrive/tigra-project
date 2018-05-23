@@ -1,5 +1,7 @@
-PROJECT_MODULES = src/lld_break_sensor.c
-PROJECT_TESTS	= tests/test_break_sensor.c
+PROJECT_MODULES = src/lld_break_sensor.c \
+					  ll_driver_control.c
+PROJECT_TESTS	= tests/test_break_sensor.c \
+						test_ll_driver.c 
 
 PROJECT_CSRC 	= src/main.c \
 					$(PROJECT_MODULES) $(PROJECT_TESTS)

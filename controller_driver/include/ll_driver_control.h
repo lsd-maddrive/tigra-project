@@ -21,7 +21,7 @@ void drControlSetMotorPower ( uint8_t drMotorPower );
  * @brief   Set power for braking motor
  * @param   drBrakePower    Motor power value [0 100]
  */
-void drSetBrakePower ( uint8_t drBrakePower );
+void drControlSetBrakePower ( uint8_t drBrakePower );
 
 /*
  * @brief   Set motor direction
