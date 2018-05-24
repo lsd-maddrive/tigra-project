@@ -1,3 +1,4 @@
+#include <tests.h>
 #include <ll_driver_control.h>
 
 /*** Hardware configuration ***/
@@ -89,7 +90,7 @@ void drControlSetMotorPower ( uint8_t drMotorPower )
 {
     int16_t  powerInDutyK  =   1;
     int16_t  powerInDutyB  =   0;
-    uint16_t drDriveDuty   = drMotorPower * powerInDutyK + powerInDutyB;
+    uint16_t drDriveDuty   =   drMotorPower * powerInDutyK + powerInDutyB;
     /*
     * Write value to DAC channel
     * Arguments:   <dacDriver>      - pointer to DAC driver
@@ -107,9 +108,9 @@ void drControlSetMotorPower ( uint8_t drMotorPower )
  */
 void drControlSetSteerPower ( uint8_t drSteerPower )
 {
-    int16_t  powerInDutyK  =   1;
+    int16_t  powerInDutyK  =   2;
     int16_t  powerInDutyB  =   0;
-    uint16_t drSteerDuty  =    drSteerPower * powerInDutyK + powerInDutyB;
+    uint16_t drSteerDuty   =   drSteerPower * powerInDutyK + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 }
@@ -122,7 +123,7 @@ void drControlSetBrakePower ( uint8_t drBrakePower )
 {
     int16_t  powerInDutyK  =   1;
     int16_t  powerInDutyB  =   0;
-    uint16_t drBkareDuty  =    drBrakePower * powerInDutyK + powerInDutyB;
+    uint16_t drBkareDuty   =   drBrakePower * powerInDutyK + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, brakePWMch, drBkareDuty );
 }
