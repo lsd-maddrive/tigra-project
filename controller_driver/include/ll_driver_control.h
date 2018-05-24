@@ -6,6 +6,8 @@
 #include <stdint.h>
 
 
+
+
 /*
  * @brief   Initialize periphery connected to driver control
  */
@@ -16,6 +18,12 @@ void llDriverControlInit ( void );
  * @param   drMotorPower    Motor power value [0 100]
  */
 void drControlSetMotorPower ( uint8_t drMotorPower );
+
+/*
+ * @brief   Set power for steering motor
+ * @param   drSteerPower    Motor power value [0 100]
+ */
+void drControlSetSteerPower ( uint8_t drSteerPower );
 
 /*
  * @brief   Set power for braking motor

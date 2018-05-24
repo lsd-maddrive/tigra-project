@@ -6,17 +6,18 @@ void testDriverControlRoutine( )
     llDriverControlInit( );
 
     drControlSetSteerPower( 250 );
-//    palSetLine( LINE_LED2 );
-//    drControlSetBrakePower( 250 );
+    drControlSetBrakePower( 250 );
+    drControlSetMotorPower( 250 );
 
     while( true )
     {
-//          drControlSetSteerPower( 250 );
-          palSetLine( LINE_LED1 );
-//        drControlSetMotorDirection( true );
-//        drControlSetBrakeDirection( true );
-//        drControlSetSteerDirection( true );
-//        drControlSetMotorPower( 250 );
+        drControlSetMotorDirection( true );
+        drControlSetBrakeDirection( true );
+        drControlSetSteerDirection( true );
+        chThdSleepMilliseconds(500);
+        drControlSetMotorDirection( false );
+        drControlSetBrakeDirection( false );
+        drControlSetSteerDirection( false );
+        chThdSleepMilliseconds(500);
     }
-
 }

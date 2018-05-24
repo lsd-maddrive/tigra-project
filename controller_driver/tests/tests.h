@@ -21,7 +21,10 @@
  */
 void testBreakSensorRoutine( void );
 
-
+/*
+ * @brief   Routine of low lovel driver control testing
+ * @note    The routine has internal infinite loop
+ */
 void testDriverControlRoutine( void );
 
 #endif /* TESTS_TESTS_H_ */

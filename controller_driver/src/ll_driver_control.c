@@ -34,7 +34,7 @@ static  DACDriver        *dacDriver      = &DACD1;
 
 PWMConfig pwm1conf = {
     .frequency = 4000000,   // frequency of timer ticks
-    .period    = 5440,      /* 1/1000 s = 1 ms => 1 kHz
+    .period    = 4000,      /* 1/1000 s = 1 ms => 1 kHz
                              * PWM period = period/frequency [s] */
     .callback  = NULL,
     .channels  = {
@@ -66,8 +66,14 @@ static const DACConfig dac_cfg = {
  */
 void llDriverControlInit( void )
 {
-    palSetPadMode( GPIOE, 9,  PAL_MODE_ALTERNATE(2) );
-    palSetPadMode( GPIOE, 11, PAL_MODE_ALTERNATE(2) );
+    /*** PWM pins configuration ***/
+    palSetPadMode( GPIOE, 9,  PAL_MODE_ALTERNATE(1) );
+    palSetPadMode( GPIOE, 11, PAL_MODE_ALTERNATE(1) );
+
+    /*** PAL pins configuration ***/
+    palSetPadMode( portMotorDir, padMotorDir, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetPadMode( portBrakeDir, padBrakeDir, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetPadMode( portSteerDir, padSteerDir, PAL_MODE_OUTPUT_PUSHPULL );
 
     /*
     * DAC has two channels
@@ -108,7 +114,7 @@ void drControlSetMotorPower ( uint8_t drMotorPower )
  */
 void drControlSetSteerPower ( uint8_t drSteerPower )
 {
-    int16_t  powerInDutyK  =   2;
+    int16_t  powerInDutyK  =   1;
     int16_t  powerInDutyB  =   0;
     uint16_t drSteerDuty   =   drSteerPower * powerInDutyK + powerInDutyB;
 
@@ -133,12 +139,13 @@ void drControlSetBrakePower ( uint8_t drBrakePower )
  * @param   drMotorDirection    Motor direction true - forward
  *                                              false - backward
  */
-void drControlSetMotorDirection ( bool drMotorDirection )
+void drControlSetMotorDirection( bool drMotorDirection )
 {
     if(drMotorDirection)
         palSetPad( portMotorDir, padMotorDir );
     else
         palClearPad( portMotorDir, padMotorDir );
+
 }
 
 /*
