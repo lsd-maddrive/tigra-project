@@ -25,7 +25,7 @@ void testBreakSensorRoutine( void );
 /*** Wheel position sensor tests ***/
 /*
  *  Hardware connection for simulation
- *  PA7 <-> PF14
+ *  PF13 <-> PF14
  */
 
 #define TEST_WHEEL_POS_SENSOR_SIMULATED

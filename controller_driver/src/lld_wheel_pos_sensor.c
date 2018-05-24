@@ -1,21 +1,23 @@
 #include <lld_wheel_pos_sensor.h>
 #include <chprintf.h>
 
-#define wheelPosSensorInLine       PAL_LINE(GPIOE, 9)
-const   uint32_t PartOfWheelRevPerMinute =    60 * ( 1 / ImpsPerRevQuantity );
+#define wheelPosSensorInLine       PAL_LINE(GPIOF, 13)
+const   uint32_t PartOfWheelRevPerMinute =    60 / ImpsPerRevQuantity;
 
 static void extcb(EXTDriver *extp, expchannel_t channel);
 static EXTConfig extcfg;
 uint32_t impulseCounter = 0;
-
+static void gpt_overflow_cb(GPTDriver *timeIntervalsDriver);
 static GPTDriver                        *timeIntervalsDriver = &GPTD3;
 static const GPTConfig timeIntervalsCfg = {
                                              .frequency      =  1000000,// 1 MHz
-                                             .callback       =  NULL,
-                                             .cr2            =  TIM_CR2_MMS_1,
+                                             .callback       =  gpt_overflow_cb,
+                                             //.cr2            =  TIM_CR2_MMS_1,
+                                             .cr2            =  0,
                                              .dier           =  0U
-};
 
+};
+/*
 static void icu_width_cb(ICUDriver *icup);
 static ICUDriver                     *icuDriver =   &ICUD1;
 static const ICUConfig icuCfg = {
@@ -30,13 +32,13 @@ static const ICUConfig icuCfg = {
                                    * <.channel> selects first (ICU_CHANNEL_1) or second (ICU_CHANNEL_2) channel as main input
                                    * Only first two channels can be used
                                    * Respectively, ICU_CHANNEL_1 - connect pulse to timer channel 1
-                                   */
+
                                   .channel        = ICU_CHANNEL_1,
-                                  /* Timer direct register */
+                                  /* Timer direct register
                                   .dier           = 0
 };
 
-icucnt_t measured_width = 0;
+*/
 
 
 static const SerialConfig sdcfg = {
@@ -60,11 +62,12 @@ void wheelPosSensorInit (void)
     EXTChannelConfig ch_conf;
 
     /* Fill in configuration for channel */
-    ch_conf.mode  = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOA;
+    ch_conf.mode  = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOF;
     ch_conf.cb    = extcb;
 
     /* Set channel (second arg) mode with filled configuration */
-    extSetChannelMode( &EXTD1, 7, &ch_conf );
+    extSetChannelMode( &EXTD1, 13, &ch_conf );
+   // extSetChannelMode( &EXTD1, wheelPosSensorInLine, &ch_conf );
 
     palSetLineMode( wheelPosSensorInLine, PAL_MODE_INPUT_PULLUP );
 
@@ -98,6 +101,17 @@ void wheelPosSensorInit (void)
  */
 
 uint32_t current_time = 0, prev_time = 0, time_interval = 0;
+uint32_t measured_width = 0, overflow_counter = 0;
+
+static void gpt_overflow_cb(GPTDriver *timeIntervalsDriver)
+{
+  if ( overflow_counter % 20 == 0 )
+  {
+    palToggleLine( LINE_LED2 );
+  }
+
+  overflow_counter ++;
+}
 
 static void extcb(EXTDriver *extp, expchannel_t channel)
 {
@@ -106,12 +120,9 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     extp = extp; channel = channel;
     palToggleLine( LINE_LED1 );
     impulseCounter ++;
-    current_time = gptGetCounterX(timeIntervalsDriver);
-   // chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n" , "timer val:", current_time);
-   /* if (current_time > 0)
-    {
-        palToggleLine( LINE_LED1 );
-    }*/
+    //current_time = gptGetCounterX(timeIntervalsDriver);
+    current_time = gptGetCounterX(timeIntervalsDriver)+ overflow_counter*TimerPeriod;
+
     if ( prev_time > current_time )
     {
         measured_width = TimerPeriod - prev_time + current_time;
@@ -120,18 +131,22 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     {
         measured_width = current_time - prev_time;
     }
+
     prev_time =  current_time;
+    overflow_counter = 0;
     //current_interval = gptGetIntervalX(timeIntervalsDriver);
 }
 
+
 /* Callback of ICU module, here used for width callback */
 /* Keep measured width in ICU base timer ticks in the global variable */
+/*
 static void icu_width_cb ( ICUDriver *icup )
 {
-    /* Write new measured value */
+    /* Write new measured value
     measured_width = icuGetWidthX(icup);
     impulseCounter ++;
-}
+}*/
 
 /**
  * @ brief                            Gets wheel current velocity value
@@ -144,18 +159,19 @@ static void icu_width_cb ( ICUDriver *icup )
 wheelVelocity_t wheelPosSensorGetVelocity ( void )
 {
     wheelVelocity_t  velocity = 0;
-    velocity = ( PartOfWheelRevPerMinute )/ ( measured_width / timeIntervalsCfg.frequency );
+    velocity = ( PartOfWheelRevPerMinute * timeIntervalsCfg.frequency )/ ( measured_width );
     return velocity;
-   // chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n" , "time width:", measured_width);
-   // chThdSleepMilliseconds( 200 );
 }
 
 void sendTestInformation (void)
 {
-    chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n" ,
+  wheelVelocity_t vel = wheelPosSensorGetVelocity ();
+  chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n" ,
               "current time:", current_time, "time width (tick):", measured_width,
-              "time width (s):" , ( measured_width / timeIntervalsCfg.frequency ) );
-    chThdSleepMilliseconds( 500 );
+              "velocity", vel, "ovflow", overflow_counter );
+
+    //chprintf( (BaseSequentialStream *)&SD7, "%d\r\n %d\r\n",  vel, timeIntervalsCfg.frequency);
+    chThdSleepMilliseconds( 100 );
 }
 /**
  * @ brief                           Gets wheel current position value

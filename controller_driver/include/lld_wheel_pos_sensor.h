@@ -7,17 +7,17 @@
  * Hardware description
  * ------------------------------------
  *
- * EXT driver uses input PA8
+ * EXT driver uses input PF13
  * GPT3
  * ICU driver uses input GPT1
  */
 
 
 /*** Variables ***/
-typedef float                   wheelVelocity_t;
+typedef uint32_t                wheelVelocity_t;
 typedef uint32_t                wheelPosition_t;
 #define ImpsPerRevQuantity      4
-#define TimerPeriod             1000
+#define TimerPeriod             50000
 
 /*** Prototypes ***/
 
