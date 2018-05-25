@@ -15,21 +15,18 @@ EXT1 | PA1 | input
 Driver | Pins | Input / Output
 -------|------|-------
 PWM1 | PE9 | output (channel 0)
--------|------|-------
 GPIO | PE3 | output
 
 ## Драйвер управления приводом тормоза 
 Driver | Pins | Input / Output
 -------|------|-------
 PWM1 | PE11 | output (channel 1)
--------|------|-------
 GPIO | PE15 | output
 
 ## Драйвер управления приводом движения 
 Driver | Pins | Input / Output
 -------|------|-------
 DAC | PA4 | output (channel 1)
--------|------|-------
 GPIO | PF12 | output
 
 
