@@ -1,5 +1,5 @@
 #include <tests.h>
-#include <ll_driver_control.h>
+#include <lld_control.h>
 
 /*** Hardware configuration     ***/
 

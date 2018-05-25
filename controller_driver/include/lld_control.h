@@ -1,5 +1,5 @@
-#ifndef INCLUDE_LL_DRIVER_CONTROL_H_
-#define INCLUDE_LL_DRIVER_CONTROL_H_
+#ifndef INCLUDE_LLD_CONTROL_H_
+#define INCLUDE_LLD_CONTROL_H_
 
 #include <common.h>
 
@@ -54,4 +54,4 @@ void lldControlSetSteerDirection ( bool lldSteerDirection );
 
 
 
-#endif /* INCLUDE_LL_DRIVER_CONTROL_H_ */
+#endif /* INCLUDE_LLD_CONTROL_H_ */
