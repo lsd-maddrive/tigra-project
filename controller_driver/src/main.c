@@ -26,9 +26,14 @@ int main(void)
 
     testBreakSensorRoutine();
 
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_CLUTCH_LEVER)
 
     testClutchLeverRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER)
+
+    testDriverControlRoutine();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
 

@@ -5,7 +5,7 @@
 
 /*** Break Sensor tests ***/
 
-/* If defined - simulation is used to generated signals for sensor */
+/*  If defined - simulation is used to generated signals for sensor */
 /*
  *  Hardware connection for simulation
  *  PA4 (DAC) <-> PA7               | Direct connection acts strangely, but it wokrs
@@ -21,6 +21,7 @@
  */
 void testBreakSensorRoutine( void );
 
+
 /*** Clutch lever tests ***/
 
 /**
@@ -29,5 +30,12 @@ void testBreakSensorRoutine( void );
  * @note    Test uses LEDs to check pressing
  */
 void testClutchLeverRoutine( void );
+
+/*
+ * @brief   Routine of low lovel driver control testing
+ * @note    The routine has internal infinite loop
+ */
+void testDriverControlRoutine( void );
+
 
 #endif /* TESTS_TESTS_H_ */
