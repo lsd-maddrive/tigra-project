@@ -11,46 +11,46 @@
 /*
  * @brief   Initialize periphery connected to driver control
  */
-void llDriverControlInit ( void );
+void lldControlInit ( void );
 
 /*
  * @brief   Set power for driving motor
  * @param   drMotorPower    Motor power value [0 100]
  */
-void drControlSetMotorPower ( uint8_t drMotorPower );
+void lldControlSetDrMotorPower ( uint8_t lldMotorPower );
 
 /*
  * @brief   Set power for steering motor
  * @param   drSteerPower    Motor power value [0 100]
  */
-void drControlSetSteerPower ( uint8_t drSteerPower );
+void lldControlSetSteerPower ( uint8_t lldSteerPower );
 
 /*
  * @brief   Set power for braking motor
  * @param   drBrakePower    Motor power value [0 100]
  */
-void drControlSetBrakePower ( uint8_t drBrakePower );
+void lldControlSetBrakePower ( uint8_t lldBrakePower );
 
 /*
  * @brief   Set motor direction
  * @param   drMotorDirection    Motor direction true - forward
  *                                              false - backward
  */
-void drControlSetMotorDirection ( bool drMotorDirection );
+void lldControlSetDrMotorDirection ( bool lldDrMotorDirection );
 
 /*
  * @brief   Set braking motor direction
  * @param   drMotorDirection    Motor direction true - forward
  *                                              false - backward
  */
-void drControlSetBrakeDirection ( bool drBrakeDirection );
+void lldControlSetBrakeDirection ( bool lldBrakeDirection );
 
 /*
  * @brief   Set steering motor direction
  * @param   drMotorDirection    Motor direction true - forward
  *                                              false - backward
  */
-void drControlSetSteerDirection ( bool drSteerDirection );
+void lldControlSetSteerDirection ( bool lldSteerDirection );
 
 
 

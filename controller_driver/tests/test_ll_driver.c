@@ -3,21 +3,21 @@
 
 void testDriverControlRoutine( )
 {
-    llDriverControlInit( );
+    lldControlInit( );
 
-    drControlSetSteerPower( 250 );
-    drControlSetBrakePower( 250 );
-    drControlSetMotorPower( 250 );
+    lldControlSetSteerPower( 250 );
+    lldControlSetBrakePower( 250 );
+    lldControlSetDrMotorPower( 250 );
 
     while( true )
     {
-        drControlSetMotorDirection( true );
-        drControlSetBrakeDirection( true );
-        drControlSetSteerDirection( true );
+        lldControlSetDrMotorDirection( true );
+        lldControlSetBrakeDirection( true );
+        lldControlSetSteerDirection( true );
         chThdSleepMilliseconds(500);
-        drControlSetMotorDirection( false );
-        drControlSetBrakeDirection( false );
-        drControlSetSteerDirection( false );
+        lldControlSetDrMotorDirection( false );
+        lldControlSetBrakeDirection( false );
+        lldControlSetSteerDirection( false );
         chThdSleepMilliseconds(500);
     }
 }
