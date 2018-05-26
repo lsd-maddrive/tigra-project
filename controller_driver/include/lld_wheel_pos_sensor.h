@@ -2,7 +2,7 @@
 #define INCLUDE_LLD_WHEEL_POS_SENSOR_H_
 
 #include <common.h>
-
+#include <chprintf.h>
 /*
  * Hardware description
  * ------------------------------------
@@ -48,7 +48,8 @@ wheelPosition_t wheelPosSensorGetPosition ( void );
  *                                  [revolutions per minute (rpm)]
  * @ param[in] ImpsPerRevQuantity   Number of impulses per revolution
  *                                  depends on given sensor
- * @ return                         Current wheel velocity value [rpm]
+ * @ return  >=0                    Current wheel velocity value [rpm]
+ *           -1                     Sensor is not initialized
  * @ note                           w = dx/dt; dx = (1/ImpsPerRevQuantity) [revolutions]
  *                                  dt = time interval [ticks] / ( timer frequency[ticks/s] * 60 ) [min]
  *                                  w = ((60 / ImpsPerRevQuantity) * timer frequency)/ time interval

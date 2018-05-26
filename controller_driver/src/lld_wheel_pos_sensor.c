@@ -1,6 +1,5 @@
-//#include <common.h>
 #include <lld_wheel_pos_sensor.h>
-#include <chprintf.h>
+
 
 /* Wheel position sensor connects to wheelPosSensorInLine pin*/
 #define wheelPosSensorInLine       PAL_LINE ( GPIOF, 13 )
@@ -26,6 +25,7 @@ static const GPTConfig timeIntervalsCfg = {
 
 uint32_t impulseCounter = 0,  prev_time = 0, measured_width = 0;
 uint32_t overflow_counter = 0;
+static bool         isInitialized       = false;
 
 static const SerialConfig sdcfg = {
   .speed = 115200,
@@ -43,7 +43,7 @@ void wheelPosSensorInit (void)
     ch_conf.cb    = extcb;
 
     /*EXT driver initialization*/
-     commonExtDriverInit();
+    commonExtDriverInit();
 
     /* Set channel (second arg) mode with filled configuration */
     extSetChannelMode( &EXTD1, 13, &ch_conf );
@@ -60,6 +60,8 @@ void wheelPosSensorInit (void)
     sdStart( &SD7, &sdcfg );
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
+
+    isInitialized       = true;
 
 }
 
@@ -112,6 +114,11 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
 wheelVelocity_t wheelPosSensorGetVelocity ( void )
 {
     wheelVelocity_t  velocity = 0;
+    if ( !isInitialized )
+    {
+      return -1;
+    }
+
     /* Protection of devision by zero.
      * measured_width = 0 if fronts counter < 2,
      * which means start and probably incorrect velocity calculation */
@@ -123,6 +130,7 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
     {
         velocity = 0;
     }
+
     return velocity;
 }
 
@@ -150,6 +158,10 @@ void sendTestInformation (void)
 wheelPosition_t wheelPosSensorGetPosition ( void )
 {
     wheelPosition_t position = 0;
+    if ( !isInitialized )
+        {
+          return -1;
+        }
     position = impulseCounter/ImpsPerRevQuantity;
     return position;
 }
