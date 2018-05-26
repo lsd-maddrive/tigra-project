@@ -1,3 +1,4 @@
+//#include <common.h>
 #include <lld_wheel_pos_sensor.h>
 #include <chprintf.h>
 
@@ -33,15 +34,6 @@ static const SerialConfig sdcfg = {
 
 void wheelPosSensorInit (void)
 {
-    /* First set all channels disabled */
-    for (expchannel_t ch = 0; ch < EXT_MAX_CHANNELS; ch++ )
-    {
-        extcfg.channels[ch].mode  = EXT_CH_MODE_DISABLED;
-        extcfg.channels[ch].cb    = NULL;
-    }
-
-    /* Start working EXT driver, current STM has only one driver */
-    extStart( &EXTD1, &extcfg );
 
     /* Define channel config structure */
     EXTChannelConfig ch_conf;
@@ -50,8 +42,12 @@ void wheelPosSensorInit (void)
     ch_conf.mode  = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOF;
     ch_conf.cb    = extcb;
 
+    /*EXT driver initialization*/
+     commonExtDriverInit();
+
     /* Set channel (second arg) mode with filled configuration */
     extSetChannelMode( &EXTD1, 13, &ch_conf );
+
 
     /* Set up EXT channel hardware pin mode as digital input  */
     palSetLineMode( wheelPosSensorInLine, PAL_MODE_INPUT_PULLUP );

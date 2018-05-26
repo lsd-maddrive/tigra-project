@@ -24,6 +24,7 @@ typedef float                   wheelPosition_t;
 
 /*** Prototypes ***/
 
+
 /*
  * @brief   Initialize periphery connected to wheel position sensor
  */
