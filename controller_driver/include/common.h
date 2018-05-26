@@ -15,9 +15,19 @@
  */
 #define     PROGRAM_ROUTINE_MASTER                  0
 #define     PROGRAM_ROUTINE_TEST_BREAK_SENSOR       1
-#define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR   2
+#define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR   3
 
-#define     MAIN_PROGRAM_ROUTINE				    PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR
+
+
+/*** Prototypes ***/
+
+
+
+#define     PROGRAM_ROUTINE_TEST_LL_DRIVER          2
+#define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       10
+
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_MASTER
+
 
 /*** Prototypes ***/
 

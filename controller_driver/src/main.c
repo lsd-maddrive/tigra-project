@@ -2,6 +2,8 @@
 #include <tests.h>
 #include <chprintf.h>
 
+#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
+
 static THD_WORKING_AREA(waThread, 128);
 static THD_FUNCTION(Thread, arg) 
 {
@@ -13,6 +15,8 @@ static THD_FUNCTION(Thread, arg)
     }
 }
 
+#endif
+
 int main(void)
 {
     chSysInit();
@@ -22,12 +26,23 @@ int main(void)
 
     testBreakSensorRoutine();
 
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 
     palToggleLine( LINE_LED1 );
     testWheelPosSensorRoutine();
 
     //chThdSleepMilliseconds( 100 );
+
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_CLUTCH_LEVER)
+
+    testClutchLeverRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER)
+
+    testDriverControlRoutine();
+>>>>>>> develop
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
 
