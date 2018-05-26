@@ -3,8 +3,9 @@
 ## Модуль системы торможения
 Driver | Pins | Input / Output
 -------|------|-------
-PAL  | PA0 | input
+PAL  | PA0       | input
 ADC2 | PA7 (AN7) | input
+GPT4 | -         | -
 
 ## Модуль ручки тормоза
 Driver | Pins | Input / Output
