@@ -14,7 +14,7 @@
 
 
 /*** Variables ***/
-typedef uint32_t                wheelVelocity_t;
+typedef float                   wheelVelocity_t;
 typedef uint32_t                wheelPosition_t;
 #define ImpsPerRevQuantity      4
 #define TimerPeriod             50000

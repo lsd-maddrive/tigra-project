@@ -15,9 +15,9 @@ static THD_FUNCTION(PosSensorOutThd, arg)
     while ( 1 )
     {
         palTogglePad( GPIOF, 14 );
-        //chThdSleepMilliseconds(250);
-        //chThdSleepSeconds(50);
-        chThdSleepMicroseconds(250);
+        //chThdSleepMilliseconds(2);
+        chThdSleepSeconds(4);
+        //chThdSleepMicroseconds(250);
 
     }
 }
@@ -52,12 +52,12 @@ void testWheelPosSensorRoutine( void )
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
     wheelPosSensorInit();
-    uint16_t serial_test = 0;
+
     while ( 1 )
     {
 
-        wheelVelocity_t velocity   =   wheelPosSensorGetVelocity ();
-        wheelPosition_t position   =   wheelPosSensorGetPosition ();
+        //wheelVelocity_t velocity   =   wheelPosSensorGetVelocity ();
+        //wheelPosition_t position   =   wheelPosSensorGetPosition ();
 
         /*chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n" , "pos:",
                   position, "vel:", velocity);

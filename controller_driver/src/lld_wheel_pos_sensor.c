@@ -2,7 +2,7 @@
 #include <chprintf.h>
 
 #define wheelPosSensorInLine       PAL_LINE(GPIOF, 13)
-const   uint32_t PartOfWheelRevPerMinute =    60 / ImpsPerRevQuantity;
+const  float PartOfWheelRevPerMinute =    (float)  60 / ImpsPerRevQuantity ;
 
 static void extcb(EXTDriver *extp, expchannel_t channel);
 static EXTConfig extcfg;
@@ -164,16 +164,18 @@ static void icu_width_cb ( ICUDriver *icup )
 wheelVelocity_t wheelPosSensorGetVelocity ( void )
 {
     wheelVelocity_t  velocity = 0;
-    velocity = ( PartOfWheelRevPerMinute * timeIntervalsCfg.frequency )/ ( measured_width );
+    velocity = (float) ( PartOfWheelRevPerMinute * timeIntervalsCfg.frequency )/ ( measured_width );
     return velocity;
 }
 
 void sendTestInformation (void)
 {
   wheelVelocity_t vel = wheelPosSensorGetVelocity ();
+  //wheelVelocity_t vel = 1.5;
+  vel = vel*100;
   chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n" ,
               "current time:", current_time,"prev time:", prev_time, "time width (tick):", measured_width,
-              "velocity", vel, "ovflow", overflow_counter );
+              "velocity", (int)vel, "ovflow", overflow_counter );
 
     //chprintf( (BaseSequentialStream *)&SD7, "%d\r\n %d\r\n",  vel, timeIntervalsCfg.frequency);
    // chThdSleepMilliseconds( 100 );
