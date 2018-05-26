@@ -22,6 +22,8 @@
 void testBreakSensorRoutine( void );
 
 
+
+
 /*** Wheel position sensor tests ***/
 /*
  *  Hardware connection for simulation
@@ -30,7 +32,7 @@ void testBreakSensorRoutine( void );
 
 #define TEST_WHEEL_POS_SENSOR_SIMULATED
 /*
- * @brief   Routine of break sensor testing
+ * @brief   Routine of wheel position sensor testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
  */

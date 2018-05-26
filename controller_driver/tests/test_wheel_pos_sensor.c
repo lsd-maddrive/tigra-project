@@ -15,8 +15,9 @@ static THD_FUNCTION(PosSensorOutThd, arg)
     while ( 1 )
     {
         palTogglePad( GPIOF, 14 );
+
         //chThdSleepMilliseconds(2);
-        chThdSleepSeconds(4);
+        chThdSleepSeconds(40);
         //chThdSleepMicroseconds(250);
 
     }

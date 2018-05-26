@@ -8,16 +8,19 @@
  * ------------------------------------
  *
  * EXT driver uses input PF13
- * GPT3
- * ICU driver uses input GPT1
+ * GPT3 used for time intervals between wheel position sensor fronts measurement
  */
 
 
 /*** Variables ***/
 typedef float                   wheelVelocity_t;
-typedef uint32_t                wheelPosition_t;
+typedef float                   wheelPosition_t;
+/* Wheel position sensor configuration
+ * impulse quantity per revolution*/
 #define ImpsPerRevQuantity      4
-#define TimerPeriod             50000
+
+
+
 
 /*** Prototypes ***/
 
@@ -40,18 +43,22 @@ wheelPosition_t wheelPosSensorGetPosition ( void );
 
 
 /**
- * @ brief                           Gets wheel current velocity value
- *                                   [revolutions per minute (rpm)]
- * @ param [in] ImpsPerRevQuantity   Number of impulses per revolution
- *                                   depends on given sensor
- * @ return                          Current wheel velocity value [rpm]
- *
+ * @ brief                          Gets wheel current velocity value
+ *                                  [revolutions per minute (rpm)]
+ * @ param[in] ImpsPerRevQuantity   Number of impulses per revolution
+ *                                  depends on given sensor
+ * @ return                         Current wheel velocity value [rpm]
+ * @ note                           w = dx/dt; dx = (1/ImpsPerRevQuantity) [revolutions]
+ *                                  dt = time interval [ticks] / ( timer frequency[ticks/s] * 60 ) [min]
+ *                                  w = ((60 / ImpsPerRevQuantity) * timer frequency)/ time interval
  */
 wheelVelocity_t wheelPosSensorGetVelocity ( void );
+
 
 /*
  * @ brief         Sends test information (gpt counter)
  */
 void sendTestInformation ( void );
+
 
 #endif /* INCLUDE_LLD_WHEEL_POS_SENSOR_H_ */
