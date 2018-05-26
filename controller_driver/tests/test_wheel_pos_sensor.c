@@ -15,7 +15,9 @@ static THD_FUNCTION(PosSensorOutThd, arg)
     while ( 1 )
     {
         palTogglePad( GPIOF, 14 );
-        chThdSleepMilliseconds( 50 );
+        //chThdSleepMilliseconds(250);
+        //chThdSleepSeconds(50);
+        chThdSleepMicroseconds(250);
 
     }
 }
@@ -61,7 +63,7 @@ void testWheelPosSensorRoutine( void )
                   position, "vel:", velocity);
                   */
         sendTestInformation ();
-        chThdSleepMilliseconds( 1 );
+        chThdSleepMilliseconds( 100 );
 
 
     }

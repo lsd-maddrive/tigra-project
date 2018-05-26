@@ -12,6 +12,7 @@ static GPTDriver                        *timeIntervalsDriver = &GPTD3;
 static const GPTConfig timeIntervalsCfg = {
                                              .frequency      =  1000000,// 1 MHz
                                              .callback       =  gpt_overflow_cb,
+                                             //.callback       =  NULL,
                                              //.cr2            =  TIM_CR2_MMS_1,
                                              .cr2            =  0,
                                              .dier           =  0U
@@ -105,10 +106,10 @@ uint32_t measured_width = 0, overflow_counter = 0;
 
 static void gpt_overflow_cb(GPTDriver *timeIntervalsDriver)
 {
-  if ( overflow_counter % 20 == 0 )
+  /*if ( overflow_counter % 20 == 0 )
   {
     palToggleLine( LINE_LED2 );
-  }
+  }*/
 
   overflow_counter ++;
 }
@@ -118,11 +119,12 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
 /* The input arguments are not used now */
 /* Just to avoid Warning from compiler */
     extp = extp; channel = channel;
-    palToggleLine( LINE_LED1 );
+    //palToggleLine( LINE_LED1 );
     impulseCounter ++;
     //current_time = gptGetCounterX(timeIntervalsDriver);
-    current_time = gptGetCounterX(timeIntervalsDriver)+ overflow_counter*TimerPeriod;
-
+    //current_time = gptGetCounterX(timeIntervalsDriver)+ (overflow_counter-1)*TimerPeriod + (TimerPeriod - prev_time) ;
+    measured_width = gptGetCounterX(timeIntervalsDriver)+ (overflow_counter-1)*TimerPeriod + (TimerPeriod - prev_time) ;
+/*
     if ( prev_time > current_time )
     {
         measured_width = TimerPeriod - prev_time + current_time;
@@ -132,7 +134,10 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
         measured_width = current_time - prev_time;
     }
 
-    prev_time =  current_time;
+    //prev_time =  current_time;
+
+    */
+    prev_time =  gptGetCounterX(timeIntervalsDriver);
     overflow_counter = 0;
     //current_interval = gptGetIntervalX(timeIntervalsDriver);
 }
@@ -166,12 +171,12 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
 void sendTestInformation (void)
 {
   wheelVelocity_t vel = wheelPosSensorGetVelocity ();
-  chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n" ,
-              "current time:", current_time, "time width (tick):", measured_width,
+  chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n" ,
+              "current time:", current_time,"prev time:", prev_time, "time width (tick):", measured_width,
               "velocity", vel, "ovflow", overflow_counter );
 
     //chprintf( (BaseSequentialStream *)&SD7, "%d\r\n %d\r\n",  vel, timeIntervalsCfg.frequency);
-    chThdSleepMilliseconds( 100 );
+   // chThdSleepMilliseconds( 100 );
 }
 /**
  * @ brief                           Gets wheel current position value
