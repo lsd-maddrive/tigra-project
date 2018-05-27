@@ -13,20 +13,14 @@
  * <enum> is compilation type, not preprocessor
  * This must be #define
  */
-#define     PROGRAM_ROUTINE_MASTER                  0
-#define     PROGRAM_ROUTINE_TEST_BREAK_SENSOR       1
-#define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR   3
+#define     PROGRAM_ROUTINE_MASTER                       0
+#define     PROGRAM_ROUTINE_TEST_BREAK_SENSOR            1
+#define     PROGRAM_ROUTINE_TEST_LL_DRIVER               2
+#define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR        3
+#define     PROGRAM_ROUTINE_TEST_COURSE_DRIVE_SPEED_CS   4
+#define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER            10
 
-
-
-/*** Prototypes ***/
-
-
-
-#define     PROGRAM_ROUTINE_TEST_LL_DRIVER          2
-#define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       10
-
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_MASTER
+#define     MAIN_PROGRAM_ROUTINE                         PROGRAM_ROUTINE_MASTER
 
 
 /*** Prototypes ***/

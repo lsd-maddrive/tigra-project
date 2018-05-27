@@ -29,11 +29,11 @@ int main(void)
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 
-    palToggleLine( LINE_LED1 );
     testWheelPosSensorRoutine();
 
-    //chThdSleepMilliseconds( 100 );
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_COURSE_DRIVE_SPEED_CS)
 
+    testCourseDriveSpeedCS();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_CLUTCH_LEVER)
 
@@ -42,7 +42,7 @@ int main(void)
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER)
 
     testDriverControlRoutine();
->>>>>>> develop
+
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
 

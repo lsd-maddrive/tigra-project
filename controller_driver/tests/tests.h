@@ -7,15 +7,15 @@
 
 /*  If defined - simulation is used to generated signals for sensor */
 /*
-<<<<<<< HEAD
+
  *	Hardware connection for simulation
  * 	PA4 (DAC) <-> PA7		| Direct connection acts strangely, but it wokrs
  *	Direct control of PA0
-=======
+
  *  Hardware connection for simulation
  *  PA4 (DAC) <-> PA7               | Direct connection acts strangely, but it wokrs
  *  Direct control of PA0
->>>>>>> develop
+
  */
 
 #define TEST_BREAK_SENSOR_SIMULATED
@@ -54,10 +54,17 @@ void testWheelPosSensorRoutine( void );
 void testClutchLeverRoutine( void );
 
 /*
- * @brief   Routine of low lovel driver control testing
+ * @brief   Routine of low level driver control testing
  * @note    The routine has internal infinite loop
  */
 void testDriverControlRoutine( void );
+
+
+/*
+ * @brief  Routing of wheel driver speed control system testing
+ * @note   The routine has internal infinite loop
+ */
+void testCourseDriveSpeedCSRoutine( void );
 
 
 
