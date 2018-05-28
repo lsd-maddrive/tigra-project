@@ -71,6 +71,13 @@ void testClutchLeverRoutine( void );
  */
 void testDriverControlRoutine( void );
 
+/**
+ * @brief   Routine of low level driver control testing
+ * @note    The routine has internal infinite loop
+ * @note    Extended behavior that interacts with user through Serial
+ */
+void testDriverControlRoutineExt1( void );
+
 /*************************/
 /*** Tests application ***/
 /*************************/
@@ -99,6 +106,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER)
 
     testDriverControlRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1)
+
+    testDriverControlRoutineExt1();
 
 #endif
 }

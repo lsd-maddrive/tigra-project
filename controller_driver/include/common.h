@@ -4,6 +4,10 @@
 #include <hal.h>
 #include <ch.h>
 
+#include <stdint.h>
+#include <stdlib.h>
+#include <math.h>
+
 /*********************/
 /*** Configuration ***/
 /*********************/
@@ -21,6 +25,7 @@
 #define     PROGRAM_ROUTINE_TEST_BRAKE_SENSOR       1
 #define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR   2
 #define     PROGRAM_ROUTINE_TEST_LL_DRIVER          3
+#define     PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1     49
 #define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       4
 #define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS      33
 
