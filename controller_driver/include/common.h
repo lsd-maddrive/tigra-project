@@ -4,7 +4,9 @@
 #include <hal.h>
 #include <ch.h>
 
+/*********************/
 /*** Configuration ***/
+/*********************/
 
 /* Program routine selection */
 /*
@@ -24,7 +26,9 @@
 
 #define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_MASTER
 
+/******************/
 /*** Prototypes ***/
+/******************/
 
 /**
  * @brief   Initialize EXT driver with empty config
@@ -33,9 +37,28 @@
  */
 void commonExtDriverInit ( void );
 
+/**************/
 /*** Macros ***/
+/**************/
 
 #define CLIP_VALUE(x, min, max) ((x) < (min) ? (min) :      \
                                  (x) > (max) ? (max) : (x))
+
+/*****************/
+/*** Constants ***/
+/*****************/
+
+/* Rates for ACS712 sensors [mv/A] */
+#define ACS712_5AMP_RATE        185.0
+#define ACS712_20AMP_RATE       100.0
+#define ACS712_30AMP_RATE       66.0
+
+
+/* Additional ADC constants */
+#define ADC_CR1_12B_RESOLUTION      (0)
+#define ADC_CR1_10B_RESOLUTION      (ADC_CR1_RES_0)
+#define ADC_CR1_8B_RESOLUTION       (ADC_CR1_RES_1)
+#define ADC_CR1_6B_RESOLUTION       (ADC_CR1_RES_0 | ADC_CR1_RES_1)
+
 
 #endif /* INCLUDE_COMMON_H_ */

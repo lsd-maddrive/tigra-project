@@ -1,11 +1,17 @@
 #include <lld_brake_sensor.h>
 
-/*** Additional ADC constants ***/
+/**************************/
+/*** CONFIGURATION ZONE ***/
+/**************************/
 
-#define ADC_CR1_12B_RESOLUTION      (0)
-#define ADC_CR1_10B_RESOLUTION      (ADC_CR1_RES_0)
-#define ADC_CR1_8B_RESOLUTION       (ADC_CR1_RES_1)
-#define ADC_CR1_6B_RESOLUTION       (ADC_CR1_RES_0 | ADC_CR1_RES_1)
+static float    referenceVoltage_mV     = 3300;
+static float    sensor_current_lim_A    = 4.0;
+static float    sensitivity_rate        = ACS712_5AMP_RATE;     // [mV/A]
+static float    sensor_zero_value_mV    = 2500;
+
+/******************************/
+/*** CONFIGURATION ZONE END ***/
+/******************************/
 
 /*** Hardware configuration ***/
 
@@ -60,17 +66,22 @@ static const GPTConfig trigger_cfg = {
 
 /*** Module variables ***/
 
-static bool         isInitialized       = false;
-static uint16_t     brakePowerPercent   = 0;
+static bool         isInitialized           = false;
+static uint16_t     brakePowerValue_mV       = 0;
+
+static float        sensor_max_voltage      = sensor_zero_value_mV + sensitivity_rate * current_sensor_max_current_A;
+static float        sensor_min_voltage      = sensor_zero_value_mV;
+
+static float        sensor_k_rate           = 100 / (sensor_max_voltage - sensor_min_voltage);
 
 #if ( adcResolutionConfig == ADC_CR1_6B_RESOLUTION )
-static float        adcValue2Perc       = 100.0 / ((1 << 6) - 1);
+static float        adcValue2Ref            = referenceVoltage_mV / ((1 << 6) - 1);
 #elif ( adcResolutionConfig == ADC_CR1_8B_RESOLUTION )
-static float        adcValue2Perc       = 100.0 / ((1 << 8) - 1);
+static float        adcValue2Ref            = referenceVoltage_mV / ((1 << 8) - 1);
 #elif ( adcResolutionConfig == ADC_CR1_10B_RESOLUTION )
-static float        adcValue2Perc       = 100.0 / ((1 << 10) - 1);
+static float        adcValue2Ref            = referenceVoltage_mV / ((1 << 10) - 1);
 #elif ( adcResolutionConfig == ADC_CR1_12B_RESOLUTION )
-static float        adcValue2Perc       = 100.0 / ((1 << 12) - 1);
+static float        adcValue2Ref            = referenceVoltage_mV / ((1 << 12) - 1);
 #endif
 
 /*** ADC callback ***/
@@ -79,7 +90,7 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 {
     adcp = adcp; n = n;
 
-    brakePowerPercent = buffer[0] * adcValue2Perc;
+    brakePowerValue_mV = buffer[0] * adcValue2Ref ;
 }
 
 void brakeSensorInit ( void )
@@ -118,7 +129,8 @@ int16_t brakeSensorGetPressPower ( void )
     if ( !isInitialized )
         return -1;
 
-    value = brakePowerPercent;
+    value = (brakePowerValue_mV - sensor_min_voltage) * sensor_k_rate;
+    value = CLIP_VALUE( value, 0, 100 );
 
     return value;
 }

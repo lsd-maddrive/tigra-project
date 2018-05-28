@@ -5,6 +5,7 @@
 
 /**
  * @brief   Initialization of brake unit control system
+ * @note    Stable for repeated calls
  */
 void brakeUnitCSInit( void );
 

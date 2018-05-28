@@ -23,9 +23,9 @@ bool brakeSensorIsPressed ( void );
 
 /*
  * @brief   Get press power value
- * @return  [0, 100]        Percentage of reference voltage (3V3)
+ * @return  [0, 100]        Percentage of configured current limits
  *          < 0             Sensor is not initialized
- * @note                    Depends on pressed state, get power only if pressed
+ * @note    Not measure negative current
  */
 int16_t brakeSensorGetPressPower ( void );
 

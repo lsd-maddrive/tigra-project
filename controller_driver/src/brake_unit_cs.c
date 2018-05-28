@@ -25,12 +25,16 @@ typedef struct
 } PID_brake_ctx_t;
 
 /*** Variables ***/
-PID_brake_ctx_t   brake_pid_ctx;
+static PID_brake_ctx_t  brake_pid_ctx;
+static bool             isInitialized   = false;
 
 /*** Functions ***/
 
 void brakeUnitCSInit( void )
 {
+    if ( isInitialized )
+        return;
+
     /* Some initialization sequence */
 
     brake_pid_ctx.p_rate        = 1;
@@ -39,10 +43,15 @@ void brakeUnitCSInit( void )
 
     brakeSensorInit();
     lldControlInit();
+
+    isInitialized = true;
 }
 
 void brakeUnitCSSetPower( int16_t pressPower )
 {
+    if ( !isInitialized )
+        return;
+
     pressPower  = CLIP_VALUE( pressPower, 0, 100 );
 
     if ( pressPower > 0 )
