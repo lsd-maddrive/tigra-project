@@ -63,11 +63,6 @@ static const SerialConfig sdcfg = {
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
 
-/*
- * @brief   Routine of brake sensor testing
- * @note    The routine has internal infinite loop
- * @note    SD7 is used for testing (PE7, PE8)
- */
 void testBrakeSensorRoutine( void )
 {
 #ifdef TEST_BRAKE_SENSOR_SIMULATED

@@ -5,7 +5,6 @@
 
 /*** Variables ***/
 
-typedef int16_t brakePressPower_t;
 
 /*** Prototypes ***/
 
@@ -23,10 +22,10 @@ bool brakeSensorIsPressed ( void );
 
 /*
  * @brief                   Get press power value
- * @return  [0, 100]        Press power percentage
+ * @return  [0, 100]        Percentage of reference voltage (3V3)
  *          < 0             Sensor is not initialized
  * @note                    Depends on pressed state, get power only if pressed
  */
-brakePressPower_t brakeSensorGetPressPower ( void );
+int16_t brakeSensorGetPressPower ( void );
 
 #endif /* INCLUDE_LLD_BRAKE_SENSOR_H_ */

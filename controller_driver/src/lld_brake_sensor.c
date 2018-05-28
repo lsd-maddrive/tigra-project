@@ -108,9 +108,9 @@ bool brakeSensorIsPressed ( void )
     return result;
 }
 
-brakePressPower_t brakeSensorGetPressPower ( void )
+int16_t brakeSensorGetPressPower ( void )
 {
-    brakePressPower_t value = 0;
+    int16_t value = 0;
 
     if ( !isInitialized )
         return -1;

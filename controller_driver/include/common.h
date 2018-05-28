@@ -32,4 +32,9 @@
  */
 void commonExtDriverInit ( void );
 
+/*** Macros ***/
+
+#define CLIP_VALUE(x, min, max) ((x) < (min) ? (min) :      \
+                                 (x) > (max) ? (max) : (x))
+
 #endif /* INCLUDE_COMMON_H_ */
