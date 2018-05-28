@@ -1,4 +1,4 @@
-#include <lld_break_sensor.h>
+#include <lld_brake_sensor.h>
 
 /*** Additional ADC constants ***/
 
@@ -9,13 +9,13 @@
 
 /*** Hardware configuration ***/
 
-#define breakSensorClickLine    PAL_LINE(GPIOA, 0)
-#define breakSensolAnalogLine   PAL_LINE(GPIOA, 7)
+#define brakeSensorClickLine    PAL_LINE(GPIOA, 0)
+#define brakeSensolAnalogLine   PAL_LINE(GPIOA, 7)
 /* ADC channels - DS p65 */
-#define breakSensorAnalogInput  ADC_CHANNEL_IN7
+#define brakeSensorAnalogInput  ADC_CHANNEL_IN7
 #define adcResolutionConfig     ADC_CR1_10B_RESOLUTION
 
-static ADCDriver                *breakSensorDriver  = &ADCD2;
+static ADCDriver                *brakeSensorDriver  = &ADCD2;
 static GPTDriver                *adcTriggerDriver   = &GPTD7;
 
 /*** Hardware configuration end ***/
@@ -48,7 +48,7 @@ static const ADCConversionGroup  conv_group = {
 
     .sqr1           = 0,
     .sqr2           = 0,
-    .sqr3           = ADC_SQR3_SQ1_N(breakSensorAnalogInput)
+    .sqr3           = ADC_SQR3_SQ1_N(brakeSensorAnalogInput)
 };
 
 static const GPTConfig trigger_cfg = {
@@ -61,7 +61,7 @@ static const GPTConfig trigger_cfg = {
 /*** Module variables ***/
 
 static bool         isInitialized       = false;
-static uint16_t     breakPowerPercent   = 0;
+static uint16_t     brakePowerPercent   = 0;
 
 #if ( adcResolutionConfig == ADC_CR1_6B_RESOLUTION )
 static float        adcValue2Perc       = 100.0 / ((1 << 6) - 1);
@@ -79,18 +79,15 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 {
     adcp = adcp; n = n;
 
-    breakPowerPercent = buffer[0] * adcValue2Perc;
+    brakePowerPercent = buffer[0] * adcValue2Perc;
 }
 
-/*
- * @brief                   Initialize periphery connected to break sensor
- */
-void breakSensorInit ( void )
+void brakeSensorInit ( void )
 {
-    adcStart( breakSensorDriver, NULL );
-    palSetLineMode( breakSensolAnalogLine, PAL_MODE_INPUT_ANALOG );
+    adcStart( brakeSensorDriver, NULL );
+    palSetLineMode( brakeSensolAnalogLine, PAL_MODE_INPUT_ANALOG );
 
-    adcStartConversion( breakSensorDriver, &conv_group, adc_buffer, ADC_BUFFER_DEPTH );
+    adcStartConversion( brakeSensorDriver, &conv_group, adc_buffer, ADC_BUFFER_DEPTH );
 
     gptStart( adcTriggerDriver, &trigger_cfg );
     /* 10ms trigger */
@@ -99,37 +96,26 @@ void breakSensorInit ( void )
     isInitialized = true;
 }
 
-/*
- * @brief                   Check if break is pressed
- * @return  true            break is pressed
- *          false           break is not pressed (or not initialized)
- */
-bool breakSensorIsPressed ( void )
+bool brakeSensorIsPressed ( void )
 {
     bool result = false;
 
     if ( !isInitialized )
         return false;
 
-    result = palReadLine( breakSensorClickLine );
+    result = palReadLine( brakeSensorClickLine );
 
     return result;
 }
 
-/*
- * @brief                   Get press power value
- * @return  [0, 100]        Press power percentage
- *          < 0             Sensor is not initialized
- * @note                    Depends on pressed state, get power only if pressed
- */
-breakPressPower_t breakSensorGetPressPower ( void )
+brakePressPower_t brakeSensorGetPressPower ( void )
 {
-    breakPressPower_t value = 0;
+    brakePressPower_t value = 0;
 
     if ( !isInitialized )
         return -1;
 
-    value = breakPowerPercent;
+    value = brakePowerPercent;
 
     return value;
 }

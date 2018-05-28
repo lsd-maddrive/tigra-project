@@ -1,8 +1,8 @@
 #include <tests.h>
 #include <chprintf.h>
-#include <lld_break_sensor.h>
+#include <lld_brake_sensor.h>
 
-#ifdef TEST_BREAK_SENSOR_SIMULATED
+#ifdef TEST_BRAKE_SENSOR_SIMULATED
 
 #include <math.h>
 
@@ -64,13 +64,13 @@ static const SerialConfig sdcfg = {
 };
 
 /*
- * @brief   Routine of break sensor testing
+ * @brief   Routine of brake sensor testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
  */
-void testBreakSensorRoutine( void )
+void testBrakeSensorRoutine( void )
 {
-#ifdef TEST_BREAK_SENSOR_SIMULATED
+#ifdef TEST_BRAKE_SENSOR_SIMULATED
     simulation_init();
 #endif
 
@@ -78,15 +78,15 @@ void testBreakSensorRoutine( void )
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
-    breakSensorInit();
+    brakeSensorInit();
 
     while ( 1 )
     {
-        bool                isBreakPressed  = breakSensorIsPressed();
-        breakPressPower_t   pressPower      = breakSensorGetPressPower();
+        bool                isBrakePressed  = brakeSensorIsPressed();
+        brakePressPower_t   pressPower      = brakeSensorGetPressPower();
 
-        chprintf( (BaseSequentialStream *)&SD7, "Break: %spressed, power: %d\n",
-                        isBreakPressed ? "" : "not ", pressPower );
+        chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d\n",
+                        isBrakePressed ? "" : "not ", pressPower );
 
         chThdSleepMilliseconds( 100 );
     }

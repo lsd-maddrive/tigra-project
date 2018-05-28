@@ -1,5 +1,5 @@
-#ifndef INCLUDE_LLD_BREAK_SENSOR_H_
-#define INCLUDE_LLD_BREAK_SENSOR_H_
+#ifndef INCLUDE_LLD_CLUTCH_LEVER_H_
+#define INCLUDE_LLD_CLUTCH_LEVER_H_
 
 #include <common.h>
 
@@ -18,4 +18,4 @@ typedef void (*clutchLeverCb_t)( void );
  */
 void clutchLeverInit ( clutchLeverCb_t callback );
 
-#endif /* INCLUDE_LLD_BREAK_SENSOR_H_ */
+#endif /* INCLUDE_LLD_CLUTCH_LEVER_H_ */

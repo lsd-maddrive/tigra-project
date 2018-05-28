@@ -3,7 +3,7 @@
 
 #include <common.h>
 /**************************/
-/*** Break Sensor tests ***/
+/*** Brake Sensor tests ***/
 /**************************/
 
 /*  If defined - simulation is used to generated signals for sensor */
@@ -13,14 +13,14 @@
  *  Direct control of PA0
  */
 
-#define TEST_BREAK_SENSOR_SIMULATED
+#define TEST_BRAKE_SENSOR_SIMULATED
 
 /*
- * @brief   Routine of break sensor testing
+ * @brief   Routine of brake sensor testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
  */
-void testBreakSensorRoutine( void );
+void testBrakeSensorRoutine( void );
 
 /***********************************/
 /*** Wheel position sensor tests ***/
@@ -69,9 +69,9 @@ void testDriverControlRoutine( void );
  */
 static inline void testsRoutines( void )
 {
-#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BREAK_SENSOR)
+#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_SENSOR)
 
-    testBreakSensorRoutine();
+    testBrakeSensorRoutine();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 
