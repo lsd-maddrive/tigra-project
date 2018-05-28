@@ -28,8 +28,8 @@ void testBrakeUnitCSRoutine( void )
         else
             brakeUnitCSSetPower( 0 );
 
-        bool                isBrakePressed  = brakeSensorIsPressed();
-        brakePressPower_t   pressPower      = brakeSensorGetPressPower();
+        bool      isBrakePressed  = brakeSensorIsPressed();
+        int16_t   pressPower      = brakeSensorGetPressPower();
 
         chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d\n",
                         isBrakePressed ? "" : "not ", pressPower );

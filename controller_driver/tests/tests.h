@@ -22,6 +22,17 @@
  */
 void testBrakeSensorRoutine( void );
 
+/********************************/
+/*** Brake Unit Control tests ***/
+/********************************/
+
+/**
+ * @brief   Routine of brake unit control system
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testBrakeUnitCSRoutine( void );
+
 /***********************************/
 /*** Wheel position sensor tests ***/
 /***********************************/
@@ -72,6 +83,10 @@ static inline void testsRoutines( void )
 #if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_SENSOR)
 
     testBrakeSensorRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS)
+
+    testBrakeUnitCSRoutine();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 
