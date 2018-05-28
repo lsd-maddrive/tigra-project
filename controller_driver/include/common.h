@@ -48,6 +48,7 @@ void commonExtDriverInit ( void );
 /*** Constants ***/
 /*****************/
 
+/* Sensor ref: https://www.sparkfun.com/datasheets/BreakoutBoards/0712.pdf */
 /* Rates for ACS712 sensors [mv/A] */
 #define ACS712_5AMP_RATE        185.0
 #define ACS712_20AMP_RATE       100.0

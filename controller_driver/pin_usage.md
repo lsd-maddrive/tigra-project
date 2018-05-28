@@ -5,7 +5,7 @@ Driver | Pins | Input / Output
 -------|------|-------
 PAL  | PA0       | input
 ADC2 | PA7 (AN7) | input
-GPT7 | Trg       | -
+GPT6 | Trg       | -
 
 ## Модуль ручки тормоза
 Driver | Pins | Input / Output

@@ -22,7 +22,7 @@ static float    sensor_zero_value_mV    = 2500;
 #define adcResolutionConfig     ADC_CR1_10B_RESOLUTION
 
 static ADCDriver                *brakeSensorDriver  = &ADCD2;
-static GPTDriver                *adcTriggerDriver   = &GPTD7;
+static GPTDriver                *adcTriggerDriver   = &GPTD6;
 
 /*** Hardware configuration end ***/
 
@@ -33,7 +33,7 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n );
 /*** Buffer structure ***/
 
 #define ADC_CHANNELS_NUMBER 1
-#define ADC_BUFFER_DEPTH    1
+#define ADC_BUFFER_DEPTH    4
 
 static adcsample_t adc_buffer[ADC_CHANNELS_NUMBER * ADC_BUFFER_DEPTH];
 
@@ -46,7 +46,7 @@ static const ADCConversionGroup  conv_group = {
     .num_channels   = ADC_CHANNELS_NUMBER,
 
     .cr1            = adcResolutionConfig,
-    .cr2            = ADC_CR2_EXTEN_RISING | ADC_CR2_EXTSEL_SRC(0b1100),
+    .cr2            = ADC_CR2_EXTEN_RISING | ADC_CR2_EXTSEL_SRC(0b1101),
 
     /* Input dependent variables */
     .smpr1          = 0,
@@ -75,14 +75,23 @@ static float        sensor_min_voltage      = 0;
 static float        sensor_k_rate           = 0;
 static float        adcValue2Ref            = 0;
 
-
 /*** ADC callback ***/
 
 static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 {
     adcp = adcp; n = n;
 
-    brakePowerValue_mV = buffer[0] * adcValue2Ref ;
+    if ( buffer != adc_buffer )
+    {
+        int i;
+        uint32_t sum = 0;
+        for ( i = 0; i < ADC_BUFFER_DEPTH; i++ )
+        {
+            sum += buffer[i];
+        }
+
+        brakePowerValue_mV = (sum / ADC_BUFFER_DEPTH) * adcValue2Ref ;
+    }
 }
 
 void brakeSensorInit ( void )
@@ -96,8 +105,8 @@ void brakeSensorInit ( void )
     adcStartConversion( brakeSensorDriver, &conv_group, adc_buffer, ADC_BUFFER_DEPTH );
 
     gptStart( adcTriggerDriver, &trigger_cfg );
-    /* 10ms trigger */
-    gptStartContinuous( adcTriggerDriver, 10000 );
+    /* 2.5ms trigger for filter */
+    gptStartContinuous( adcTriggerDriver, 2500 );
 
     sensor_max_voltage      = sensor_zero_value_mV + sensitivity_rate * sensor_current_lim_A;
     sensor_min_voltage      = sensor_zero_value_mV;
