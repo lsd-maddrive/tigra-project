@@ -5,7 +5,7 @@ Driver | Pins | Input / Output
 -------|------|-------
 PAL  | PA0       | input
 ADC2 | PA7 (AN7) | input
-GPT4 | -         | -
+GPT7 | Trg       | -
 
 ## Модуль ручки тормоза
 Driver | Pins | Input / Output
@@ -27,9 +27,11 @@ PAL  | PE15 | output
 ## Драйвер управления приводом движения 
 Driver | Pins | Input / Output
 -------|------|-------
-DAC | PA4 | output (channel 1)
-PAL  | PF12 | output
+DAC | PA4  | output (channel 1)
+PAL | PF12 | output
 
-
-
-
+## Драйвер датчика положения и скорости колес
+Driver | Pins | Input / Output
+-------|------|-------
+EXT1  | PF13 | input
+GPT3  | Cntr | -

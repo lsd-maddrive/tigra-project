@@ -22,29 +22,11 @@ int main(void)
     chSysInit();
     halInit();
 
-#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BREAK_SENSOR)
+#if (MAIN_PROGRAM_ROUTINE != PROGRAM_ROUTINE_MASTER)
 
-    testBreakSensorRoutine();
+    testsRoutines();
 
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
-
-    palToggleLine( LINE_LED1 );
-    testWheelPosSensorRoutine();
-
-    //chThdSleepMilliseconds( 100 );
-
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_CLUTCH_LEVER)
-
-    testClutchLeverRoutine();
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER)
-
-    testDriverControlRoutine();
->>>>>>> develop
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
+#else
 
     chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO, Thread, NULL );
 

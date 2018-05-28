@@ -3,11 +3,6 @@
 
 #include <common.h>
 
-/*
- * Hardware description
- * ------------------------------------
- * EXT driver -> input PA1
- */
 
 /*** Variables ***/
 

@@ -3,13 +3,6 @@
 
 #include <common.h>
 
-/*
- * Hardware description
- * ------------------------------------
- * PAL driver -> input PA0
- * ADC2 driver -> input PA7 (AN7) and GPT4 trigger
- */
-
 /*** Variables ***/
 
 typedef int16_t breakPressPower_t;

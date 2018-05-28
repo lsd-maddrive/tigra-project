@@ -16,7 +16,7 @@
 #define adcResolutionConfig     ADC_CR1_10B_RESOLUTION
 
 static ADCDriver                *breakSensorDriver  = &ADCD2;
-static GPTDriver                *adcTriggerDriver   = &GPTD4;
+static GPTDriver                *adcTriggerDriver   = &GPTD7;
 
 /*** Hardware configuration end ***/
 

@@ -6,8 +6,6 @@
 #include <stdint.h>
 
 
-
-
 /*
  * @brief   Initialize periphery connected to driver control
  */
