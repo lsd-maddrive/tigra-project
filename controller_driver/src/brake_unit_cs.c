@@ -13,6 +13,8 @@
 /*** CONFIGURATION ZONE END ***/
 /******************************/
 
+/*** Typedefs ***/
+
 typedef struct
 {
     float   p_rate;
@@ -20,9 +22,12 @@ typedef struct
 
     float   integr_sum;
 
-} PID_brake_rates_t;
+} PID_brake_ctx_t;
 
+/*** Variables ***/
 PID_brake_ctx_t   brake_pid_ctx;
+
+/*** Functions ***/
 
 void brakeUnitCSInit( void )
 {
@@ -31,6 +36,9 @@ void brakeUnitCSInit( void )
     brake_pid_ctx.p_rate        = 1;
     brake_pid_ctx.i_rate        = 0;
     brake_pid_ctx.integr_sum    = 0;
+
+    brakeSensorInit();
+    lldControlInit();
 }
 
 void brakeUnitCSSetPower( int16_t pressPower )
@@ -69,7 +77,4 @@ void brakeUnitCSSetPower( int16_t pressPower )
             lldControlSetBrakePower( 0 );
         }
     }
-
-
-
 }

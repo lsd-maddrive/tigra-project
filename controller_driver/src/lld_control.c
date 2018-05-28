@@ -76,11 +76,16 @@ static const DACConfig dac_cfg = {
 };
 /***********************************************************/
 
+static bool         isInitialized       = false;
+
 /*
  * @brief   Initialize periphery connected to driver control
  */
 void lldControlInit( void )
 {
+    if ( isInitialized )
+        return;
+
     /*** PWM pins configuration ***/
     palSetPadMode( pwmPortCh0, pwmPadCh0, PAL_MODE_ALTERNATE(1) );
     palSetPadMode( pwmPortCh1, pwmPadCh1, PAL_MODE_ALTERNATE(1) );
@@ -101,6 +106,8 @@ void lldControlInit( void )
     dacStart( dacDriver, &dac_cfg );
 
     pwmStart( pwmDriver, &pwm1conf );
+
+    isInitialized = true;
 }
 
 /*

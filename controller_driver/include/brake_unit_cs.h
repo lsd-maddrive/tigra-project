@@ -4,12 +4,12 @@
 #include <common.h>
 
 /**
- * @brief       Initialization of brake unit control system
+ * @brief   Initialization of brake unit control system
  */
 void brakeUnitCSInit( void );
 
 /**
- * @brief               Set brake power reference
+ * @brief   Set brake power reference
  * @param   pressPower  Reference percentage of braking [0; 100]
  */
 void brakeUnitCSSetPower( int16_t pressPower );

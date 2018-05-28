@@ -11,10 +11,10 @@ typedef void (*clutchLeverCb_t)( void );
 /*** Prototypes ***/
 
 /**
- * @brief                   Initialization of clutch lever driver
- * @param[in] callback      Callback function that is called when clutch lever
+ * @brief       Initialization of clutch lever driver
+ * @param[in]   callback    Callback function that is called when clutch lever
  *                          is pressed (front)
- * @note                    Callback function is called inside ISR context
+ * @note        Callback function is called inside ISR context
  */
 void clutchLeverInit ( clutchLeverCb_t callback );
 

@@ -84,6 +84,9 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 
 void brakeSensorInit ( void )
 {
+    if ( isInitialized )
+        return;
+
     adcStart( brakeSensorDriver, NULL );
     palSetLineMode( brakeSensolAnalogLine, PAL_MODE_INPUT_ANALOG );
 

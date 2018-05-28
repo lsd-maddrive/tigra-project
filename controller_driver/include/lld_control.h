@@ -8,6 +8,7 @@
 
 /*
  * @brief   Initialize periphery connected to driver control
+ * @note    Stable for repeated calls
  */
 void lldControlInit ( void );
 
