@@ -1,4 +1,4 @@
-#include <lld_steer_position.h>
+#include <lld_steer_sensors.h>
 
 
 /* ADC driver related.                                                       */
@@ -9,12 +9,23 @@
 
 static adcsample_t samples1[adc1NumChannels * adc1BufDepth];
 
-static ADCDriver                 *adcSteerSensor    = &ADCD2;
+static ADCDriver                 *adcSteerSensor    = &ADCD1;
 static GPTDriver                 *adcGPT            = &GPTD2;
 static GPTNameFunc               *adcGPTfunc        = &gpt2cfg1;
 
 
 uint16_t lldAdcSteerSensorVal = 0;
+
+/*
+ * GPT2 configuration. This timer is used as trigger for the ADC.
+ */
+static const GPTConfig gpt2cfg1 = {
+  .frequency =  100000,
+  .callback  =  NULL,
+  .cr2       =  TIM_CR2_MMS_1,  /* MMS = 010 = TRGO on Update Event.        */
+  .dier      =  0U
+};
+
 
 /*
  * ADC streaming callback.
@@ -25,9 +36,6 @@ static void adc1cb(ADCDriver *adcp, adcsample_t *buffer, size_t n)
     adcp = adcp; n = n;
 
     lldAdcSteerSensorVal = samples1[0];
-//    chSysLockFromISR();                   // Critical Area
-//    chMBPostI( &test_mb, samples1[0]);    // send 1st ADC-value (channel 1)
-//    chSysUnlockFromISR();                 // Close Critical Area
 
 }
 
@@ -53,15 +61,6 @@ static const ADCConversionGroup adccfg1 = {
 };
 
 
-/*
- * GPT2 configuration. This timer is used as trigger for the ADC.
- */
-static const GPTConfig gpt2cfg1 = {
-  .frequency =  100000,
-  .callback  =  NULL,
-  .cr2       =  TIM_CR2_MMS_1,  /* MMS = 010 = TRGO on Update Event.        */
-  .dier      =  0U
-};
 
 /*
  * @brief                   Initialize periphery connected to steering sensor

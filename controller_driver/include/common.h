@@ -18,7 +18,7 @@
 #define     PROGRAM_ROUTINE_TEST_LL_DRIVER          2
 #define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       10
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_DRIVER
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_MASTER
 
 
 /*** Prototypes ***/
