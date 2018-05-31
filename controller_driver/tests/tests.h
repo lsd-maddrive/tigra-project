@@ -66,7 +66,7 @@ void testClutchLeverRoutine( void );
 /****************************/
 
 /*
- * @brief   Routine of low lovel driver control testing
+ * @brief   Routine of low level driver control testing
  * @note    The routine has internal infinite loop
  */
 void testDriverControlRoutine( void );
@@ -77,6 +77,14 @@ void testDriverControlRoutine( void );
  * @note    Extended behavior that interacts with user through Serial
  */
 void testDriverControlRoutineExt1( void );
+
+/*
+ * @brief   Routine of steering sensors testing
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testSteerSensorsWorking( void );
+
 
 /*************************/
 /*** Tests application ***/
@@ -113,5 +121,6 @@ static inline void testsRoutines( void )
 
 #endif
 }
+
 
 #endif /* TESTS_TESTS_H_ */
