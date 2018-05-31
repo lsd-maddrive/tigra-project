@@ -31,9 +31,13 @@ int main(void)
 
     testClutchLeverRoutine();
 
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER)
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LLD_CONTROL)
 
     testDriverControlRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_STEER_SENSORS)
+
+    testSteerSensors();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
 
