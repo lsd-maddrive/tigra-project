@@ -13,10 +13,10 @@ static ADCDriver                    *adcSteerSensor    = &ADCD1;
 static GPTDriver                    *adcGPT            = &GPTD8;
 
 
-#define steerPosAnalogInput         ADC_CHANNEL_IN10
+#define steerPosAnalopInput         ADC_CHANNEL_IN12
 #define steerPressPowerAnalogInput  ADC_CHANNEL_IN13
 
-#define steerPosAnalogLine          PAL_LINE( GPIOC, 0 )
+#define sonar7077AnalogLine          PAL_LINE( GPIOC, 0 )
 #define steerPressPowerLine         PAL_LINE( GPIOC, 3 )
 
 
@@ -29,8 +29,6 @@ static void adc1cb(ADCDriver *adcp, adcsample_t *buffer, size_t n)
 {
 
     adcp = adcp; n = n;
-
-      palToggleLine( LINE_LED1 );
 
     lldSteerPosVal          = adc1Buffer[0];
     lldSteerPressPowerVal   = adc1Buffer[1];
@@ -60,7 +58,7 @@ static const ADCConversionGroup adc1cfg = {
   .smpr2        = 0,
   .sqr1         = ADC_SQR1_NUM_CH(adc1NumChannels),
   .sqr2         = 0,
-  .sqr3         = ADC_SQR3_SQ1_N(steerPosAnalogInput) |
+  .sqr3         = ADC_SQR3_SQ1_N(steerPosAnalopInput) |
                   ADC_SQR3_SQ2_N(steerPressPowerAnalogInput)
 };
 
@@ -72,7 +70,7 @@ void lldSteerSensorsInit( void )
 
     gptStart( adcGPT, &gpt8cfg1 );
     adcStart( adcSteerSensor, NULL );
-    palSetLineMode( steerPosAnalogLine,  PAL_MODE_INPUT_ANALOG );
+    palSetLineMode( sonar7077AnalogLine,  PAL_MODE_INPUT_ANALOG );
     palSetLineMode( steerPressPowerLine, PAL_MODE_INPUT_ANALOG );
     adcStartConversion( adcSteerSensor, &adc1cfg, adc1Buffer, adc1BufDepth);
 
