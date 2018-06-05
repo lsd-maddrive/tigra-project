@@ -39,6 +39,6 @@ GPT3  | Cntr | -
 ## Драйвер датчика положения руля и датчика усилия привода руля
 Driver | Pins | Input / Output
 -------|------|-------
-ADC1 | PC0  | input (channel 10)
-ADC1 | PC3  | input (channel 13)
+ADC1 | PC0  | input (AN 10)
+ADC1 | PC3  | input (AN 13)
 GPT8 | Trg  | -
