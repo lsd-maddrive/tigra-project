@@ -13,10 +13,10 @@ static ADCDriver                    *adcSonar7077      = &ADCD3;
 static GPTDriver                    *adcGPT            = &GPTD4;
 
 
-#define sonar7077AnalogInput         ADC_CHANNEL_IN12
+#define sonar7077AnalogInput         ADC_CHANNEL_IN9
 
 
-#define sonar7077AnalogLine          PAL_LINE( GPIOC, 2 )
+#define sonar7077AnalogLine          PAL_LINE( GPIOF, 3 )
 
 uint16_t lldSonar7077           = 0;
 

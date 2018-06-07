@@ -13,12 +13,14 @@ static const SerialConfig sdcfg = {
   .cr3 = 0
 };
 
+
+
+
 /*
  * @brief   Routine of sonar sensors testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
  */
-
 void testSonarsRoutineWorking( void )
 {
     lldSonarsInit( );
@@ -34,9 +36,11 @@ void testSonarsRoutineWorking( void )
     {
 
         adcSonarVal = lldSonar7077AdcVal();
-        chprintf((BaseSequentialStream *)&SD7, "ADC: %d\n\r", adcSonarVal);
+        sdWrite(&SD7, (uint8_t*)&adcSonarVal, sizeof(adcSonarVal));
+//        chprintf((BaseSequentialStream *)&SD7, "Hi\n\r");
+//        chprintf((BaseSequentialStream *)&SD7, "ADC: %d\n\r", adcSonarVal);
 
-        chThdSleepMilliseconds( 300 );
+//        chThdSleepMilliseconds( 10 );
 
     }
 
