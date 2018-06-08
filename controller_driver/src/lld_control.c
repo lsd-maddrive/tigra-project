@@ -18,13 +18,13 @@
 #define PE14_ACTIVE     PWM_OUTPUT_ACTIVE_HIGH
 #define PE14_DISABLE    PWM_OUTPUT_DISABLED
 
-#define pwmPortCh0      GPIOE
-#define pwmPadCh0       9
+#define pwm9PortCh0      GPIOE
+#define pwm9PadCh0       9
 #define pwmPortCh1      GPIOE
 #define pwmPadCh1       11
 
-#define pwmFreq         4000000
-#define pwmPeriod       4000
+#define pwm9Freq         4000000
+#define pwm9Period       4000
 
 /*** DAC configuration pins      ***/
 #define dacPort         GPIOA
@@ -47,8 +47,8 @@ static  DACDriver        *dacDriver      = &DACD1;
 /*** Configuration structures ***/
 
 PWMConfig pwm1conf = {
-    .frequency = pwmFreq,
-    .period    = pwmPeriod, /* 1/1000 s = 1 ms => 1 kHz
+    .frequency = pwm9Freq,
+    .period    = pwm9Period, /* 1/1000 s = 1 ms => 1 kHz
                              * PWM period = period/frequency [s] */
     .callback  = NULL,
     .channels  = {
@@ -87,7 +87,7 @@ void lldControlInit( void )
         return;
 
     /*** PWM pins configuration ***/
-    palSetPadMode( pwmPortCh0, pwmPadCh0, PAL_MODE_ALTERNATE(1) );
+    palSetPadMode( pwm9PortCh0, pwm9PadCh0, PAL_MODE_ALTERNATE(1) );
     palSetPadMode( pwmPortCh1, pwmPadCh1, PAL_MODE_ALTERNATE(1) );
 
     /*** PAL pins configuration ***/
@@ -125,7 +125,7 @@ void lldControlSetDrMotorPower( uint8_t lldMotorPower )
     *              <0>              - channel number (first)
     *              <drMotorPower>   - output value (according to mode/size)
     */
-    // need to fix drMotorPower for DAC
+    // need fixing drMotorPower for DAC
     dacPutChannelX( dacDriver, 0, drDriveDuty );
 
 }

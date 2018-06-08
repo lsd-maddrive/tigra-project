@@ -11,6 +11,23 @@ static adcsample_t adc3Buffer[adc3NumChannels * adc3BufDepth];
 
 static ADCDriver                    *adcSonar7077      = &ADCD3;
 static GPTDriver                    *adcGPT            = &GPTD4;
+static  PWMDriver                   *pwmDriver         = &PWMD9;
+
+/***  PWM configuration pins    ***/
+/***  PA15 - Trg for Sonar 7077            ***/
+#define PE5_ACTIVE          PWM_OUTPUT_ACTIVE_HIGH
+#define PE5_DISABLE         PWM_OUTPUT_DISABLED
+#define bigSonar7077        0
+/***  PB3 - not used            ***/
+#define PE6_ACTIVE         PWM_OUTPUT_ACTIVE_HIGH
+#define PE6_DISABLE        PWM_OUTPUT_DISABLED
+
+
+#define pwm9PortCh0      GPIOE
+#define pwm9PadCh0       5
+#define pwm9Freq         4000000
+#define pwm9Period       400000
+#define sonarSync        80         // 20 mks (from sensor datasheet)
 
 
 #define sonar7077AnalogInput         ADC_CHANNEL_IN9
@@ -58,18 +75,39 @@ static const ADCConversionGroup adc3cfg = {
 };
 
 /*
+ * @brief                   Synchronization processing of two sensors
+ */
+PWMConfig pwm9conf = {
+    .frequency = pwm9Freq,
+    .period    = pwm9Period, /*100 ms => 10 Hz
+                              * PWM period = period/frequency [s] */
+    .callback  = NULL,
+    .channels  = {
+                  {.mode = PE5_ACTIVE,              .callback = NULL},
+                  {.mode = PE6_DISABLE,             .callback = NULL},
+                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL},
+                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL}
+                  },
+    .cr2        = 0,
+    .dier       = 0
+};
+
+/*
  * @brief                   Initialize periphery connected to sonars
  */
 void lldSonarsInit( void )
 {
 
+    /*** PWM pins configuration ***/
+    palSetPadMode( pwm9PortCh0, pwm9PadCh0, PAL_MODE_ALTERNATE(1) );
+    /*** ADC pins configuration ***/
     gptStart( adcGPT, &gpt4cfg1 );
     adcStart( adcSonar7077, NULL );
     palSetLineMode( sonar7077AnalogLine,  PAL_MODE_INPUT_ANALOG );
 
     adcStartConversion( adcSonar7077, &adc3cfg, adc3Buffer, adc3BufDepth);
-
-    gptStartContinuous( adcGPT, 10000); // triggering each 10 ms
+    pwmStart( pwmDriver, &pwm9conf );
+    gptStartContinuous( adcGPT, 100000); // triggering each 100 ms => 10 Hz
 
 }
 
@@ -77,11 +115,18 @@ void lldSonarsInit( void )
  * @brief                   Get Adc value of sonar
  * @return                  ADC value [0, 4096]
  */
-uint16_t lldSonar7077AdcVal()
+uint16_t lldSonar7077AdcVal( void )
 {
 
   return lldSonar7077;
 
 }
 
+/*
+ * @brief                   Set duty of PWM9 = 20 mks to sync sensor processing
+ */
+void lldSonarSync( void )
+{
+     pwmEnableChannel( pwmDriver, bigSonar7077, sonarSync );
+}
 

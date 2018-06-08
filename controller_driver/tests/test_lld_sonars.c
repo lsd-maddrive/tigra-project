@@ -36,11 +36,11 @@ void testSonarsRoutineWorking( void )
     {
 
         adcSonarVal = lldSonar7077AdcVal();
-        sdWrite(&SD7, (uint8_t*)&adcSonarVal, sizeof(adcSonarVal));
+//        sdWrite(&SD7, (uint8_t*)&adcSonarVal, sizeof(adcSonarVal));
 //        chprintf((BaseSequentialStream *)&SD7, "Hi\n\r");
-//        chprintf((BaseSequentialStream *)&SD7, "ADC: %d\n\r", adcSonarVal);
+        chprintf((BaseSequentialStream *)&SD7, "ADC: %d\n\r", adcSonarVal);
 
-//        chThdSleepMilliseconds( 10 );
+        chThdSleepMilliseconds( 300 );
 
     }
 
