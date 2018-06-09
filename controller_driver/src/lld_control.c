@@ -18,20 +18,20 @@
 #define PE14_ACTIVE     PWM_OUTPUT_ACTIVE_HIGH
 #define PE14_DISABLE    PWM_OUTPUT_DISABLED
 
-#define pwm9PortCh0      GPIOE
-#define pwm9PadCh0       9
+#define pwm1PortCh0     GPIOE
+#define pwm1PadCh0      9
 #define pwmPortCh1      GPIOE
 #define pwmPadCh1       11
 
-#define pwm9Freq         4000000
-#define pwm9Period       4000
+#define pwm1Freq        4000000
+#define pwm1Period      4000
 
 /*** DAC configuration pins      ***/
 #define dacPort         GPIOA
 #define dacPad          4
 
-static  PWMDriver        *pwmDriver      = &PWMD1;
-static  DACDriver        *dacDriver      = &DACD1;
+static  PWMDriver       *pwmDriver      = &PWMD1;
+static  DACDriver       *dacDriver      = &DACD1;
 
 /*** Direction pins configuration          ***/
 /*** F_12 for Driving Wheels Set Direction ***/
@@ -47,8 +47,8 @@ static  DACDriver        *dacDriver      = &DACD1;
 /*** Configuration structures ***/
 
 PWMConfig pwm1conf = {
-    .frequency = pwm9Freq,
-    .period    = pwm9Period, /* 1/1000 s = 1 ms => 1 kHz
+    .frequency = pwm1Freq,
+    .period    = pwm1Period, /* 1/1000 s = 1 ms => 1 kHz
                              * PWM period = period/frequency [s] */
     .callback  = NULL,
     .channels  = {
@@ -87,8 +87,8 @@ void lldControlInit( void )
         return;
 
     /*** PWM pins configuration ***/
-    palSetPadMode( pwm9PortCh0, pwm9PadCh0, PAL_MODE_ALTERNATE(1) );
-    palSetPadMode( pwmPortCh1, pwmPadCh1, PAL_MODE_ALTERNATE(1) );
+    palSetPadMode( pwm1PortCh0, pwm1PadCh0, PAL_MODE_ALTERNATE(1) );
+    palSetPadMode( pwmPortCh1,  pwmPadCh1,  PAL_MODE_ALTERNATE(1) );
 
     /*** PAL pins configuration ***/
     palSetPadMode( portMotorDir, padMotorDir, PAL_MODE_OUTPUT_PUSHPULL );

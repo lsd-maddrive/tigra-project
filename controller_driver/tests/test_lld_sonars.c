@@ -34,11 +34,13 @@ void testSonarsRoutineWorking( void )
 
     while( true )
     {
-
+        lldSonarSync();
+//        msg_t msg = sdGetTimeout( &SD7, MS2ST( 10 ) );
         adcSonarVal = lldSonar7077AdcVal();
 //        sdWrite(&SD7, (uint8_t*)&adcSonarVal, sizeof(adcSonarVal));
 //        chprintf((BaseSequentialStream *)&SD7, "Hi\n\r");
-        chprintf((BaseSequentialStream *)&SD7, "ADC: %d\n\r", adcSonarVal);
+        chprintf( (BaseSequentialStream *)&SD7, "ADC: %d\n\r", adcSonarVal);
+//        chprintf( (BaseSequentialStream *)&SD7, "UART %d", msg);
 
         chThdSleepMilliseconds( 300 );
 

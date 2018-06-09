@@ -11,13 +11,13 @@ static adcsample_t adc3Buffer[adc3NumChannels * adc3BufDepth];
 
 static ADCDriver                    *adcSonar7077      = &ADCD3;
 static GPTDriver                    *adcGPT            = &GPTD4;
-static  PWMDriver                   *pwmDriver         = &PWMD9;
+static PWMDriver                    *pwm9Driver        = &PWMD9;
 
 /***  PWM configuration pins    ***/
 /***  PA15 - Trg for Sonar 7077            ***/
-#define PE5_ACTIVE          PWM_OUTPUT_ACTIVE_HIGH
-#define PE5_DISABLE         PWM_OUTPUT_DISABLED
-#define bigSonar7077        0
+#define PE5_ACTIVE         PWM_OUTPUT_ACTIVE_HIGH
+#define PE5_DISABLE        PWM_OUTPUT_DISABLED
+#define bigSonar7077       0
 /***  PB3 - not used            ***/
 #define PE6_ACTIVE         PWM_OUTPUT_ACTIVE_HIGH
 #define PE6_DISABLE        PWM_OUTPUT_DISABLED
@@ -99,14 +99,14 @@ void lldSonarsInit( void )
 {
 
     /*** PWM pins configuration ***/
-    palSetPadMode( pwm9PortCh0, pwm9PadCh0, PAL_MODE_ALTERNATE(1) );
+    palSetPadMode( pwm9PortCh0, pwm9PadCh0, PAL_MODE_ALTERNATE(3) );
     /*** ADC pins configuration ***/
     gptStart( adcGPT, &gpt4cfg1 );
     adcStart( adcSonar7077, NULL );
     palSetLineMode( sonar7077AnalogLine,  PAL_MODE_INPUT_ANALOG );
 
     adcStartConversion( adcSonar7077, &adc3cfg, adc3Buffer, adc3BufDepth);
-    pwmStart( pwmDriver, &pwm9conf );
+    pwmStart( pwm9Driver, &pwm9conf );
     gptStartContinuous( adcGPT, 100000); // triggering each 100 ms => 10 Hz
 
 }
@@ -127,6 +127,8 @@ uint16_t lldSonar7077AdcVal( void )
  */
 void lldSonarSync( void )
 {
-     pwmEnableChannel( pwmDriver, bigSonar7077, sonarSync );
+
+     pwmEnableChannel( pwm9Driver, bigSonar7077, sonarSync );
+
 }
 
