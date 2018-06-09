@@ -13,9 +13,6 @@ static const SerialConfig sdcfg = {
   .cr3 = 0
 };
 
-
-
-
 /*
  * @brief   Routine of sonar sensors testing
  * @note    The routine has internal infinite loop
@@ -30,19 +27,22 @@ void testSonarsRoutineWorking( void )
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );    // RX
 
     uint16_t adcSonarVal = 0;
+    uint16_t adcSonarVal2 = 0;
 
-
+    lldSonarSync();
     while( true )
     {
-        lldSonarSync();
+
+
 //        msg_t msg = sdGetTimeout( &SD7, MS2ST( 10 ) );
-        adcSonarVal = lldSonar7077AdcVal();
+        adcSonarVal  = lldSonar7077AdcVal(1);
+        adcSonarVal2 = lldSonar7077AdcVal(2);
 //        sdWrite(&SD7, (uint8_t*)&adcSonarVal, sizeof(adcSonarVal));
 //        chprintf((BaseSequentialStream *)&SD7, "Hi\n\r");
-        chprintf( (BaseSequentialStream *)&SD7, "ADC: %d\n\r", adcSonarVal);
+        chprintf( (BaseSequentialStream *)&SD7, "S1: %d   S2: %d\n\r", adcSonarVal, adcSonarVal2);
 //        chprintf( (BaseSequentialStream *)&SD7, "UART %d", msg);
 
-        chThdSleepMilliseconds( 300 );
+        chThdSleepMilliseconds( 100 );
 
     }
 
