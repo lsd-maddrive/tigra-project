@@ -8,7 +8,7 @@
 
 static const SerialConfig sdcfg = {
   .speed = 115200,
-  .cr1 = (!(USART_CR1_PS | USART_CR1_M | USART_CR1_M_0)),
+  .cr1 = 0,
   .cr2 = USART_CR2_LINEN,
   .cr3 = 0
 };
@@ -42,8 +42,7 @@ void testSonarsRoutineWorking( void )
     uint16_t adcSonarVal2 = 0;
     uint8_t test_uart = 0;
     lldSonarSync();
-//    USART_CR1_PS
-//    sdcfg.Init.Parity =  USART_PARITY_NONE;
+
 //    chprintf( (BaseSequentialStream *)&SD7, "testtttttt\n\r");
     while( true )
     {
@@ -65,7 +64,7 @@ void testSonarsRoutineWorking( void )
 //        chprintf( (BaseSequentialStream *)&SD7, "S1: %d   S2: %d\n\r", adcSonarVal, adcSonarVal2);
 //        chprintf( (BaseSequentialStream *)&SD7, "UART %d", msg);
 
-        chThdSleepMilliseconds( 100 );
+        chThdSleepMilliseconds( 10 );
 
     }
 
