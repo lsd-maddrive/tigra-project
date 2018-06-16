@@ -6,8 +6,8 @@
 /* Serial driver related.                                                    */
 /*===========================================================================*/
 
-static const SerialConfig sdcfg = {
-  .speed = 115200,
+static const SerialConfig sd7cfg = {
+  .speed = 9600,
   .cr1 = 0,
   .cr2 = USART_CR2_LINEN,
   .cr3 = 0
@@ -20,6 +20,49 @@ static const SerialConfig sd5cfg = {
   .cr3 = 0
 };
 
+/*** Variable for sonar   */
+uint16_t brownSonarVal = 0;
+uint8_t buf5Son[4];
+
+static THD_WORKING_AREA(waGetSonarValU5Thd, 1024);
+static THD_FUNCTION(GetSonarValU5Thd, arg)
+{
+    arg = arg;
+    uint8_t firstR = 0;
+    while( 1 )
+    {
+        firstR = sdGet( &SD5 );
+
+        if( firstR == 'R' )
+        {
+            sdRead( &SD5, buf5Son, 3 );
+            buf5Son[3] = 0;
+            brownSonarVal = strtoul( buf5Son, NULL, 0 );  // convert bufSon into string, after this srt convert into long
+        }
+    }
+}
+
+uint8_t buf7Son[4];
+uint16_t greenSonarVal = 0;
+static THD_WORKING_AREA(waGetSonarValU7Thd, 1024);
+static THD_FUNCTION(GetSonarValU7Thd, arg)
+{
+    arg = arg;
+    uint8_t firstR = 0;
+    while( 1 )
+    {
+        firstR = sdGet( &SD7 );
+
+        if( firstR == 'R' )
+        {
+            sdRead( &SD7, buf7Son, 3 );
+            buf7Son[3] = 0;
+            greenSonarVal = strtoul( buf7Son, NULL, 0 );  // convert bufSon into string, after this srt convert into long
+        }
+    }
+}
+
+
 /*
  * @brief   Routine of sonar sensors testing
  * @note    The routine has internal infinite loop
@@ -29,7 +72,7 @@ void testSonarsRoutineWorking( void )
 {
     lldSonarsInit( );
 
-    sdStart( &SD7, &sdcfg );
+    sdStart( &SD7, &sd7cfg );
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );    // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );    // RX
 
@@ -37,21 +80,25 @@ void testSonarsRoutineWorking( void )
     palSetPadMode( GPIOC, 12, PAL_MODE_ALTERNATE(8) );    // TX
     palSetPadMode( GPIOD,  2, PAL_MODE_ALTERNATE(8) );    // RX
 
+    chThdCreateStatic( waGetSonarValU5Thd, sizeof(waGetSonarValU5Thd), NORMALPRIO, GetSonarValU5Thd, NULL ); // brown
+    chThdCreateStatic( waGetSonarValU7Thd, sizeof(waGetSonarValU7Thd), NORMALPRIO, GetSonarValU7Thd, NULL ); // green
 
-    uint16_t adcSonarVal = 0;
-    uint16_t adcSonarVal2 = 0;
-    uint8_t test_uart = 0;
-    lldSonarSync();
 
-//    chprintf( (BaseSequentialStream *)&SD7, "testtttttt\n\r");
+
     while( true )
     {
-
-//      chprintf( (BaseSequentialStream *)&SD5, "test\n\r");
-
-      test_uart = sdGet(&SD5);
-      sdWrite(&SD7, (uint8_t*)&test_uart, sizeof(test_uart));
-
+      chprintf( (BaseSequentialStream *)&SD7, "Br: %d Bl: %d\n\r", brownSonarVal, greenSonarVal );
+//      chprintf( (BaseSequentialStream *)&SD7, "%d\n\r", brownSonarVal );
+//      test_uart = sdGet(&SD5);
+//      sdWrite(&SD7, (uint8_t*)&test_uart, sizeof(test_uart));
+//      sdWrite( &SD7, (uint8_t*)&greenSonarVal, sizeof(greenSonarVal) );
+//      sdWrite( &SD7, (uint8_t*)&brownSonarVal, sizeof(brownSonarVal) );
+//      chprintf( (BaseSequentialStream *)&SD7, "%d\n\r", adcSonarVal );
+//      if(count == 100)
+//      {
+//        palToggleLine( LINE_LED1 );
+//        count = 0;
+//      }
 
 //      chprintf( (BaseSequentialStream *)&SD7, "test: %d\n\r", test_uart);
 

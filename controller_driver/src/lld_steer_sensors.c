@@ -16,7 +16,7 @@ static GPTDriver                    *adcGPT            = &GPTD8;
 #define steerPosAnalopInput         ADC_CHANNEL_IN12
 #define steerPressPowerAnalogInput  ADC_CHANNEL_IN13
 
-#define sonar7077AnalogLine          PAL_LINE( GPIOC, 0 )
+#define sonar7077AnalogLine         PAL_LINE( GPIOC, 0 )
 #define steerPressPowerLine         PAL_LINE( GPIOC, 3 )
 
 
@@ -71,7 +71,7 @@ void lldSteerSensorsInit( void )
     gptStart( adcGPT, &gpt8cfg1 );
     adcStart( adcSteerSensor, NULL );
     palSetLineMode( sonar7077AnalogLine,  PAL_MODE_INPUT_ANALOG );
-    palSetLineMode( steerPressPowerLine, PAL_MODE_INPUT_ANALOG );
+    palSetLineMode( steerPressPowerLine,  PAL_MODE_INPUT_ANALOG );
     adcStartConversion( adcSteerSensor, &adc1cfg, adc1Buffer, adc1BufDepth);
 
     gptStartContinuous( adcGPT, 10000); // triggering each 10 ms
