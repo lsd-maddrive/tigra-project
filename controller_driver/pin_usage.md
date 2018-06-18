@@ -47,4 +47,4 @@ GPT8 | Trg  | -
 Driver | Pins | Input / Output
 -------|------|-------
 SD5 | PB12 | TX
-    | PB13 | RX 
++++ | PB13 | RX 

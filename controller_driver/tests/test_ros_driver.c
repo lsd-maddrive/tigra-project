@@ -1,10 +1,20 @@
 #include <tests.h>
 #include <ros_proto.h>
 
+bool service_cb ( int32_t value )
+{
+    if ( value > 0 )
+        palToggleLine( LINE_LED1 );
+
+    return ( palReadLine( LINE_LED1 ) == PAL_HIGH );
+}
+
 void testROSDriverRoutine( void )
 {
     ros_driver_init();
     ros_driver_start( NORMALPRIO );
+
+    ros_test_srv_set_cb( service_cb );
 
     int32_t cntr = 0;
 

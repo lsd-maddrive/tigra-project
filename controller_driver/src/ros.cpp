@@ -1,4 +1,5 @@
 #include <ros.h>
+#include <ros_proto.h>
 #include <common.h>
 
 /*===========================================================================*/
@@ -63,12 +64,22 @@ ros::Subscriber<std_msgs::UInt16MultiArray>     topic_control("control_raw", &to
 std_msgs::Int32                                 i32_test_msg;
 ros::Publisher                                  test_topic("test_i32_pub", &i32_test_msg);
 
+bool (*test_srv_cb_func)( int32_t value ) = NULL;
+
+void ros_test_srv_set_cb( bool (*cb_func)( int32_t value ) )
+{
+    test_srv_cb_func = cb_func;
+}
+
 void test_srv_cb( const std_msgs::Int32 &req, std_msgs::Bool &resp )
 {
-    if ( req.data > 0 )
-        palToggleLine( LINE_LED1 );
+    resp.data = false;
 
-    resp.data = (palReadLine( LINE_LED1 ) == PAL_HIGH);
+    if ( test_srv_cb_func != NULL )
+    {
+        bool loc_resp = test_srv_cb_func( req.data );
+        resp.data = loc_resp;
+    }
 }
 
 ros::ServiceServer<std_msgs::Int32, std_msgs::Bool> test_srv_serv("test_srv", &test_srv_cb);
