@@ -5,7 +5,7 @@
 /*** Hardware configuration     ***/
 
 #define adc1NumChannels             2
-#define adc1BufDepth                1
+#define adc1BufDepth                4
 
 static adcsample_t adc1Buffer[adc1NumChannels * adc1BufDepth];
 
@@ -27,14 +27,22 @@ uint16_t lldSteerPressPowerVal  = 0;
 
 static void adc1cb(ADCDriver *adcp, adcsample_t *buffer, size_t n)
 {
-
     adcp = adcp; n = n;
 
-      palToggleLine( LINE_LED1 );
+    if ( buffer != adc1Buffer )
+    {
+        int i;
+        uint32_t sumPos   = 0;
+        uint32_t sumPress = 0;
+        for ( i = 0; i < adc1BufDepth; i++ )
+        {
+            sumPos    += adc1Buffer[i*adc1NumChannels];
+            sumPress  += adc1Buffer[i*adc1NumChannels+1];
+        }
 
-    lldSteerPosVal          = adc1Buffer[0];
-    lldSteerPressPowerVal   = adc1Buffer[1];
-
+        lldSteerPosVal          = sumPos / adc1BufDepth;
+        lldSteerPressPowerVal   = sumPress / adc1BufDepth;
+    }
 }
 
 /*** Configuration structures ***/
@@ -76,7 +84,7 @@ void lldSteerSensorsInit( void )
     palSetLineMode( steerPressPowerLine, PAL_MODE_INPUT_ANALOG );
     adcStartConversion( adcSteerSensor, &adc1cfg, adc1Buffer, adc1BufDepth);
 
-    gptStartContinuous( adcGPT, 10000); // triggering each 10 ms
+    gptStartContinuous( adcGPT, 2500 ); // triggering each 2.5 ms
 
 }
 

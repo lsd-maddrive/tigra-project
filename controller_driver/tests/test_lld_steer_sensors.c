@@ -1,6 +1,6 @@
 #include <tests.h>
 #include <lld_steer_sensors.h>
-
+#include <chprintf.h>
 
 /*===========================================================================*/
 /* Serial driver related.                                                    */

@@ -87,7 +87,7 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
         uint32_t sum = 0;
         for ( i = 0; i < ADC_BUFFER_DEPTH; i++ )
         {
-            sum += buffer[i];
+            sum += adc_buffer[i];
         }
 
         brakePowerValue_mV = (sum / ADC_BUFFER_DEPTH) * adcValue2Ref ;
