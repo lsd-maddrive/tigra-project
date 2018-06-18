@@ -46,5 +46,5 @@ GPT8 | Trg  | -
 ## Драйвер системы связи ROS
 Driver | Pins | Input / Output
 -------|------|-------
-SD5 | PB12 | TX
-+++ | PB13 | RX 
+SD5 | PC12 | TX
++++ | PD2  | RX 

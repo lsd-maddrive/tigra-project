@@ -30,7 +30,7 @@ void ros_send_test_i32_msg( int32_t value );
  * @brief           Set callback of service server
  * @param   cb_func Callback function
  */
-void ros_test_srv_set_cb( bool (*cb_func)( int32_t value ) );
+void ros_test_srv_set_cb( bool (*cb_func)( void ) );
 
 #ifdef __cplusplus
 }

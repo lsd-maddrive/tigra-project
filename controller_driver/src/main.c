@@ -26,25 +26,15 @@ int main(void)
 
     testsRoutines();
 
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_CLUTCH_LEVER)
-
-    testClutchLeverRoutine();
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LLD_CONTROL)
-
-    testDriverControlRoutine();
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_STEER_SENSORS)
-
-    testSteerSensors();
-
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_MASTER)
+#else
 
     chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO, Thread, NULL );
 
     while (true)
     {
+        palToggleLine( LINE_LED3 );
         chThdSleepSeconds(1);
     }
+    
 #endif
 }
