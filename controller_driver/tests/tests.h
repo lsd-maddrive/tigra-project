@@ -85,6 +85,15 @@ void testDriverControlRoutineExt1( void );
  */
 void testSteerSensorsWorking( void );
 
+/************************/
+/*** ROS Driver tests ***/
+/************************/
+
+/**
+ * @brief   Routine of ROS Driver testing
+ * @note    The routine has internal infinite loop
+ */
+void testROSDriverRoutine( void );
 
 /*************************/
 /*** Tests application ***/
@@ -118,6 +127,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1)
 
     testDriverControlRoutineExt1();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_ROS_DRIVER)
+
+    testROSDriverRoutine();
 
 #endif
 }

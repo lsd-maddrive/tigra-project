@@ -42,3 +42,9 @@ Driver | Pins | Input / Output
 ADC1 | PC0  | input (AN 10)
 ADC1 | PC3  | input (AN 13)
 GPT8 | Trg  | -
+
+## Драйвер системы связи ROS
+Driver | Pins | Input / Output
+-------|------|-------
+SD5 | PB12 | TX
+    | PB13 | RX 

@@ -30,8 +30,9 @@
 #define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       4
 #define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS      33
 #define     PROGRAM_ROUTINE_TEST_STEER_SENSORS      5
+#define     PROGRAM_ROUTINE_TEST_ROS_DRIVER         89
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_MASTER
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_ROS_DRIVER
 
 /******************/
 /*** Prototypes ***/

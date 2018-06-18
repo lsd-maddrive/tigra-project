@@ -19,8 +19,6 @@ BaseChannel     *ros_sd_ptr = (BaseChannel *)ros_sd;
 /* ROS things                                                                */
 /*===========================================================================*/
 
-//#define CONFIG_IS_READY
-
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
 #include <std_msgs/UInt16MultiArray.h>
@@ -28,6 +26,8 @@ BaseChannel     *ros_sd_ptr = (BaseChannel *)ros_sd;
 #include <std_msgs/Bool.h>
 
 ros::NodeHandle                                 ros_node;
+
+//#define CONFIG_IS_READY
 
 #ifdef CONFIG_IS_READY
 void (*g_cb_func)(uint16_t speed, uint16_t steer) = NULL;
