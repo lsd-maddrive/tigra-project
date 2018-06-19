@@ -45,6 +45,41 @@
  */
 void commonExtDriverInit ( void );
 
+/*** Common ADC configuration ***/
+
+#define COMMON_ADC_RES_CONF         ADC_CR1_12B_RESOLUTION
+#define COMMON_ADC_BUFFER_DEPTH     4
+
+/* Brake sensor current input */
+#define COMMON_ADC_SEQ1             ADC_CHANNEL_IN7
+#define COMMON_ADC_SEQ1_LINE        PAL_LINE( GPIOA, 7 )
+#define COMMON_ADC_SEQ1_CH          0
+
+/* Steer sensor position input */
+#define COMMON_ADC_SEQ2             ADC_CHANNEL_IN10
+#define COMMON_ADC_SEQ2_LINE        PAL_LINE( GPIOC, 0 )
+#define COMMON_ADC_SEQ2_CH          1
+
+/* Steer sensor current input */
+#define COMMON_ADC_SEQ3             ADC_CHANNEL_IN13
+#define COMMON_ADC_SEQ3_LINE        PAL_LINE( GPIOC, 3 )
+#define COMMON_ADC_SEQ3_CH          2
+
+
+/**
+ * @brief   Initialize common ADC1 unit
+ * @note    Safe to call any times, it checks state of previous call
+ */
+void commonADC1UnitInit ( void );
+
+/**
+ * @brief       Get value of desired channel
+ * @param   ch  Number of channel
+ * @return      Filtered (if realized) value of ADC sampling
+ *              Zero if channel is invalid 
+ */
+adcsample_t commonADC1UnitGetValue ( uint8_t ch );
+
 /**************/
 /*** Macros ***/
 /**************/
