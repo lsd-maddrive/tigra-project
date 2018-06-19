@@ -131,7 +131,7 @@
   </group>
   
   <!-- Visualization RVIZ -->
-<!--   <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="$(arg rviz_cfg)"/>
+  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="$(arg rviz_cfg)"/>
   <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="points_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb">
     <remap from="left/image"        to="$(arg left_image_topic)"/>
     <remap from="right/image"       to="$(arg right_image_topic)"/>
@@ -142,6 +142,6 @@
     <param name="decimation"  type="double" value="2"/>
     <param name="voxel_size"  type="double" value="0.02"/>
     <param name="approx_sync" type="bool"   value="$(arg approximate_sync)"/>
-  </node> -->
+  </node>
 
 </launch>
