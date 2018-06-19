@@ -100,45 +100,40 @@ void testDriverControlRoutineExt1( void )
         {
             case 'q':   // Positive steer
                 steer_value += steer_values_delta * steer_delta_sign;
-                if ( abs(steer_value) >= 100 )
-                    steer_delta_sign *= -1;
+                steer_value = CLIP_VALUE( steer_value, -100, 100 );
                 break;
 
             case 'w':   // Negative steer
                 steer_value -= steer_values_delta * steer_delta_sign;
-                if ( abs(steer_value) >= 100 )
-                    steer_delta_sign *= -1;
+                steer_value = CLIP_VALUE( steer_value, -100, 100 );
                 break;
 
             case 'a':   // Positive speed
                 speed_value += speed_values_delta * speed_delta_sign;
-                if ( abs(speed_value) >= 100 )
-                    speed_delta_sign *= -1;
+                speed_value = CLIP_VALUE( speed_value, -100, 100 );
                 break;
 
             case 's':   // Negative speed
                 speed_value -= speed_values_delta * speed_delta_sign;
-                if ( abs(speed_value) >= 100 )
-                    speed_delta_sign *= -1;
+                speed_value = CLIP_VALUE( speed_value, -100, 100 );
                 break;
 
             case 'z':   // Positive brake
                 brake_value += brake_values_delta * brake_delta_sign;
-                if ( abs(brake_value) >= 100 )
-                    brake_delta_sign *= -1;
+                brake_value = CLIP_VALUE( brake_value, -100, 100 );
                 break;
 
             case 'x':   // Negative brake
                 brake_value -= brake_values_delta * brake_delta_sign;
-                if ( abs(brake_value) >= 100 )
-                    brake_delta_sign *= -1;
+                brake_value = CLIP_VALUE( brake_value, -100, 100 );
                 break;
 
             default:
                 ;
         }
-        chprintf( (BaseSequentialStream *)&SD7, "Powers: %d / %d / %d\n",
+
+        chprintf( (BaseSequentialStream *)&SD7, "Powers:\tSteer (%d)\n\tSpeed(%d)\n\tBrake(%d)\n",
                   steer_value, speed_value, brake_value );
-        chThdSleepMilliseconds( 100 );
+        chThdSleepMilliseconds( 10 );
     }
 }
