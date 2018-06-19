@@ -85,6 +85,13 @@ void testDriverControlRoutineExt1( void );
  */
 void testSteerSensorsWorking( void );
 
+/*
+ * @brief   Routine of sonar sensors testing
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testSonarsRoutineWorking( void );
+
 /************************/
 /*** ROS Driver tests ***/
 /************************/
@@ -94,6 +101,9 @@ void testSteerSensorsWorking( void );
  * @note    The routine has internal infinite loop
  */
 void testROSDriverRoutine( void );
+
+
+
 
 /*************************/
 /*** Tests application ***/
@@ -127,6 +137,9 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1)
 
     testDriverControlRoutineExt1();
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SONAR)
+
+    testSonarsRoutineWorking();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_STEER_SENSORS)
 
