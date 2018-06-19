@@ -48,3 +48,13 @@ Driver | Pins | Input / Output
 -------|------|-------
 SD5 | PC12 | TX
 +++ | PD2  | RX 
+
+## Драйвер УЗ-датчиков
+Driver | Pins | Input / Output
+-------|------|-------
+GPT4 | Trg  | -
+PAL | PG2  | output
+PAL | PG3  | output
+SD7 | PE7  | RX
+SD4 | PC11  | RX 
+

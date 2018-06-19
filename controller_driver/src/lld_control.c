@@ -18,20 +18,20 @@
 #define PE14_ACTIVE     PWM_OUTPUT_ACTIVE_HIGH
 #define PE14_DISABLE    PWM_OUTPUT_DISABLED
 
-#define pwmPortCh0      GPIOE
-#define pwmPadCh0       9
+#define pwm1PortCh0     GPIOE
+#define pwm1PadCh0      9
 #define pwmPortCh1      GPIOE
 #define pwmPadCh1       11
 
-#define pwmFreq         4000000
-#define pwmPeriod       4000
+#define pwm1Freq        4000000
+#define pwm1Period      4000
 
 /*** DAC configuration pins      ***/
 #define dacPort         GPIOA
 #define dacPad          4
 
-static  PWMDriver        *pwmDriver      = &PWMD1;
-static  DACDriver        *dacDriver      = &DACD1;
+static  PWMDriver       *pwmDriver      = &PWMD1;
+static  DACDriver       *dacDriver      = &DACD1;
 
 /*** Direction pins configuration          ***/
 /*** F_12 for Driving Wheels Set Direction ***/
@@ -47,8 +47,8 @@ static  DACDriver        *dacDriver      = &DACD1;
 /*** Configuration structures ***/
 
 PWMConfig pwm1conf = {
-    .frequency = pwmFreq,
-    .period    = pwmPeriod, /* 1/1000 s = 1 ms => 1 kHz
+    .frequency = pwm1Freq,
+    .period    = pwm1Period, /* 1/1000 s = 1 ms => 1 kHz
                              * PWM period = period/frequency [s] */
     .callback  = NULL,
     .channels  = {
@@ -87,8 +87,8 @@ void lldControlInit( void )
         return;
 
     /*** PWM pins configuration ***/
-    palSetPadMode( pwmPortCh0, pwmPadCh0, PAL_MODE_ALTERNATE(1) );
-    palSetPadMode( pwmPortCh1, pwmPadCh1, PAL_MODE_ALTERNATE(1) );
+    palSetPadMode( pwm1PortCh0, pwm1PadCh0, PAL_MODE_ALTERNATE(1) );
+    palSetPadMode( pwmPortCh1,  pwmPadCh1,  PAL_MODE_ALTERNATE(1) );
 
     /*** PAL pins configuration ***/
     palSetPadMode( portMotorDir, padMotorDir, PAL_MODE_OUTPUT_PUSHPULL );
@@ -125,7 +125,7 @@ void lldControlSetDrMotorPower( uint8_t lldMotorPower )
     *              <0>              - channel number (first)
     *              <drMotorPower>   - output value (according to mode/size)
     */
-    // need to fix drMotorPower for DAC
+    // need fixing drMotorPower for DAC
     dacPutChannelX( dacDriver, 0, drDriveDuty );
 
 }
