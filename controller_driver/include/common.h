@@ -19,9 +19,8 @@
  * <enum> is compilation type, not preprocessor
  * This must be #define
  */
-/* !! When you define new variable user much higher values than last defined !! */
+/* !! When you define new variable use much higher values than last defined !! */
 #define     PROGRAM_ROUTINE_MASTER                  0
-
 
 #define     PROGRAM_ROUTINE_TEST_BRAKE_SENSOR       1
 #define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR   2
@@ -51,8 +50,8 @@ void commonExtDriverInit ( void );
 #define COMMON_ADC_BUFFER_DEPTH     4
 
 /* Brake sensor current input */
-#define COMMON_ADC_SEQ1             ADC_CHANNEL_IN7
-#define COMMON_ADC_SEQ1_LINE        PAL_LINE( GPIOA, 7 )
+#define COMMON_ADC_SEQ1             ADC_CHANNEL_IN3
+#define COMMON_ADC_SEQ1_LINE        PAL_LINE( GPIOA, 3 )
 #define COMMON_ADC_SEQ1_CH          0
 
 /* Steer sensor position input */

@@ -27,17 +27,16 @@ void testSteerSensorsWorking( void )
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );    // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );    // RX
 
-    uint16_t adcSteerPos = 0, check = 0;
+    uint16_t adcSteerPos = 0, adcPressPow = 0;
 
 
     while( true )
     {
 
         adcSteerPos = lldSteerPosition();
-        check = lldSteerPressPower();
+        adcPressPow = lldSteerPressPower();
 
-        chprintf((BaseSequentialStream *)&SD7, "ADC ch1: %d\n\r", adcSteerPos);
-        chprintf((BaseSequentialStream *)&SD7, "ADC ch2: %d\n\r", check);
+        chprintf( (BaseSequentialStream *)&SD7, "Position: %04d / Power: %04d\n", adcSteerPos, adcPressPow );
         chThdSleepMilliseconds( 100 );
 
     }

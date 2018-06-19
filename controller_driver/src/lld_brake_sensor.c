@@ -24,9 +24,9 @@ static float    sensor_zero_value_mV    = 2500;
 /*** Driver variables ***/
 
 static bool         isInitialized           = false;
-static uint16_t     brakePowerValue_mV      = 0;
+static int32_t      brakePowerValue_mV      = 0;
 
-static float        sensor_max_voltage      = 0;
+static float        sensor_max_voltage      = 3300;
 static float        sensor_min_voltage      = 0;
 
 static float        sensor_k_rate           = 0;
@@ -40,10 +40,10 @@ void brakeSensorInit ( void )
 
     commonADC1UnitInit();
 
-    sensor_max_voltage      = sensor_zero_value_mV + sensitivity_rate * sensor_current_lim_A;
-    sensor_min_voltage      = sensor_zero_value_mV;
+    // sensor_max_voltage      = sensor_zero_value_mV + sensitivity_rate * sensor_current_lim_A;
+    // sensor_min_voltage      = sensor_zero_value_mV;
 
-    sensor_k_rate           = 100 / (sensor_max_voltage - sensor_min_voltage);
+    sensor_k_rate           = 100.0 / (sensor_max_voltage - sensor_min_voltage);
 
 #if ( COMMON_ADC_RES_CONF == ADC_CR1_6B_RESOLUTION )
     adcValue2Ref            = referenceVoltage_mV / ((1 << 6) - 1);
@@ -51,7 +51,9 @@ void brakeSensorInit ( void )
     adcValue2Ref            = referenceVoltage_mV / ((1 << 8) - 1);
 #elif ( COMMON_ADC_RES_CONF == ADC_CR1_10B_RESOLUTION )
     adcValue2Ref            = referenceVoltage_mV / ((1 << 10) - 1);
-#elif ( COMMON_ADC_RES_CONF == ADC_CR1_12B_RESOLUTION )
+// #elif ( COMMON_ADC_RES_CONF == ADC_CR1_12B_RESOLUTION )
+//     adcValue2Ref            = referenceVoltage_mV / ((1 << 12) - 1);
+#else
     adcValue2Ref            = referenceVoltage_mV / ((1 << 12) - 1);
 #endif
 

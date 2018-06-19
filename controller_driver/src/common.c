@@ -51,7 +51,7 @@ static const ADCConversionGroup  conv_group = {
     /* Manual configuration required */
     .smpr1          = ADC_SMPR1_SMP_AN10(ADC_SAMPLE_480) |
                       ADC_SMPR1_SMP_AN13(ADC_SAMPLE_480),
-    .smpr2          = ADC_SMPR2_SMP_AN7(ADC_SAMPLE_480),
+    .smpr2          = ADC_SMPR2_SMP_AN3(ADC_SAMPLE_480),
 
     .sqr1           = ADC_SQR1_NUM_CH(COMMON_ADC_CHANNELS_NUMBER),
     .sqr2           = 0,

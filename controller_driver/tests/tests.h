@@ -13,7 +13,7 @@
  *  Direct control of PA0
  */
 
-#define TEST_BRAKE_SENSOR_SIMULATED
+// #define TEST_BRAKE_SENSOR_SIMULATED
 
 /*
  * @brief   Routine of brake sensor testing
@@ -127,6 +127,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1)
 
     testDriverControlRoutineExt1();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_STEER_SENSORS)
+
+    testSteerSensorsWorking();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_ROS_DRIVER)
 

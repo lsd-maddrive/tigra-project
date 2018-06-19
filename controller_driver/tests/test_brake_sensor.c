@@ -54,6 +54,8 @@ static void simulation_init ( void )
 
     chThdCreateStatic( waDACThd, sizeof(waDACThd), NORMALPRIO, DACThd, NULL );
     chThdCreateStatic( waBtnThd, sizeof(waBtnThd), NORMALPRIO, BtnThd, NULL );
+
+    chprintf( (BaseSequentialStream *)&SD7, "Simulation enabled\n" );
 }
 
 #endif
@@ -65,15 +67,15 @@ static const SerialConfig sdcfg = {
 
 void testBrakeSensorRoutine( void )
 {
-#ifdef TEST_BRAKE_SENSOR_SIMULATED
-    simulation_init();
-#endif
-
     sdStart( &SD7, &sdcfg );
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
     brakeSensorInit();
+
+#ifdef TEST_BRAKE_SENSOR_SIMULATED
+    simulation_init();
+#endif
 
     while ( 1 )
     {
