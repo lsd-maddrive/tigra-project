@@ -23,6 +23,7 @@ Driver | Pins | Input / Output
 -------|------|-------
 PWM1 | PE11 | output (channel 1)
 PAL  | PE15 | output
+PAL  | PG1  | output
 
 ## Драйвер управления приводом движения 
 Driver | Pins | Input / Output

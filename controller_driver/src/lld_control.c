@@ -24,7 +24,7 @@
 #define pwmPadCh1       11
 
 #define pwm1Freq        4000000
-#define pwm1Period      4000
+#define pwm1Period      40000
 
 /*** DAC configuration pins      ***/
 #define dacPort         GPIOA
@@ -35,20 +35,22 @@ static  DACDriver       *dacDriver      = &DACD1;
 
 /*** Direction pins configuration          ***/
 /*** F_12 for Driving Wheels Set Direction ***/
-#define portMotorDir    GPIOF
-#define padMotorDir     12
+#define portMotorDir        GPIOF
+#define padMotorDir         12
 /*** E_15 for Braking Set Direction        ***/
-#define portBrakeDir    GPIOE
-#define padBrakeDir     15
+#define portBrakeDirIN1     GPIOE
+#define padBrakeDirIN1      15
+#define portBrakeDirIN2     GPIOG
+#define padBrakeDirIN2      1
 /*** E_3 for Steering Set Direction        ***/
-#define portSteerDir    GPIOE
-#define padSteerDir     3
+#define portSteerDir        GPIOE
+#define padSteerDir         3
 
 /*** Configuration structures ***/
 
 PWMConfig pwm1conf = {
     .frequency = pwm1Freq,
-    .period    = pwm1Period, /* 1/1000 s = 1 ms => 1 kHz
+    .period    = pwm1Period, /* 1/1000 s = 10 ms => 100 Hz
                              * PWM period = period/frequency [s] */
     .callback  = NULL,
     .channels  = {
@@ -92,7 +94,8 @@ void lldControlInit( void )
 
     /*** PAL pins configuration ***/
     palSetPadMode( portMotorDir, padMotorDir, PAL_MODE_OUTPUT_PUSHPULL );
-    palSetPadMode( portBrakeDir, padBrakeDir, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetPadMode( portBrakeDirIN1, padBrakeDirIN1, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetPadMode( portBrakeDirIN2, padBrakeDirIN2, PAL_MODE_OUTPUT_PUSHPULL );
     palSetPadMode( portSteerDir, padSteerDir, PAL_MODE_OUTPUT_PUSHPULL );
 
     /*
@@ -145,15 +148,29 @@ void lldControlSetSteerPower( uint8_t lldSteerPower )
 
 /*
  * @brief   Set power for braking motor
- * @param   lldBrakePower   Motor power value [0 100]
+ * @param   lldBrakePower   Motor power value [-100 100]
+ * @note    power (0, 100]  -> clockwise
+ * @note    power [-100, 0} -> counterclockwise
  */
-void lldControlSetBrakePower( uint8_t lldBrakePower )
+void lldControlSetBrakePower( int8_t lldBrakePower )
 {
-    int16_t  powerInDutyK  =   1;
-    int16_t  powerInDutyB  =   0;
-    uint16_t drBkareDuty   =   lldBrakePower * powerInDutyK + powerInDutyB;
 
-    pwmEnableChannel( pwmDriver, brakePWMch, drBkareDuty );
+    if( lldBrakePower < 0 )
+    {
+      palSetPad( portBrakeDirIN1, padBrakeDirIN1 );
+      palClearPad( portBrakeDirIN2, padBrakeDirIN2 );
+    }
+    else if( lldBrakePower > 0 )
+    {
+      palClearPad( portBrakeDirIN1, padBrakeDirIN1 );
+      palSetPad( portBrakeDirIN2, padBrakeDirIN2 );
+    }
+
+    int16_t  powerInDutyK  =   400;
+    int16_t  powerInDutyB  =   0;
+    uint16_t drBrakeDuty   =   abs(lldBrakePower) * powerInDutyK + powerInDutyB;
+
+    pwmEnableChannel( pwmDriver, brakePWMch, drBrakeDuty );
 }
 
 /*
@@ -175,13 +192,13 @@ void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
  * @param   lldBrakeDirection   Motor direction true - forward
  *                                              false - backward
  */
-void lldControlSetBrakeDirection( bool lldBrakeDirection )
-{
-    if(lldBrakeDirection)
-        palSetPad( portBrakeDir, padBrakeDir );
-    else
-        palClearPad( portBrakeDir, padBrakeDir );
-}
+//void lldControlSetBrakeDirection( bool lldBrakeDirection )
+//{
+//    if(lldBrakeDirection)
+//        palSetPad( portBrakeDirIN1, padBrakeDirIN1 );
+//    else
+//        palClearPad( portBrakeDir, padBrakeDir );
+//}
 
 /*
  * @brief   Set steering motor direction

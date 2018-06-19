@@ -15,19 +15,15 @@
 void lldSonarsInit( void );
 
 /*
- * @brief                   Receive values of sonar (in cm) through UART5
- * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
- * @arg                     buf - buffer name (size = 4 byte)
+ * @brief                   Get sonar values from memory
  * @return                  values of sonar in cm
  */
-uint16_t getSonarValU5cm( uint8_t firstR, uint8_t buf[4] );
+uint16_t getSonarValU4cm( void );
 
 /*
- * @brief                   Receive values of sonar (in cm) through UART5
- * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
- * @arg                     buf - buffer name (size = 4 byte)
+ * @brief                   Get sonar values from memory
  * @return                  values of sonar in cm
  */
-uint16_t getSonarValU7cm( uint8_t firstR, uint8_t buf[4] );
+uint16_t getSonarValU7cm( void );
 
 #endif /* INCLUDE_LLD_SONARS_H_ */

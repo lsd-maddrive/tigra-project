@@ -33,7 +33,7 @@
 #define     PROGRAM_ROUTINE_TEST_LL_SONAR           6
 
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_SONAR
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1
 
 /******************/
 /*** Prototypes ***/
