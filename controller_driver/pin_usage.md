@@ -42,3 +42,14 @@ Driver | Pins | Input / Output
 ADC1 | PC0  | input (AN 10)
 ADC1 | PC3  | input (AN 13)
 GPT8 | Trg  | -
+
+## Драйвер УЗ-датчиков
+Driver | Pins | Input / Output
+-------|------|-------
+GPT4 | Trg  | -
+PAL | PG2  | output
+PAL | PG3  | output
+SD7 | PE8  | TX
+SD7 | PE7  | RX
+SD5 | PC12 | TX
+SD5 | PD2  | RX 

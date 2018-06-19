@@ -14,18 +14,20 @@
  */
 void lldSonarsInit( void );
 
-#if 0
 /*
- * @brief                   Get Adc value of sonar
- * @return                  ADC value [0, 4096]
+ * @brief                   Receive values of sonar (in cm) through UART5
+ * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
+ * @arg                     buf - buffer name (size = 4 byte)
+ * @return                  values of sonar in cm
  */
-//uint16_t lldSonar7077AdcVal( uint8_t number );
+uint16_t getSonarValU5cm( uint8_t firstR, uint8_t buf[4] );
 
 /*
- * @brief                   Set duty of PWM9 = 20 mks to sync sensor processing
+ * @brief                   Receive values of sonar (in cm) through UART5
+ * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
+ * @arg                     buf - buffer name (size = 4 byte)
+ * @return                  values of sonar in cm
  */
-//void lldSonarSync( void );
-
-#endif
+uint16_t getSonarValU7cm( uint8_t firstR, uint8_t buf[4] );
 
 #endif /* INCLUDE_LLD_SONARS_H_ */

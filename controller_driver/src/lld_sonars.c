@@ -12,9 +12,19 @@ static GPTDriver                    *trSonarGPT            = &GPTD4;
 #define padBrownSonar               3
 #define portSonar                   GPIOG
 
+#define portSD7                     GPIOE
+#define padTX7                      8
+#define padRX7                      7
+
+#define portTXSD5                   GPIOC
+#define portRXSD5                   GPIOD
+#define padTX5                      12
+#define padRX5                      2
+
 static virtual_timer_t reset_vt;
 static uint32_t port_arg;
 
+/***  Reset pals to generate kick for sonars ***/
 static void reset_cb(void *arg)
 {
 
@@ -28,7 +38,6 @@ static void reset_cb(void *arg)
 uint8_t countGPT = 0;
 static void gpt4cb( GPTDriver *gptp )
 {
-
 
     countGPT += 1;
     if( countGPT == 1)
@@ -44,6 +53,7 @@ static void gpt4cb( GPTDriver *gptp )
 
       countGPT = 0;
     }
+    // use virtual timer to generate width = 1 ms, not 10 ms of timer
     chSysLockFromISR();
     chVTSetI(&reset_vt, MS2ST(1), reset_cb, NULL);
     chSysUnlockFromISR();
@@ -52,12 +62,25 @@ static void gpt4cb( GPTDriver *gptp )
 /*** Configuration structures ***/
 
 static const GPTConfig gpt4cfg1 = {
-  .frequency =  100000,    // 100 kHz
+  .frequency =  100000,         // 100 kHz
   .callback  =  gpt4cb,
   .cr2       =  TIM_CR2_MMS_1,  /* MMS = 010 = TRGO on Update Event.        */
   .dier      =  0U
 };
 
+static const SerialConfig sd7cfg = {
+  .speed = 9600,
+  .cr1 = 0,
+  .cr2 = USART_CR2_LINEN,
+  .cr3 = 0
+};
+
+static const SerialConfig sd5cfg = {
+  .speed = 9600,
+  .cr1 = 0,
+  .cr2 = USART_CR2_LINEN,
+  .cr3 = 0
+};
 
 /*
  * @brief                   Initialize periphery connected to sonars
@@ -71,163 +94,55 @@ void lldSonarsInit( void )
     chVTObjectInit(&reset_vt);
     gptStart( trSonarGPT, &gpt4cfg1 );
 
-    gptStartContinuous( trSonarGPT, 10000); // triggering each 100 ms => 10 Hz
+    gptStartContinuous( trSonarGPT, 10000);   // triggering each 100 ms => 10 Hz
 
-}
+    sdStart( &SD7, &sd7cfg );
+    palSetPadMode( portSD7, padTX7, PAL_MODE_ALTERNATE(8) );
+    palSetPadMode( portSD7, padRX7, PAL_MODE_ALTERNATE(8) );
 
-
-#if 0
-#define adc3NumChannels             2
-#define adc3BufDepth                1
-
-static adcsample_t adc3Buffer[adc3NumChannels * adc3BufDepth];
-
-static ADCDriver                    *adcSonar7077      = &ADCD3;
-//static GPTDriver                    *adcGPT            = &GPTD4;
-static PWMDriver                    *pwm4Driver        = &PWMD4;
-
-/***  PWM configuration pins    ***/
-/***  PB8 - Trg for Sonar 7077            ***/
-#define PB8_ACTIVE         PWM_OUTPUT_ACTIVE_HIGH
-#define PB8_DISABLE        PWM_OUTPUT_DISABLED
-#define bigSonar7077       2
-/***  PB9 - not used            ***/
-#define PB9_ACTIVE         PWM_OUTPUT_ACTIVE_HIGH
-#define PB9_DISABLE        PWM_OUTPUT_DISABLED
-#define bigSonar7077new    3
-
-#define pwm4PortCh3      GPIOB
-#define pwm4PadCh3       8
-#define pwm4PortCh4      GPIOB
-#define pwm4PadCh4       9
-
-#define pwm4Freq         40000
-#define pwm4Period       8000      // 200 ms => 5 Hz
-#define sonarSync        4000         // 20 mks
-
-
-#define sonar7077AnalogInput         ADC_CHANNEL_IN9
-#define sonarNew7077AnalogInput      ADC_CHANNEL_IN15
-
-
-#define sonar7077AnalogLine          PAL_LINE( GPIOF, 3 )
-#define sonarNew7077AnalogLine       PAL_LINE( GPIOF, 5 )
-
-uint16_t lldSonar7077           = 0;
-uint16_t lldSonar7077new        = 0;
-
-
-/*** Callback prototype ***/
-
-/*
- * @brief                   write values in sequence (one after each other)
- */
-//uint8_t counter = 0;
-//static void adc3cb(ADCDriver *adcp, adcsample_t *buffer, size_t n)
-//{
-//
-//    adcp = adcp; n = n;
-//    counter += 1;
-//    if( counter == 1 )
-//      lldSonar7077              = adc3Buffer[0];
-//    if( counter == 2 )
-//    {
-//      lldSonar7077new           = adc3Buffer[1];
-//      counter = 0;
-//    }
-//
-//}
-
-static void gpt4cb()
-{
-
-}
-
-/*** Configuration structures ***/
-
-static const GPTConfig gpt4cfg1 = {
-  .frequency =  100000,    // 100 kHz
-  .callback  =  gpt4cb,
-  .cr2       =  TIM_CR2_MMS_1,  /* MMS = 010 = TRGO on Update Event.        */
-  .dier      =  0U
-};
-
-//static const ADCConversionGroup adc3cfg = {
-//  .circular     = true,                     // working mode = looped
-//  .num_channels = adc3NumChannels,          // number of channels
-//  .end_cb       = adc3cb,                   // after ADC conversion ends - call this func
-//  .error_cb     = NULL,
-//  .cr1          = 0,
-//  .cr2          = ADC_CR2_EXTEN_RISING | ADC_CR2_EXTSEL_SRC(0b0101),  // Commutated from PWM
-//  /* 0b0101, and from RM (p.452) it is PWM4 CH 4 */
-//  /* ADC_CR2_EXTEN_RISING - means to react on the rising signal (front) */
-//  .smpr1        = ADC_SMPR1_SMP_AN15(ADC_SAMPLE_144),
-//  .smpr2        = ADC_SMPR2_SMP_AN9(ADC_SAMPLE_144),
-//  .sqr1         = ADC_SQR1_NUM_CH(adc3NumChannels),
-//  .sqr2         = 0,
-//  .sqr3         = ADC_SQR3_SQ1_N(sonar7077AnalogInput)|
-//                  ADC_SQR3_SQ2_N(sonarNew7077AnalogInput)
-//};
-//
-///*
-// * @brief                   Synchronization processing of two sensors
-// */
-//PWMConfig pwm4conf = {
-//    .frequency = pwm4Freq,
-//    .period    = pwm4Period, /* 100 ms => 10 Hz
-//                              * PWM period = period/frequency [s] */
-//    .callback  = NULL,
-//    .channels  = {
-//                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL},
-//                  {.mode = PWM_OUTPUT_DISABLED,     .callback = NULL},
-//                  {.mode = PB8_ACTIVE,              .callback = NULL},
-//                  {.mode = PB9_ACTIVE,              .callback = NULL}
-//                  },
-//    .cr2        = 0,
-//    .dier       = 0
-//};
-
-/*
- * @brief                   Initialize periphery connected to sonars
- */
-void lldSonarsInit( void )
-{
-
-    /*** PWM pins configuration ***/
-    palSetPadMode( pwm4PortCh3, pwm4PadCh3, PAL_MODE_ALTERNATE(2) );
-    palSetPadMode( pwm4PortCh4, pwm4PadCh4, PAL_MODE_ALTERNATE(2) );
-    /*** ADC pins configuration ***/
-//    gptStart( adcGPT, &gpt4cfg1 );
-    adcStart( adcSonar7077, NULL );
-    palSetLineMode( sonar7077AnalogLine,     PAL_MODE_INPUT_ANALOG );
-    palSetLineMode( sonarNew7077AnalogLine,  PAL_MODE_INPUT_ANALOG );
-
-    adcStartConversion( adcSonar7077, &adc3cfg, adc3Buffer, adc3BufDepth);
-    pwmStart( pwm4Driver, &pwm4conf );
-
-//    gptStartContinuous( adcGPT, 10000); // triggering each 100 ms => 10 Hz
+    sdStart( &SD5, &sd5cfg );
+    palSetPadMode( portTXSD5, padTX5, PAL_MODE_ALTERNATE(8) );
+    palSetPadMode( portRXSD5, padRX5, PAL_MODE_ALTERNATE(8) );
 
 }
 
 /*
- * @brief                   Get Adc value of sonar
- * @return                  ADC value [0, 4096]
+ * @brief                   Receive values of sonar (in cm) through UART5
+ * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
+ * @arg                     buf - buffer name (size = 4 byte)
+ * @return                  values of sonar in cm
  */
-uint16_t lldSonar7077AdcVal( uint8_t number )
+uint16_t getSonarValU5cm( uint8_t firstR, uint8_t buf[4] )
 {
-    if( number == 1 )
-      return lldSonar7077;
-    if( number == 2)
-      return lldSonar7077new;
+    uint16_t sonarVal = 0;
+    firstR = sdGet( &SD5 );
+    if( firstR == 'R' )
+    {
+      sdRead( &SD5, buf, 3 );
+      buf[3] = 0;
+      // convert bufSon into string, after this srt convert into long
+      sonarVal = strtoul( buf, NULL, 0 );
+      return sonarVal;
+    }
 }
 
 /*
- * @brief                   Set duty of PWM9 = 200 mks to sync sensor processing
+ * @brief                   Receive values of sonar (in cm) through UART5
+ * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
+ * @arg                     buf - buffer name (size = 4 byte)
+ * @return                  values of sonar in cm
  */
-void lldSonarSync( void )
+uint16_t getSonarValU7cm( uint8_t firstR, uint8_t buf[4] )
 {
-
-     pwmEnableChannel( pwm4Driver, bigSonar7077,    sonarSync );
-     pwmEnableChannel( pwm4Driver, bigSonar7077new, sonarSync );
+    uint16_t sonarVal = 0;
+    firstR = sdGet( &SD7 );
+    if( firstR == 'R' )
+    {
+      sdRead( &SD7, buf, 3 );
+      buf[3] = 0;
+      // convert bufSon into string, after this srt convert into long
+      sonarVal = strtoul( buf, NULL, 0 );
+      return sonarVal;
+    }
 }
-#endif
+
