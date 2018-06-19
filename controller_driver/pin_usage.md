@@ -3,9 +3,9 @@
 ## Модуль системы торможения
 Driver | Pins | Input / Output
 -------|------|-------
-PAL  | PA0       | input
-ADC2 | PA7 (AN7) | input
-GPT6 | Trg       | -
+PAL  | PA0 | input
+ADC1 | PA3 | input (AN3)
+GPT6 | Trg | -
 
 ## Модуль ручки тормоза
 Driver | Pins | Input / Output
@@ -41,7 +41,7 @@ Driver | Pins | Input / Output
 -------|------|-------
 ADC1 | PC0  | input (AN 10)
 ADC1 | PC3  | input (AN 13)
-GPT8 | Trg  | -
+GPT6 | Trg  | -
 
 ## Драйвер системы связи ROS
 Driver | Pins | Input / Output
