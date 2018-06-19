@@ -4,38 +4,8 @@
 
 
 /*** Variable for sonar   */
-uint16_t brownSonarVal = 0;
-uint8_t buf5Son[4];
-
-static THD_WORKING_AREA(waGetSonarValU5Thd, 1024);
-static THD_FUNCTION(GetSonarValU5Thd, arg)
-{
-    arg = arg;
-    uint8_t firstR = 0;
-
-    while( 1 )
-    {
-
-      brownSonarVal = getSonarValU5cm( firstR, buf5Son );
-
-    }
-}
-
-uint8_t buf7Son[4];
-uint16_t greenSonarVal = 0;
-
-static THD_WORKING_AREA(waGetSonarValU7Thd, 1024);
-static THD_FUNCTION(GetSonarValU7Thd, arg)
-{
-    arg = arg;
-    uint8_t firstR = 0;
-    while( 1 )
-    {
-
-      greenSonarVal = getSonarValU7cm( firstR, buf7Son );
-
-    }
-}
+//uint16_t brownSonarVal = 0;
+//uint8_t buf5Son[4];
 
 
 /*
@@ -47,15 +17,16 @@ static THD_FUNCTION(GetSonarValU7Thd, arg)
 void testSonarsRoutineWorking( void )
 {
     lldSonarsInit( );
-
-    chThdCreateStatic( waGetSonarValU5Thd, sizeof(waGetSonarValU5Thd), NORMALPRIO, GetSonarValU5Thd, NULL ); // brown
-    chThdCreateStatic( waGetSonarValU7Thd, sizeof(waGetSonarValU7Thd), NORMALPRIO, GetSonarValU7Thd, NULL ); // green
-
+    uint16_t blueSonar = 0, brownSonar = 0;
     while( true )
     {
-      chprintf( (BaseSequentialStream *)&SD7, "Br: %d Bl: %d\n\r", brownSonarVal, greenSonarVal );
+      palToggleLine( LINE_LED2 );
+      blueSonar  =  getSonarValU7cm();
+      brownSonar =  getSonarValU4cm();
 
-      chThdSleepMilliseconds( 10 );
+      chprintf( (BaseSequentialStream *)&SD7, "Br: %d Bl: %d\n\r", brownSonar, blueSonar );
+
+      chThdSleepMilliseconds( 100 );
 
     }
 

@@ -7,19 +7,16 @@ void testDriverControlRoutine( void )
     lldControlInit( );
 
     lldControlSetSteerPower( 250 );
-    lldControlSetBrakePower( 250 );
+    lldControlSetBrakePower( 75 );
     lldControlSetDrMotorPower( 250 );
-
+    int8_t test_val = 75;
     while( true )
     {
-        lldControlSetDrMotorDirection( true );
-        lldControlSetBrakeDirection( true );
-        lldControlSetSteerDirection( true );
-        chThdSleepMilliseconds(500);
-        lldControlSetDrMotorDirection( false );
-        lldControlSetBrakeDirection( false );
-        lldControlSetSteerDirection( false );
-        chThdSleepMilliseconds(500);
+
+       lldControlSetBrakePower( test_val );
+       test_val *= -1;
+
+       chThdSleepMilliseconds(500);
     }
 }
 
@@ -66,7 +63,7 @@ static THD_FUNCTION(SpeedThd, arg)
 
 int16_t     brake_values_delta  = 10;
 int16_t     brake_delta_sign    = 1;
-int16_t     brake_value         = 0;
+int8_t      brake_value         = 0;
 
 static THD_WORKING_AREA(waBrakeThd, 128);
 static THD_FUNCTION(BrakeThd, arg)
@@ -74,7 +71,7 @@ static THD_FUNCTION(BrakeThd, arg)
     arg = arg;
     while ( 1 )
     {
-        lldControlSetBrakeDirection( brake_value > 0 );
+
         lldControlSetBrakePower( brake_value );
 
         chThdSleepMilliseconds( 100 );
@@ -134,6 +131,6 @@ void testDriverControlRoutineExt1( void )
 
         chprintf( (BaseSequentialStream *)&SD7, "Powers:\tSteer (%d)\n\tSpeed(%d)\n\tBrake(%d)\n",
                   steer_value, speed_value, brake_value );
-        chThdSleepMilliseconds( 10 );
+        chThdSleepMilliseconds( 100 );
     }
 }

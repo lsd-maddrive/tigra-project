@@ -82,6 +82,52 @@ static const SerialConfig sd4cfg = {
   .cr3 = 0
 };
 
+uint16_t brownSonarVal = 0;
+uint8_t buf5Son[4];
+
+static THD_WORKING_AREA(waGetSonarValU4Thd, 1024);
+static THD_FUNCTION(GetSonarValU4Thd, arg)
+{
+    arg = arg;
+    uint8_t firstR = 0;
+
+    while( 1 )
+    {
+      firstR = sdGet( &SD4);
+      if( firstR == 'R' )
+      {
+         sdRead( &SD4, buf5Son, 3 );
+         buf5Son[3] = 0;
+         // convert bufSon into string, after this srt convert into long
+         brownSonarVal = strtoul( buf5Son, NULL, 0 );
+      }
+    }
+}
+
+uint8_t buf7Son[4];
+uint16_t greenSonarVal = 0;
+
+static THD_WORKING_AREA(waGetSonarValU7Thd, 1024);
+static THD_FUNCTION(GetSonarValU7Thd, arg)
+{
+
+    arg = arg;
+    uint8_t firstR = 0;
+    while( 1 )
+    {
+      firstR = sdGet( &SD7 );
+      if( firstR == 'R' )
+      {
+         sdRead( &SD7, buf7Son, 3 );
+         buf7Son[3] = 0;
+         // convert bufSon into string, after this srt convert into long
+         greenSonarVal = strtoul( buf7Son, NULL, 0 );
+       }
+    }
+}
+
+
+
 /*
  * @brief                   Initialize periphery connected to sonars
  */
@@ -104,45 +150,30 @@ void lldSonarsInit( void )
     palSetPadMode( portTXSD4, padTX4, PAL_MODE_ALTERNATE(8) );
     palSetPadMode( portRXSD4, padRX4, PAL_MODE_ALTERNATE(8) );
 
+    chThdCreateStatic( waGetSonarValU4Thd, sizeof(waGetSonarValU4Thd), NORMALPRIO, GetSonarValU4Thd, NULL ); // brown
+    chThdCreateStatic( waGetSonarValU7Thd, sizeof(waGetSonarValU7Thd), NORMALPRIO, GetSonarValU7Thd, NULL ); // green
+
 }
 
 /*
- * @brief                   Receive values of sonar (in cm) through UART5
- * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
- * @arg                     buf - buffer name (size = 4 byte)
+ * @brief                   Get sonar values from memory
  * @return                  values of sonar in cm
  */
-uint16_t getSonarValU5cm( uint8_t firstR, uint8_t buf[4] )
+uint16_t getSonarValU4cm( void )
 {
-    uint16_t sonarVal = 0;
-    firstR = sdGet( &SD4);
-    if( firstR == 'R' )
-    {
-      sdRead( &SD4, buf, 3 );
-      buf[3] = 0;
-      // convert bufSon into string, after this srt convert into long
-      sonarVal = strtoul( buf, NULL, 0 );
-      return sonarVal;
-    }
+
+      return brownSonarVal;
+
 }
 
 /*
- * @brief                   Receive values of sonar (in cm) through UART5
- * @arg                     firstR - first byte from sonar, if sonar works correctly firstR = 'R'
- * @arg                     buf - buffer name (size = 4 byte)
+ * @brief                   Get sonar values from memory
  * @return                  values of sonar in cm
  */
-uint16_t getSonarValU7cm( uint8_t firstR, uint8_t buf[4] )
+uint16_t getSonarValU7cm( void )
 {
-    uint16_t sonarVal = 0;
-    firstR = sdGet( &SD7 );
-    if( firstR == 'R' )
-    {
-      sdRead( &SD7, buf, 3 );
-      buf[3] = 0;
-      // convert bufSon into string, after this srt convert into long
-      sonarVal = strtoul( buf, NULL, 0 );
-      return sonarVal;
-    }
+
+      return greenSonarVal;
+
 }
 

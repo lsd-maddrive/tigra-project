@@ -23,9 +23,11 @@ void lldControlSetSteerPower ( uint8_t lldSteerPower );
 
 /*
  * @brief   Set power for braking motor
- * @param   lldBrakePower   Motor power value [0 100]
+ * @param   lldBrakePower   Motor power value [-100 100]
+ * @note    power (0, 100]  -> clockwise
+ * @note    power [-100, 0} -> counterclockwise
  */
-void lldControlSetBrakePower ( uint8_t lldBrakePower );
+void lldControlSetBrakePower( int8_t lldBrakePower );
 
 /*
  * @brief   Set motor direction
@@ -34,12 +36,6 @@ void lldControlSetBrakePower ( uint8_t lldBrakePower );
  */
 void lldControlSetDrMotorDirection ( bool lldDrMotorDirection );
 
-/*
- * @brief   Set braking motor direction
- * @param   lldBrakeDirection   Motor direction true - forward
- *                                              false - backward
- */
-void lldControlSetBrakeDirection ( bool lldBrakeDirection );
 
 /*
  * @brief   Set steering motor direction
