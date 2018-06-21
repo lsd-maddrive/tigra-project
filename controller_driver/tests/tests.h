@@ -137,9 +137,14 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1)
 
     testDriverControlRoutineExt1();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SONAR)
 
     testSonarsRoutineWorking();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SHARP)
+
+    testSharpRoutineWorking();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_STEER_SENSORS)
 

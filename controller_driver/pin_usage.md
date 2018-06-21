@@ -57,5 +57,10 @@ GPT4 | Trg  | -
 PAL | PG2  | output
 PAL | PG3  | output
 SD7 | PE7  | RX
-SD4 | PC11  | RX 
+SD4 | PC11 | RX 
 
+## Драйвер ИК-датчика 
+Driver | Pins | Input / Output
+-------|------|-------
+GPT8 | Trg  | -
+ADC3 | PF3  | input (AN 9)

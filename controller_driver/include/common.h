@@ -31,9 +31,10 @@
 #define     PROGRAM_ROUTINE_TEST_STEER_SENSORS      5
 #define     PROGRAM_ROUTINE_TEST_ROS_DRIVER         89
 #define     PROGRAM_ROUTINE_TEST_LL_SONAR           6
+#define     PROGRAM_ROUTINE_TEST_LL_SHARP           7
 
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_SHARP
 
 /******************/
 /*** Prototypes ***/
