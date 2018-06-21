@@ -4,7 +4,9 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
+/* Constant power of cylinder return (up to the endpoint sensor) */
 #define BRAKE_UNIT_RETURN_CONST_POWER   20
+/* Rate for conversion from reference to comparison with sensor output */
 #define BRAKE_UNIT_PRESS_POWER_RATE     1.0
 
 /******************************/
@@ -76,7 +78,6 @@ void brakeUnitCSSetPower( int16_t pressPower )
         if ( !brakeSensorIsPressed() )
         {
             /* Still not in the end - set inversed const power */
-//            lldControlSetBrakeDirection( false );
             lldControlSetBrakePower( -BRAKE_UNIT_RETURN_CONST_POWER );
         }
         else
@@ -87,7 +88,8 @@ void brakeUnitCSSetPower( int16_t pressPower )
     }
     else
     {
-      lldControlSetBrakePower( 0 );
+        /* Just disable the system */
+        lldControlSetBrakePower( 0 );
     }
 }
 

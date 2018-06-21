@@ -1,6 +1,18 @@
 #include <tests.h>
 #include <lld_control.h>
 
+/**************************/
+/*** CONFIGURATION ZONE ***/
+/**************************/
+
+static float    speedLowestVoltage     = 0.8;
+/* Can be set or set to 0 to calculate from <speedLowestVoltage> */
+static int32_t  speedLowestDACValue    = 0;
+
+/******************************/
+/*** CONFIGURATION ZONE END ***/
+/******************************/
+
 /*** Hardware configuration     ***/
 
 /***  PWM configuration pins    ***/
@@ -79,6 +91,7 @@ static const DACConfig dac_cfg = {
 /***********************************************************/
 
 static bool         isInitialized       = false;
+static float        speedConvRate       = 0.0;
 
 /*
  * @brief   Initialize periphery connected to driver control
@@ -110,6 +123,17 @@ void lldControlInit( void )
 
     pwmStart( pwmDriver, &pwm1conf );
 
+    /* Calculate some parameters */
+
+    if ( speedLowestDACValue == 0 )
+    {
+        speedLowestDACValue = ( 4095 / 3.3 * speedLowestVoltage );
+    }
+
+    speedConvRate = (4095 - speedLowestDACValue) / 100.0;
+
+    /* Set initialization flag */
+
     isInitialized = true;
 }
 
@@ -119,9 +143,7 @@ void lldControlInit( void )
  */
 void lldControlSetDrMotorPower( uint8_t lldMotorPower )
 {
-    float  powerInDutyK  =   30.95;
-    int16_t  powerInDutyB  =   1000;
-    uint16_t drDriveDuty   =   lldMotorPower * powerInDutyK + powerInDutyB;
+    uint16_t drDriveDuty = lldMotorPower * speedConvRate + speedLowestDACValue;
     /*
     * Write value to DAC channel
     * Arguments:   <dacDriver>      - pointer to DAC driver
@@ -130,7 +152,6 @@ void lldControlSetDrMotorPower( uint8_t lldMotorPower )
     */
     // need fixing drMotorPower for DAC
     dacPutChannelX( dacDriver, 0, drDriveDuty );
-
 }
 
 /*
