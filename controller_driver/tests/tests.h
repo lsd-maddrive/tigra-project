@@ -33,6 +33,13 @@ void testBrakeSensorRoutine( void );
  */
 void testBrakeUnitCSRoutine( void );
 
+/**
+ * @brief   Routine of brake system integral test
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testBrakeUintOpenedRoutine( void );
+
 /***********************************/
 /*** Wheel position sensor tests ***/
 /***********************************/
@@ -92,6 +99,8 @@ void testSteerSensorsWorking( void );
  */
 void testSonarsRoutineWorking( void );
 
+
+
 /************************/
 /*** ROS Driver tests ***/
 /************************/
@@ -101,6 +110,7 @@ void testSonarsRoutineWorking( void );
  * @note    The routine has internal infinite loop
  */
 void testROSDriverRoutine( void );
+
 
 
 
@@ -153,6 +163,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_ROS_DRIVER)
 
     testROSDriverRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_UNIT_OPENED)
+
+    testBrakeUintOpenedRoutine();
 
 #endif
 }

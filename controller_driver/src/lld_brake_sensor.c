@@ -27,7 +27,7 @@ static bool         isInitialized           = false;
 static int32_t      brakePowerValue_mV      = 0;
 
 static float        sensor_max_voltage      = 3300;
-static float        sensor_min_voltage      = 0;
+static float        sensor_min_voltage      = 1650;
 
 static float        sensor_k_rate           = 0;
 static float        adcValue2Ref            = 0;
@@ -39,6 +39,8 @@ void brakeSensorInit ( void )
         return;
 
     commonADC1UnitInit();
+
+    palSetLineMode( brakeSensorClickLine, PAL_MODE_OUTPUT_PUSHPULL );
 
     // sensor_max_voltage      = sensor_zero_value_mV + sensitivity_rate * sensor_current_lim_A;
     // sensor_min_voltage      = sensor_zero_value_mV;
@@ -81,8 +83,17 @@ int16_t brakeSensorGetPressPower ( void )
 
     brakePowerValue_mV = commonADC1UnitGetValue( brakeSensorAnalogInputCh ) * adcValue2Ref;
 
+    value = brakePowerValue_mV;
     value = (brakePowerValue_mV - sensor_min_voltage) * sensor_k_rate;
     value = CLIP_VALUE( value, 0, 100 );
 
     return value;
+}
+
+int16_t brakeSensorGetVoltage( void )
+{
+    if ( !isInitialized )
+       return -1;
+
+    return brakePowerValue_mV;
 }

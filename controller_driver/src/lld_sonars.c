@@ -56,6 +56,9 @@ static const ADCConversionGroup adc3cfg = {
   .sqr3         = ADC_SQR3_SQ1_N(SharpAnalogInput)
 };
 
+/*
+ * @brief                   Initialize periphery connected to IR-sensor
+ */
 void lldSharpInit( void )
 {
   /*** ADC pins configuration ***/
@@ -64,7 +67,7 @@ void lldSharpInit( void )
      palSetLineMode( SharpAnalogLine,     PAL_MODE_INPUT_ANALOG );
      adcStartConversion( adcSharp, &adc3cfg, adc3Buffer, adc3BufDepth);
 
-     gptStartContinuous( adcGPT, 1000); // triggering each 100 ms => 10 Hz
+     gptStartContinuous( adcGPT, 1000); // triggering each 10 ms => 100 Hz
 }
 
 /*
