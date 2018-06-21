@@ -119,8 +119,8 @@ void lldControlInit( void )
  */
 void lldControlSetDrMotorPower( uint8_t lldMotorPower )
 {
-    int16_t  powerInDutyK  =   1;
-    int16_t  powerInDutyB  =   0;
+    float  powerInDutyK  =   30.95;
+    int16_t  powerInDutyB  =   1000;
     uint16_t drDriveDuty   =   lldMotorPower * powerInDutyK + powerInDutyB;
     /*
     * Write value to DAC channel
