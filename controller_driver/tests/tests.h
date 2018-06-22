@@ -113,7 +113,7 @@ void testSonarsRoutineWorking( void );
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
  */
-void testDriveSpeedCSRoutine( void )
+void testDriveSpeedCSRoutine( void );
 
 
 /************************/
