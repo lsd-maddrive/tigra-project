@@ -28,6 +28,8 @@ void testSharpRoutineWorking( void )
     bool flag = false;
     while( 1 )
     {
+      //sharpSunny = lldSharpADCval();
+#if 1
         start = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         if( start == 1 )
           flag = true;
@@ -39,7 +41,7 @@ void testSharpRoutineWorking( void )
         {
           sdWrite( &SD7, &sharpSunny, 2 );
         }
-
+#endif
 //        chprintf( (BaseSequentialStream *)&SD7, "Sharp: %d\n\r", sharpSunny );
         chThdSleepMilliseconds( 10 );
     }

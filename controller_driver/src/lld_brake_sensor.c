@@ -38,7 +38,7 @@ void brakeSensorInit ( void )
 
     commonADC1UnitInit();
 
-    palSetLineMode( brakeSensorClickLine, PAL_MODE_INPUT_PULLDOWN );
+    palSetLineMode( brakeSensorClickLine, PAL_MODE_INPUT_PULLUP );
 
     sensor_max_voltage      = referenceVoltage_mV;
     sensor_min_voltage      = sensor_zero_value_mV;

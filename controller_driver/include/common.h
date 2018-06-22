@@ -36,7 +36,7 @@
 
 
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_DRIVER
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_SHARP
 
 /******************/
 /*** Prototypes ***/
