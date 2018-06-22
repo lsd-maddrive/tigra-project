@@ -4,8 +4,8 @@
 #include <math.h>
 
 static const SerialConfig sdcfg = {
-  .speed = 115200,
-  .cr1 = 0, .cr2 = 0, .cr3 = 0
+    .speed = 115200,
+    .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
 
 
@@ -40,9 +40,9 @@ void testDriveSpeedCSRoutine( void )
             double currSpeedIntPart;
             double currSpeedFrctPart = modf( currentSpeed, &currSpeedIntPart );
 
-            chprintf( (BaseSequentialStream *)&SD7, "Ref: %d.%02d\tVel: %d.%02d\tOut: %d\r\n" ,
-                        (int)(speedRefIntPart), (int)(speedRefFrctPart * 100),
-                        (int)(currSpeedIntPart), (int)(currSpeedFrctPart * 100),
+            chprintf( (BaseSequentialStream *)&SD7, "Ref: %d.%03d\tVel: %d.%03d\tOut: %d\r\n" ,
+                        (int)(speedRefIntPart), (int)(speedRefFrctPart * 1000),
+                        (int)(currSpeedIntPart), (int)(currSpeedFrctPart * 1000),
                         motorControlValue );
 
             printCntr = 0;

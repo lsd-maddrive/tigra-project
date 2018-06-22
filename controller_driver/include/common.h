@@ -20,7 +20,7 @@
 #define     PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS          40
 #define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER            10
 
-#define     MAIN_PROGRAM_ROUTINE                         PROGRAM_ROUTINE_MASTER
+#define     MAIN_PROGRAM_ROUTINE                         PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS
 
 
 /*** Prototypes ***/

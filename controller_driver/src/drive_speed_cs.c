@@ -71,7 +71,11 @@ static int32_t PIDController ( controllerContext_t *ctx )
     int32_t control = 0;
 
     ctx->params->integrSum += ctx->err;
-
+    if ( ctx->params->integrSum > 100 )
+        ctx->params->integrSum = 100;
+    else if ( ctx->params->integrSum < -100 )
+        ctx->params->integrSum = -100;
+    
     control = ctx->params->kp * ctx->err +
                 ctx->params->ki * ctx->params->integrSum;
 
