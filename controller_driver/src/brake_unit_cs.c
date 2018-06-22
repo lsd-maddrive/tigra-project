@@ -67,7 +67,7 @@ controlValue_t brakeUnitCSSetPower( int16_t pressPower )
         /* Set return power */
         if ( !brakeSensorIsPressed() )
         {
-            /* Still not in the end - set inversed const power */
+            /* Still not in the end - set inverted const power */
             controlValue = -BRAKE_UNIT_RETURN_CONST_POWER;
         }
         else

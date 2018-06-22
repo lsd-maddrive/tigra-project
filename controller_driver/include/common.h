@@ -52,7 +52,6 @@ void commonExtDriverInit ( void );
 /*** Common ADC configuration ***/
 
 #define COMMON_ADC_RES_CONF         ADC_CR1_12B_RESOLUTION
-#define COMMON_ADC_BUFFER_DEPTH     4
 
 /* Brake sensor current input */
 #define COMMON_ADC_SEQ1             ADC_CHANNEL_IN3
