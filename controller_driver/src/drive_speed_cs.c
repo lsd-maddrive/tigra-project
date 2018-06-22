@@ -1,6 +1,4 @@
-#include <course_drive_speed_cs.h>
-#include <lld_wheel_pos_sensor.h>
-#include <lld_control.h>
+#include <drive_speed_cs.h>
 
 static bool isInitialized = false;
 
@@ -27,7 +25,7 @@ static controllerContext PIDContext = {
  *@note          First time function call sets flag "isInitialized"
  *               which protects of multiple initialization
  */
-void CourseDriveSpeedCSInit( void )
+void DriveSpeedCSInit( void )
 {
    if (!isInitialized )
    {
@@ -72,7 +70,7 @@ uint8_t PIDController (controllerContext *PIDContext)
  * @return       Controller output, if all required lld's is initialized
  *               -1               , if not
  */
-uint8_t CourseDriveSpeedControl (wheelVelocity_t speedReference )
+uint8_t DriveSpeedControl (wheelVelocity_t speedReference )
 {
   /* Check if all modules initialized. if not return -1 */
     if( !isInitialized )

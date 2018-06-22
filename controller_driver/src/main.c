@@ -31,9 +31,9 @@ int main(void)
 
     testWheelPosSensorRoutine();
 
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_COURSE_DRIVE_SPEED_CS)
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS)
 
-    testCourseDriveSpeedCS();
+    testDriveSpeedCSRoutine();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_CLUTCH_LEVER)
 

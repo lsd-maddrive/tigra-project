@@ -64,7 +64,7 @@ void testDriverControlRoutine( void );
  * @brief  Routing of wheel driver speed control system testing
  * @note   The routine has internal infinite loop
  */
-void testCourseDriveSpeedCSRoutine( void );
+void testDriveSpeedCSRoutine( void );
 
 
 

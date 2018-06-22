@@ -1,8 +1,9 @@
-#ifndef INCLUDE_COURSE_DRIVE_SPEED_CS_H_
-#define INCLUDE_COURSE_DRIVE_SPEED_CS_H_
+#ifndef INCLUDE_DRIVE_SPEED_CS_H_
+#define INCLUDE_DRIVE_SPEED_CS_H_
 
 #include <common.h>
 #include <lld_wheel_pos_sensor.h>
+#include <lld_control.h>
 
 /***Hardware description***/
 
@@ -38,7 +39,7 @@ typedef struct {
  *@note          First time function call sets flag "isInitialized"
  *               which protects of multiple initialization
  */
-void CourseDriveSpeedCSInit( void );
+void DriveSpeedCSInit( void );
 
 
 /*
@@ -53,7 +54,7 @@ void CourseDriveSpeedCSInit( void );
  * @return       Controller output, if all required lld's is initialized
  *               -1               , if not
  */
-uint8_t  CourseDriveSpeedControl (wheelVelocity_t speedReference );
+uint8_t  DriveSpeedControl (wheelVelocity_t speedReference );
 
 
 /*
@@ -70,7 +71,7 @@ uint8_t PIDController (controllerContext *PIDContext);
 
 
 
-#endif /* INCLUDE_COURSE_DRIVE_SPEED_CS_H_*/
+#endif /* INCLUDE_DRIVE_SPEED_CS_H_*/
 
 
 
