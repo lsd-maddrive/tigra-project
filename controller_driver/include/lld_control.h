@@ -3,6 +3,10 @@
 
 #include <common.h>
 
+/*** Variables ***/
+
+typedef int32_t	controlValue_t;
+
 /*
  * @brief   Initialize periphery connected to driver control
  * @note    Stable for repeated calls
@@ -11,23 +15,23 @@ void lldControlInit ( void );
 
 /*
  * @brief   Set power for driving motor
- * @param   lldMotorPower   Motor power value [0 100]
+ * @param   inputPrc   Motor power value percentage [0 100]
  */
-void lldControlSetDrMotorPower ( int32_t lldMotorPower );
+void lldControlSetDrMotorPower ( controlValue_t inputPrc );
 
 /*
  * @brief   Set power for steering motor
- * @param   lldSteerPower   Motor power value [0 100]
+ * @param   inputPrc   Motor power value percentage [0 100]
  */
-void lldControlSetSteerPower ( int32_t lldSteerPower );
+void lldControlSetSteerPower ( controlValue_t inputPrc );
 
 /*
  * @brief   Set power for braking motor
- * @param   lldBrakePower   Motor power value [-100 100]
+ * @param   inputPrc   Motor power value percentage [-100 100]
  * @note    power (0, 100]  -> clockwise
  * @note    power [-100, 0} -> counterclockwise
  */
-void lldControlSetBrakePower( int32_t lldBrakePower );
+void lldControlSetBrakePower( controlValue_t inputPrc );
 
 /*
  * @brief   Set motor direction

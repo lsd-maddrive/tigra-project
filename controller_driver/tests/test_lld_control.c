@@ -35,14 +35,14 @@ void testDriverControlRoutineSerial( void )
 
     lldControlInit();
 
-    int16_t     steer_values_delta  = 10;
-    int16_t     steer_value         = 0;
+    controlValue_t  steer_values_delta  = 10;
+    controlValue_t  steer_value         = 0;
 
-    int16_t     speed_values_delta  = 10;
-    int16_t     speed_value         = 0;
+    controlValue_t  speed_values_delta  = 10;
+    controlValue_t  speed_value         = 0;
 
-    int16_t     brake_values_delta  = 10;
-    int8_t      brake_value         = 0;
+    controlValue_t  brake_values_delta  = 10;
+    controlValue_t  brake_value         = 0;
 
     while ( 1 )
     {
