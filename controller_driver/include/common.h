@@ -33,8 +33,9 @@
 #define     PROGRAM_ROUTINE_TEST_ROS_DRIVER         9
 #define     PROGRAM_ROUTINE_TEST_LL_SONAR           10
 #define     PROGRAM_ROUTINE_TEST_LL_SHARP           11
+#define     PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS     12
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_BRAKE_SENSOR
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_MASTER
 
 /******************/
 /*** Prototypes ***/

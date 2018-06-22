@@ -4,7 +4,7 @@
 
 #ifdef TEST_WHEEL_POS_SENSOR_SIMULATED
 
-static THD_WORKING_AREA(waBtnThd, 128);
+static THD_WORKING_AREA(waPosSensorThd, 128);
 static THD_FUNCTION(PosSensorOutThd, arg)
 {
     arg = arg;
@@ -26,7 +26,7 @@ static THD_FUNCTION(PosSensorOutThd, arg)
 static void simulation_init ( void )
 {
 
-    chThdCreateStatic( waBtnThd, sizeof(waBtnThd), NORMALPRIO, PosSensorOutThd, NULL );
+    chThdCreateStatic( waPosSensorThd, sizeof(waPosSensorThd), NORMALPRIO, PosSensorOutThd, NULL );
 }
 
 #endif  //TEST_WHEEL_POS_SENSOR_SIMULATED

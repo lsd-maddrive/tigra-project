@@ -72,9 +72,9 @@ void wheelPosSensorInit (void)
 }
 
 /* Timer 3 overflow callback function */
-static void gpt_overflow_cb(GPTDriver *timeIntervalsDriver)
+static void gpt_overflow_cb(GPTDriver *gptd)
 {
-    timeIntervalsDriver = timeIntervalsDriver;
+    gptd = gptd;
 
     /* Increment overflow counter*/
     overflow_counter ++;
@@ -147,9 +147,10 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
 wheelVelocity_t wheelPosSensorGetVelocity ( void )
 {
     wheelVelocity_t  velocity = 0;
+    
     if ( !isInitialized )
     {
-      return -1;
+        return -1;
     }
 
 #ifdef NEW_ALGORITHM

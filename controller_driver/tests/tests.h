@@ -22,6 +22,7 @@
  */
 void testBrakeSensorRoutine( void );
 
+
 /********************************/
 /*** Brake Unit Control tests ***/
 /********************************/
@@ -40,6 +41,7 @@ void testBrakeUnitCSRoutine( void );
  */
 void testBrakeUintOpenedRoutine( void );
 
+
 /***********************************/
 /*** Wheel position sensor tests ***/
 /***********************************/
@@ -57,6 +59,7 @@ void testBrakeUintOpenedRoutine( void );
  */
 void testWheelPosSensorRoutine( void );
 
+
 /**************************/
 /*** Clutch lever tests ***/
 /**************************/
@@ -67,6 +70,7 @@ void testWheelPosSensorRoutine( void );
  * @note    Test uses LEDs to check pressing
  */
 void testClutchLeverRoutine( void );
+
 
 /****************************/
 /*** Driver Control tests ***/
@@ -100,6 +104,17 @@ void testSteerSensorsWorking( void );
 void testSonarsRoutineWorking( void );
 
 
+/********************************/
+/***Drive Speed Control tests ***/
+/********************************/
+
+/*
+ * @brief   Routine of motor control system  testing
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testDriveSpeedCSRoutine( void )
+
 
 /************************/
 /*** ROS Driver tests ***/
@@ -110,9 +125,6 @@ void testSonarsRoutineWorking( void );
  * @note    The routine has internal infinite loop
  */
 void testROSDriverRoutine( void );
-
-
-
 
 
 /*************************/
@@ -131,6 +143,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS)
 
     testBrakeUnitCSRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS)
+
+    testDriveSpeedCSRoutine();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 
@@ -170,6 +186,5 @@ static inline void testsRoutines( void )
 
 #endif
 }
-
 
 #endif /* TESTS_TESTS_H_ */
