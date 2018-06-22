@@ -36,7 +36,7 @@
 #define     PROGRAM_ROUTINE_TEST_LL_SHARP           12
 
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_MASTER
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR
 
 /******************/
 /*** Prototypes ***/
