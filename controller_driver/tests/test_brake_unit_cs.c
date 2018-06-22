@@ -20,80 +20,78 @@ void testBrakeUnitCSRoutine( void )
     int32_t     brakePower = 0;
     while ( 1 )
     {
-        bool      isBrakePressed  = brakeSensorIsPressed();
-        int16_t   pressPower      = brakeSensorGetPressPower();
-        int16_t   pwmValue        = brakeUnitCSGetControl();
-        int16_t   brakeVoltage    = brakeSensorGetVoltage();
+        bool      isBrakePressed    = brakeSensorIsPressed();
+        int16_t   pressPower        = brakeSensorGetPressPower();
+        int16_t   brakeVoltage      = brakeSensorGetVoltage();
+
+        controlValue_t control      = brakeUnitCSSetPower( brakePower );
+
+        if ( ++counter >= 10 )
+        {
+            chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d, ref: %d, pwm: %d, mV: %d\n\r",
+                            isBrakePressed ? "" : "not ", pressPower, brakePower, control, brakeVoltage );
+
+            counter = 0;
+        }
 
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         switch ( rcv_data )
         {
+            case 'z':   // Positive brake
+                brakePower += 2;
+                break;
 
-         case 'z':   // Positive brake
-             brakePower += 2;
-             break;
+            case 'x':   // Negative brake
+                brakePower -= 2;
+                break;
 
-         case 'x':   // Negative brake
-             brakePower -= 2;
-             break;
-
-         default:
-             ;
+            default:
+                ;
         }
         brakePower = CLIP_VALUE( brakePower, -2, 25 );
-        brakeUnitCSSetPower( brakePower );
-#if 1
-        counter++;
-        if ( counter >= 10 )
-        {
-          chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d, ref: %d, pwm: %d, mV: %d\n\r",
-                          isBrakePressed ? "" : "not ", pressPower, brakePower, pwmValue, brakeVoltage );
 
-          counter = 0;
-        }
-#endif
         chThdSleepMilliseconds( 10 );
     }
 }
 
 void testBrakeUintOpenedRoutine( void )
 {
-     sdStart( &SD7, &sdcfg );
-     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
-     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
+    sdStart( &SD7, &sdcfg );
+    palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
-     brakeUnitCSInit();
-     int32_t brakePower = 0;
-     while( 1 )
-     {
-       bool    isBrakePressed  = brakeSensorIsPressed();
-       int16_t pressPower      = brakeSensorGetPressPower();
-       int16_t brakeVoltage    = brakeSensorGetVoltage();
+    brakeUnitCSInit();
+    int32_t brakePower = 0;
+    
+    while( 1 )
+    {
+        bool    isBrakePressed  = brakeSensorIsPressed();
+        int16_t pressPower      = brakeSensorGetPressPower();
+        int16_t brakeVoltage    = brakeSensorGetVoltage();
 
-       chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d, mV: %d, brP: %d\n\r",
-                       isBrakePressed ? "" : "not ", pressPower, brakeVoltage, brakePower );
+        chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d, mV: %d, brP: %d\n\r",
+                        isBrakePressed ? "" : "not ", pressPower, brakeVoltage, brakePower );
 
-       char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
-       switch ( rcv_data )
-       {
+        char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+        switch ( rcv_data )
+        {
+            case 'z':   // Positive brake
+                brakePower += 10;
+                brakePower = CLIP_VALUE( brakePower, -100, 100 );
+                break;
 
-         case 'z':   // Positive brake
-             brakePower += 10;
-             brakePower = CLIP_VALUE( brakePower, -100, 100 );
-             break;
+            case 'x':   // Negative brake
+                brakePower -= 10;
+                brakePower = CLIP_VALUE( brakePower, -100, 100 );
+                break;
 
-         case 'x':   // Negative brake
-             brakePower -= 10;
-             brakePower = CLIP_VALUE( brakePower, -100, 100 );
-             break;
+            default:
+                ;
+        }
 
-         default:
-             ;
-       }
+        lldControlSetBrakePower( brakePower );
 
-       lldControlSetBrakePower( brakePower );
+        chThdSleepMilliseconds( 100 );
 
-       chThdSleepMilliseconds( 100 );
-
-     }
+    }
 }

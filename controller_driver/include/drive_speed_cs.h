@@ -5,11 +5,12 @@
 #include <lld_wheel_pos_sensor.h>
 #include <lld_control.h>
 
+#include <controllers.h>
+
 /***Hardware description***/
 
 
 /*** Variables ***/
-
 
 
 /*** Prototypes ***/
@@ -33,6 +34,6 @@ void DriveSpeedCSInit( void );
  * @return       Controller output, if all required lld's is initialized
  *               -1               , if not
  */
-int32_t DriveSpeedControl ( wheelVelocity_t speedReference );
+controlValue_t DriveSpeedControl ( wheelVelocity_t speedReference );
 
 #endif /* INCLUDE_DRIVE_SPEED_CS_H_*/

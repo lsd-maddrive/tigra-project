@@ -5,6 +5,8 @@
 #include <lld_brake_sensor.h>
 #include <lld_control.h>
 
+#include <controllers.h>
+
 /**
  * @brief   Initialization of brake unit control system
  * @note    Stable for repeated calls
@@ -14,14 +16,8 @@ void brakeUnitCSInit( void );
 /**
  * @brief   Set brake power reference
  * @param   pressPower  Reference percentage of braking [0; 100]
+ * @return 	Control value of controller
  */
-void brakeUnitCSSetPower( int16_t pressPower );
-
-/**
- * @brief   Get PWM percentage value
- * @return  Value of PWM percentage (0 if not initialized)
- * @note    Must be called after brakeUnitCSSetPower()
- */
-int16_t brakeUnitCSGetControl ( void );
+controlValue_t brakeUnitCSSetPower( int16_t pressPower );
 
 #endif /* INCLUDE_BRAKE_UNIT_CS_H_ */
