@@ -141,8 +141,13 @@ void lldControlInit( void )
  * @brief   Set power for driving motor
  * @param   lldMotorPower   Motor power value [0 100]
  */
-void lldControlSetDrMotorPower( uint8_t lldMotorPower )
+void lldControlSetDrMotorPower( int32_t lldMotorPower )
 {
+    if( lldMotorPower < 0 )
+        lldMotorPower = 0;
+    else if( lldMotorPower > 100 )
+        lldMotorPower = 100;
+
     uint16_t drDriveDuty = lldMotorPower * speedConvRate + speedLowestDACValue;
     /*
     * Write value to DAC channel
@@ -150,7 +155,7 @@ void lldControlSetDrMotorPower( uint8_t lldMotorPower )
     *              <0>              - channel number (first)
     *              <drMotorPower>   - output value (according to mode/size)
     */
-    // need fixing drMotorPower for DAC
+
     dacPutChannelX( dacDriver, 0, drDriveDuty );
 }
 
@@ -158,8 +163,13 @@ void lldControlSetDrMotorPower( uint8_t lldMotorPower )
  * @brief   Set power for steering motor
  * @param   lldSteerPower   Motor power value [0 100]
  */
-void lldControlSetSteerPower( uint8_t lldSteerPower )
+void lldControlSetSteerPower( int32_t lldSteerPower )
 {
+    if( lldSteerPower > 100 )
+        lldSteerPower = 100;
+    else if( lldSteerPower < 0 )
+        lldSteerPower = 0;
+
     int16_t  powerInDutyK  =   1;
     int16_t  powerInDutyB  =   0;
     uint16_t drSteerDuty   =   lldSteerPower * powerInDutyK + powerInDutyB;
@@ -173,8 +183,13 @@ void lldControlSetSteerPower( uint8_t lldSteerPower )
  * @note    power (0, 100]  -> clockwise
  * @note    power [-100, 0} -> counterclockwise
  */
-void lldControlSetBrakePower( int8_t lldBrakePower )
+void lldControlSetBrakePower( int32_t lldBrakePower )
 {
+
+    if( lldBrakePower > 100 )
+        lldBrakePower = 100;
+    else if( lldBrakePower < -100 )
+        lldBrakePower = -100;
 
     if( lldBrakePower < 0 )
     {
@@ -207,19 +222,6 @@ void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
         palClearPad( portMotorDir, padMotorDir );
 
 }
-
-/*
- * @brief   Set braking motor direction
- * @param   lldBrakeDirection   Motor direction true - forward
- *                                              false - backward
- */
-//void lldControlSetBrakeDirection( bool lldBrakeDirection )
-//{
-//    if(lldBrakeDirection)
-//        palSetPad( portBrakeDirIN1, padBrakeDirIN1 );
-//    else
-//        palClearPad( portBrakeDir, padBrakeDir );
-//}
 
 /*
  * @brief   Set steering motor direction

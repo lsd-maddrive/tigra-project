@@ -13,13 +13,13 @@ void lldControlInit ( void );
  * @brief   Set power for driving motor
  * @param   lldMotorPower   Motor power value [0 100]
  */
-void lldControlSetDrMotorPower ( uint8_t lldMotorPower );
+void lldControlSetDrMotorPower ( int32_t lldMotorPower );
 
 /*
  * @brief   Set power for steering motor
  * @param   lldSteerPower   Motor power value [0 100]
  */
-void lldControlSetSteerPower ( uint8_t lldSteerPower );
+void lldControlSetSteerPower ( int32_t lldSteerPower );
 
 /*
  * @brief   Set power for braking motor
@@ -27,7 +27,7 @@ void lldControlSetSteerPower ( uint8_t lldSteerPower );
  * @note    power (0, 100]  -> clockwise
  * @note    power [-100, 0} -> counterclockwise
  */
-void lldControlSetBrakePower( int8_t lldBrakePower );
+void lldControlSetBrakePower( int32_t lldBrakePower );
 
 /*
  * @brief   Set motor direction
