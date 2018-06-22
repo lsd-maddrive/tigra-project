@@ -1,24 +1,45 @@
 #include <drive_speed_cs.h>
 
-static bool isInitialized = false;
-
 /* Configure minimum and maximum speed reference values (rpm)*/
 #define speedReferenceMaxVal   30000
 #define speedReferenceMinVal   0
 
+typedef float         controllerRate_t;
+
 /* Configuration - PID controller parameters*/
-static controllerParams PIDParmsCfg = {
-                                        .kp = 1,
-                                        .ki = 0.1,
-                                        .kd = 2
+typedef struct {
+
+  controllerRate_t      kp;
+  controllerRate_t      ki;
+  controllerRate_t      kd;
+
+  float                 integrSum;
+
+} controllerParams_t;
+
+/* Switching context - input parameter to controller function */
+typedef struct {
+
+    wheelVelocity_t     err;
+    controllerParams_t  *params;
+
+} controllerContext_t;
+
+/* Configuration - PID controller parameters*/
+static controllerParams_t PIDParmsCfg = {
+    .kp   = 1,
+    .ki   = 0.1,
+    .kd   = 0,
+    .integrSum  = 0
 };
 
 /* Switching context - input parameter to controller function */
-static controllerContext PIDContext = {
-                                        .err    = 0,
-                                        .params = &PIDParmsCfg
+static controllerContext_t PIDContext = {
+    .err    = 0,
+    .params = &PIDParmsCfg
 };
 
+static bool isInitialized = false;
 
 /*
  *@brief         Low level drivers initialization
@@ -27,12 +48,13 @@ static controllerContext PIDContext = {
  */
 void DriveSpeedCSInit( void )
 {
-   if (!isInitialized )
-   {
-       wheelPosSensorInit();
-       lldControlInit();
-   }
-   isInitialized = true;
+    if ( isInitialized )
+        return
+    
+    wheelPosSensorInit();
+    lldControlInit();
+    
+    isInitialized = true;
 }
 
 
@@ -44,17 +66,16 @@ void DriveSpeedCSInit( void )
  *                                            PIDContext->params->kp
  *                                            PIDContext->err
  */
-uint8_t PIDController (controllerContext *PIDContext)
+static int32_t PIDController ( controllerContext_t *ctx )
 {
-  uint8_t PIDOut = 0;
-  PIDOut = PIDContext->params->kp * PIDContext->err;
+    int32_t control = 0;
 
-  if ( PIDOut > 100 )
-    PIDOut = 100;
-  if ( PIDOut < 0 )
-    PIDOut = 0;
+    ctx->params->integrSum += ctx->err;
 
-  return PIDOut;
+    control = ctx->params->kp * ctx->err +
+                ctx->params->ki * ctx->params->integrSum;
+
+    return control;
 }
 
 
@@ -70,24 +91,25 @@ uint8_t PIDController (controllerContext *PIDContext)
  * @return       Controller output, if all required lld's is initialized
  *               -1               , if not
  */
-uint8_t DriveSpeedControl (wheelVelocity_t speedReference )
+int32_t DriveSpeedControl ( wheelVelocity_t speedReference )
 {
   /* Check if all modules initialized. if not return -1 */
     if( !isInitialized )
-      return -1;
+        return -1;
 
-  /* Speed reference saturation */
+    /* Speed reference saturation */
     if ( speedReference > speedReferenceMaxVal )
-      speedReference = speedReferenceMaxVal;
-    if ( speedReference < speedReferenceMinVal )
-      speedReference = speedReferenceMinVal;
+        speedReference = speedReferenceMaxVal;
+    else if ( speedReference < speedReferenceMinVal )
+        speedReference = speedReferenceMinVal;
 
     wheelVelocity_t currentSpeed    =   wheelPosSensorGetVelocity ();
     PIDContext.err  =   speedReference - currentSpeed;
-    uint8_t         lldMotorPower   =   PIDController(&PIDContext);
-    bool lldDrMotorDirection = true;
-    lldControlSetDrMotorDirection ( lldDrMotorDirection );
+
+    int32_t lldMotorPower = PIDController(&PIDContext);
+
     lldControlSetDrMotorPower ( lldMotorPower );
+
     return lldMotorPower;
 }
 

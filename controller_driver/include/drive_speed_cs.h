@@ -10,29 +10,9 @@
 
 /*** Variables ***/
 
-typedef float         coeffPIDController;
-
-/* Configuration - PID controller parameters*/
-typedef struct {
-
-  coeffPIDController    kp;
-  coeffPIDController    ki;
-  coeffPIDController    kd;
-
-}controllerParams;
-
-/* Switching context - input parameter to controller function */
-typedef struct {
-
-    wheelVelocity_t       err;
-    controllerParams      *params;
-
-}controllerContext;
 
 
 /*** Prototypes ***/
-
-
 
 /*
  *@brief         Low level drivers initialization
@@ -40,7 +20,6 @@ typedef struct {
  *               which protects of multiple initialization
  */
 void DriveSpeedCSInit( void );
-
 
 /*
  * @brief        Control system "shell".
@@ -54,26 +33,6 @@ void DriveSpeedCSInit( void );
  * @return       Controller output, if all required lld's is initialized
  *               -1               , if not
  */
-uint8_t  DriveSpeedControl (wheelVelocity_t speedReference );
-
-
-/*
- *  @brief       Control system law realization. PID controller *
- *  @params[in]  Structure, contains current error, PID controller parameters
- *  @params[out] Controller output [0;100] %
- *  @note        Access parameters like this:
- *                                            PIDContext->params->kp
- *                                            PIDContext->err
- */
-uint8_t PIDController (controllerContext *PIDContext);
-
-
-
-
+int32_t DriveSpeedControl ( wheelVelocity_t speedReference );
 
 #endif /* INCLUDE_DRIVE_SPEED_CS_H_*/
-
-
-
-
-

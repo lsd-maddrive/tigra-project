@@ -1,28 +1,7 @@
 #include <tests.h>
 #include <drive_speed_cs.h>
 
-int32_t speedReference  = 0;
-uint8_t setMotorPower   = 0;
-
-#if 1
-static THD_WORKING_AREA(waDriveSpeedCSThd, 128);
-static THD_FUNCTION(DriveSpeedCSThd, arg)
-{
-    arg = arg;
-
-
-    wheelVelocity_t speedReference =  0;
-
-    while ( 1 )
-    {
-//        speedReference =  speedReferenceMaxVal*( sin (ticksCounter)+1 );
-        setMotorPower = DriveSpeedControl ( speedReference );
-//        ticksCounter ++;
-        chThdSleepMilliseconds(1);
-
-    }
-}
-#endif
+#include <math.h>
 
 static const SerialConfig sdcfg = {
   .speed = 115200,
@@ -37,22 +16,61 @@ static const SerialConfig sdcfg = {
  */
 void testDriveSpeedCSRoutine( void )
 {
-  /* Low level drivers initialization required for motor control*/
-  DriveSpeedCSInit();
+    /* Low level drivers initialization required for motor control*/
+    DriveSpeedCSInit();
 
-  chThdCreateStatic(waDriveSpeedCSThd, sizeof( waDriveSpeedCSThd ), NORMALPRIO, DriveSpeedCSThd,NULL);
+    sdStart( &SD7, &sdcfg );
+    palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
-  sdStart( &SD7, &sdcfg );
-  palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
-  palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
+    wheelVelocity_t speedRef            = 0;
+    wheelVelocity_t currentSpeed        = 0;
+    uint32_t        printCntr           = 0;
+    int32_t         motorControlValue   = 0;
 
-  while ( 1 )
-  {
-    wheelVelocity_t currentSpeed    =   wheelPosSensorGetVelocity ();
-    chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n" , "Ref:",
-                     (int) (speedReference*1000), "Vel:", (int) (currentSpeed*1000),
-                     "Out:", (int) (setMotorPower*1000) );
-    chThdSleepMilliseconds(100);
-  }
+    while ( 1 )
+    {
+        if ( ++printCntr == 10 )
+        {
+            currentSpeed = wheelPosSensorGetVelocity ();
+
+            double speedRefIntPart;
+            double speedRefFrctPart = modf( speedRef, &speedRefIntPart );
+
+            double currSpeedIntPart;
+            double currSpeedFrctPart = modf( currentSpeed, &currSpeedIntPart );
+
+            chprintf( (BaseSequentialStream *)&SD7, "Ref: %d.%02d\tVel: %d.%02d\tOut: %d\r\n" ,
+                        (int)(speedRefIntPart), (int)(speedRefFrctPart * 100),
+                        (int)(currSpeedIntPart), (int)(currSpeedFrctPart * 100),
+                        motorControlValue );
+
+            printCntr = 0;
+        }
+
+
+        char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+        switch ( rcv_data )
+        {
+            case 'z':   // Positive ref
+                speedRef += 0.1;
+                break;
+
+            case 'x':   // Negative ref
+                speedRef -= 0.1;
+                break;
+
+            default:
+                ;
+        }
+
+        /* Limit RPM value */
+        speedRef = speedRef < 0 ? 0 : speedRef > 10 ? 10 : speedRef;
+
+        motorControlValue   = DriveSpeedControl ( speedRef );
+
+        chThdSleepMilliseconds( 10 );
+
+    }
 }
 

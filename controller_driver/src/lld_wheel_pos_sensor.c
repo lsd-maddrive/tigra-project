@@ -9,7 +9,6 @@
 const  float PartOfWheelRevPerMinute =    (float) ( 60 / ImpsPerRevQuantity ) ;
 
 static void extcb ( EXTDriver *extp, expchannel_t channel );
-static EXTConfig extcfg;
 
 static void gpt_overflow_cb ( GPTDriver *timeIntervalsDriver );
 static GPTDriver                        *timeIntervalsDriver = &GPTD3;
@@ -66,8 +65,10 @@ void wheelPosSensorInit (void)
 }
 
 /* Timer 3 overflow callback function */
-static void gpt_overflow_cb(GPTDriver *timeIntervalsDriver)
+static void gpt_overflow_cb(GPTDriver *gptd)
 {
+    gptd = gptd;
+
     /* Increment overflow counter*/
     overflow_counter ++;
 }
