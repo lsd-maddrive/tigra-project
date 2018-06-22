@@ -160,9 +160,9 @@ static inline void testsRoutines( void )
 
     testDriverControlRoutine();
 
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1)
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL)
 
-    testDriverControlRoutineExt1();
+    testDriverControlRoutineSerial();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SONAR)
 
