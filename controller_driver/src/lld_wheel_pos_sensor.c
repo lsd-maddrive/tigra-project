@@ -40,11 +40,6 @@ static int32_t      wheelSpeedSensorMaxOverflows    = 0;
 const  float        PartOfWheelRevPerMinute = 60.0 / ImpsPerRevQuantity;
 static float        velocityCalcTicksToRPM  = 0;
 
-static const SerialConfig sdcfg = {
-  .speed = 115200,
-  .cr1 = 0, .cr2 = 0, .cr3 = 0
-};
-
 void wheelPosSensorInit (void)
 {
     /* Define channel config structure */
@@ -60,18 +55,12 @@ void wheelPosSensorInit (void)
     /* Set channel (second arg) mode with filled configuration */
     extSetChannelMode( &EXTD1, 13, &ch_conf );
 
-
     /* Set up EXT channel hardware pin mode as digital input  */
     palSetLineMode( wheelPosSensorInLine, PAL_MODE_INPUT_PULLUP );
 
     /* Start working GPT driver in continuous (asynchronous) mode */
     gptStart( timeIntervalsDriver, &timeIntervalsCfg );
     gptStartContinuous( timeIntervalsDriver, TimerPeriod );
-
-    /* Start working serial driver */
-    sdStart( &SD7, &sdcfg );
-    palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
-    palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
     isInitialized       = true;
 
@@ -98,7 +87,8 @@ static void gpt_overflow_cb(GPTDriver *timeIntervalsDriver)
 
 #define NEW_ALGORITHM
 
-/* Callback function of the EXT
+/**
+ * Callback function of the EXT
  * It is triggered on event that is configured in config structure
  * args:  <extp>    - pointer to the driver, now it has
  *                    the only driver (EXTD1) and pointer will be like &EXTD1
@@ -153,7 +143,6 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
  * @ param[in] ImpsPerRevQuantity     Number of impulses per revolution
  *                                    depends on given sensor
  * @ return                           Current wheel velocity value [rpm]
- *
  */
 wheelVelocity_t wheelPosSensorGetVelocity ( void )
 {
@@ -190,13 +179,12 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
  */
 void sendTestInformation (void)
 {
-  wheelVelocity_t vel = wheelPosSensorGetVelocity ();
-  vel = vel*100;
-  chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n" ,
+    wheelVelocity_t vel = wheelPosSensorGetVelocity ();
+    vel = vel*100;
+    chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n" ,
               "prev time:", prev_time, "time width (tick):", measured_width,
               "velocity", (int)vel, "ovflow_ctr", overflow_counter );
 }
-
 
 /**
  * @ brief                           Gets wheel current position value

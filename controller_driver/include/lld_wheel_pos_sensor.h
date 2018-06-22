@@ -11,7 +11,6 @@
  * GPT3 used for time intervals between wheel position sensor fronts measurement
  */
 
-
 /*** Variables ***/
 typedef float                   wheelVelocity_t;
 typedef float                   wheelPosition_t;
@@ -20,10 +19,7 @@ typedef float                   wheelPosition_t;
 #define ImpsPerRevQuantity      4
 
 
-
-
 /*** Prototypes ***/
-
 
 /*
  * @brief   Initialize periphery connected to wheel position sensor
@@ -37,10 +33,8 @@ void wheelPosSensorInit (void);
  * @ param[in] ImpsPerRevQuantity    Number of impulses per revolution
  *                                   depends on given sensor
  * @ return                          Current wheel position value [revolutions]
- *
  */
 wheelPosition_t wheelPosSensorGetPosition ( void );
-
 
 
 /**

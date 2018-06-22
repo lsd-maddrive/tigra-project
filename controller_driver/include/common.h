@@ -36,7 +36,7 @@
 
 
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR
 
 /******************/
 /*** Prototypes ***/
