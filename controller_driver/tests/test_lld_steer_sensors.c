@@ -2,10 +2,6 @@
 #include <lld_steer_sensors.h>
 #include <chprintf.h>
 
-/*===========================================================================*/
-/* Serial driver related.                                                    */
-/*===========================================================================*/
-
 static const SerialConfig sdcfg = {
   .speed = 115200,
   .cr1 = 0,
@@ -13,7 +9,7 @@ static const SerialConfig sdcfg = {
   .cr3 = 0
 };
 
-/*
+/**
  * @brief   Routine of steering sensors testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)

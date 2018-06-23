@@ -82,7 +82,7 @@ void testBrakeSensorRoutine( void )
         bool    isBrakePressed  = brakeSensorIsPressed();
         int16_t pressPower      = brakeSensorGetPressPower();
 
-        chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d\n",
+        chprintf( (BaseSequentialStream *)&SD7, "Brake: %spressed, power: %d\n\r",
                         isBrakePressed ? "" : "not ", pressPower );
 
         chThdSleepMilliseconds( 100 );

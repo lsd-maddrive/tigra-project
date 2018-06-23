@@ -27,58 +27,7 @@ static const SerialConfig sdcfg = {
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
 
-int16_t     steer_values_delta  = 10;
-int16_t     steer_delta_sign    = 1;
-int16_t     steer_value         = 0;
-
-static THD_WORKING_AREA(waSteerThd, 128);
-static THD_FUNCTION(SteerThd, arg)
-{
-    arg = arg;
-    while ( 1 )
-    {
-        lldControlSetSteerDirection( steer_value > 0 );
-        lldControlSetSteerPower( steer_value );
-
-        chThdSleepMilliseconds( 100 );
-    }
-}
-
-int16_t     speed_values_delta  = 10;
-int16_t     speed_delta_sign    = 1;
-int16_t     speed_value         = 0;
-
-static THD_WORKING_AREA(waSpeedThd, 128);
-static THD_FUNCTION(SpeedThd, arg)
-{
-    arg = arg;
-    while ( 1 )
-    {
-        lldControlSetDrMotorDirection( steer_value > 0 );
-        lldControlSetDrMotorPower( speed_value );
-
-        chThdSleepMilliseconds( 100 );
-    }
-}
-
-int16_t     brake_values_delta  = 10;
-int16_t     brake_delta_sign    = 1;
-int8_t      brake_value         = 0;
-
-static THD_WORKING_AREA(waBrakeThd, 128);
-static THD_FUNCTION(BrakeThd, arg)
-{
-    arg = arg;
-    while ( 1 )
-    {
-
-        lldControlSetBrakePower( brake_value );
-
-        chThdSleepMilliseconds( 100 );
-    }
-}
-
-void testDriverControlRoutineExt1( void )
+void testDriverControlRoutineSerial( void )
 {
     sdStart( &SD7, &sdcfg );
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
@@ -86,9 +35,14 @@ void testDriverControlRoutineExt1( void )
 
     lldControlInit();
 
-    chThdCreateStatic( waSpeedThd, sizeof(waSpeedThd), NORMALPRIO, SpeedThd, NULL );
-    chThdCreateStatic( waSteerThd, sizeof(waSteerThd), NORMALPRIO, SteerThd, NULL );
-    chThdCreateStatic( waBrakeThd, sizeof(waBrakeThd), NORMALPRIO, BrakeThd, NULL );
+    controlValue_t  steer_values_delta  = 10;
+    controlValue_t  steer_value         = 0;
+
+    controlValue_t  speed_values_delta  = 10;
+    controlValue_t  speed_value         = 0;
+
+    controlValue_t  brake_values_delta  = 10;
+    controlValue_t  brake_value         = 0;
 
     while ( 1 )
     {
@@ -96,38 +50,44 @@ void testDriverControlRoutineExt1( void )
         switch ( rcv_data )
         {
             case 'q':   // Positive steer
-                steer_value += steer_values_delta * steer_delta_sign;
-                steer_value = CLIP_VALUE( steer_value, -100, 100 );
+                steer_value += steer_values_delta;
                 break;
 
             case 'w':   // Negative steer
-                steer_value -= steer_values_delta * steer_delta_sign;
-                steer_value = CLIP_VALUE( steer_value, -100, 100 );
+                steer_value -= steer_values_delta;
                 break;
 
             case 'a':   // Positive speed
-                speed_value += speed_values_delta * speed_delta_sign;
-                speed_value = CLIP_VALUE( speed_value, -100, 100 );
+                speed_value += speed_values_delta;
                 break;
 
             case 's':   // Negative speed
-                speed_value -= speed_values_delta * speed_delta_sign;
-                speed_value = CLIP_VALUE( speed_value, -100, 100 );
+                speed_value -= speed_values_delta;
                 break;
 
             case 'z':   // Positive brake
-                brake_value += brake_values_delta * brake_delta_sign;
-                brake_value = CLIP_VALUE( brake_value, -100, 100 );
+                brake_value += brake_values_delta;
                 break;
 
             case 'x':   // Negative brake
-                brake_value -= brake_values_delta * brake_delta_sign;
-                brake_value = CLIP_VALUE( brake_value, -100, 100 );
+                brake_value -= brake_values_delta;
                 break;
 
             default:
                 ;
         }
+
+        steer_value = CLIP_VALUE( steer_value, -100, 100 );
+        speed_value = CLIP_VALUE( speed_value, -100, 100 );
+        brake_value = CLIP_VALUE( brake_value, -100, 100 );
+
+        lldControlSetSteerDirection( steer_value > 0 );
+        lldControlSetSteerPower( steer_value );
+
+        lldControlSetDrMotorDirection( steer_value > 0 );
+        lldControlSetDrMotorPower( speed_value );
+
+        lldControlSetBrakePower( brake_value );
 
         chprintf( (BaseSequentialStream *)&SD7, "Powers:\tSteer (%d)\n\tSpeed(%d)\n\tBrake(%d)\n",
                   steer_value, speed_value, brake_value );

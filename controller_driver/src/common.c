@@ -33,6 +33,7 @@ void commonExtDriverInit ( void )
 /************************/
 
 #define COMMON_ADC_CHANNELS_NUMBER  3
+#define COMMON_ADC_BUFFER_DEPTH     4
 
 static adcsample_t  adc_raw_buffer[COMMON_ADC_CHANNELS_NUMBER * COMMON_ADC_BUFFER_DEPTH];
 static uint32_t     filtered_buffer[COMMON_ADC_CHANNELS_NUMBER];
@@ -70,12 +71,21 @@ static const GPTConfig trigger_cfg = {
 static ADCDriver                *commonADCDriver    = &ADCD1;
 static GPTDriver                *adcTriggerDriver   = &GPTD6;
 
+/* Set desired filter */
+#define FILTER_MEAN         0
+#define FILTER_LPF          1
+
+#define ACTIVE_FILTER       FILTER_MEAN
+
 static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 {
     adcp = adcp; n = n;
 
     if ( buffer != adc_raw_buffer )
     {
+
+#if (ACTIVE_FILTER == FILTER_MEAN)
+
         memset( filtered_buffer, 0, sizeof( filtered_buffer ) );
      
         for ( int ch = 0; ch < COMMON_ADC_CHANNELS_NUMBER; ch++ )
@@ -87,6 +97,23 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 
             filtered_buffer[ch] /= COMMON_ADC_BUFFER_DEPTH;
         }
+
+#elif (ACTIVE_FILTER == FILTER_LPF)
+
+        /* Don`t make any mistakes calculating rates and inversed */
+        const float lpf_rates[COMMON_ADC_CHANNELS_NUMBER]     = {0.1, 0.1, 0.2};
+        const float lpf_rates_inv[COMMON_ADC_CHANNELS_NUMBER] = {0.9, 0.9, 0.8};
+
+        for ( int ch = 0; ch < COMMON_ADC_CHANNELS_NUMBER; ch++ )
+        {
+            for ( int d = 0; d < COMMON_ADC_BUFFER_DEPTH; d++ )
+            {
+                filtered_buffer[ch] = filtered_buffer[ch] * lpf_rates[ch] +
+                                        adc_raw_buffer[d*COMMON_ADC_CHANNELS_NUMBER + ch] * lpf_rates_inv[ch];
+            }
+        }
+#endif
+
     }
 }
 

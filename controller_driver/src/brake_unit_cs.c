@@ -1,13 +1,13 @@
-#include <lld_control.h>
-#include <lld_brake_sensor.h>
 #include <brake_unit_cs.h>
 
 /**************************/
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
+/* Constant power of cylinder return (up to the endpoint sensor) */
 #define BRAKE_UNIT_RETURN_CONST_POWER   20
-#define BRAKE_UNIT_PRESS_POWER_RATE     1.0
+/* Rate for conversion from reference to comparison with sensor output */
+#define BRAKE_UNIT_PRESS_POWER_RATE     1.0f
 
 /******************************/
 /*** CONFIGURATION ZONE END ***/
@@ -15,19 +15,16 @@
 
 /*** Typedefs ***/
 
-typedef struct
-{
-    float   p_rate;
-    float   i_rate;
-
-    float   integr_sum;
-
-} PID_brake_ctx_t;
-
 /*** Variables ***/
-static PID_brake_ctx_t  brake_pid_ctx;
-static bool             isInitialized   = false;
 
+static PIDControllerContext_t  pidCtx = {
+    .kp   = 3,
+    .ki   = 0.07,
+    .kd   = 0,
+    .integrLimit  = 1000
+};
+
+static bool             isInitialized   = false;
 /*** Functions ***/
 
 void brakeUnitCSInit( void )
@@ -36,54 +33,57 @@ void brakeUnitCSInit( void )
         return;
 
     /* Some initialization sequence */
-
-    brake_pid_ctx.p_rate        = 1;
-    brake_pid_ctx.i_rate        = 0;
-    brake_pid_ctx.integr_sum    = 0;
-
     brakeSensorInit();
     lldControlInit();
+
+    PIDControlInit( &pidCtx );
 
     isInitialized = true;
 }
 
-void brakeUnitCSSetPower( int16_t pressPower )
+controlValue_t brakeUnitCSSetPower( int16_t pressPower )
 {
     if ( !isInitialized )
-        return;
+        return 0;
 
-    pressPower  = CLIP_VALUE( pressPower, 0, 100 );
+    controlValue_t      controlValue;
+
+    pressPower  = CLIP_VALUE( pressPower, -1, 100 );
 
     if ( pressPower > 0 )
     {
         int16_t current_sensor_value = 0;
         current_sensor_value = brakeSensorGetPressPower();
 
-        int32_t error = pressPower * BRAKE_UNIT_PRESS_POWER_RATE - current_sensor_value;
+        pidCtx.err = pressPower * BRAKE_UNIT_PRESS_POWER_RATE - current_sensor_value;
 
-        brake_pid_ctx.integr_sum += brake_pid_ctx.i_rate * error;
-
-        int32_t control = brake_pid_ctx.p_rate * error + brake_pid_ctx.integr_sum;
+        controlValue = PIDControlResponse( &pidCtx );
 
         /* Set direct power */
-        control = CLIP_VALUE( control, 0, 100 );
-
-        lldControlSetBrakeDirection( true );
-        lldControlSetBrakePower( control );
+        controlValue = CLIP_VALUE( controlValue, -100, 100 );
     }
-    else
+    else if( pressPower < 0 )
     {
         /* Set return power */
         if ( !brakeSensorIsPressed() )
         {
-            /* Still not in the end - set inversed const power */
-            lldControlSetBrakeDirection( false );
-            lldControlSetBrakePower( BRAKE_UNIT_RETURN_CONST_POWER );
+            /* Still not in the end - set inverted const power */
+            controlValue = -BRAKE_UNIT_RETURN_CONST_POWER;
         }
         else
         {
             /* In the end - disable power */
-            lldControlSetBrakePower( 0 );
+            controlValue = 0;
         }
     }
+    else
+    {
+        /* Just disable the system */
+        controlValue = 0;
+    }
+
+    lldControlSetBrakePower( controlValue );
+
+    return controlValue;
 }
+
