@@ -45,7 +45,9 @@ void wheelPosSensorInit (void)
     EXTChannelConfig ch_conf;
 
     /* Fill in configuration for channel */
-    ch_conf.mode  = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOF;
+//    ch_conf.mode  = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOF;
+    ch_conf.mode  = EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOF;
+
     ch_conf.cb    = extcb;
 
     /*EXT driver initialization*/
@@ -197,7 +199,7 @@ wheelPosition_t wheelPosSensorGetPosition ( void )
       return -1;
     }
 
-    position = impulseCounter/ImpsPerRevQuantity;
+    position = impulseCounter * 1.0 / ImpsPerRevQuantity;
 
     return position;
 }

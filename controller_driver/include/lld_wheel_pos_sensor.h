@@ -16,7 +16,7 @@ typedef float                   wheelVelocity_t;
 typedef float                   wheelPosition_t;
 /* Wheel position sensor configuration
  * impulse quantity per revolution*/
-#define ImpsPerRevQuantity      4
+#define ImpsPerRevQuantity      8
 
 
 /*** Prototypes ***/
