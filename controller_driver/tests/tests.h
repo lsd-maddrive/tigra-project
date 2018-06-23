@@ -22,6 +22,7 @@
  */
 void testBrakeSensorRoutine( void );
 
+
 /********************************/
 /*** Brake Unit Control tests ***/
 /********************************/
@@ -32,6 +33,14 @@ void testBrakeSensorRoutine( void );
  * @note    SD7 is used for testing (PE7, PE8)
  */
 void testBrakeUnitCSRoutine( void );
+
+/**
+ * @brief   Routine of brake system integral test
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testBrakeUintOpenedRoutine( void );
+
 
 /***********************************/
 /*** Wheel position sensor tests ***/
@@ -50,6 +59,7 @@ void testBrakeUnitCSRoutine( void );
  */
 void testWheelPosSensorRoutine( void );
 
+
 /**************************/
 /*** Clutch lever tests ***/
 /**************************/
@@ -60,6 +70,7 @@ void testWheelPosSensorRoutine( void );
  * @note    Test uses LEDs to check pressing
  */
 void testClutchLeverRoutine( void );
+
 
 /****************************/
 /*** Driver Control tests ***/
@@ -92,6 +103,19 @@ void testSteerSensorsWorking( void );
  */
 void testSonarsRoutineWorking( void );
 
+
+/********************************/
+/***Drive Speed Control tests ***/
+/********************************/
+
+/*
+ * @brief   Routine of motor control system  testing
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testDriveSpeedCSRoutine( void );
+
+
 /************************/
 /*** ROS Driver tests ***/
 /************************/
@@ -101,8 +125,6 @@ void testSonarsRoutineWorking( void );
  * @note    The routine has internal infinite loop
  */
 void testROSDriverRoutine( void );
-
-
 
 
 /*************************/
@@ -122,6 +144,10 @@ static inline void testsRoutines( void )
 
     testBrakeUnitCSRoutine();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS)
+
+    testDriveSpeedCSRoutine();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 
     testWheelPosSensorRoutine();
@@ -134,12 +160,17 @@ static inline void testsRoutines( void )
 
     testDriverControlRoutine();
 
-#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1)
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL)
 
-    testDriverControlRoutineExt1();
+    testDriverControlRoutineSerial();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SONAR)
 
     testSonarsRoutineWorking();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SHARP)
+
+    testSharpRoutineWorking();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_STEER_SENSORS)
 
@@ -149,8 +180,11 @@ static inline void testsRoutines( void )
 
     testROSDriverRoutine();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_UNIT_OPENED)
+
+    testBrakeUintOpenedRoutine();
+
 #endif
 }
-
 
 #endif /* TESTS_TESTS_H_ */

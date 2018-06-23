@@ -1,7 +1,17 @@
-function my_fig
-
+function real_time_plot
+    global dat
+    delete(instrfind);
+    dat = serial('COM5', 'BaudRate', 115200);
+    dat.InputBufferSize = 4096;
+    fopen(dat)
+    set(dat, 'ByteOrder', 'littleEndian')
+    
+    fwrite(dat, 1, 'uint8');
+    disp 'Ok!'
+    A=[];
+    B = [];
+    
     vector = [0];
-    cntr = 1;
     num = 0;
     
     f=figure('visible','off','position',...
@@ -18,20 +28,20 @@ function my_fig
     function callbackfn(source,eventdata)
         num=get(slhan,'value');
         set(hsttext,'visible','on','string',num2str(num))
-        % x=linspace(0,4*pi);
-
-        %ax=gca;
-        %ax.XLim=[0 2*pi]
     end
 
-    while length(vector) < 100
-        vector = [vector cntr];
-        cntr = cntr + 1;
+    point_number = 1000;
+    while length(vector) < point_number
+		res = fread(dat, 1, 'uint16');
+	
+        vector = [vector res];
         
-        y=sin(num*vector);
-        plot(gca, y);
+        plot(gca, vector); drawnow limitrate
         
-        pause(0.01)
     end
-    
+	
+    fwrite(dat, 2, 'uint8');
+    fclose(dat);
+    disp 'Finish'
 end
+

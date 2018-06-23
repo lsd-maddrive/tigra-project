@@ -2,6 +2,87 @@
 #include <lld_steer_sensors.h>
 
 
+#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SHARP)
+/***      ADC related        ***/
+#define adc3NumChannels             1
+#define adc3BufDepth                1
+
+static adcsample_t adc3Buffer[adc3NumChannels * adc3BufDepth];
+
+static ADCDriver                    *adcSharp          = &ADCD3;
+static GPTDriver                    *adcGPT            = &GPTD8;
+
+#define SharpAnalogInput         ADC_CHANNEL_IN9
+
+#define SharpAnalogLine          PAL_LINE( GPIOF, 3 )
+
+uint16_t sharpADCval           = 0;
+
+/*** Callback prototype ***/
+
+/*
+ * @brief                   get adc value from buffer and write to variable
+ */
+static void adc3cb(ADCDriver *adcp, adcsample_t *buffer, size_t n)
+{
+
+    adcp = adcp; n = n;
+
+    sharpADCval = adc3Buffer[0];
+
+}
+
+/*** Configuration structures ***/
+static const GPTConfig gpt8cfg1 = {
+  .frequency =  100000,         // 100 kHz
+  .callback  =  NULL,
+  .cr2       =  TIM_CR2_MMS_1,  /* MMS = 010 = TRGO on Update Event.        */
+  .dier      =  0U
+};
+
+static const ADCConversionGroup adc3cfg = {
+  .circular     = true,                     // working mode = looped
+  .num_channels = adc3NumChannels,          // number of channels
+  .end_cb       = adc3cb,                   // after ADC conversion ends - call this func
+  .error_cb     = NULL,
+  .cr1          = 0,
+  .cr2          = ADC_CR2_EXTEN_RISING | ADC_CR2_EXTSEL_SRC(0b111),  // Commutated from Timer
+  /* from RM (p.452) it is TIM8 TRGO */
+  /* ADC_CR2_EXTEN_RISING - means to react on the rising signal (front) */
+  .smpr1        = 0,
+  .smpr2        = ADC_SMPR2_SMP_AN9(ADC_SAMPLE_480),
+  .sqr1         = ADC_SQR1_NUM_CH(adc3NumChannels),
+  .sqr2         = 0,
+  .sqr3         = ADC_SQR3_SQ1_N(SharpAnalogInput)
+};
+
+/*
+ * @brief                   Initialize periphery connected to IR-sensor
+ */
+void lldSharpInit( void )
+{
+  /*** ADC pins configuration ***/
+     gptStart( adcGPT, &gpt8cfg1 );
+     adcStart( adcSharp, NULL );
+     palSetLineMode( SharpAnalogLine,     PAL_MODE_INPUT_ANALOG );
+     adcStartConversion( adcSharp, &adc3cfg, adc3Buffer, adc3BufDepth);
+
+     gptStartContinuous( adcGPT, 1000); // triggering each 10 ms => 100 Hz
+}
+
+/*
+ * @brief                   Return ADC value from IR-sensor (refreshed val - 10 Hz)
+ */
+uint16_t lldSharpADCval( void )
+{
+  return sharpADCval;
+
+}
+
+
+#endif
+
+#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SONAR)
 /*** Hardware configuration     ***/
 
 static GPTDriver                    *trSonarGPT            = &GPTD4;
@@ -21,6 +102,7 @@ static GPTDriver                    *trSonarGPT            = &GPTD4;
 #define padTX4                      0
 #define padRX4                      11
 
+/***      Virtual timer Related   ***/
 static virtual_timer_t reset_vt;
 static uint32_t port_arg;
 
@@ -60,7 +142,6 @@ static void gpt4cb( GPTDriver *gptp )
 }
 
 /*** Configuration structures ***/
-
 static const GPTConfig gpt4cfg1 = {
   .frequency =  100000,         // 100 kHz
   .callback  =  gpt4cb,
@@ -176,4 +257,4 @@ uint16_t getSonarValU7cm( void )
       return greenSonarVal;
 
 }
-
+#endif
