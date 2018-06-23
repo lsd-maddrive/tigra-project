@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+	<node pkg="tf" type="static_transform_publisher" name="map_tf" args="0 0 0 0 0 0 world map 100" />
+	<node pkg="tf" type="static_transform_publisher" name="lidar_tf" args="0 0 0 0 0 0 world neato_laser 100" />
+
+	<node pkg="xv_11_laser_driver" type="neato_laser_publisher" name="lidar_pub" >
+		<param name="port" value="/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0" />
+	</node>
+
+</launch>
