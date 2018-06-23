@@ -15,6 +15,7 @@ static float    sensor_zero_value_mV    = 1650;
 
 #define brakeSensorClickLine        PAL_LINE(GPIOA, 0)
 #define brakeSensorAnalogInputCh    COMMON_ADC_SEQ1_CH
+#define brakeSensorPressedState     PAL_LOW
 
 /*** Hardware configuration end ***/
 
@@ -61,14 +62,10 @@ void brakeSensorInit ( void )
 
 bool brakeSensorIsPressed ( void )
 {
-    bool result = false;
-
     if ( !isInitialized )
         return false;
 
-    result = palReadLine( brakeSensorClickLine );
-
-    return (result == PAL_HIGH);
+    return ( palReadLine( brakeSensorClickLine ) == brakeSensorPressedState );
 }
 
 int16_t brakeSensorGetPressPower ( void )

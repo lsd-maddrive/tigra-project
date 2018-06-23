@@ -37,7 +37,6 @@ static int32_t      wheelSpeedSensorMaxOverflows    = 0;
 
 /* PartOfWheelRevPerMinute stands for part of revolution per minute
  * uses for velocity calculation   */
-const  float        PartOfWheelRevPerMinute = 60.0 / ImpsPerRevQuantity;
 static float        velocityCalcTicksToRPM  = 0;
 
 void wheelPosSensorInit (void)
@@ -68,13 +67,13 @@ void wheelPosSensorInit (void)
     wheelSpeedSensorMaxOverflows = wheelSpeedSensorTimeoutMs / 
                                         (TimerPeriod * 1000.0 /* to ms */ / timeIntervalsCfg.frequency);
 
-    velocityCalcTicksToRPM  = PartOfWheelRevPerMinute * timeIntervalsCfg.frequency;
+    velocityCalcTicksToRPM  = 60.0 * timeIntervalsCfg.frequency / ImpsPerRevQuantity;
 }
 
 /* Timer 3 overflow callback function */
-static void gpt_overflow_cb(GPTDriver *timeIntervalsDriver)
+static void gpt_overflow_cb(GPTDriver *gptd)
 {
-    timeIntervalsDriver = timeIntervalsDriver;
+    gptd = gptd;
 
     /* Increment overflow counter*/
     overflow_counter ++;
@@ -147,9 +146,10 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
 wheelVelocity_t wheelPosSensorGetVelocity ( void )
 {
     wheelVelocity_t  velocity = 0;
+    
     if ( !isInitialized )
     {
-      return -1;
+        return -1;
     }
 
 #ifdef NEW_ALGORITHM
@@ -164,6 +164,12 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
      * which means start and probably incorrect velocity calculation */
     if ( measured_width != 0)
     {
+        /**
+         * second between fronts (Tf) = measured_width / frequency
+         * there are 4 (config) fronts per revolution ~ 4 x Tf = second for revolution (Tr)
+         * rps = 1 / Tr = 1 / (4 x Tf) = freq / (4 x ticks)
+         * rpm = 60 * rps = 60 * freq / (4 x ticks)
+         */
         velocity = velocityCalcTicksToRPM / measured_width;
     }
     else
@@ -172,18 +178,6 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
     }
 
     return velocity;
-}
-
-/**
- * @ brief                    Sends current timer counter value to serial
- */
-void sendTestInformation (void)
-{
-    wheelVelocity_t vel = wheelPosSensorGetVelocity ();
-    vel = vel*100;
-    chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n %s %d\r\n %s %d\r\n" ,
-              "prev time:", prev_time, "time width (tick):", measured_width,
-              "velocity", (int)vel, "ovflow_ctr", overflow_counter );
 }
 
 /**

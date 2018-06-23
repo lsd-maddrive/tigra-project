@@ -4,7 +4,7 @@
 
 #ifdef TEST_WHEEL_POS_SENSOR_SIMULATED
 
-static THD_WORKING_AREA(waBtnThd, 128);
+static THD_WORKING_AREA(waPosSensorThd, 128);
 static THD_FUNCTION(PosSensorOutThd, arg)
 {
     arg = arg;
@@ -16,17 +16,14 @@ static THD_FUNCTION(PosSensorOutThd, arg)
     {
         palTogglePad( GPIOF, 14 );
 
-        //chThdSleepMilliseconds(2);
-        //chThdSleepSeconds(40);
-        chThdSleepMicroseconds(250);
-
+        chThdSleepMicroseconds( 250 );
     }
 }
 
 static void simulation_init ( void )
 {
 
-    chThdCreateStatic( waBtnThd, sizeof(waBtnThd), NORMALPRIO, PosSensorOutThd, NULL );
+    chThdCreateStatic( waPosSensorThd, sizeof(waPosSensorThd), NORMALPRIO, PosSensorOutThd, NULL );
 }
 
 #endif  //TEST_WHEEL_POS_SENSOR_SIMULATED
@@ -51,18 +48,19 @@ void testWheelPosSensorRoutine( void )
 
     while ( 1 )
     {
-
         wheelVelocity_t velocity   =   wheelPosSensorGetVelocity ();
         wheelPosition_t position   =   wheelPosSensorGetPosition ();
 
-        /* Send to serial port position and velocity
-         * fixed point representation (3 decimals)*/
-        chprintf( (BaseSequentialStream *)&SD7, "%s %d\r\n %s %d\r\n" , "pos:",
-                  (int) (position*1000), "vel:", (int) (velocity*1000) );
+        double speedIntPart;
+        double speedFrctPart = modf( velocity, &speedIntPart );
 
-        //sendTestInformation ();
+        double posIntPart;
+        double posFrctPart = modf( position, &posIntPart );
+
+        chprintf( (BaseSequentialStream *)&SD7, "Vel: %d.%03d\tPos: %d.%03d\r\n" ,
+                    (int)(speedIntPart), (int)(speedFrctPart * 1000),
+                    (int)(posIntPart), (int)(posFrctPart * 1000) );
+
         chThdSleepMilliseconds( 100 );
-
-
     }
 }

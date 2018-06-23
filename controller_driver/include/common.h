@@ -25,18 +25,19 @@
 #define     PROGRAM_ROUTINE_TEST_BRAKE_SENSOR       1
 #define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR   2
 #define     PROGRAM_ROUTINE_TEST_LL_DRIVER          3
-#define     PROGRAM_ROUTINE_TEST_LL_DRIVER_EXT1     4
+#define     PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL	4
 #define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       5
 #define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS      6
-#define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_OPENED  7
-#define     PROGRAM_ROUTINE_TEST_STEER_SENSORS      8
-#define     PROGRAM_ROUTINE_TEST_ROS_DRIVER         9
-#define     PROGRAM_ROUTINE_TEST_LL_SONAR           10
-#define     PROGRAM_ROUTINE_TEST_LL_SHARP           11
+#define     PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS     7
+#define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_OPENED  8
+#define     PROGRAM_ROUTINE_TEST_STEER_SENSORS      9
+#define     PROGRAM_ROUTINE_TEST_ROS_DRIVER         10
+#define     PROGRAM_ROUTINE_TEST_LL_SONAR           11
+#define     PROGRAM_ROUTINE_TEST_LL_SHARP           12
 
 
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_BRAKE_SENSOR
 
 /******************/
 /*** Prototypes ***/
@@ -52,7 +53,6 @@ void commonExtDriverInit ( void );
 /*** Common ADC configuration ***/
 
 #define COMMON_ADC_RES_CONF         ADC_CR1_12B_RESOLUTION
-#define COMMON_ADC_BUFFER_DEPTH     4
 
 /* Brake sensor current input */
 #define COMMON_ADC_SEQ1             ADC_CHANNEL_IN3

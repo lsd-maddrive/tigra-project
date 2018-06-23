@@ -30,33 +30,43 @@ static int32_t  speedLowestDACValue    = 0;
 #define PE14_ACTIVE     PWM_OUTPUT_ACTIVE_HIGH
 #define PE14_DISABLE    PWM_OUTPUT_DISABLED
 
-#define pwm1PortCh0     GPIOE
-#define pwm1PadCh0      9
-#define pwmPortCh1      GPIOE
-#define pwmPadCh1       11
+#define pwm1LineCh0     PAL_LINE( GPIOE, 9 )
+#define pwm1LineCh1     PAL_LINE( GPIOE, 11 )
 
 #define pwm1Freq        4000000
 #define pwm1Period      40000
 
 /*** DAC configuration pins      ***/
-#define dacPort         GPIOA
-#define dacPad          4
+#define dacLine         PAL_LINE( GPIOA, 4 )
 
 static  PWMDriver       *pwmDriver      = &PWMD1;
 static  DACDriver       *dacDriver      = &DACD1;
 
 /*** Direction pins configuration          ***/
 /*** F_12 for Driving Wheels Set Direction ***/
-#define portMotorDir        GPIOF
-#define padMotorDir         12
+#define lineMotorDir        PAL_LINE( GPIOF, 12 )
+
 /*** E_15 for Braking Set Direction        ***/
-#define portBrakeDirIN1     GPIOE
-#define padBrakeDirIN1      15
-#define portBrakeDirIN2     GPIOG
-#define padBrakeDirIN2      1
+#define lineBrakeDirIN1     PAL_LINE( GPIOE, 15 )
+#define lineBrakeDirIN2     PAL_LINE( GPIOG, 1 )
+
+static inline void setBrakeDirection ( bool direct )
+{
+    if ( direct )
+    {
+        palSetLine( lineBrakeDirIN1 );
+        palClearLine( lineBrakeDirIN2 );
+    }
+    else
+    {
+        palClearLine( lineBrakeDirIN1 );
+        palSetLine( lineBrakeDirIN2 );
+    }
+}
+
 /*** E_3 for Steering Set Direction        ***/
-#define portSteerDir        GPIOE
-#define padSteerDir         3
+#define lineSteerDir        PAL_LINE( GPIOE, 3 )
+
 
 /*** Configuration structures ***/
 
@@ -102,21 +112,21 @@ void lldControlInit( void )
         return;
 
     /*** PWM pins configuration ***/
-    palSetPadMode( pwm1PortCh0, pwm1PadCh0, PAL_MODE_ALTERNATE(1) );
-    palSetPadMode( pwmPortCh1,  pwmPadCh1,  PAL_MODE_ALTERNATE(1) );
+    palSetLineMode( pwm1LineCh0, PAL_MODE_ALTERNATE(1) );
+    palSetLineMode( pwm1LineCh1,  PAL_MODE_ALTERNATE(1) );
 
     /*** PAL pins configuration ***/
-    palSetPadMode( portMotorDir, padMotorDir, PAL_MODE_OUTPUT_PUSHPULL );
-    palSetPadMode( portBrakeDirIN1, padBrakeDirIN1, PAL_MODE_OUTPUT_PUSHPULL );
-    palSetPadMode( portBrakeDirIN2, padBrakeDirIN2, PAL_MODE_OUTPUT_PUSHPULL );
-    palSetPadMode( portSteerDir, padSteerDir, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetLineMode( lineMotorDir, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetLineMode( lineBrakeDirIN1, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetLineMode( lineBrakeDirIN2, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetLineMode( lineSteerDir, PAL_MODE_OUTPUT_PUSHPULL );
 
     /*
     * DAC has two channels
     * Datasheet p69, PA4 - DACout1, PA5 - DACout2
     * Pin configuration for 1st channel
     */
-    palSetPadMode( dacPort, dacPad, PAL_MODE_INPUT_ANALOG );
+    palSetLineMode( dacLine, PAL_MODE_INPUT_ANALOG );
 
     /* Start DAC driver with configuration */
     dacStart( dacDriver, &dac_cfg );
@@ -139,16 +149,13 @@ void lldControlInit( void )
 
 /*
  * @brief   Set power for driving motor
- * @param   lldMotorPower   Motor power value [0 100]
+ * @param   inputPrc   Motor power value [0 100]
  */
-void lldControlSetDrMotorPower( int32_t lldMotorPower )
+void lldControlSetDrMotorPower( controlValue_t inputPrc )
 {
-    if( lldMotorPower < 0 )
-        lldMotorPower = 0;
-    else if( lldMotorPower > 100 )
-        lldMotorPower = 100;
+    inputPrc = CLIP_VALUE( inputPrc, 0, 100 );
 
-    uint16_t drDriveDuty = lldMotorPower * speedConvRate + speedLowestDACValue;
+    uint16_t drDriveDuty = inputPrc * speedConvRate + speedLowestDACValue;
     /*
     * Write value to DAC channel
     * Arguments:   <dacDriver>      - pointer to DAC driver
@@ -161,50 +168,34 @@ void lldControlSetDrMotorPower( int32_t lldMotorPower )
 
 /*
  * @brief   Set power for steering motor
- * @param   lldSteerPower   Motor power value [0 100]
+ * @param   inputPrc   Motor power value [0 100]
  */
-void lldControlSetSteerPower( int32_t lldSteerPower )
+void lldControlSetSteerPower( controlValue_t inputPrc )
 {
-    if( lldSteerPower > 100 )
-        lldSteerPower = 100;
-    else if( lldSteerPower < 0 )
-        lldSteerPower = 0;
+    inputPrc = CLIP_VALUE( inputPrc, 0, 100 );
 
     int16_t  powerInDutyK  =   1;
     int16_t  powerInDutyB  =   0;
-    uint16_t drSteerDuty   =   lldSteerPower * powerInDutyK + powerInDutyB;
+    uint16_t drSteerDuty   =   inputPrc * powerInDutyK + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 }
 
 /*
  * @brief   Set power for braking motor
- * @param   lldBrakePower   Motor power value [-100 100]
+ * @param   inputPrc   Motor power value [-100 100]
  * @note    power (0, 100]  -> clockwise
  * @note    power [-100, 0} -> counterclockwise
  */
-void lldControlSetBrakePower( int32_t lldBrakePower )
+void lldControlSetBrakePower( controlValue_t inputPrc )
 {
+    inputPrc = CLIP_VALUE( inputPrc, -100, 100 );
 
-    if( lldBrakePower > 100 )
-        lldBrakePower = 100;
-    else if( lldBrakePower < -100 )
-        lldBrakePower = -100;
+    setBrakeDirection( inputPrc < 0 );
 
-    if( lldBrakePower < 0 )
-    {
-      palSetPad( portBrakeDirIN1, padBrakeDirIN1 );
-      palClearPad( portBrakeDirIN2, padBrakeDirIN2 );
-    }
-    else if( lldBrakePower > 0 )
-    {
-      palClearPad( portBrakeDirIN1, padBrakeDirIN1 );
-      palSetPad( portBrakeDirIN2, padBrakeDirIN2 );
-    }
-
-    int16_t  powerInDutyK  =   400;
-    int16_t  powerInDutyB  =   0;
-    uint16_t drBrakeDuty   =   abs(lldBrakePower) * powerInDutyK + powerInDutyB;
+    int32_t  powerInDutyK  =   400;
+    int32_t  powerInDutyB  =   0;
+    uint16_t drBrakeDuty   =   abs(inputPrc) * powerInDutyK + powerInDutyB;
 
     pwmEnableChannel( pwmDriver, brakePWMch, drBrakeDuty );
 }
@@ -216,11 +207,10 @@ void lldControlSetBrakePower( int32_t lldBrakePower )
  */
 void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
 {
-    if(lldDrMotorDirection)
-        palSetPad( portMotorDir, padMotorDir );
+    if( lldDrMotorDirection )
+        palSetLine( lineMotorDir );
     else
-        palClearPad( portMotorDir, padMotorDir );
-
+        palClearLine( lineMotorDir );
 }
 
 /*
@@ -231,7 +221,7 @@ void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
 void lldControlSetSteerDirection( bool lldSteerDirection )
 {
     if(lldSteerDirection)
-        palSetPad( portSteerDir, padSteerDir );
+        palSetLine( lineSteerDir );
     else
-        palClearPad( portSteerDir, padSteerDir );
+        palClearLine( lineSteerDir );
 }

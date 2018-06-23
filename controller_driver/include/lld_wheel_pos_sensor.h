@@ -50,11 +50,4 @@ wheelPosition_t wheelPosSensorGetPosition ( void );
  */
 wheelVelocity_t wheelPosSensorGetVelocity ( void );
 
-
-/*
- * @ brief         Sends test information (gpt counter)
- */
-void sendTestInformation ( void );
-
-
 #endif /* INCLUDE_LLD_WHEEL_POS_SENSOR_H_ */
