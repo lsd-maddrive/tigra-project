@@ -115,6 +115,13 @@ void testSonarsRoutineWorking( void );
  */
 void testDriveSpeedCSRoutine( void );
 
+/**
+ * @brief   Routine of motor control system test
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testDriveSpeedOpenedRoutine( void );
+
 
 /************************/
 /*** ROS Driver tests ***/
@@ -147,6 +154,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS)
 
     testDriveSpeedCSRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_DRIVE_SPEED_OPENED)
+
+    testDriveSpeedOpenedRoutine();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 

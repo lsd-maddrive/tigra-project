@@ -74,3 +74,42 @@ void testDriveSpeedCSRoutine( void )
     }
 }
 
+void testDriveSpeedOpenedRoutine( void )
+{
+    /* Low level drivers initialization required for motor control*/
+    DriveSpeedCSInit();
+
+    sdStart( &SD7, &sdcfg );
+    palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
+
+    int32_t speedPower = 0;
+
+    while( 1 )
+    {
+        chprintf( (BaseSequentialStream *)&SD7, "speedPow: %d\n\r", speedPower );
+
+        char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+        switch ( rcv_data )
+        {
+            case 'c':
+                speedPower += 10;
+                speedPower = CLIP_VALUE( speedPower, 0, 100 );
+                break;
+
+            case 'v':
+                speedPower -= 10;
+                speedPower = CLIP_VALUE( speedPower, 0, 100 );
+                break;
+
+            default:
+                ;
+        }
+        lldControlSetDrMotorPower( speedPower );
+
+        chThdSleepMilliseconds( 10 );
+
+    }
+
+}
+
