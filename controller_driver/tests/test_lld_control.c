@@ -81,7 +81,6 @@ void testDriverControlRoutineSerial( void )
         speed_value = CLIP_VALUE( speed_value, -100, 100 );
         brake_value = CLIP_VALUE( brake_value, -100, 100 );
 
-        lldControlSetSteerDirection( steer_value > 0 );
         lldControlSetSteerPower( steer_value );
 
         lldControlSetDrMotorDirection( steer_value > 0 );

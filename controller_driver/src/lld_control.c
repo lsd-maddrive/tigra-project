@@ -64,10 +64,6 @@ static inline void setBrakeDirection ( bool direct )
     }
 }
 
-/*** E_3 for Steering Set Direction        ***/
-#define lineSteerDir        PAL_LINE( GPIOE, 3 )
-
-
 /*** Configuration structures ***/
 
 PWMConfig pwm1conf = {
@@ -119,7 +115,6 @@ void lldControlInit( void )
     palSetLineMode( lineMotorDir, PAL_MODE_OUTPUT_PUSHPULL );
     palSetLineMode( lineBrakeDirIN1, PAL_MODE_OUTPUT_PUSHPULL );
     palSetLineMode( lineBrakeDirIN2, PAL_MODE_OUTPUT_PUSHPULL );
-    palSetLineMode( lineSteerDir, PAL_MODE_OUTPUT_PUSHPULL );
 
     /*
     * DAC has two channels
@@ -167,17 +162,17 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
 }
 
 /*
- * @brief   Set power for steering motor
- * @param   inputPrc   Motor power value [0 100]
+ * @brief   Set power for steering motor (via ESC)
+ * @param   inputPrc   Motor power value [-100 100]
  */
 void lldControlSetSteerPower( controlValue_t inputPrc )
 {
-    inputPrc = CLIP_VALUE( inputPrc, 0, 100 );
-
+    inputPrc = CLIP_VALUE( inputPrc, -100, 100 );
+    /*** FIX K and B value !!!! ***/
     int16_t  powerInDutyK  =   1;
     int16_t  powerInDutyB  =   0;
     uint16_t drSteerDuty   =   inputPrc * powerInDutyK + powerInDutyB;
-
+    drSteerDuty = CLIP_VALUE( drSteerDuty, 0, 40000 );
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 }
 
@@ -211,17 +206,4 @@ void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
         palSetLine( lineMotorDir );
     else
         palClearLine( lineMotorDir );
-}
-
-/*
- * @brief   Set steering motor direction
- * @param   lldSteerDirection   Motor direction true - forward
- *                                              false - backward
- */
-void lldControlSetSteerDirection( bool lldSteerDirection )
-{
-    if(lldSteerDirection)
-        palSetLine( lineSteerDir );
-    else
-        palClearLine( lineSteerDir );
 }

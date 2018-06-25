@@ -20,8 +20,8 @@ void lldControlInit ( void );
 void lldControlSetDrMotorPower ( controlValue_t inputPrc );
 
 /*
- * @brief   Set power for steering motor
- * @param   inputPrc   Motor power value percentage [0 100]
+ * @brief   Set power for steering motor (via ESC)
+ * @param   inputPrc   Motor power value percentage [-100 100]
  */
 void lldControlSetSteerPower ( controlValue_t inputPrc );
 
@@ -29,7 +29,7 @@ void lldControlSetSteerPower ( controlValue_t inputPrc );
  * @brief   Set power for braking motor
  * @param   inputPrc   Motor power value percentage [-100 100]
  * @note    power (0, 100]  -> clockwise
- * @note    power [-100, 0} -> counterclockwise
+ * @note    power [-100, 0) -> counterclockwise
  */
 void lldControlSetBrakePower( controlValue_t inputPrc );
 
@@ -39,14 +39,6 @@ void lldControlSetBrakePower( controlValue_t inputPrc );
  *                                              false - backward
  */
 void lldControlSetDrMotorDirection ( bool lldDrMotorDirection );
-
-
-/*
- * @brief   Set steering motor direction
- * @param   lldSteerDirection   Motor direction true - forward
- *                                              false - backward
- */
-void lldControlSetSteerDirection ( bool lldSteerDirection );
 
 
 
