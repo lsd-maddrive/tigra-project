@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-	<include file="cameras_calib.launch">
+	<!-- <include file="cameras_driver_usb.launch"> -->
+	<include file="cameras_driver_uvc.launch">
 		<arg name="camera_info" value="true" />
 		<arg name="video_device_right" value="/dev/video0" />
 		<arg name="video_device_left" value="/dev/video1" />
