@@ -37,7 +37,7 @@
 #define     PROGRAM_ROUTINE_TEST_LL_SHARP           13
 
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS
 
 
 /******************/
