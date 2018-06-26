@@ -70,6 +70,13 @@ void commonExtDriverInit ( void );
 #define COMMON_ADC_SEQ3_LINE        PAL_LINE( GPIOC, 3 )
 #define COMMON_ADC_SEQ3_CH          2
 
+/*      Speed sensor input    */
+#define COMMON_ADC_SEQ4             ADC_CHANNEL_IN12
+#define COMMON_ADC_SEQ4_LINE        PAL_LINE( GPIOC, 2 )
+#define COMMON_ADC_SEQ4_CH          3
+
+
+
 
 /**
  * @brief   Initialize common ADC1 unit

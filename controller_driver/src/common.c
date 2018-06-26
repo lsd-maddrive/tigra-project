@@ -32,7 +32,7 @@ void commonExtDriverInit ( void )
 /*** Common ADC1 unit ***/
 /************************/
 
-#define COMMON_ADC_CHANNELS_NUMBER  3
+#define COMMON_ADC_CHANNELS_NUMBER  4
 #define COMMON_ADC_BUFFER_DEPTH     4
 
 static adcsample_t  adc_raw_buffer[COMMON_ADC_CHANNELS_NUMBER * COMMON_ADC_BUFFER_DEPTH];
@@ -51,14 +51,16 @@ static const ADCConversionGroup  conv_group = {
 
     /* Manual configuration required */
     .smpr1          = ADC_SMPR1_SMP_AN10(ADC_SAMPLE_480) |
-                      ADC_SMPR1_SMP_AN13(ADC_SAMPLE_480),
+                      ADC_SMPR1_SMP_AN13(ADC_SAMPLE_480) |
+                      ADC_SMPR1_SMP_AN12(ADC_SAMPLE_480),
     .smpr2          = ADC_SMPR2_SMP_AN3(ADC_SAMPLE_480),
 
     .sqr1           = ADC_SQR1_NUM_CH(COMMON_ADC_CHANNELS_NUMBER),
     .sqr2           = 0,
     .sqr3           = ADC_SQR3_SQ1_N(COMMON_ADC_SEQ1) |
                       ADC_SQR3_SQ2_N(COMMON_ADC_SEQ2) |
-                      ADC_SQR3_SQ3_N(COMMON_ADC_SEQ3)
+                      ADC_SQR3_SQ3_N(COMMON_ADC_SEQ3) |
+                      ADC_SQR3_SQ4_N(COMMON_ADC_SEQ4)
 };
 
 static const GPTConfig trigger_cfg = {
@@ -131,6 +133,7 @@ void commonADC1UnitInit ( void )
     palSetLineMode( COMMON_ADC_SEQ1_LINE, PAL_MODE_INPUT_ANALOG );
     palSetLineMode( COMMON_ADC_SEQ2_LINE, PAL_MODE_INPUT_ANALOG );
     palSetLineMode( COMMON_ADC_SEQ3_LINE, PAL_MODE_INPUT_ANALOG );
+    palSetLineMode( COMMON_ADC_SEQ4_LINE, PAL_MODE_INPUT_ANALOG );
 
     adcStartConversion( commonADCDriver, &conv_group, adc_raw_buffer, COMMON_ADC_BUFFER_DEPTH );
 

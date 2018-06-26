@@ -103,8 +103,6 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     /* Just to avoid Warning from compiler */
     extp = extp; channel = channel;
 
-#ifdef NEW_ALGORITHM
-
     int32_t curr_time   = gptGetCounterX(timeIntervalsDriver);
     measured_width      = 0;
 
@@ -119,23 +117,6 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     prev_time = curr_time;
     impulseCounter++;
 
-#else
-    /* Increment fronts counter  */
-    impulseCounter ++;
-    /* Calculate time (tics) width between two fronts */
-    measured_width = gptGetCounterX(timeIntervalsDriver)+ (overflow_counter-1)*TimerPeriod + (TimerPeriod - prev_time) ;
-    /* Save current timer counter value for next width calculation*/
-    prev_time =  gptGetCounterX(timeIntervalsDriver);
-    /* Reset timer overflows counter*/
-    overflow_counter = 0;
-    /* Protection of incorrect velocity calculation */
-    /* Because measured_width calculations depends on  prev_time value  */
-    /* If impulseCounter < 2 then prev_time =  0 */
-    if ( impulseCounter < 2)
-    {
-        measured_width = 0;
-    }
-#endif
 }
 
 /**
@@ -154,12 +135,15 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
         return -1;
     }
 
+   return commonADC1UnitGetValue( COMMON_ADC_SEQ4_CH );
+#if 0
 #ifdef NEW_ALGORITHM
     
     if ( !wheelsRotating )
         return 0;
 
 #endif
+
 
     /* Protection of division by zero.
      * measured_width = 0 if fronts counter < 2,
@@ -173,6 +157,7 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
          * rpm = 60 * rps = 60 * freq / (4 x ticks)
          */
         velocity = velocityCalcTicksToRPM / measured_width;
+
     }
     else
     {
@@ -180,6 +165,7 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
     }
 
     return velocity;
+#endif
 }
 
 /**
@@ -203,3 +189,5 @@ wheelPosition_t wheelPosSensorGetPosition ( void )
 
     return position;
 }
+
+
