@@ -35,9 +35,10 @@
 #define     PROGRAM_ROUTINE_TEST_ROS_DRIVER         11
 #define     PROGRAM_ROUTINE_TEST_LL_SONAR           12
 #define     PROGRAM_ROUTINE_TEST_LL_SHARP           13
+#define     PROGRAM_ROUTINE_TEST_LIGHTNING          14
 
 
-#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS
+#define     MAIN_PROGRAM_ROUTINE                    PROGRAM_ROUTINE_TEST_LIGHTNING
 
 
 /******************/

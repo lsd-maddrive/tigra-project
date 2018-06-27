@@ -123,6 +123,12 @@ void testDriveSpeedCSRoutine( void );
 void testDriveSpeedOpenedRoutine( void );
 
 
+/**
+ * @brief   Routine of lightning driver test
+ * @note    The routine has internal infinite loop
+ */
+void testLightningRoutineWorking( void );
+
 /************************/
 /*** ROS Driver tests ***/
 /************************/
@@ -194,6 +200,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_UNIT_OPENED)
 
     testBrakeUintOpenedRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LIGHTNING)
+
+    testLightningRoutineWorking();
 
 #endif
 }

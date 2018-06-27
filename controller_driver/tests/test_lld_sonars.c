@@ -15,6 +15,7 @@ static const SerialConfig sd7cfg = {
 #define padTX7                      8
 #define padRX7                      7
 
+
 void testSharpRoutineWorking( void )
 {
     lldSharpInit();
@@ -22,6 +23,7 @@ void testSharpRoutineWorking( void )
     sdStart( &SD7, &sd7cfg );
     palSetPadMode( portSD7, padTX7, PAL_MODE_ALTERNATE(8) );
     palSetPadMode( portSD7, padRX7, PAL_MODE_ALTERNATE(8) );
+
 
     uint16_t sharpSunny = 0;
     uint8_t start = 0;
