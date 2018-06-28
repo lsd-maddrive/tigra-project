@@ -41,7 +41,7 @@
 
 
 
-#define     MAIN_PROGRAM_ROUTINE                    	PROGRAM_ROUTINE_TEST_TOOLS_MATLAB_SLIDER
+#define     MAIN_PROGRAM_ROUTINE                    	PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL
 
 
 /******************/

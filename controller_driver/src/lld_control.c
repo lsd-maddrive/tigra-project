@@ -33,8 +33,8 @@ static int32_t  speedLowestDACValue    = 0;
 #define pwm1LineCh0     PAL_LINE( GPIOE, 9 )
 #define pwm1LineCh1     PAL_LINE( GPIOE, 11 )
 
-#define pwm1Freq        4000000
-#define pwm1Period      40000
+#define pwm1Freq        400000
+#define pwm1Period      8000
 
 /*** DAC configuration pins      ***/
 #define dacLine         PAL_LINE( GPIOA, 4 )
@@ -108,7 +108,7 @@ void lldControlInit( void )
         return;
 
     /*** PWM pins configuration ***/
-    palSetLineMode( pwm1LineCh0, PAL_MODE_ALTERNATE(1) );
+    palSetLineMode( pwm1LineCh0,  PAL_MODE_ALTERNATE(1) );
     palSetLineMode( pwm1LineCh1,  PAL_MODE_ALTERNATE(1) );
 
     /*** PAL pins configuration ***/
@@ -127,6 +127,7 @@ void lldControlInit( void )
     dacStart( dacDriver, &dac_cfg );
 
     pwmStart( pwmDriver, &pwm1conf );
+
 
     /* Calculate some parameters */
 
@@ -164,16 +165,18 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
 /*
  * @brief   Set power for steering motor (via ESC)
  * @param   inputPrc   Motor power value [-100 100]
+ * @note    control signal - [1 2] ms => [4000 8000]
  */
 void lldControlSetSteerPower( controlValue_t inputPrc )
 {
     inputPrc = CLIP_VALUE( inputPrc, -100, 100 );
-    /*** FIX K and B value !!!! ***/
-    int16_t  powerInDutyK  =   1;
-    int16_t  powerInDutyB  =   0;
+
+    float       powerInDutyK  =   2;
+    int16_t     powerInDutyB  =   600;
     int32_t  drSteerDuty   =   inputPrc * powerInDutyK + powerInDutyB;
     drSteerDuty = CLIP_VALUE( drSteerDuty, 0, 40000 );
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
+
 }
 
 /*

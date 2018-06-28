@@ -37,7 +37,7 @@ function real_time_plot
 
     point_number = 1000;
     while length(vector) < point_number
-        res = fread(dat, 1, 'uint16');
+        res = fread(dat, 1, 'int16');
     
         vector = [vector res];
         

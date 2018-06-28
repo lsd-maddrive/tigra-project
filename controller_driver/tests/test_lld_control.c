@@ -6,9 +6,10 @@ void testDriverControlRoutine( void )
 {
     lldControlInit( );
 
-    lldControlSetSteerPower( 250 );
+    lldControlSetSteerPower( 50 );
+    palSetLine( LINE_LED1 );
     lldControlSetBrakePower( 75 );
-    lldControlSetDrMotorPower( 250 );
+    lldControlSetDrMotorPower( 0 );
     int8_t test_val = 75;
     while( true )
     {
@@ -88,7 +89,7 @@ void testDriverControlRoutineSerial( void )
 
         lldControlSetBrakePower( brake_value );
 
-        chprintf( (BaseSequentialStream *)&SD7, "Powers:\tSteer (%d)\n\tSpeed(%d)\n\tBrake(%d)\n",
+        chprintf( (BaseSequentialStream *)&SD7, "Powers:\tSteer (%d)\n\r\tSpeed(%d)\n\r\tBrake(%d)\n\r",
                   steer_value, speed_value, brake_value );
         chThdSleepMilliseconds( 100 );
     }
