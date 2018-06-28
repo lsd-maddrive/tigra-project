@@ -6,6 +6,10 @@
 
 const uint32_t  wheelSpeedSensorTimeoutMs       = 1000;
 
+#define WHEEL_POS_ADC_2_RPM_RATE            1.0f
+
+#define WHEEL_POS_HALL_VELOCITY
+
 /******************************/
 /*** CONFIGURATION ZONE END ***/
 /******************************/
@@ -63,6 +67,8 @@ void wheelPosSensorInit (void)
     gptStart( timeIntervalsDriver, &timeIntervalsCfg );
     gptStartContinuous( timeIntervalsDriver, TimerPeriod );
 
+    overflow_counter = 0;
+
     isInitialized       = true;
 
     /* Some calculations */
@@ -77,6 +83,8 @@ static void gpt_overflow_cb(GPTDriver *gptd)
 {
     gptd = gptd;
 
+#ifdef WHEEL_POS_HALL_VELOCITY
+    
     /* Increment overflow counter*/
     overflow_counter ++;
 
@@ -84,9 +92,9 @@ static void gpt_overflow_cb(GPTDriver *gptd)
     {
         wheelsRotating = false;
     }
-}
 
-#define NEW_ALGORITHM
+#endif
+}
 
 /**
  * Callback function of the EXT
@@ -103,6 +111,8 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     /* Just to avoid Warning from compiler */
     extp = extp; channel = channel;
 
+#ifdef WHEEL_POS_HALL_VELOCITY
+
     int32_t curr_time   = gptGetCounterX(timeIntervalsDriver);
     measured_width      = 0;
 
@@ -115,6 +125,9 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
 
     overflow_counter = 0;
     prev_time = curr_time;
+
+#endif
+
     impulseCounter++;
 
 }
@@ -135,15 +148,10 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
         return -1;
     }
 
-   return commonADC1UnitGetValue( COMMON_ADC_SEQ4_CH );
-#if 0
-#ifdef NEW_ALGORITHM
+#ifdef WHEEL_POS_HALL_VELOCITY
     
     if ( !wheelsRotating )
         return 0;
-
-#endif
-
 
     /* Protection of division by zero.
      * measured_width = 0 if fronts counter < 2,
@@ -157,15 +165,19 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
          * rpm = 60 * rps = 60 * freq / (4 x ticks)
          */
         velocity = velocityCalcTicksToRPM / measured_width;
-
     }
     else
     {
         velocity = 0;
     }
 
-    return velocity;
+#else
+
+    velocity = commonADC1UnitGetValue( COMMON_ADC_SEQ4_CH ) * WHEEL_POS_ADC_2_RPM_RATE;
+
 #endif
+
+    return velocity;
 }
 
 /**

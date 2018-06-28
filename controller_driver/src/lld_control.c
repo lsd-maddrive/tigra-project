@@ -171,7 +171,7 @@ void lldControlSetSteerPower( controlValue_t inputPrc )
     /*** FIX K and B value !!!! ***/
     int16_t  powerInDutyK  =   1;
     int16_t  powerInDutyB  =   0;
-    uint16_t drSteerDuty   =   inputPrc * powerInDutyK + powerInDutyB;
+    int32_t  drSteerDuty   =   inputPrc * powerInDutyK + powerInDutyB;
     drSteerDuty = CLIP_VALUE( drSteerDuty, 0, 40000 );
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 }
