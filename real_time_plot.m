@@ -6,7 +6,10 @@ function real_time_plot
     fopen(dat)
     set(dat, 'ByteOrder', 'littleEndian')
     
-    fwrite(dat, 1, 'uint8');
+    START_DATA = 127
+    STOP_DATA  = -127
+
+    fwrite(dat, START_DATA, 'int8');
     disp 'Ok!'
     A=[];
     B = [];
@@ -17,7 +20,7 @@ function real_time_plot
     f=figure('visible','off','position',...
         [0 0 640 480]);
     slhan=uicontrol('style','slider', 'units','normalized','position',[0 1-.05 1 .05],...
-        'min',0,'max',10,'callback',@callbackfn);
+        'min',-100,'max',100,'callback',@callbackfn);
     hsttext=uicontrol('style','text', 'units','normalized',...
         'position',[0 1-.05-.07 1 .05]);
     set(hsttext,'visible','on','string',num2str(num))
@@ -28,19 +31,21 @@ function real_time_plot
     function callbackfn(source,eventdata)
         num=get(slhan,'value');
         set(hsttext,'visible','on','string',num2str(num))
+
+        fwrite(dat, num, 'int8');
     end
 
     point_number = 1000;
     while length(vector) < point_number
-		res = fread(dat, 1, 'uint16');
-	
+        res = fread(dat, 1, 'uint16');
+    
         vector = [vector res];
         
         plot(gca, vector); drawnow limitrate
         
     end
-	
-    fwrite(dat, 2, 'uint8');
+    
+    fwrite(dat, STOP_DATA, 'int8');
     fclose(dat);
     disp 'Finish'
 end
