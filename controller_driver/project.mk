@@ -22,7 +22,8 @@ PROJECT_TESTS   = tests/test_brake_sensor.c     \
                   tests/test_ros_driver.c       \
                   tests/test_lld_sonars.c       \
                   tests/test_brake_unit_cs.c    \
-                  tests/test_drive_speed_cs.c
+                  tests/test_drive_speed_cs.c 	\
+                  tests/test_tools.c
 
 
 PROJECT_CSRC    = src/main.c src/common.c \

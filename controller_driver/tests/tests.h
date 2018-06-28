@@ -133,6 +133,19 @@ void testDriveSpeedOpenedRoutine( void );
  */
 void testROSDriverRoutine( void );
 
+/*******************/
+/*** Tools tests ***/
+/*******************/
+
+/**
+ * @brief   Routine for MATLAB GUI connection and loopback
+ * @note    Receives one byte data with next protocol:
+ *          -127     - stop sending
+ *          127      - start sending
+ *          -100:100 - reference data input
+ * @note    Sends int16 data valued by control input
+ */
+void testToolsMatlabSliderRoutine ( void );
 
 /*************************/
 /*** Tests application ***/
@@ -194,6 +207,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_BRAKE_UNIT_OPENED)
 
     testBrakeUintOpenedRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_TOOLS_MATLAB_SLIDER)
+
+    testToolsMatlabSliderRoutine();
 
 #endif
 }
