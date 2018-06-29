@@ -181,6 +181,10 @@ static inline void testsRoutines( void )
 
     testDriveSpeedOpenedRoutine();
 
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_STEER_UNIT_CS)
+
+    testSteerUnitCSRoutine();
+
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR)
 
     testWheelPosSensorRoutine();

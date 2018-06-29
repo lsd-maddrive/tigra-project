@@ -1,6 +1,9 @@
 #ifndef INCLUDE_LLD_STEER_SENSORS_H_
 #define INCLUDE_LLD_STEER_SENSORS_H_
 
+#include <common.h>
+#include <chprintf.h>
+
 /*
  * @brief                   Initialize periphery connected to steering sensor
  */

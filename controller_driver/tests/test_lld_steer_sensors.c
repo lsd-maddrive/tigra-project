@@ -32,7 +32,7 @@ void testSteerSensorsWorking( void )
         adcSteerPos = lldSteerPosition();
         adcPressPow = lldSteerPressPower();
 
-        chprintf( (BaseSequentialStream *)&SD7, "Position: %04d / Power: %04d\n", adcSteerPos, adcPressPow );
+        chprintf( (BaseSequentialStream *)&SD7, "Position: %d / Power: %04d\n\r", adcSteerPos, adcPressPow );
         chThdSleepMilliseconds( 100 );
 
     }

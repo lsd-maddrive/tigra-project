@@ -10,7 +10,8 @@ PROJECT_MODULES = src/lld_brake_sensor.c        \
                   src/lld_sonars.c              \
                   src/brake_unit_cs.c           \
                   src/drive_speed_cs.c 			\
-                  src/controllers.c
+                  src/controllers.c				\
+                  src/steer_unit_cs.c
                   
 
                   
@@ -24,7 +25,8 @@ PROJECT_TESTS   = tests/test_brake_sensor.c     \
                   tests/test_brake_unit_cs.c    \
                   tests/test_drive_speed_cs.c	\
                   tests/test_lightning.c		\
-                  tests/test_tools.c
+                  tests/test_tools.c			\
+                  tests/test_steer_unit_cs.c
 
 
 

@@ -33,8 +33,11 @@ static int32_t  speedLowestDACValue    = 0;
 #define pwm1LineCh0     PAL_LINE( GPIOE, 9 )
 #define pwm1LineCh1     PAL_LINE( GPIOE, 11 )
 
-#define pwm1Freq        400000
-#define pwm1Period      8000
+#define pwm1Freq        4000000
+#define pwm1Period      40000           // 100 Hz
+
+#define steerESCk       20
+#define steerESCb       6000
 
 /*** DAC configuration pins      ***/
 #define dacLine         PAL_LINE( GPIOA, 4 )
@@ -99,7 +102,7 @@ static const DACConfig dac_cfg = {
 static bool         isInitialized       = false;
 static float        speedConvRate       = 0.0;
 
-/*
+/**
  * @brief   Initialize periphery connected to driver control
  */
 void lldControlInit( void )
@@ -143,7 +146,7 @@ void lldControlInit( void )
     isInitialized = true;
 }
 
-/*
+/**
  * @brief   Set power for driving motor
  * @param   inputPrc   Motor power value [0 100]
  */
@@ -171,9 +174,7 @@ void lldControlSetSteerPower( controlValue_t inputPrc )
 {
     inputPrc = CLIP_VALUE( inputPrc, -100, 100 );
 
-    float       powerInDutyK  =   2;
-    int16_t     powerInDutyB  =   600;
-    int32_t  drSteerDuty   =   inputPrc * powerInDutyK + powerInDutyB;
+    int32_t  drSteerDuty   =   inputPrc * steerESCk + steerESCb;
     drSteerDuty = CLIP_VALUE( drSteerDuty, 0, 40000 );
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 
