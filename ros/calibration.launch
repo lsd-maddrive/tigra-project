@@ -3,8 +3,8 @@
 	<!-- <include file="cameras_driver_usb.launch"> -->
 	<include file="cameras_driver_uvc.launch">
 		<arg name="camera_info" value="true" />
-		<arg name="video_device_right" value="/dev/video0" />
-		<arg name="video_device_left" value="/dev/video1" />
+		<arg name="video_device_right" value="/dev/video1" />
+		<arg name="video_device_left" value="/dev/video0" />
 	</include>
 
 	<node pkg="camera_calibration" type="cameracalibrator.py" name="cameracalibrator" 
