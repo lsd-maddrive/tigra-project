@@ -34,7 +34,7 @@ static int32_t  speedLowestDACValue    = 0;
 #define pwm1LineCh1     PAL_LINE( GPIOE, 11 )
 
 #define pwm1Freq        4000000
-#define pwm1Period      40000           // 100 Hz
+#define pwm1Period      10000           // 300 Hz
 
 #define steerESCk       20
 #define steerESCb       6000

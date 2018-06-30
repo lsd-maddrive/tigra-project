@@ -43,7 +43,7 @@
 
 
 
-#define     MAIN_PROGRAM_ROUTINE                    	PROGRAM_ROUTINE_TEST_STEER_SENSORS
+#define     MAIN_PROGRAM_ROUTINE                    	PROGRAM_ROUTINE_TEST_STEER_UNIT_CS
 
 
 /******************/
