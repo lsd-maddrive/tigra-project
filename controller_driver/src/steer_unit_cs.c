@@ -1,6 +1,6 @@
 #include <steer_unit_cs.h>
 
-static bool             isInitialized   = false;
+#define CSErrorDeadzoneHalfwidth    2
 
 static PIDControllerContext_t  pidCtx = {
     .kp   = 1,
@@ -8,6 +8,8 @@ static PIDControllerContext_t  pidCtx = {
     .kd   = 0,
     .integrLimit  = 100
 };
+
+static bool             isInitialized   = false;
 
 /**
  * @brief   Initialize modules connected to steering control
@@ -36,13 +38,23 @@ int32_t     pidCurrentError = 0, pidPreviousError = 0, pidInt = 0, pidDif = 0;
 int32_t steerUnitCSSetPosition( int32_t position )
 {
     if ( !isInitialized )
-          return 0;
+        return 0;
 
     position  = CLIP_VALUE( position, -100, 100 );
 
     int16_t steerPosition = lldSteerGetPosition();
 
-    pidCtx.err = position - steerPosition;
+    int16_t error = position - steerPosition
+    
+    /* Deadzone */
+    if ( -CSErrorDeadzoneHalfwidth < pidCtx.err && pidCtx.err < CSErrorDeadzoneHalfwidth )
+    {
+        pidCtx.err = 0;
+    }
+    else
+    {
+        pidCtx.err = error;
+    }
 
     int32_t controlValue    = PIDControlResponse( &pidCtx );
 
