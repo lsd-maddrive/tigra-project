@@ -25,12 +25,10 @@ static float    sensor_zero_value_mV    = 1650;
 static bool         isInitialized           = false;
 static int32_t      brakePowerValue_mV      = 0;
 
-static uint16_t     sensor_max_voltage      = 3300;
-static uint16_t     sensor_min_voltage      = 1650;
+static uint16_t     sensorMaxVoltage        = 0;
+static uint16_t     sensorMinVoltage        = 0;
 
 static float        sensor_k_rate           = 0;
-static float        adcValue2Ref            = 0;
-
 
 void brakeSensorInit ( void )
 {
@@ -41,21 +39,10 @@ void brakeSensorInit ( void )
 
     palSetLineMode( brakeSensorClickLine, PAL_MODE_INPUT_PULLUP );
 
-    sensor_max_voltage      = referenceVoltage_mV;
-    sensor_min_voltage      = sensor_zero_value_mV;
+    sensorMaxVoltage      = referenceVoltage_mV;
+    sensorMinVoltage      = sensor_zero_value_mV;
 
-    sensor_k_rate           = 100.0 / (sensor_max_voltage - sensor_min_voltage);
-
-#if ( COMMON_ADC_RES_CONF == ADC_CR1_6B_RESOLUTION )
-    adcValue2Ref            = referenceVoltage_mV / ((1 << 6) - 1);
-#elif ( COMMON_ADC_RES_CONF == ADC_CR1_8B_RESOLUTION )
-    adcValue2Ref            = referenceVoltage_mV / ((1 << 8) - 1);
-#elif ( COMMON_ADC_RES_CONF == ADC_CR1_10B_RESOLUTION )
-    adcValue2Ref            = referenceVoltage_mV / ((1 << 10) - 1);
-// #elif ( COMMON_ADC_RES_CONF == ADC_CR1_12B_RESOLUTION )
-#else
-    adcValue2Ref            = referenceVoltage_mV / ((1 << 12) - 1);
-#endif
+    sensor_k_rate           = 100.0 / (sensorMaxVoltage - sensorMinVoltage);
 
     isInitialized = true;
 }
@@ -70,18 +57,14 @@ bool brakeSensorIsPressed ( void )
 
 int16_t brakeSensorGetPressPower ( void )
 {
-    int16_t value = 0;
-
     if ( !isInitialized )
         return -1;
 
-    brakePowerValue_mV = commonADC1UnitGetValue( brakeSensorAnalogInputCh ) * adcValue2Ref;
+    brakePowerValue_mV = commonADC1UnitGetValueMV( brakeSensorAnalogInputCh );
 
-    value = brakePowerValue_mV;
-    value = (value - sensor_min_voltage) * sensor_k_rate;
-    value = CLIP_VALUE( value, 0, 100 );
+    int16_t resultPerc = (brakePowerValue_mV - sensorMinVoltage) * sensor_k_rate;
 
-    return value;
+    return CLIP_VALUE( resultPerc, 0, 100 );
 }
 
 int16_t brakeSensorGetVoltage( void )

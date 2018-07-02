@@ -103,8 +103,8 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
 #elif (ACTIVE_FILTER == FILTER_LPF)
 
         /* Don`t make any mistakes calculating rates and inversed */
-        const float lpf_rates[COMMON_ADC_CHANNELS_NUMBER]     = {0.2, 0.1, 0.1};
-        const float lpf_rates_inv[COMMON_ADC_CHANNELS_NUMBER] = {0.8, 0.9, 0.9};
+        const float lpf_rates[COMMON_ADC_CHANNELS_NUMBER]     = {0.2, 0.1, 0.1, 0.1};
+        const float lpf_rates_inv[COMMON_ADC_CHANNELS_NUMBER] = {0.8, 0.9, 0.9, 0.1};
 
         for ( int ch = 0; ch < COMMON_ADC_CHANNELS_NUMBER; ch++ )
         {
@@ -119,7 +119,9 @@ static void adc_cb ( ADCDriver *adcp, adcsample_t *buffer, size_t n )
     }
 }
 
-static bool adcInitialized = false;
+static bool     adcInitialized      = false;
+static float    adcValue2Ref        = 0;
+static float    referenceVoltage_mV = 3300;
 
 void commonADC1UnitInit ( void )
 {
@@ -141,6 +143,16 @@ void commonADC1UnitInit ( void )
     /* 2.5ms trigger for filter */
     gptStartContinuous( adcTriggerDriver, 2500 );
 
+#if ( COMMON_ADC_RES_CONF == ADC_CR1_6B_RESOLUTION )
+    adcValue2Ref            = referenceVoltage_mV / ((1 << 6) - 1);
+#elif ( COMMON_ADC_RES_CONF == ADC_CR1_8B_RESOLUTION )
+    adcValue2Ref            = referenceVoltage_mV / ((1 << 8) - 1);
+#elif ( COMMON_ADC_RES_CONF == ADC_CR1_10B_RESOLUTION )
+    adcValue2Ref            = referenceVoltage_mV / ((1 << 10) - 1);
+#else
+    adcValue2Ref            = referenceVoltage_mV / ((1 << 12) - 1);
+#endif
+
     adcInitialized = true;
 }
 
@@ -152,5 +164,15 @@ adcsample_t commonADC1UnitGetValue ( uint8_t ch )
     }
 
     return filtered_buffer[ch];
+}
+
+adc1SampleMV_t commonADC1UnitGetValueMV ( uint8_t ch )
+{
+    if ( ch >= COMMON_ADC_CHANNELS_NUMBER )
+    {
+        return 0;
+    }
+
+    return filtered_buffer[ch] * adcValue2Ref;
 }
 

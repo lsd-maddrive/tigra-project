@@ -80,7 +80,7 @@ void commonExtDriverInit ( void );
 #define COMMON_ADC_SEQ4_CH          3
 
 
-
+typedef float	adc1SampleMV_t;
 
 /**
  * @brief   Initialize common ADC1 unit
@@ -89,12 +89,20 @@ void commonExtDriverInit ( void );
 void commonADC1UnitInit ( void );
 
 /**
- * @brief       Get value of desired channel
+ * @brief       Get value of required channel
  * @param   ch  Number of channel
  * @return      Filtered (if realized) value of ADC sampling
  *              Zero if channel is invalid 
  */
 adcsample_t commonADC1UnitGetValue ( uint8_t ch );
+
+/**
+ * @brief 		Get value of required channel in units
+ * @param ch 	Number of channel
+ * @return 		Filtered (if realized) value of ADC sampling [mV]
+ *              Zero if channel is invalid 
+ */
+adc1SampleMV_t commonADC1UnitGetValueMV ( uint8_t ch );
 
 /**************/
 /*** Macros ***/

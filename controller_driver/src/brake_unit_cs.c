@@ -5,7 +5,7 @@
 /**************************/
 
 /* Constant power of cylinder return (up to the endpoint sensor) */
-#define BRAKE_UNIT_RETURN_CONST_POWER   20
+#define BRAKE_UNIT_RETURN_CONST_POWER   50
 /* Rate for conversion from reference to comparison with sensor output */
 #define BRAKE_UNIT_PRESS_POWER_RATE     1.0f
 

@@ -11,23 +11,35 @@ static int32_t  steerPosMinAdc          = 1190;
 
 static int32_t  steerPosValidGap        = 100;
 
+/* Current sensor */
+static float    referenceVoltage_mV     = 3300;
+static float    sensor_zero_value_mV    = 1650;
+
 /******************************/
 /*** CONFIGURATION ZONE END ***/
 /******************************/
 
-/***    Variable configuration     ***/
+/*** Variable configuration ***/
 
 #define steerPosAnalogInputCh       COMMON_ADC_SEQ2_CH
 #define steerPressAnalogInputCh     COMMON_ADC_SEQ3_CH
 
-uint16_t lldSteerPosVal         = 0;
-uint16_t lldSteerPressPowerVal  = 0;
+/* ADC value */
+uint16_t        lldSteerPosVal              = 0;
 
-static bool     isInitialized           = false;
+static bool     isInitialized               = false;
 
-/** Calculated in initializtion */
-static float    steerPosPositiveRate    = 0.0;
-static float    steerPosNegativeRate    = 0.0;
+/*** Calculated in initializtion ***/
+static float        steerPosPositiveRate    = 0.0;
+static float        steerPosNegativeRate    = 0.0;
+
+/* Current sensor */
+static int32_t      steerPowerValue_mV      = 0;
+
+static uint16_t     sensorMaxVoltage        = 0;
+static uint16_t     sensorMinVoltage        = 0;
+
+static float        sensor_k_rate           = 0;
 
 /**
  * @brief                   Initialize periphery connected to steering sensor
@@ -38,6 +50,11 @@ void lldSteerSensorsInit( void )
 
     steerPosPositiveRate = 100.0 / ( steerPosMaxAdc - steerPosCenterAdc );
     steerPosNegativeRate = 100.0 / ( steerPosCenterAdc - steerPosMinAdc );
+
+    sensorMaxVoltage      = referenceVoltage_mV;
+    sensorMinVoltage      = sensor_zero_value_mV;
+
+    sensor_k_rate           = 100.0 / (sensorMaxVoltage - sensorMinVoltage);
 
     isInitialized = true;
 }
@@ -72,16 +89,14 @@ int16_t lldSteerGetPosition( void )
     return steerValPerc;
 }
 
-/**
- * @brief                   Get steering press power
- * @return                  ADC value [0, 4096]
- */
-uint16_t lldSteerPressPower( void )
+int16_t lldSteerPressPower( void )
 {
     if ( !isInitialized )
         return 0;
 
-    lldSteerPressPowerVal = commonADC1UnitGetValue( steerPressAnalogInputCh );    
+    steerPowerValue_mV = commonADC1UnitGetValueMV( steerPressAnalogInputCh );    
 
-    return lldSteerPressPowerVal;
+    int16_t resultPerc = (steerPowerValue_mV - sensorMinVoltage) * sensor_k_rate;
+
+    return CLIP_VALUE( resultPerc, 0, 100 );
 }

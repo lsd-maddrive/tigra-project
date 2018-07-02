@@ -25,8 +25,8 @@ bool lldSteerSensorsIsValid( void );
 
 /*
  * @brief 	Get steering press power
- * @return  ADC value [0, 4096]
+ * @return  Percentage of configured current sensor [0:100]
  */
-uint16_t lldSteerPressPower( void );
+int16_t lldSteerPressPower( void );
 
 #endif /* INCLUDE_LLD_STEER_SENSORS_H_ */

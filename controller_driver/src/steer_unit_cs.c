@@ -44,7 +44,7 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     int16_t steerPosition = lldSteerGetPosition();
 
-    int16_t error = position - steerPosition
+    int16_t error = position - steerPosition;
     
     /* Deadzone */
     if ( -CSErrorDeadzoneHalfwidth < pidCtx.err && pidCtx.err < CSErrorDeadzoneHalfwidth )
@@ -58,6 +58,7 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     int32_t controlValue    = PIDControlResponse( &pidCtx );
 
+    /* Is it required ? */
     if( abs(controlValue) < 10 )
     {
         controlValue = 0;
