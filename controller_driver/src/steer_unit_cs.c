@@ -83,7 +83,7 @@ int32_t steerUnitCSSetPower( int16_t steerPower )
           controlValue = -10;
 
         }
-        if( counter == 10*n )
+        if( counter >= 10*n )
         {
 
           palClearLine( LINE_LED2 );
