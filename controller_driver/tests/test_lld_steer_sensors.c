@@ -23,13 +23,13 @@ void testSteerSensorsWorking( void )
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );    // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );    // RX
 
-    uint16_t adcSteerPos = 0, adcPressPow = 0;
+    int16_t adcSteerPos = 0, adcPressPow = 0;
 
 
     while( true )
     {
 
-        adcSteerPos = lldSteerPosition();
+        adcSteerPos = lldSteerGetPosition();
         adcPressPow = lldSteerPressPower();
 
         chprintf( (BaseSequentialStream *)&SD7, "Position: %d / Power: %04d\n\r", adcSteerPos, adcPressPow );

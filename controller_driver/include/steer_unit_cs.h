@@ -4,6 +4,7 @@
 
 
 #include <lld_steer_sensors.h>
+#include <lld_control.h>
 
 /**
  * @brief   Initialize modules connected to steering control

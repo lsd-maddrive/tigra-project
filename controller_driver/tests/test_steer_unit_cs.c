@@ -7,6 +7,7 @@ static const SerialConfig sdcfg = {
   .speed = 115200,
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
+
 int32_t     counterT = 0, startCount = 0, flag = 0;
 
 void testSteerUnitCSRoutine( void )
@@ -43,7 +44,7 @@ void testSteerUnitCSRoutine( void )
         if( flag == 1)
         {
 
-          int32_t currentPosSensor = lldSteerPosition();
+          int32_t currentPosSensor = lldSteerGetPosition();
           int32_t control      = steerUnitCSSetPower( steerPower );
 
 

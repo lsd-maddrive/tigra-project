@@ -44,7 +44,7 @@ int32_t steerUnitCSSetPower( int16_t steerPower )
 
     steerPower  = CLIP_VALUE( steerPower, 188, 3885 );
 
-    currentSensorValue = lldSteerPosition();
+    currentSensorValue = lldSteerGetPosition();
     pidCurrentError =  steerPower - currentSensorValue;
     pidInt += pidCurrentError;
     pidDif = pidCurrentError - pidPreviousError;

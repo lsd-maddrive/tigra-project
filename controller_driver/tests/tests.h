@@ -2,6 +2,7 @@
 #define TESTS_TESTS_H_
 
 #include <common.h>
+
 /**************************/
 /*** Brake Sensor tests ***/
 /**************************/
@@ -42,6 +43,17 @@ void testBrakeUnitCSRoutine( void );
 void testBrakeUintOpenedRoutine( void );
 
 
+/********************************/
+/*** Steer Unit Control tests ***/
+/********************************/
+
+/**
+ * @brief   Routine of steer unit testing
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testSteerUnitCSRoutine( void );
+
 /***********************************/
 /*** Wheel position sensor tests ***/
 /***********************************/
@@ -51,7 +63,8 @@ void testBrakeUintOpenedRoutine( void );
  *  PF13 <-> PF14 (pulses)
  */
 
-#define TEST_WHEEL_POS_SENSOR_SIMULATED
+// #define TEST_WHEEL_POS_SENSOR_SIMULATED
+
 /*
  * @brief   Routine of wheel position sensor testing
  * @note    The routine has internal infinite loop
@@ -89,12 +102,20 @@ void testDriverControlRoutine( void );
  */
 void testDriverControlRoutineExt1( void );
 
+/***************************/
+/*** Steer sensors tests ***/
+/***************************/
+
 /*
  * @brief   Routine of steering sensors testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
  */
 void testSteerSensorsWorking( void );
+
+/********************/
+/*** Sonars tests ***/
+/********************/
 
 /*
  * @brief   Routine of sonar sensors testing
@@ -104,9 +125,9 @@ void testSteerSensorsWorking( void );
 void testSonarsRoutineWorking( void );
 
 
-/********************************/
-/***Drive Speed Control tests ***/
-/********************************/
+/*********************************/
+/*** Drive Speed Control tests ***/
+/*********************************/
 
 /*
  * @brief   Routine of motor control system  testing
