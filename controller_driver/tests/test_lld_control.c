@@ -94,3 +94,69 @@ void testDriverControlRoutineSerial( void )
         chThdSleepMilliseconds( 100 );
     }
 }
+
+
+void testDriverControlSteerRoutine( void )
+{
+    sdStart( &SD7, &sdcfg );
+    palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
+
+    lldControlInit();
+
+    controlValue_t  steer_values_delta  = 10;
+    controlValue_t  steer_value         = 0;
+
+    int32_t         printCntr           = 0;
+
+    while ( 1 )
+    {
+        char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+        switch ( rcv_data )
+        {
+            case 'q':
+                steer_value += steer_values_delta;
+                break;
+
+            case 'w':
+                steer_value -= steer_values_delta;
+                break;
+
+            case '1':
+                steer_value = 50;
+                break;
+
+            case '2':
+                steer_value = -50;
+                break;
+
+            case '3':
+                steer_value = 0;
+                break;
+
+            case '9':
+                steer_value = 100;
+                break;
+
+            case '0':
+                steer_value = -100;
+                break;
+
+            default:
+                ;
+        }
+
+        steer_value = CLIP_VALUE( steer_value, -100, 100 );
+
+        lldControlSetSteerPower( steer_value );
+
+        if ( ++printCntr > 10 )
+        {
+            chprintf( (BaseSequentialStream *)&SD7, "Steer (%d)\n", steer_value );
+
+            printCntr = 0;
+        }
+        
+        chThdSleepMilliseconds( 10 );
+    }
+}

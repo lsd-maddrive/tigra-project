@@ -47,34 +47,6 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     controlValue = pidCurrentError * kP + pidInt * kI + pidDif * kD;
 
-    if( (controlValue <= 0) && (prevControlValue > 0) )
-    {
-        palSetLine( LINE_LED1 );
-        controlValue = 0;
-        setNull = true;
-    }
-
-    prevControlValue = controlValue;
-
-    int16_t n = 4;
-    if( setNull )
-    {
-        palSetLine( LINE_LED2 );
-        counter += 1;
-        if( counter >= 1*n )
-        {
-          controlValue = 0;
-        }
-        if( counter >= 2*n )
-        {
-
-          palClearLine( LINE_LED2 );
-          setNull = false;
-          counter = 0;
-        }
-
-    }
-
     if( abs(controlValue) < 10 )
     {
         controlValue = 0;

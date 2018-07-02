@@ -44,8 +44,8 @@ void testSteerUnitCSRoutine( void )
         if( flag == 1)
         {
 
-          int32_t currentPosSensor = lldSteerGetPosition();
-          int32_t control      = steerUnitCSSetPosition( refPosition );
+          int32_t currentPosSensor  = lldSteerGetPosition();
+          int32_t control           = steerUnitCSSetPosition( refPosition );
 
 
           if ( ++counterT >= 10 )

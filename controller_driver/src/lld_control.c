@@ -165,6 +165,13 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
     dacPutChannelX( dacDriver, 0, drDriveDuty );
 }
 
+typedef enum
+{
+    FORWARD,
+    BRAKE,
+    REVERSE
+} steer_states_t;
+
 /*
  * @brief   Set power for steering motor (via ESC)
  * @param   inputPrc   Motor power value [-100 100]
@@ -172,10 +179,57 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
  */
 void lldControlSetSteerPower( controlValue_t inputPrc )
 {
+    /* Double click simulation */
+    /* ESC specific */
+
+    static steer_states_t   steerState    = BRAKE;
+    static int32_t          switchDirCntr = 0;
+
+    static int16_t          breakCount = 5;
+    static int16_t          resetCount = 5;
+
     inputPrc = CLIP_VALUE( inputPrc, -100, 100 );
 
+    if ( inputPrc > 0 )
+    {
+        steerState      = FORWARD;
+        switchDirCntr   = 0;
+    }
+    else if ( inputPrc < 0 )
+    {
+        if ( steerState == FORWARD )
+        {
+            if ( switchDirCntr < breakCount )
+            {
+                /* Keep negative value */
+            }
+            else if ( switchDirCntr < breakCount + resetCount )
+            {
+                /* Break to zero */
+                inputPrc = 0;
+            }
+            else
+            {
+                /* Now it is reversed */
+                steerState  = REVERSE;
+            }
+
+            switchDirCntr++;
+        }
+        else
+        {
+            switchDirCntr   = 0;
+        }
+    }
+    else
+    {
+        /* Zero input */
+        /* No processing for hysteresis */
+    }
+
+
     int32_t  drSteerDuty   =   inputPrc * steerESCk + steerESCb;
-    drSteerDuty = CLIP_VALUE( drSteerDuty, 0, 40000 );
+    drSteerDuty = CLIP_VALUE( drSteerDuty, 0, pwm1Period );
     pwmEnableChannel( pwmDriver, steerPWMch, drSteerDuty );
 
 }

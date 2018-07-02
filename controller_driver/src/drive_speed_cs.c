@@ -4,7 +4,6 @@
 #define speedReferenceMaxVal   30000
 #define speedReferenceMinVal   0
 
-
 static PIDControllerContext_t  pidCtx = {
     .kp   = 1,
     .ki   = 0.1,

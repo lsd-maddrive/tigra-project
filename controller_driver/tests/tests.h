@@ -102,6 +102,12 @@ void testDriverControlRoutine( void );
  */
 void testDriverControlRoutineExt1( void );
 
+/**
+ * @brief   Routine of low level driver control steer testing
+ * @note    The routine has internal infinite loop
+ */
+void testDriverControlSteerRoutine( void );
+
 /***************************/
 /*** Steer sensors tests ***/
 /***************************/
@@ -217,6 +223,10 @@ static inline void testsRoutines( void )
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER)
 
     testDriverControlRoutine();
+
+#elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_STEER)
+
+    testDriverControlSteerRoutine();
 
 #elif (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL)
 
