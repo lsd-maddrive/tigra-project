@@ -67,7 +67,7 @@ bool lldSteerSensorsIsValid( void )
     return ( steerPosMinAdc - steerPosValidGap < lldSteerPosVal && lldSteerPosVal < steerPosMaxAdc + steerPosValidGap );
 }
 
-int16_t lldSteerGetPosition( void )
+int16_t lldSteerGetPositionPrc( void )
 {
     if ( !isInitialized )
         return 0;
@@ -89,7 +89,7 @@ int16_t lldSteerGetPosition( void )
     return steerValPerc;
 }
 
-int16_t lldSteerPressPower( void )
+int16_t lldSteerGetCurrentPrc( void )
 {
     if ( !isInitialized )
         return 0;

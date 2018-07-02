@@ -38,7 +38,7 @@ bool testSteerPoweredStatus( void )
     while( 1 )
     {
         counter += 1;
-        curSensor = lldSteerPressPower();
+        curSensor = lldSteerGetCurrentPrc();
 
         if( curSensor < STEER_CURRENT_PERC_THRESHOLD )
         {

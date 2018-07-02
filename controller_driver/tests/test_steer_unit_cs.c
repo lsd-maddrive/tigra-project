@@ -19,12 +19,11 @@ void testSteerUnitCSRoutine( void )
 
     steerUnitCSInit();
 
-
-
     int32_t     refPosition = 0;
 
     while ( 1 )
     {
+        /* Is it required ??? */
         if( flag == 0 )
         {
             startCount += 1;
@@ -32,45 +31,45 @@ void testSteerUnitCSRoutine( void )
 
         if( startCount <= 500 )
         {
-          lldControlSetSteerPower( 0 );
-          chprintf( (BaseSequentialStream *)&SD7, "WAIT\n\r" );
+            lldControlSetSteerPower( 0 );
+            chprintf( (BaseSequentialStream *)&SD7, "WAIT\n\r" );
 
         }
         else if( startCount > 500 )
         {
-          flag = 1;
+            flag = 1;
         }
 
         if( flag == 1)
         {
 
-          int32_t currentPosSensor  = lldSteerGetPosition();
-          int32_t control           = steerUnitCSSetPosition( refPosition );
+            int32_t currentPosSensor  = lldSteerGetPositionPrc();
+            int32_t control           = steerUnitCSSetPosition( refPosition );
 
 
-          if ( ++counterT >= 10 )
-          {
-              chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", refPosition, control, currentPosSensor );
+            if ( ++counterT >= 10 )
+            {
+                chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", refPosition, control, currentPosSensor );
 
-              counterT = 0;
-          }
+                counterT = 0;
+            }
 
-          char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
-          switch ( rcv_data )
-          {
-              case 'd':   // Positive brake
-                  refPosition += 10;
-                  break;
+            char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+            switch ( rcv_data )
+            {
+                case 'd':   // Positive brake
+                    refPosition += 10;
+                    break;
 
-              case 'f':   // Negative brake
-                  refPosition -= 10;
-                  break;
+                case 'f':   // Negative brake
+                    refPosition -= 10;
+                    break;
 
-              default:
+                default:
                   ;
-          }
+            }
 
-          refPosition = CLIP_VALUE( refPosition, -100, 100 );
+            refPosition = CLIP_VALUE( refPosition, -100, 100 );
         }
         chThdSleepMilliseconds( 10 );
     }

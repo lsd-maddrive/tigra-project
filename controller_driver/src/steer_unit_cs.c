@@ -42,7 +42,7 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     position  = CLIP_VALUE( position, -100, 100 );
 
-    int16_t steerPosition = lldSteerGetPosition();
+    int16_t steerPosition = lldSteerGetPositionPrc();
 
     int16_t error = position - steerPosition;
     

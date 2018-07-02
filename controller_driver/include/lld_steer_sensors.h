@@ -13,11 +13,11 @@ void lldSteerSensorsInit( void );
  * @brief   Get position of steering
  * @return  Percentage of rotation [-100: 100]
  */
-int16_t lldSteerGetPosition( void );
+int16_t lldSteerGetPositionPrc( void );
 
 /**
  * @brief 	Check if position has valid state, else break it down
- * @note	Must be called after lldSteerGetPosition()
+ * @note	Must be called after lldSteerGetPositionPrc()
  * @return 	true - values are valid, everything is initialized
  * 			false - bad values, emergency situation processing required
  */
@@ -27,6 +27,6 @@ bool lldSteerSensorsIsValid( void );
  * @brief 	Get steering press power
  * @return  Percentage of configured current sensor [0:100]
  */
-int16_t lldSteerPressPower( void );
+int16_t lldSteerGetCurrentPrc( void );
 
 #endif /* INCLUDE_LLD_STEER_SENSORS_H_ */
