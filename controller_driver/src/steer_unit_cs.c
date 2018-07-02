@@ -1,11 +1,13 @@
 #include <steer_unit_cs.h>
 
-
 static bool             isInitialized   = false;
 
-#define kP          1
-#define kI          0//0.01
-#define kD          0
+static PIDControllerContext_t  pidCtx = {
+    .kp   = 1,
+    .ki   = 0,
+    .kd   = 0,
+    .integrLimit  = 100
+};
 
 /**
  * @brief   Initialize modules connected to steering control
@@ -19,6 +21,8 @@ void steerUnitCSInit( void )
     lldSteerSensorsInit();
     lldControlInit();
 
+    PIDControlInit( &pidCtx );
+
     isInitialized = true;
 }
 
@@ -31,8 +35,6 @@ int32_t     pidCurrentError = 0, pidPreviousError = 0, pidInt = 0, pidDif = 0;
 
 int32_t steerUnitCSSetPosition( int32_t position )
 {
-    int32_t controlValue = 0;
-
     if ( !isInitialized )
           return 0;
 
@@ -40,12 +42,9 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     int16_t steerPosition = lldSteerGetPosition();
 
-    pidCurrentError =  position - steerPosition;
+    pidCtx.err = position - steerPosition
 
-    pidInt += pidCurrentError;
-    pidDif = pidCurrentError - pidPreviousError;
-
-    controlValue = pidCurrentError * kP + pidInt * kI + pidDif * kD;
+    int32_t controlValue    = PIDControlResponse( &pidCtx );
 
     if( abs(controlValue) < 10 )
     {
