@@ -21,7 +21,7 @@ void testSteerUnitCSRoutine( void )
 
 
 
-    int32_t     steerPower = 2065;
+    int32_t     refPosition = 0;
 
     while ( 1 )
     {
@@ -45,14 +45,14 @@ void testSteerUnitCSRoutine( void )
         {
 
           int32_t currentPosSensor = lldSteerGetPosition();
-          int32_t control      = steerUnitCSSetPower( steerPower );
+          int32_t control      = steerUnitCSSetPosition( refPosition );
 
 
 
 
           if ( ++counterT >= 10 )
           {
-              chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", steerPower, control, currentPosSensor );
+              chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", refPosition, control, currentPosSensor );
 
               counterT = 0;
           }
@@ -61,18 +61,18 @@ void testSteerUnitCSRoutine( void )
           switch ( rcv_data )
           {
               case 'd':   // Positive brake
-                  steerPower += 100;
+                  refPosition += 10;
                   break;
 
               case 'f':   // Negative brake
-                  steerPower -= 100;
+                  refPosition -= 10;
                   break;
 
               default:
                   ;
           }
 
-          steerPower = CLIP_VALUE( steerPower, 1190, 2800 );
+          refPosition = CLIP_VALUE( refPosition, -100, 100 );
         }
         chThdSleepMilliseconds( 10 );
     }

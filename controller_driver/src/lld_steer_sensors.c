@@ -5,9 +5,6 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
-static float    steerPosPositiveRate    = 0.0;
-static float    steerPosNegativeRate    = 0.0;
-
 static int32_t  steerPosCenterAdc       = 2065;
 static int32_t  steerPosMaxAdc          = 2800;
 static int32_t  steerPosMinAdc          = 1190;
@@ -26,6 +23,11 @@ static int32_t  steerPosValidGap        = 100;
 uint16_t lldSteerPosVal         = 0;
 uint16_t lldSteerPressPowerVal  = 0;
 
+static bool     isInitialized           = false;
+
+/** Calculated in initializtion */
+static float    steerPosPositiveRate    = 0.0;
+static float    steerPosNegativeRate    = 0.0;
 
 /**
  * @brief                   Initialize periphery connected to steering sensor
@@ -37,15 +39,22 @@ void lldSteerSensorsInit( void )
     steerPosPositiveRate = 100.0 / ( steerPosMaxAdc - steerPosCenterAdc );
     steerPosNegativeRate = 100.0 / ( steerPosCenterAdc - steerPosMinAdc );
 
+    isInitialized = true;
 }
 
 bool lldSteerSensorsIsValid( void )
 {
+    if ( !isInitialized )
+        return false;
+
     return ( steerPosMinAdc - steerPosValidGap < lldSteerPosVal && lldSteerPosVal < steerPosMaxAdc + steerPosValidGap );
 }
 
 int16_t lldSteerGetPosition( void )
 {
+    if ( !isInitialized )
+        return 0;
+
     /* ADC value - [0; 4095] */
     lldSteerPosVal = commonADC1UnitGetValue( steerPosAnalogInputCh );
 
@@ -57,6 +66,9 @@ int16_t lldSteerGetPosition( void )
     int16_t steerValPerc = steerValAdc > 0 ? steerValAdc * steerPosPositiveRate :
                                              steerValAdc * steerPosNegativeRate;
 
+    /* Just in case */
+    steerValPerc = CLIP_VALUE( steerValPerc, -100, 100 );
+
     return steerValPerc;
 }
 
@@ -66,6 +78,9 @@ int16_t lldSteerGetPosition( void )
  */
 uint16_t lldSteerPressPower( void )
 {
+    if ( !isInitialized )
+        return 0;
+
     lldSteerPressPowerVal = commonADC1UnitGetValue( steerPressAnalogInputCh );    
 
     return lldSteerPressPowerVal;
