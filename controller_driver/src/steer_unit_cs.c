@@ -28,13 +28,6 @@ void steerUnitCSInit( void )
     isInitialized = true;
 }
 
-
-int32_t     prevControlValue    = 0;
-int32_t     counter             = 0;
-bool        setNull             = false;
-int32_t     limitSpeed          = 0;
-int32_t     pidCurrentError = 0, pidPreviousError = 0, pidInt = 0, pidDif = 0;
-
 int32_t steerUnitCSSetPosition( int32_t position )
 {
     if ( !isInitialized )
@@ -47,7 +40,7 @@ int32_t steerUnitCSSetPosition( int32_t position )
     int16_t error = position - steerPosition;
     
     /* Deadzone */
-    if ( -CSErrorDeadzoneHalfwidth < pidCtx.err && pidCtx.err < CSErrorDeadzoneHalfwidth )
+    if ( abs(error) < CSErrorDeadzoneHalfwidth )
     {
         pidCtx.err = 0;
     }
@@ -66,8 +59,6 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     /* Set direct power */
     controlValue = CLIP_VALUE( controlValue, -40, 40 );
-
-    pidPreviousError = pidCurrentError;
 
     lldControlSetSteerPower( controlValue );
 
