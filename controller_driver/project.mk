@@ -26,7 +26,8 @@ PROJECT_TESTS   = tests/test_brake_sensor.c     \
                   tests/test_drive_speed_cs.c	\
                   tests/test_lightning.c		\
                   tests/test_tools.c			\
-                  tests/test_steer_unit_cs.c
+                  tests/test_steer_unit_cs.c	\
+                  tests/test_steer_power.c
 
 
 
