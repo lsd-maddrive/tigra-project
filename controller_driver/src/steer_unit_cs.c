@@ -4,7 +4,7 @@
 static bool             isInitialized   = false;
 
 #define kP          1
-#define kI          0.01
+#define kI          0//0.01
 #define kD          0
 
 /**
@@ -51,9 +51,6 @@ int32_t steerUnitCSSetPower( int16_t steerPower )
 
     controlValue = pidCurrentError * kP + pidInt * kI + pidDif * kD;
 
-
-
-
     if( (controlValue <= 0) && (prevControlValue > 0) )
     {
         palSetLine( LINE_LED1 );
@@ -63,27 +60,16 @@ int32_t steerUnitCSSetPower( int16_t steerPower )
 
     prevControlValue = controlValue;
 
-    int16_t n = 10;
+    int16_t n = 4;
     if( setNull )
     {
         palSetLine( LINE_LED2 );
         counter += 1;
-        controlValue = 0;
-
-        if( counter == 15 )
-        {
-          controlValue = -10;
-        }
-        if( counter == 2*n )
+        if( counter >= 1*n )
         {
           controlValue = 0;
         }
-        if( counter == 3*n )
-        {
-          controlValue = -10;
-
-        }
-        if( counter >= 10*n )
+        if( counter >= 2*n )
         {
 
           palClearLine( LINE_LED2 );
@@ -93,36 +79,10 @@ int32_t steerUnitCSSetPower( int16_t steerPower )
 
     }
 
-
     if( abs(controlValue) < 10 )
     {
         controlValue = 0;
     }
-
-    //    int8_t lim = 50;
-    //    if( ( controlValue >= -lim && controlValue <= lim) && ( prevControlValue >= -lim && prevControlValue <= lim ) )
-    //    {
-    //        palSetLine( LINE_LED1 );
-    //
-    //        if( ( controlValue >= -10 && controlValue <= 10) )
-    //        {
-    //            controlValue = 0;
-    //        }
-    //        else if( ( controlValue >= -lim && controlValue < -10) && ( prevControlValue >= -lim && prevControlValue <= -10 ) && ( controlValue > 10 && controlValue <= lim) && ( prevControlValue > 10 && prevControlValue <= 50 ))
-    //        {
-    //            limitSpeed = controlValue - prevControlValue;
-    //            if( limitSpeed <= -1 )
-    //            {
-    //                controlValue = prevControlValue - 1;
-    //            }
-    //            else if( limitSpeed >= 1 )
-    //            {
-    //              controlValue = prevControlValue + 1;
-    //        }
-    //        }
-    //    }
-
-
 
     /* Set direct power */
     controlValue = CLIP_VALUE( controlValue, -40, 40 );
