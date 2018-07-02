@@ -22,30 +22,26 @@ void steerUnitCSInit( void )
     isInitialized = true;
 }
 
-/*
- * @brief   PID implementation
- * @param   steerPower   Reference percentage of steering  [-100 100]
- * @return  controlValue Control value of controller
- */
+
 int32_t     prevControlValue    = 0;
 int32_t     counter             = 0;
 bool        setNull             = false;
 int32_t     limitSpeed          = 0;
-int32_t pidCurrentError = 0, pidPreviousError = 0, pidInt = 0, pidDif = 0;
+int32_t     pidCurrentError = 0, pidPreviousError = 0, pidInt = 0, pidDif = 0;
 
-int32_t steerUnitCSSetPower( int16_t steerPower )
+int32_t steerUnitCSSetPosition( int32_t position )
 {
-    int16_t currentSensorValue = 0;
-
     int32_t controlValue = 0;
 
     if ( !isInitialized )
           return 0;
 
-    steerPower  = CLIP_VALUE( steerPower, 188, 3885 );
+    position  = CLIP_VALUE( position, -100, 100 );
 
-    currentSensorValue = lldSteerPosition();
-    pidCurrentError =  steerPower - currentSensorValue;
+    int16_t steerPosition = lldSteerGetPosition();
+
+    pidCurrentError =  position - steerPosition;
+
     pidInt += pidCurrentError;
     pidDif = pidCurrentError - pidPreviousError;
 

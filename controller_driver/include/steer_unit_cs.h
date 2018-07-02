@@ -4,6 +4,7 @@
 
 
 #include <lld_steer_sensors.h>
+#include <lld_control.h>
 
 /**
  * @brief   Initialize modules connected to steering control
@@ -11,10 +12,11 @@
 void steerUnitCSInit( void );
 
 /*
- * @brief   PID implementation
- * @param   steerPower   Reference value [-100 100]
+ * @brief   PID implementation of steering control system
+ * @param   position   	Reference position [-100 100]
+ * @return	Control value that is set to steer drive
  */
-int32_t steerUnitCSSetPower( int16_t steerPower );
+int32_t steerUnitCSSetPosition( int32_t position );
 
 
 
