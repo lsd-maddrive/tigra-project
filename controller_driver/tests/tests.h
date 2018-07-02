@@ -54,6 +54,14 @@ void testBrakeUintOpenedRoutine( void );
  */
 void testSteerUnitCSRoutine( void );
 
+
+/**
+ * @brief   Steer power testing
+ * @note    The routine has internal infinite loop
+ * @note    SD7 is used for testing (PE7, PE8)
+ */
+void testSteerPoweredStatus( void );
+
 /***********************************/
 /*** Wheel position sensor tests ***/
 /***********************************/
