@@ -48,8 +48,6 @@ void testSteerUnitCSRoutine( void )
           int32_t control      = steerUnitCSSetPosition( refPosition );
 
 
-
-
           if ( ++counterT >= 10 )
           {
               chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", refPosition, control, currentPosSensor );
