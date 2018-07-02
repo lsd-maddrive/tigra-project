@@ -4,7 +4,7 @@
 static bool             isInitialized   = false;
 
 #define kP          1
-#define kI          0
+#define kI          0.01
 #define kD          0
 
 /**
@@ -31,11 +31,12 @@ int32_t     prevControlValue    = 0;
 int32_t     counter             = 0;
 bool        setNull             = false;
 int32_t     limitSpeed          = 0;
+int32_t pidCurrentError = 0, pidPreviousError = 0, pidInt = 0, pidDif = 0;
 
 int32_t steerUnitCSSetPower( int16_t steerPower )
 {
     int16_t currentSensorValue = 0;
-    int32_t pidCurrentError = 0, pidPreviousError = 0, pidInt = 0, pidDif = 0;
+
     int32_t controlValue = 0;
 
     if ( !isInitialized )
@@ -124,7 +125,7 @@ int32_t steerUnitCSSetPower( int16_t steerPower )
 
 
     /* Set direct power */
-    controlValue = CLIP_VALUE( controlValue, -20, 20 );
+    controlValue = CLIP_VALUE( controlValue, -40, 40 );
 
     pidPreviousError = pidCurrentError;
 

@@ -7,6 +7,7 @@ static const SerialConfig sdcfg = {
   .speed = 115200,
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
+int32_t     counterT = 0, startCount = 0, flag = 0;
 
 void testSteerUnitCSRoutine( void )
 {
@@ -18,39 +19,62 @@ void testSteerUnitCSRoutine( void )
     steerUnitCSInit();
 
 
-    int32_t     counter = 0;
-    int32_t     steerPower = 1850;
-    char rcv_data = 'j';
-//    char rcv_data = 0;
+
+    int32_t     steerPower = 2065;
+
     while ( 1 )
     {
-        int32_t currentPosSensor = lldSteerPosition();
-        int32_t control      = steerUnitCSSetPower( steerPower );
-
-        if ( ++counter >= 2 )
+        if( flag == 0 )
         {
-            chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", steerPower, control, currentPosSensor );
-
-            counter = 0;
+            startCount += 1;
         }
 
-        rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
-        switch ( rcv_data )
+        if( startCount <= 500 )
         {
-            case 'd':   // Positive brake
-                steerPower += 10;
-                break;
+          lldControlSetSteerPower( 0 );
+          chprintf( (BaseSequentialStream *)&SD7, "WAIT\n\r" );
 
-            case 'f':   // Negative brake
-                steerPower -= 10;
-                break;
-
-            default:
-                ;
+        }
+        else if( startCount > 500 )
+        {
+          flag = 1;
         }
 
-        steerPower = CLIP_VALUE( steerPower, 188, 3885 );
+        if( flag == 1)
+        {
+
+          int32_t currentPosSensor = lldSteerPosition();
+          int32_t control      = steerUnitCSSetPower( steerPower );
+
+
+
+
+          if ( ++counterT >= 10 )
+          {
+              chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", steerPower, control, currentPosSensor );
+
+              counterT = 0;
+          }
+
+          char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+          switch ( rcv_data )
+          {
+              case 'd':   // Positive brake
+                  steerPower += 100;
+                  break;
+
+              case 'f':   // Negative brake
+                  steerPower -= 100;
+                  break;
+
+              default:
+                  ;
+          }
+
+          steerPower = CLIP_VALUE( steerPower, 1190, 2800 );
+        }
+        chThdSleepMilliseconds( 10 );
     }
 
-    chThdSleepMilliseconds( 10 );
+
 }
