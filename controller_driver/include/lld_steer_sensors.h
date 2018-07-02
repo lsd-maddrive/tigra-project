@@ -17,6 +17,7 @@ int16_t lldSteerGetPosition( void );
 
 /**
  * @brief 	Check if position has valid state, else break it down
+ * @note	Must be called after lldSteerGetPosition()
  * @return 	true - values are valid, everything is initialized
  * 			false - bad values, emergency situation processing required
  */
