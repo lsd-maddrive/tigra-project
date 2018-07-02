@@ -1,5 +1,7 @@
 #include <tests.h>
-
+#include <chprintf.h>
+#include <lld_control.h>
+#include <lld_steer_sensors.h>
 
 static const SerialConfig sdcfg = {
     .speed = 115200,

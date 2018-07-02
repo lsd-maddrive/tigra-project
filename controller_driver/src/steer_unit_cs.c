@@ -42,7 +42,7 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     int16_t steerPosition = lldSteerGetPosition();
 
-    pidCtx.err = position - steerPosition
+    pidCtx.err = position - steerPosition;
 
     int32_t controlValue    = PIDControlResponse( &pidCtx );
 
