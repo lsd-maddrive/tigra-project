@@ -26,37 +26,66 @@ static light_states_t   turnLightState      = LIGHTS_OFF;
 
 static bool         isInitialized       = false;
 
-static THD_WORKING_AREA(waTurnSignalThd, 1024);
-static THD_FUNCTION(TurnSignalThd, arg)
+static THD_WORKING_AREA(waTurnLeftThd, 1024);
+static THD_FUNCTION(TurnLeftThd, arg)
 {
     arg = arg;
 
     while( 1 )
     {
-//        if( turnLightState == LIGHTS_TURN_LEFT )
-//        {
-//            palToggleLine( leftTurnLight );
-//            palClearLine( rightTurnLight );
-//            chThdSleepMilliseconds( 1000 );
-//        }
-//        else if( turnLightState == LIGHTS_TURN_RIGHT )
-//        {
-//            palToggleLine( rightTurnLight );
-//            palClearLine( leftTurnLight );
-//            chThdSleepMilliseconds( 1000 );
-//        }
-//        else if( turnLightState == LIGHTS_OFF )
-//        {
-//            palClearLine( leftTurnLight );
-//            palClearLine( rightTurnLight );
-//            chThdSleepMilliseconds( 1000 );
-//        }
-//        else /* in case of magical error */
-//        {
-//            chThdSleepMilliseconds( 50 );
-//        }
+        if( turnLightState == LIGHTS_TURN_LEFT )
+        {
+            palToggleLine( leftTurnLight );
+            palClearLine( rightTurnLight );
+            chThdSleepMilliseconds( 1000 );
+        }
+        else /* in case of magical error */
+        {
+            chThdSleepMilliseconds( 50 );
+        }
     }
 }
+
+static THD_WORKING_AREA(waTurnRightThd, 1024);
+static THD_FUNCTION(TurnRightThd, arg)
+{
+    arg = arg;
+
+    while( 1 )
+    {
+      if( turnLightState == LIGHTS_TURN_RIGHT )
+      {
+          palToggleLine( rightTurnLight );
+          palClearLine( leftTurnLight );
+          chThdSleepMilliseconds( 1000 );
+      }
+      else /* in case of magical error */
+      {
+          chThdSleepMilliseconds( 50 );
+      }
+    }
+}
+
+static THD_WORKING_AREA(waTurnOffThd, 1024);
+static THD_FUNCTION(TurnOffThd, arg)
+{
+    arg = arg;
+
+    while( 1 )
+    {
+        if( turnLightState == LIGHTS_OFF )
+        {
+            palClearLine( leftTurnLight );
+            palClearLine( rightTurnLight );
+            chThdSleepMilliseconds( 1000 );
+        }
+        else /* in case of magical error */
+        {
+            chThdSleepMilliseconds( 50 );
+        }
+    }
+}
+
 
 /**
  * @brief   Initialize periphery connected to driver control
@@ -72,7 +101,9 @@ void lightUnitInit( void )
     palSetLineMode( stopLight, PAL_MODE_OUTPUT_OPENDRAIN );
 
 
-    chThdCreateStatic( waTurnSignalThd, sizeof(waTurnSignalThd), NORMALPRIO, TurnSignalThd, NULL );
+    chThdCreateStatic( waTurnLeftThd, sizeof(waTurnLeftThd), NORMALPRIO, TurnLeftThd, NULL );
+    chThdCreateStatic( waTurnRightThd, sizeof(waTurnRightThd), NORMALPRIO, TurnRightThd, NULL );
+    chThdCreateStatic( waTurnOffThd, sizeof(waTurnOffThd), NORMALPRIO, TurnOffThd, NULL );
 
 }
 
