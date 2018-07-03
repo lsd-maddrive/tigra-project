@@ -11,16 +11,13 @@ static const SerialConfig sdcfg = {
     .cr1 = 0, .cr2 = 0, .cr3 = 0
   };
 
-bool errorFlag = false;
 
 /**
  * @brief   Steer power testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
- * @return  true  - ESC is enabled
- *          false - ESC is disabled or another bad situation
  */
-bool testSteerPoweredStatus( void )
+void testSteerPoweredStatus( void )
 {
     sdStart( &SD7, &sdcfg );
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
@@ -32,40 +29,22 @@ bool testSteerPoweredStatus( void )
 
     lldControlSetSteerPower( STEER_CHECK_PERC_POWER );
 
-    uint16_t curSensor          = 0;
+    static bool errorFlag       = true;
     uint16_t counter            = 0;
 
     while( 1 )
     {
         counter += 1;
-        curSensor = lldSteerGetCurrentPrc();
-
-        if( curSensor < STEER_CURRENT_PERC_THRESHOLD )
+        if( counter == 50 )
         {
-            errorFlag = true;
-        }
-        else
-        {
-            errorFlag = false;
-        }
+          errorFlag = lldControlSteerIsEnabled();
 
-        if( counter == 10)
-        {
-            if( errorFlag == true )
-            {
-                chprintf( (BaseSequentialStream *)&SD7, "Probably ERROR! Current: %d\n\r", curSensor );
-            }
-            else
-            {
-                chprintf( (BaseSequentialStream *)&SD7, "Everything is OK! Current: %d\n\r", curSensor );
-            }
+          chprintf( (BaseSequentialStream *)&SD7, "Status of ESC: %s\n\r", errorFlag ? "true" : "false" );
 
-            counter = 0;
+          counter = 0;
         }
 
         chThdSleepMilliseconds( 10 );
-
     }
 
-    return true;
 }

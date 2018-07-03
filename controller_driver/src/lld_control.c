@@ -1,5 +1,6 @@
 #include <tests.h>
 #include <lld_control.h>
+#include <lld_steer_sensors.h>
 
 /**************************/
 /*** CONFIGURATION ZONE ***/
@@ -273,28 +274,35 @@ void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
 
 /*
  * @brief   Check ESC condition
- * @return  true  - ESC enable, everythong - OK
+ * @return  true  - ESC enable, everything - OK
  *          false - ESC is disabled or another bad situation
  */
 bool lldControlSteerIsEnabled( void )
 {
      lldControlSetSteerPower( STEER_CHECK_PERC_POWER );
 
-      uint16_t curSensor          = 0;
-      uint16_t counter            = 0;
+     static bool errorFlag       = true;
+     uint16_t curSensor          = 0;
+     uint16_t counter            = 0;
 
       while( counter <= 500 )
       {
+
           counter += 1;
           curSensor = lldSteerGetCurrentPrc();
           /***    if current is less than threshold -> Error      ***/
           if( curSensor < STEER_CURRENT_PERC_THRESHOLD )
           {
-              return false;
+              errorFlag = false;
           }
           else
           {
-              return true;
+              errorFlag = true;
           }
+
       }
+      if( errorFlag )
+          return true;
+      else if( errorFlag == false )
+          return false;
 }
