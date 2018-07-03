@@ -3,8 +3,8 @@
 #define CSErrorDeadzoneHalfwidth    2
 
 static PIDControllerContext_t  pidCtx = {
-    .kp   = 1,
-    .ki   = 0,
+    .kp   = 1.5,
+    .ki   = 0.05,
     .kd   = 0,
     .integrLimit  = 100
 };
@@ -50,15 +50,20 @@ int32_t steerUnitCSSetPosition( int32_t position )
     }
 
     int32_t controlValue    = PIDControlResponse( &pidCtx );
+    /*  roughly reset integral */
+    if( pidCtx.err == 0 )
+    {
+        pidCtx.integrSum = 0;
+    }
 
     /* Is it required ? */
-    if( abs(controlValue) < 10 )
+    if( abs(controlValue) <= 15 )
     {
         controlValue = 0;
     }
 
     /* Set direct power */
-    controlValue = CLIP_VALUE( controlValue, -40, 40 );
+    controlValue = CLIP_VALUE( controlValue, -80, 80 );
 
     lldControlSetSteerPower( controlValue );
 

@@ -71,7 +71,7 @@ void testSteerUnitCSRoutine( void )
 
             refPosition = CLIP_VALUE( refPosition, -100, 100 );
         }
-        chThdSleepMilliseconds( 10 );
+        chThdSleepMilliseconds( 2.5 );
     }
 
 
