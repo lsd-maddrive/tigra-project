@@ -35,6 +35,7 @@ static THD_FUNCTION(TurnLeftThd, arg)
     {
         if( turnLightState == LIGHTS_TURN_LEFT )
         {
+            palToggleLine( LINE_LED1 );
             palToggleLine( leftTurnLight );
             palClearLine( rightTurnLight );
             chThdSleepMilliseconds( 1000 );
@@ -55,6 +56,7 @@ static THD_FUNCTION(TurnRightThd, arg)
     {
       if( turnLightState == LIGHTS_TURN_RIGHT )
       {
+          palToggleLine( LINE_LED2 );
           palToggleLine( rightTurnLight );
           palClearLine( leftTurnLight );
           chThdSleepMilliseconds( 1000 );
@@ -75,6 +77,7 @@ static THD_FUNCTION(TurnOffThd, arg)
     {
         if( turnLightState == LIGHTS_OFF )
         {
+            palToggleLine( LINE_LED3 );
             palClearLine( leftTurnLight );
             palClearLine( rightTurnLight );
             chThdSleepMilliseconds( 1000 );
@@ -114,6 +117,8 @@ void lightUnitInit( void )
 void turnLightsSetState( light_states_t lightState )
 {
     turnLightState = lightState;
+    chThdSleepMilliseconds( 10 );
+
 }
 //void turnLightsSetState( int32_t controlSignal )
 //{

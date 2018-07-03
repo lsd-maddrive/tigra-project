@@ -20,9 +20,16 @@ void testLightningRoutineWorking( void )
 
     int32_t controlValue    = 0;
     int32_t controlValDelta = 10;
-
+    int32_t counter         = 0 ;
+    chprintf( (BaseSequentialStream *)&SD7, "TEST\n\r" );
     while(1)
     {
+
+        if( ++counter >= 10 )
+        {
+            chprintf( (BaseSequentialStream *)&SD7, "Control Signal:%d\n\r", controlValue );
+            counter = 0;
+        }
         char rcv_data = sdGet( &SD7 );
         switch ( rcv_data )
         {
@@ -40,23 +47,22 @@ void testLightningRoutineWorking( void )
 
         controlValue = CLIP_VALUE( controlValue, -100, 100 );
 
-        /*      Light Unit      */
-        if( controlValue <= -20 )
-        {
-            turnLightsSetState( LIGHTS_TURN_LEFT );
-        }
-        else if( controlValue >= 20 )
-        {
-            turnLightsSetState( LIGHTS_TURN_RIGHT );
-        }
-        else
-        {
-          turnLightsSetState( LIGHTS_OFF );
-        }
+//        /*      Light Unit      */
+//        if( controlValue <= -20 )
+//        {
+//            turnLightsSetState( LIGHTS_TURN_LEFT );
+//        }
+//        else if( controlValue >= 20 )
+//        {
+//            turnLightsSetState( LIGHTS_TURN_RIGHT );
+//        }
+//        else
+//        {
+//          turnLightsSetState( LIGHTS_OFF );
+//        }
 
 
-        chprintf( (BaseSequentialStream *)&SD7, "Control Signal:%d\n\r", controlValue );
-        chThdSleepMilliseconds( 100 );
+        chThdSleepMilliseconds( 10 );
 
     }
 
