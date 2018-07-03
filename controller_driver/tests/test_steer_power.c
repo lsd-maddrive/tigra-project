@@ -23,6 +23,8 @@ void testSteerPoweredStatus( void )
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
+    steerUnitCSInit();
+
     static bool statusESC       = true;
     static bool trg             = true;
 
