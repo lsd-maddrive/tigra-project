@@ -115,7 +115,7 @@ int32_t steerUnitCSSetPosition( int32_t position )
 
     /* Set direct power */
     controlValue = CLIP_VALUE( controlValue, -80, 80 );
-
+    turnLightsSetState( controlValue );
     lldControlSetSteerPower( controlValue );
 
     return controlValue;
