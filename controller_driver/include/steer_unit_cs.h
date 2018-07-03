@@ -33,7 +33,7 @@ bool steerIsEnabled( void );
 /**
  * @brief   Initialize modules connected to steering control
  */
-void csInit( void );
+void steerUnitInit( void );
 
 
 #endif /* INCLUDE_STEER_UNIT_CS_H_ */

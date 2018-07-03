@@ -49,7 +49,7 @@ bool steerIsEnabled( void )
 /**
  * @brief   Initialize modules connected to steering control
  */
-void csInit( void )
+void steerUnitInit( void )
 {
     /* Some initialization sequence */
     lldSteerSensorsInit();
@@ -65,7 +65,7 @@ void steerUnitCSInit( void )
     if ( isInitialized )
         return;
 
-    csInit();
+    steerUnitInit();
 
     PIDControlInit( &pidCtx );
 

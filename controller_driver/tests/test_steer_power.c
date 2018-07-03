@@ -23,11 +23,8 @@ void testSteerPoweredStatus( void )
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
-    /* Some initialization sequence */
-    lldControlInit();
-    lldSteerSensorsInit();
-
     static bool statusESC       = true;
+    static bool trg             = true;
 
     while( 1 )
     {
@@ -35,17 +32,27 @@ void testSteerPoweredStatus( void )
         switch ( isEnabled )
         {
             case 1:               // Test enable
-                statusESC = steerIsEnabled();
-                chprintf( (BaseSequentialStream *)&SD7, "Status of ESC: %s\n\r", statusESC ? "true" : "false" );
+                trg = true;
                 break;
 
             case 2:               // Test disable
-                /*  to avoid motor overheating   */
-                lldControlSetSteerPower( 0 );
+                trg = false;
+
                 break;
 
             default:
                 ;
+        }
+
+        if( trg )
+        {
+            statusESC = steerIsEnabled();
+            chprintf( (BaseSequentialStream *)&SD7, "Status of ESC: %s\n\r", statusESC ? "true" : "false" );
+        }
+        else
+        {
+            /*  to avoid motor overheating   */
+            lldControlSetSteerPower( 0 );
         }
     }
 }
