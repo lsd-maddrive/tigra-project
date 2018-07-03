@@ -19,6 +19,6 @@ void lightUnitInit( void );
 /**
  * @brief   Set state ONLY for turn light unit depend on control signal value
  */
-void turnLightsSetState( int32_t controlSignal );
+void turnLightsSetState( light_states_t lightState );
 
 #endif /* INCLUDE_LIGHT_UNIT_H_ */

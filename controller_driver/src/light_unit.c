@@ -33,28 +33,28 @@ static THD_FUNCTION(TurnSignalThd, arg)
 
     while( 1 )
     {
-        if( turnLightState == LIGHTS_TURN_LEFT )
-        {
-            palToggleLine( leftTurnLight );
-            palClearLine( rightTurnLight );
-            chThdSleepMilliseconds( 1000 );
-        }
-        else if( turnLightState == LIGHTS_TURN_RIGHT )
-        {
-            palToggleLine( rightTurnLight );
-            palClearLine( leftTurnLight );
-            chThdSleepMilliseconds( 1000 );
-        }
-        else if( turnLightState == LIGHTS_OFF )
-        {
-            palClearLine( leftTurnLight );
-            palClearLine( rightTurnLight );
-            chThdSleepMilliseconds( 1000 );
-        }
-        else /* in case of magical error */
-        {
-            chThdSleepMilliseconds( 50 );
-        }
+//        if( turnLightState == LIGHTS_TURN_LEFT )
+//        {
+//            palToggleLine( leftTurnLight );
+//            palClearLine( rightTurnLight );
+//            chThdSleepMilliseconds( 1000 );
+//        }
+//        else if( turnLightState == LIGHTS_TURN_RIGHT )
+//        {
+//            palToggleLine( rightTurnLight );
+//            palClearLine( leftTurnLight );
+//            chThdSleepMilliseconds( 1000 );
+//        }
+//        else if( turnLightState == LIGHTS_OFF )
+//        {
+//            palClearLine( leftTurnLight );
+//            palClearLine( rightTurnLight );
+//            chThdSleepMilliseconds( 1000 );
+//        }
+//        else /* in case of magical error */
+//        {
+//            chThdSleepMilliseconds( 50 );
+//        }
     }
 }
 
@@ -80,20 +80,24 @@ void lightUnitInit( void )
 /**
  * @brief   Set state ONLY for turn light unit depend on control signal value
  */
-void turnLightsSetState( int32_t controlSignal )
+void turnLightsSetState( light_states_t lightState )
 {
-
-    if( controlSignal <= -20 )
-    {
-        turnLightState = LIGHTS_TURN_LEFT;
-    }
-    else if( controlSignal >= 20 )
-    {
-        turnLightState = LIGHTS_TURN_RIGHT;
-    }
-    else
-    {
-        turnLightState = LIGHTS_OFF;
-    }
-
+    turnLightState = lightState;
 }
+//void turnLightsSetState( int32_t controlSignal )
+//{
+//
+//    if( controlSignal <= -20 )
+//    {
+//        turnLightState = LIGHTS_TURN_LEFT;
+//    }
+//    else if( controlSignal >= 20 )
+//    {
+//        turnLightState = LIGHTS_TURN_RIGHT;
+//    }
+//    else
+//    {
+//        turnLightState = LIGHTS_OFF;
+//    }
+//
+//}
