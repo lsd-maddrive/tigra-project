@@ -128,7 +128,7 @@ int32_t steerUnitCSSetPosition( int32_t position )
     }
     else
     {
-        turnLightsSetState( LIGHTS_OFF );
+        turnLightsSetState( LIGHTS_TURN_OFF );
     }
 
     lldControlSetSteerPower( controlValue );

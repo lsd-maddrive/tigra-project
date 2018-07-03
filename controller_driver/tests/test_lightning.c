@@ -47,20 +47,19 @@ void testLightningRoutineWorking( void )
 
         controlValue = CLIP_VALUE( controlValue, -100, 100 );
 
-//        /*      Light Unit      */
-//        if( controlValue <= -20 )
-//        {
-//            turnLightsSetState( LIGHTS_TURN_LEFT );
-//        }
-//        else if( controlValue >= 20 )
-//        {
-//            turnLightsSetState( LIGHTS_TURN_RIGHT );
-//        }
-//        else
-//        {
-//          turnLightsSetState( LIGHTS_OFF );
-//        }
-
+        /*      Light Unit      */
+        if( controlValue <= -20 )
+        {
+            turnLightsSetState( LIGHTS_TURN_LEFT );
+        }
+        else if( controlValue >= 20 )
+        {
+            turnLightsSetState( LIGHTS_TURN_RIGHT );
+        }
+        else
+        {
+          turnLightsSetState( LIGHTS_TURN_OFF );
+        }
 
         chThdSleepMilliseconds( 10 );
 

@@ -50,6 +50,19 @@ static THD_FUNCTION(TurnSignalThd, arg)
         }
 
         /* Same for right */
+        if ( lightMask & RIGHT_LIGHT_MASK )
+        {
+            /* Blink each 20th iteration (20 * 50ms = 1s) */
+            if ( rightLightCntr++ % 20 )
+                palToggleLine( rightTurnLight );
+        }
+        else
+        {
+            rightLightCntr = 0;
+
+            palClearLine( rightTurnLight );
+        }
+
 
         chThdSleepMilliseconds( 50 );
     }
