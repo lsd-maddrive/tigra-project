@@ -23,7 +23,11 @@ void testSteerUnitCSRoutine( void )
 
     while ( 1 )
     {
-        /* Is it required ??? */
+        /*
+         *  It's imitation of 5s delay to let ESC now where the center is
+         *  Actually, delay could be reduced (5s is too much)
+         *  it should work only once, when we turn on ESC first time
+         */
         if( flag == 0 )
         {
             startCount += 1;

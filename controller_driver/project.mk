@@ -11,7 +11,8 @@ PROJECT_MODULES = src/lld_brake_sensor.c        \
                   src/brake_unit_cs.c           \
                   src/drive_speed_cs.c 			\
                   src/controllers.c				\
-                  src/steer_unit_cs.c
+                  src/steer_unit_cs.c			\
+                  src/light_unit.c
                   
 
                   
