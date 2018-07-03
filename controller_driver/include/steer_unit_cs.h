@@ -30,5 +30,10 @@ int32_t steerUnitCSSetPosition( int32_t position );
  */
 bool steerIsEnabled( void );
 
+/**
+ * @brief   Initialize modules connected to steering control
+ */
+void csInit( void );
+
 
 #endif /* INCLUDE_STEER_UNIT_CS_H_ */

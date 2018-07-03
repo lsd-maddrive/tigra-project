@@ -27,23 +27,25 @@ void testSteerPoweredStatus( void )
     lldControlInit();
     lldSteerSensorsInit();
 
-
     static bool statusESC       = true;
-    uint16_t counter            = 0;
-
-    statusESC = steerIsEnabled();
 
     while( 1 )
     {
-        counter += 1;
-        if( counter == 50 )
+        char isEnabled = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+        switch ( isEnabled )
         {
-          chprintf( (BaseSequentialStream *)&SD7, "Status of ESC: %s\n\r", statusESC ? "true" : "false" );
+            case 1:               // Test enable
+                statusESC = steerIsEnabled();
+                chprintf( (BaseSequentialStream *)&SD7, "Status of ESC: %s\n\r", statusESC ? "true" : "false" );
+                break;
 
-          counter = 0;
+            case 2:               // Test disable
+                /*  to avoid motor overheating   */
+                lldControlSetSteerPower( 0 );
+                break;
+
+            default:
+                ;
         }
-
-        chThdSleepMilliseconds( 10 );
     }
-
 }
