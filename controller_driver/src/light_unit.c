@@ -1,15 +1,4 @@
-#include <tests.h>
 #include <light_unit.h>
-
-/**************************/
-/*** CONFIGURATION ZONE ***/
-/**************************/
-
-static light_states_t   turnLightState      = LIGHTS_OFF;
-
-/******************************/
-/*** CONFIGURATION ZONE END ***/
-/******************************/
 
 /***********************************/
 /*** HARDWARE CONFIGURATION ZONE ***/
@@ -19,12 +8,20 @@ static light_states_t   turnLightState      = LIGHTS_OFF;
 #define rightTurnLight      PAL_LINE( GPIOH, 1 )
 #define leftTurnLight       PAL_LINE( GPIOH, 0 )
 
-
 /***************************************/
 /*** HARDWARE CONFIGURATION ZONE END ***/
 /***************************************/
 
-static bool         isInitialized       = false;
+static bool             isInitialized       = false;
+
+#define STOP_LIGHT_MASK             1 << 1
+#define RIGHT_LIGHT_MASK            1 << 2
+#define LEFT_LIGHT_MASK             1 << 3
+
+static uint8_t      lightMask           = 0;
+
+static uint32_t     leftLightCntr       = 0;
+static uint32_t     rightLightCntr      = 0;
 
 static THD_WORKING_AREA(waTurnSignalThd, 1024);
 static THD_FUNCTION(TurnSignalThd, arg)
@@ -33,34 +30,31 @@ static THD_FUNCTION(TurnSignalThd, arg)
 
     while( 1 )
     {
-        if( turnLightState == LIGHTS_TURN_LEFT )
+        /* Non-blinking */
+        if ( lightMask & STOP_LIGHT_MASK )
+            palSetLine( stopLight );
+        else
+            palClearLine( stopLight );
+
+        if ( lightMask & LEFT_LIGHT_MASK )
         {
-            palToggleLine( leftTurnLight );
-            palClearLine( rightTurnLight );
-            chThdSleepMilliseconds( 1000 );
+            /* Blink each 20th iteration (20 * 50ms = 1s) */
+            if ( leftLightCntr++ % 20 )
+                palToggleLine( leftTurnLight );
         }
-        else if( turnLightState == LIGHTS_TURN_RIGHT )
+        else
         {
-            palToggleLine( rightTurnLight );
+            leftLightCntr = 0;
             palClearLine( leftTurnLight );
-            chThdSleepMilliseconds( 1000 );
         }
-        else if( turnLightState == LIGHTS_OFF )
-        {
-            palClearLine( leftTurnLight );
-            palClearLine( rightTurnLight );
-            chThdSleepMilliseconds( 1000 );
-        }
-        else /* in case of magical error */
-        {
-            chThdSleepMilliseconds( 50 );
-        }
+
+        /* Same for right */
+
+        chThdSleepMilliseconds( 50 );
     }
 }
 
-/**
- * @brief   Initialize periphery connected to driver control
- */
+
 void lightUnitInit( void )
 {
     if ( isInitialized )
@@ -71,29 +65,39 @@ void lightUnitInit( void )
     palSetLineMode( rightTurnLight, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( stopLight, PAL_MODE_OUTPUT_OPENDRAIN );
 
-
     chThdCreateStatic( waTurnSignalThd, sizeof(waTurnSignalThd), NORMALPRIO, TurnSignalThd, NULL );
 
+    isInitialized = true;
 }
 
 
-/**
- * @brief   Set state ONLY for turn light unit depend on control signal value
- */
-void turnLightsSetState( int32_t controlSignal )
+void turnLightsSetState( light_state_t state )
 {
+    switch ( state )
+    {
+        case LIGHTS_TURN_LEFT:
+            lightMask |= LEFT_LIGHT_MASK;
+            lightMask &= ~RIGHT_LIGHT_MASK;
+            break;
 
-    if( controlSignal <= -20 )
-    {
-        turnLightState = LIGHTS_TURN_LEFT;
-    }
-    else if( controlSignal >= 20 )
-    {
-        turnLightState = LIGHTS_TURN_RIGHT;
-    }
-    else
-    {
-        turnLightState = LIGHTS_OFF;
-    }
+        case LIGHTS_TURN_RIGHT:
+            lightMask |= RIGHT_LIGHT_MASK;
+            lightMask &= ~LEFT_LIGHT_MASK;
+            break;
 
+        case LIGHTS_TURN_OFF:
+            lightMask &= (~LEFT_LIGHT_MASK & ~RIGHT_LIGHT_MASK);
+            break;
+
+        case LIGHTS_BRAKE_ON:
+            lightMask |= STOP_LIGHT_MASK;
+            break;
+
+        case LIGHTS_BRAKE_OFF:
+            lightMask &= ~STOP_LIGHT_MASK;
+            break;
+
+        default:
+            lightMask = 0;
+    }
 }
