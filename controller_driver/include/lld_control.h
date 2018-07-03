@@ -40,12 +40,6 @@ void lldControlSetBrakePower( controlValue_t inputPrc );
  */
 void lldControlSetDrMotorDirection ( bool lldDrMotorDirection );
 
-/**
- * @brief   Check ESC condition
- * @return  true  - ESC enable, everything - OK
- *          false - ESC is disabled or another bad situation
- */
-bool lldControlSteerIsEnabled( void );
 
 
 #endif /* INCLUDE_LLD_CONTROL_H_ */

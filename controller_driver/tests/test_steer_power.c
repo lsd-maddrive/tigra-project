@@ -2,9 +2,8 @@
 #include <chprintf.h>
 #include <lld_control.h>
 #include <lld_steer_sensors.h>
+#include <steer_unit_cs.h>
 
-#define STEER_CHECK_PERC_POWER          5
-#define STEER_CURRENT_PERC_THRESHOLD    10
 
 static const SerialConfig sdcfg = {
     .speed = 115200,
@@ -16,6 +15,7 @@ static const SerialConfig sdcfg = {
  * @brief   Steer power testing
  * @note    The routine has internal infinite loop
  * @note    SD7 is used for testing (PE7, PE8)
+ * @note    steerIsEnabled() gives 1s delay
  */
 void testSteerPoweredStatus( void )
 {
@@ -27,19 +27,18 @@ void testSteerPoweredStatus( void )
     lldControlInit();
     lldSteerSensorsInit();
 
-    lldControlSetSteerPower( STEER_CHECK_PERC_POWER );
 
-    static bool errorFlag       = true;
+    static bool statusESC       = true;
     uint16_t counter            = 0;
+
+    statusESC = steerIsEnabled();
 
     while( 1 )
     {
         counter += 1;
         if( counter == 50 )
         {
-          errorFlag = lldControlSteerIsEnabled();
-
-          chprintf( (BaseSequentialStream *)&SD7, "Status of ESC: %s\n\r", errorFlag ? "true" : "false" );
+          chprintf( (BaseSequentialStream *)&SD7, "Status of ESC: %s\n\r", statusESC ? "true" : "false" );
 
           counter = 0;
         }

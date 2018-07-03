@@ -10,9 +10,6 @@ static float    speedLowestVoltage     = 0.8;
 /* Can be set or set to 0 to calculate from <speedLowestVoltage> */
 static int32_t  speedLowestDACValue    = 0;
 
-#define STEER_CHECK_PERC_POWER          5
-#define STEER_CURRENT_PERC_THRESHOLD    10
-
 
 /******************************/
 /*** CONFIGURATION ZONE END ***/
@@ -272,37 +269,3 @@ void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
 }
 
 
-/*
- * @brief   Check ESC condition
- * @return  true  - ESC enable, everything - OK
- *          false - ESC is disabled or another bad situation
- */
-bool lldControlSteerIsEnabled( void )
-{
-     lldControlSetSteerPower( STEER_CHECK_PERC_POWER );
-
-     static bool errorFlag       = true;
-     uint16_t curSensor          = 0;
-     uint16_t counter            = 0;
-
-      while( counter <= 500 )
-      {
-
-          counter += 1;
-          curSensor = lldSteerGetCurrentPrc();
-          /***    if current is less than threshold -> Error      ***/
-          if( curSensor < STEER_CURRENT_PERC_THRESHOLD )
-          {
-              errorFlag = false;
-          }
-          else
-          {
-              errorFlag = true;
-          }
-
-      }
-      if( errorFlag )
-          return true;
-      else if( errorFlag == false )
-          return false;
-}
