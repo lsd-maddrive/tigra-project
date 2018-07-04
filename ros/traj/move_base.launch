@@ -2,13 +2,28 @@
 <launch>
   <!-- <include file="$(find turtlebot_roomba_navigation)/launch/perception.launch" /> -->
 
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+  <node pkg="move_base" type="move_base" respawn="true" name="move_base" output="screen" clear_params="true">
+
+    <!-- <rosparam file="$(find teb_local_planner_tutorials)/cfg/carlike/costmap_common_params.yaml" command="load" ns="global_costmap" /> -->
+    <!-- <rosparam file="$(find teb_local_planner_tutorials)/cfg/carlike/costmap_common_params.yaml" command="load" ns="local_costmap" /> -->
+    <!-- <rosparam file="$(find teb_local_planner_tutorials)/cfg/carlike/local_costmap_params.yaml" command="load" /> -->
+    <!-- <rosparam file="$(find teb_local_planner_tutorials)/cfg/carlike/global_costmap_params.yaml" command="load" /> -->
+    <!-- <rosparam file="$(find teb_local_planner_tutorials)/cfg/carlike/teb_local_planner_params.yaml" command="load" /> -->
+
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="planner_frequency" value="1.0" />
+    <param name="planner_patience" value="5.0" />
+
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <param name="controller_frequency" value="5.0" />
+    <param name="controller_patience" value="15.0" />
+
     <rosparam file="config/costmap_common.yaml" command="load" ns="global_costmap" />
     <rosparam file="config/costmap_common.yaml" command="load" ns="local_costmap" />
     <rosparam file="config/move_base.yaml" command="load" />
 
     <remap from="odom" to="/rtabmap/odom" />
-	<remap from="map"  to="/rtabmap/grid_map"/>
+    <remap from="map"  to="/rtabmap/grid_map"/>
   </node>
 </launch>
 

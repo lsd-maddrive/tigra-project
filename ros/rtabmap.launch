@@ -12,7 +12,7 @@
 
 <!-- Choose visualization -->
   <arg name="rtabmapviz"              default="false" /> 
-  <arg name="rviz"                    default="true" />
+  <arg name="rviz"                    default="false" />
   
   <!-- Corresponding config files -->
   <arg name="rtabmapviz_cfg"          default="-d $(find rtabmap_ros)/launch/config/rgbd_gui.ini" />

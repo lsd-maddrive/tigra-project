@@ -2,7 +2,14 @@
 # run into buffering problems in rosserial.
 controller_frequency: 10
 # base_local_planner: dwa_local_planner/DWAPlannerROS
+
+base_global_planner: global_planner/GlobalPlanner
+planner_frequency: 1
+planner_patience: 5
+
 base_local_planner: teb_local_planner/TebLocalPlannerROS
+controller_patience: 15
+
 recovery_behaviors:
     - name: aggressive_reset
       type: clear_costmap_recovery/ClearCostmapRecovery
@@ -16,35 +23,45 @@ aggressive_reset:
 # See also costmap_common_params.yaml for additional parameters set
 # for the two costmaps.
 local_costmap:
-    global_frame: /odom
-    robot_base_frame: /base_link
-    map_type: voxel
+    global_frame: /map
+    robot_base_frame: base_link
+
     update_frequency: 5.0
-    publish_frequency: 5.0
+    publish_frequency: 2.0
     static_map: false
     rolling_window: true
-    width: 4.0
-    height: 4.0
+    width: 15
+    height: 15
     resolution: 0.05
     transform_tolerance: 0.5
 
+    plugins:
+    - {name: static_layer,        type: "costmap_2d::StaticLayer"}
+    - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"}
+
 global_costmap:
     global_frame: /map
-    robot_base_frame: /base_link
-    map_type: costmap
-    update_frequency: 3.0
-    publish_frequency: 0.0
-    static_map: true
-    transform_tolerance: 0.5
+    robot_base_frame: base_link
+    update_frequency: 5.0
+    publish_frequency: 0.5
+    static_map: false
+
     width: 100
     height: 100
     resolution: 0.05
     origin_x: -50.0
     origin_y: -50.0
 
+    transform_tolerance: 0.5
+    
+    plugins:
+    - {name: static_layer,            type: "costmap_2d::StaticLayer"}
+    - {name: obstacle_layer,          type: "costmap_2d::VoxelLayer"}
+    - {name: inflation_layer,         type: "costmap_2d::InflationLayer"}
+
+
 TebLocalPlannerROS:
     odom_topic: odom
-    map_frame: /map
 
     # Trajectory
 
@@ -52,22 +69,25 @@ TebLocalPlannerROS:
     dt_ref: 0.3
     dt_hysteresis: 0.1
     global_plan_overwrite_orientation: True
-    max_global_plan_lookahead_dist: 3.0
-    feasibility_check_no_poses: 5
+    max_global_plan_lookahead_dist: 5.0
+    feasibility_check_no_poses: 2
 
     # Robot
          
+    wheelbase: 0.4
+    cmd_angle_instead_rotvel: True
+
     max_vel_x: 0.4
     max_vel_x_backwards: 0.2
     max_vel_theta: 0.3
     acc_lim_x: 0.5
     acc_lim_theta: 0.5
-    min_turning_radius: 0.0
+    min_turning_radius: 0.2
     footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
-        type: "circular"
-        radius: 0.2 # for type "circular"
-        # line_start: [-0.3, 0.0] # for type "line"
-        # line_end: [0.3, 0.0] # for type "line"
+        type: "line"
+        # radius: 0.2 # for type "circular"
+        line_start: [0.0, 0.0] # for type "line"
+        line_end: [0.4, 0.0] # for type "line"
         # front_offset: 0.2 # for type "two_circles"
         # front_radius: 0.2 # for type "two_circles"
         # rear_offset: 0.2 # for type "two_circles"
@@ -82,13 +102,13 @@ TebLocalPlannerROS:
 
     # Obstacles
 
-    min_obstacle_dist: 0.1
+    min_obstacle_dist: 0.2
     include_costmap_obstacles: True
     costmap_obstacles_behind_robot_dist: 1.0
-    obstacle_poses_affected: 30
-    costmap_converter_plugin: "costmap_converter::CostmapToLinesDBSRANSAC"
-    costmap_converter_spin_thread: True
-    costmap_converter_rate: 5
+    obstacle_poses_affected: 5
+    # costmap_converter_plugin: ""
+    # costmap_converter_spin_thread: True
+    # costmap_converter_rate: 5
 
     # Optimization
 
@@ -107,7 +127,7 @@ TebLocalPlannerROS:
     weight_optimaltime: 1
     weight_obstacle: 50
     weight_dynamic_obstacle: 10 # not in use yet
-    selection_alternative_time_cost: False # not in use yet
+    # selection_alternative_time_cost: False # not in use yet
 
     # Homotopy Class Planner
 
