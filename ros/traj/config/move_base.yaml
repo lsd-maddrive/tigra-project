@@ -38,13 +38,13 @@ global_costmap:
     transform_tolerance: 0.5
     width: 100
     height: 100
-    resolution: 0.075
+    resolution: 0.05
     origin_x: -50.0
     origin_y: -50.0
 
 TebLocalPlannerROS:
     odom_topic: odom
-    map_frame: /odom
+    map_frame: /map
 
     # Trajectory
 
@@ -62,9 +62,9 @@ TebLocalPlannerROS:
     max_vel_theta: 0.3
     acc_lim_x: 0.5
     acc_lim_theta: 0.5
-    min_turning_radius: 1.0
+    min_turning_radius: 0.0
     footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
-        type: "point"
+        type: "circular"
         radius: 0.2 # for type "circular"
         # line_start: [-0.3, 0.0] # for type "line"
         # line_end: [0.3, 0.0] # for type "line"
@@ -82,11 +82,11 @@ TebLocalPlannerROS:
 
     # Obstacles
 
-    min_obstacle_dist: 0.4
+    min_obstacle_dist: 0.1
     include_costmap_obstacles: True
     costmap_obstacles_behind_robot_dist: 1.0
     obstacle_poses_affected: 30
-    costmap_converter_plugin: ""
+    costmap_converter_plugin: "costmap_converter::CostmapToLinesDBSRANSAC"
     costmap_converter_spin_thread: True
     costmap_converter_rate: 5
 
@@ -107,11 +107,11 @@ TebLocalPlannerROS:
     weight_optimaltime: 1
     weight_obstacle: 50
     weight_dynamic_obstacle: 10 # not in use yet
-    alternative_time_cost: False # not in use yet
+    selection_alternative_time_cost: False # not in use yet
 
     # Homotopy Class Planner
 
-    enable_homotopy_class_planning: True
+    enable_homotopy_class_planning: False
     enable_multithreading: True
     simple_exploration: False
     max_number_classes: 4

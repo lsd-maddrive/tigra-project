@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 <launch>
-  <include file="$(find turtlebot_roomba_navigation)/launch/perception.launch" />
+  <!-- <include file="$(find turtlebot_roomba_navigation)/launch/perception.launch" /> -->
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
-    <rosparam file="$(find turtlebot_roomba_navigation)/config/costmap_common.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find turtlebot_roomba_navigation)/config/costmap_common.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find turtlebot_roomba_navigation)/config/move_base.yaml" command="load" />
+    <rosparam file="config/costmap_common.yaml" command="load" ns="global_costmap" />
+    <rosparam file="config/costmap_common.yaml" command="load" ns="local_costmap" />
+    <rosparam file="config/move_base.yaml" command="load" />
+
+    <remap from="odom" to="/rtabmap/odom" />
+	<remap from="map"  to="/rtabmap/grid_map"/>
   </node>
 </launch>
 

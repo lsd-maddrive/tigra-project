@@ -4,7 +4,7 @@ robot_radius: 0.18
 inflation_radius: 0.20
 observation_sources: "base_laser_cloud"
 base_laser_cloud:
-    data_type: PointCloud
-    topic: /base_cloud
+    data_type: PointCloud2
+    topic: rtabmap/cloud_obstacles
     marking: true
     clearing: true
