@@ -19,8 +19,8 @@ local_costmap:
     publish_frequency: 2.0
     static_map: false
     rolling_window: true
-    width: 10
-    height: 10
+    width: 20
+    height: 20
     resolution: 0.05
     transform_tolerance: 0.5
 
@@ -60,7 +60,7 @@ TebLocalPlannerROS:
     dt_hysteresis: 0.1
     global_plan_overwrite_orientation: True
     max_global_plan_lookahead_dist: 5.0
-    feasibility_check_no_poses: 2
+    feasibility_check_no_poses: 5
 
     # Robot
          

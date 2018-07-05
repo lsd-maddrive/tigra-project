@@ -39,7 +39,7 @@ void testDriverControlRoutineSerial( void )
     controlValue_t  steer_values_delta  = 10;
     controlValue_t  steer_value         = 0;
 
-    controlValue_t  speed_values_delta  = 10;
+    controlValue_t  speed_values_delta  = 5;
     controlValue_t  speed_value         = 0;
 
     controlValue_t  brake_values_delta  = 10;
@@ -89,7 +89,7 @@ void testDriverControlRoutineSerial( void )
 
         lldControlSetBrakePower( brake_value );
 
-        chprintf( (BaseSequentialStream *)&SD7, "Powers:\tSteer (%d)\n\r\tSpeed(%d)\n\r\tBrake(%d)\n\r",
+        chprintf( (BaseSequentialStream *)&SD7, "Powers:\n\r\tSteer(%d)\n\r\tSpeed(%d)\n\r\tBrake(%d)\n\r",
                   steer_value, speed_value, brake_value );
         chThdSleepMilliseconds( 100 );
     }

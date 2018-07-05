@@ -4,11 +4,9 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
-const uint32_t  wheelSpeedSensorTimeoutMs       = 1000;
+const uint32_t  wheelSpeedSensorTimeoutMs   = 1000;
 
 #define WHEEL_POS_ADC_2_RPM_RATE            1.0f
-
-#define WHEEL_POS_HALL_VELOCITY
 
 /******************************/
 /*** CONFIGURATION ZONE END ***/
@@ -16,7 +14,6 @@ const uint32_t  wheelSpeedSensorTimeoutMs       = 1000;
 
 /* Wheel position sensor connects to wheelPosSensorInLine pin*/
 #define wheelPosSensorInLine       PAL_LINE ( GPIOF, 13 )
-
 
 static void extcb ( EXTDriver *extp, expchannel_t channel );
 
@@ -45,13 +42,14 @@ static float        velocityCalcTicksToRPM  = 0;
 
 void wheelPosSensorInit (void)
 {
+    if ( isInitialized )
+        return;
+
     /* Define channel config structure */
     EXTChannelConfig ch_conf;
 
     /* Fill in configuration for channel */
-//    ch_conf.mode  = EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOF;
     ch_conf.mode  = EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOF;
-
     ch_conf.cb    = extcb;
 
     /*EXT driver initialization*/
@@ -83,8 +81,6 @@ static void gpt_overflow_cb(GPTDriver *gptd)
 {
     gptd = gptd;
 
-#ifdef WHEEL_POS_HALL_VELOCITY
-    
     /* Increment overflow counter*/
     overflow_counter ++;
 
@@ -92,8 +88,6 @@ static void gpt_overflow_cb(GPTDriver *gptd)
     {
         wheelsRotating = false;
     }
-
-#endif
 }
 
 /**
@@ -111,8 +105,6 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     /* Just to avoid Warning from compiler */
     extp = extp; channel = channel;
 
-#ifdef WHEEL_POS_HALL_VELOCITY
-
     int32_t curr_time   = gptGetCounterX(timeIntervalsDriver);
     measured_width      = 0;
 
@@ -126,10 +118,7 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     overflow_counter = 0;
     prev_time = curr_time;
 
-#endif
-
     impulseCounter++;
-
 }
 
 /**
@@ -148,8 +137,6 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
         return -1;
     }
 
-#ifdef WHEEL_POS_HALL_VELOCITY
-    
     if ( !wheelsRotating )
         return 0;
 
@@ -171,13 +158,36 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
         velocity = 0;
     }
 
-#else
-
-    velocity = commonADC1UnitGetValue( COMMON_ADC_SEQ4_CH ) * WHEEL_POS_ADC_2_RPM_RATE;
-
-#endif
-
     return velocity;
+}
+
+wheelVelocity_t wheelPosSensorGetVelocityADC ( void )
+{
+    return commonADC1UnitGetValueMV( COMMON_ADC_SEQ4_CH ) * WHEEL_POS_ADC_2_RPM_RATE;
+}
+
+float wheelPosSensorGetRotTime ( void )
+{
+    if ( !isInitialized )
+    {
+        return -1;
+    }
+
+    float rotTime = 0.0;
+
+    if ( !wheelsRotating )
+        return 0;
+
+    if ( measured_width != 0)
+    {
+        rotTime = 8.0f * measured_width / timeIntervalsCfg.frequency;
+    }
+    else
+    {
+        rotTime = 0;
+    }
+
+    return rotTime;
 }
 
 /**

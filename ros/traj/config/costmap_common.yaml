@@ -20,9 +20,16 @@ obstacle_layer:
     track_unknown_space: false
     combination_method: 1
 
-    observation_sources: "base_laser_cloud"
-    base_laser_cloud:
+    observation_sources: stereo_cam_vision
+    stereo_cam_vision:
         data_type: PointCloud2
         topic: stereo/points2
         marking: true
         clearing: true
+
+    # stereo_cam_map:
+        # data_type: PointCloud2
+        # topic: rtabmap/cloud_obstacles
+        # marking: true
+        # clearing: true
+

@@ -17,8 +17,8 @@ static bool             isInitialized = false;
 void DriveSpeedCSInit( void )
 {
     if ( isInitialized )
-        return
-    
+        return;
+
     wheelPosSensorInit();
     lldControlInit();
     

@@ -14,9 +14,9 @@
 
 static bool             isInitialized       = false;
 
-#define STOP_LIGHT_MASK             1 << 1
-#define RIGHT_LIGHT_MASK            1 << 2
-#define LEFT_LIGHT_MASK             1 << 3
+#define STOP_LIGHT_MASK         (1 << 1)
+#define RIGHT_LIGHT_MASK        (1 << 2)
+#define LEFT_LIGHT_MASK         (1 << 3)
 
 static uint8_t      lightMask           = 0;
 

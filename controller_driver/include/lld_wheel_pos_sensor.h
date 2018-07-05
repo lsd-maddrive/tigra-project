@@ -50,4 +50,16 @@ wheelPosition_t wheelPosSensorGetPosition ( void );
  */
 wheelVelocity_t wheelPosSensorGetVelocity ( void );
 
+/**
+ *	@brief		Get rotation time
+ *	@return 	Time of one rotation
+ */
+float wheelPosSensorGetRotTime ( void );
+
+/**
+ *	@brief 		Obtain rotation speed from ADC
+ *	@return		ADC speed value (rpm) / calibration required
+ */
+wheelVelocity_t wheelPosSensorGetVelocityADC ( void );
+
 #endif /* INCLUDE_LLD_WHEEL_POS_SENSOR_H_ */

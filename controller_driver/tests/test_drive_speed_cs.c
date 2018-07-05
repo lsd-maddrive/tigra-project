@@ -85,26 +85,38 @@ void testDriveSpeedOpenedRoutine( void )
 
     int32_t speedPower = 0;
 
+    uint32_t    sdCntr = 0;
+
     while( 1 )
     {
-        chprintf( (BaseSequentialStream *)&SD7, "speedPow: %d\n\r", speedPower );
+        if ( sdCntr++ > 10 )
+        {
+            sdCntr = 0;
+            chprintf( (BaseSequentialStream *)&SD7, 
+                        "pow: %d / rotTime: %d [ms] / vel: %d / velAn: %d\n\r", 
+                        speedPower,
+                        (int)(wheelPosSensorGetRotTime() * 1000),
+                        (int)wheelPosSensorGetVelocity(),
+                        (int)wheelPosSensorGetVelocityADC() );
+        }
 
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         switch ( rcv_data )
         {
             case 'c':
-                speedPower += 10;
+                speedPower += 5;
                 speedPower = CLIP_VALUE( speedPower, 0, 100 );
                 break;
 
             case 'v':
-                speedPower -= 10;
+                speedPower -= 5;
                 speedPower = CLIP_VALUE( speedPower, 0, 100 );
                 break;
 
             default:
                 ;
         }
+
         lldControlSetDrMotorPower( speedPower );
 
         chThdSleepMilliseconds( 10 );

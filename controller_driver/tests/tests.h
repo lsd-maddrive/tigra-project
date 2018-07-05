@@ -108,7 +108,7 @@ void testDriverControlRoutine( void );
  * @note    The routine has internal infinite loop
  * @note    Extended behavior that interacts with user through Serial
  */
-void testDriverControlRoutineExt1( void );
+void testDriverControlRoutineSerial( void );
 
 /**
  * @brief   Routine of low level driver control steer testing

@@ -6,10 +6,16 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
-static float    speedLowestVoltage     = 0.8;
-/* Can be set or set to 0 to calculate from <speedLowestVoltage> */
-static int32_t  speedLowestDACValue    = 0;
+static float    speedMaxVoltage     = 3;
+/* Can be set or set to 0 to calculate from <speedMaxVoltage> */
+static int32_t  speedMaxDACValue    = 0;
 
+
+static float    speedMinVoltage     = 1.3;
+/* Can be set or set to 0 to calculate from <speedMinVoltage> */
+static int32_t  speedMinDACValue    = 0;
+
+#define VOLTAGE_2_DAC(v)  ((v) / 3.3 * 4095)
 
 /******************************/
 /*** CONFIGURATION ZONE END ***/
@@ -136,12 +142,17 @@ void lldControlInit( void )
 
     /* Calculate some parameters */
 
-    if ( speedLowestDACValue == 0 )
+    if ( speedMaxDACValue == 0 )
     {
-        speedLowestDACValue = ( 4095 / 3.3 * speedLowestVoltage );
+        speedMaxDACValue = VOLTAGE_2_DAC( speedMaxVoltage );
     }
 
-    speedConvRate = (4095 - speedLowestDACValue) / 100.0;
+    if ( speedMinDACValue == 0 )
+    {
+        speedMinDACValue = VOLTAGE_2_DAC( speedMinVoltage );
+    }
+
+    speedConvRate = (speedMaxDACValue - speedMinDACValue) / 100.0;
 
     /* Set initialization flag */
 
@@ -156,7 +167,7 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
 {
     inputPrc = CLIP_VALUE( inputPrc, 0, 100 );
 
-    uint16_t drDriveDuty = inputPrc * speedConvRate + speedLowestDACValue;
+    uint16_t drDriveDuty = inputPrc * speedConvRate + speedMinDACValue;
     /*
     * Write value to DAC channel
     * Arguments:   <dacDriver>      - pointer to DAC driver
@@ -165,6 +176,20 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
     */
 
     dacPutChannelX( dacDriver, 0, drDriveDuty );
+}
+
+
+/*
+ * @brief   Set motor direction
+ * @param   lldDrMotorDirection Motor direction true - forward
+ *                                              false - backward
+ */
+void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
+{
+    if( lldDrMotorDirection )
+        palSetLine( lineMotorDir );
+    else
+        palClearLine( lineMotorDir );
 }
 
 typedef enum
@@ -254,18 +279,3 @@ void lldControlSetBrakePower( controlValue_t inputPrc )
 
     pwmEnableChannel( pwmDriver, brakePWMch, drBrakeDuty );
 }
-
-/*
- * @brief   Set motor direction
- * @param   lldDrMotorDirection Motor direction true - forward
- *                                              false - backward
- */
-void lldControlSetDrMotorDirection( bool lldDrMotorDirection )
-{
-    if( lldDrMotorDirection )
-        palSetLine( lineMotorDir );
-    else
-        palClearLine( lineMotorDir );
-}
-
-
