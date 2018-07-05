@@ -42,7 +42,7 @@
 #define     PROGRAM_ROUTINE_TEST_LIGHTNING              17
 #define 	PROGRAM_ROUTINE_TEST_LL_DRIVER_STEER		18
 
-#define     MAIN_PROGRAM_ROUTINE                    	PROGRAM_ROUTINE_TEST_LIGHTNING
+#define     MAIN_PROGRAM_ROUTINE                    	PROGRAM_ROUTINE_TEST_STEER_UNIT_CS
 
 /******************/
 /*** Prototypes ***/
