@@ -10,16 +10,15 @@ bool service_cb ( void )
 
 void testROSDriverRoutine( void )
 {
-    ros_driver_init();
-    ros_driver_start( NORMALPRIO );
+    rosInit( NORMALPRIO );
 
-    ros_test_srv_set_cb( service_cb );
+    rosTestSrvSetCb( service_cb );
 
     int32_t cntr = 0;
 
     while ( 1 )
     {
-        ros_send_test_i32_msg( cntr++ );
+        rosSendTestI32Msg( cntr++ );
 
         chThdSleepMilliseconds( 100 );
 

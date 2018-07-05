@@ -14,7 +14,7 @@ static PIDControllerContext_t  pidCtx = {
 static bool             isInitialized = false;
 
 
-void DriveSpeedCSInit( void )
+void driveSpeedCSInit( void )
 {
     if ( isInitialized )
         return;
@@ -28,7 +28,7 @@ void DriveSpeedCSInit( void )
 }
 
 
-controlValue_t DriveSpeedControl ( wheelVelocity_t speedReference )
+controlValue_t driveSpeedControl ( wheelVelocity_t speedReference )
 {
   /* Check if all modules initialized. if not return -1 */
     if( !isInitialized )

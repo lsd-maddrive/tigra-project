@@ -20,7 +20,7 @@
  *@note          First time function call sets flag "isInitialized"
  *               which protects of multiple initialization
  */
-void DriveSpeedCSInit( void );
+void driveSpeedCSInit( void );
 
 /*
  * @brief        Control system "shell".
@@ -34,6 +34,6 @@ void DriveSpeedCSInit( void );
  * @return       Controller output, if all required lld's is initialized
  *               -1               , if not
  */
-controlValue_t DriveSpeedControl ( wheelVelocity_t speedReference );
+controlValue_t driveSpeedControl ( wheelVelocity_t speedReference );
 
 #endif /* INCLUDE_DRIVE_SPEED_CS_H_*/

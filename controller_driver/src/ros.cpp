@@ -2,9 +2,9 @@
 #include <ros_proto.h>
 #include <common.h>
 
-/*===========================================================================*/
-/* SD relative                                                               */
-/*===========================================================================*/
+/***************/
+/* SD relative */
+/***************/
 
 SerialConfig sdcfg = {
       .speed = 115200,
@@ -16,13 +16,13 @@ SerialConfig sdcfg = {
 SerialDriver    *ros_sd     = &SD5;
 BaseChannel     *ros_sd_ptr = (BaseChannel *)ros_sd;
 
-/*===========================================================================*/
-/* ROS things                                                                */
-/*===========================================================================*/
+/**************/
+/* ROS things */
+/**************/
 
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
-#include <std_msgs/UInt16MultiArray.h>
+#include <std_msgs/Int8MultiArray.h>
 #include <std_msgs/UInt8.h>
 #include <std_msgs/Bool.h>
 
@@ -33,9 +33,19 @@ ros::NodeHandle                                 ros_node;
 std_msgs::Int32                                 i32_test_msg;
 ros::Publisher                                  test_topic("test_i32_pub", &i32_test_msg);
 
+void control_cb( const std_msgs::Int8MultiArray &msg )
+{
+    if ( msg.data_length != 2 )
+        return;
+
+    mainControlSetTask( msg.data[0], msg.data[1] );
+}
+
+ros::Subscriber<std_msgs::Int8MultiArray>       topic_control("control_raw", &control_cb);
+
 bool (*test_srv_cb_func)() = NULL;
 
-void ros_test_srv_set_cb( bool (*cb_func)() )
+void rosTestSrvSetCb( bool (*cb_func)() )
 {
     test_srv_cb_func = cb_func;
 }
@@ -57,7 +67,7 @@ ros::ServiceServer<std_srvs::TriggerRequest, std_srvs::TriggerResponse> test_srv
 
 //=======================================================
 
-void ros_send_test_i32_msg( int32_t value )
+void rosSendTestI32Msg( int32_t value )
 {
     i32_test_msg.data = value;
 
@@ -71,23 +81,18 @@ void ros_send_test_i32_msg( int32_t value )
 static THD_WORKING_AREA(waSpinner, 128);
 static THD_FUNCTION(Spinner, arg)
 {
-  (void)arg;
-  chRegSetThreadName("ROS Spinner");
+    (void)arg;
+    chRegSetThreadName( "ROS Spinner" );
 
-  while (true)
-  {
-    ros_node.spinOnce();
+    while ( true )
+    {
+        ros_node.spinOnce();
 
-    chThdSleepMilliseconds( 10 );
-  }
+        chThdSleepMilliseconds( 10 );
+    }
 }
 
-void ros_driver_start( tprio_t prio )
-{
-    chThdCreateStatic( waSpinner, sizeof(waSpinner), prio, Spinner, NULL );
-}
-
-void ros_driver_init( void )
+void rosInit( tprio_t prio )
 {
     /* Serial driver */
     sdStart( ros_sd, &sdcfg );
@@ -96,11 +101,16 @@ void ros_driver_init( void )
 
     /* ROS setup */
     ros_node.initNode();
-    ros_node.setSpinTimeout( 20 );
+    ros_node.setSpinTimeout( 10 );
 
     /* ROS publishers */
     ros_node.advertise( test_topic );
 
+    /* ROS subscribers */
+    ros_node.subscribe( topic_control );
+
     /* ROS service client */
     ros_node.advertiseService( test_srv_serv );
+
+    chThdCreateStatic( waSpinner, sizeof(waSpinner), prio, Spinner, NULL );
 }

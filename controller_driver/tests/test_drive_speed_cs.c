@@ -17,7 +17,7 @@ static const SerialConfig sdcfg = {
 void testDriveSpeedCSRoutine( void )
 {
     /* Low level drivers initialization required for motor control*/
-    DriveSpeedCSInit();
+    driveSpeedCSInit();
 
     sdStart( &SD7, &sdcfg );
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
@@ -67,7 +67,7 @@ void testDriveSpeedCSRoutine( void )
         /* Limit RPM value */
         speedRef = speedRef < 0 ? 0 : speedRef > 10 ? 10 : speedRef;
 
-        motorControlValue   = DriveSpeedControl ( speedRef );
+        motorControlValue   = driveSpeedControl ( speedRef );
 
         chThdSleepMilliseconds( 10 );
 
@@ -77,7 +77,7 @@ void testDriveSpeedCSRoutine( void )
 void testDriveSpeedOpenedRoutine( void )
 {
     /* Low level drivers initialization required for motor control*/
-    DriveSpeedCSInit();
+    driveSpeedCSInit();
 
     sdStart( &SD7, &sdcfg );
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX

@@ -7,6 +7,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
+#include <errno.h>
+
+/* For errors signaling */
+#ifndef EOK
+    #define EOK     0
+#endif
 
 /*********************/
 /*** Configuration ***/
@@ -104,6 +110,30 @@ adcsample_t commonADC1UnitGetValue ( uint8_t ch );
  */
 adc1SampleMV_t commonADC1UnitGetValueMV ( uint8_t ch );
 
+/*** Main control task protos ***/
+
+/**
+ * @brief       Main control loop
+ * @note        Has internal loop inside
+ */
+void mainControlTask ( void );
+
+/**
+ * @brief       Main periphery initialization
+ * @return      Error code:
+ *              EOK     - everything initialized
+ *              EIO     - steering test failed
+ * @note        Must be called first before main_control_task()
+ */
+int mainUnitsInit ( void );
+
+/**
+ * @brief           Set task from external control
+ * @param   speed   Desired speed of base
+ * @param   steer   Desired steer angle
+ */
+void mainControlSetTask ( int32_t speed, int32_t steer );
+
 /**************/
 /*** Macros ***/
 /**************/
@@ -127,6 +157,7 @@ adc1SampleMV_t commonADC1UnitGetValueMV ( uint8_t ch );
 #define ADC_CR1_10B_RESOLUTION      (ADC_CR1_RES_0)
 #define ADC_CR1_8B_RESOLUTION       (ADC_CR1_RES_1)
 #define ADC_CR1_6B_RESOLUTION       (ADC_CR1_RES_0 | ADC_CR1_RES_1)
+
 
 
 #endif /* INCLUDE_COMMON_H_ */

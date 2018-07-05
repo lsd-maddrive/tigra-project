@@ -167,7 +167,12 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
 {
     inputPrc = CLIP_VALUE( inputPrc, 0, 100 );
 
-    uint16_t drDriveDuty = inputPrc * speedConvRate + speedMinDACValue;
+    uint16_t drDriveDAC = inputPrc * speedConvRate + speedMinDACValue;
+
+    /* Just to avoid heating */
+    if ( inputPrc < 2 )
+        drDriveDAC = 0;
+
     /*
     * Write value to DAC channel
     * Arguments:   <dacDriver>      - pointer to DAC driver
@@ -175,7 +180,7 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
     *              <drMotorPower>   - output value (according to mode/size)
     */
 
-    dacPutChannelX( dacDriver, 0, drDriveDuty );
+    dacPutChannelX( dacDriver, 0, drDriveDAC );
 }
 
 
