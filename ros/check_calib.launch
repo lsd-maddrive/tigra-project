@@ -1,15 +1,19 @@
 <?xml version="1.0"?>
 <launch>
-	<include file="cameras_driver_uvc.launch">
+	<include file="cameras_driver_usb.launch">
 		<arg name="camera_info" value="true" />
-		<arg name="video_device_right" value="/dev/video1" />
-		<arg name="video_device_left" value="/dev/video0" />
+		<arg name="video_device_right" value="/dev/video0" />
+		<arg name="video_device_left" value="/dev/video1" />
 	</include>
 
 	<group ns="stereo">
   
 		<node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" output="screen">
 			<param name="approximate_sync" value="true" />
+			<param name="speckle_size" value="500" />
+			<param name="speckle_range" value="4" />
+			<param name="min_disparity" value="-14" />
+			<param name="disparity_range" value="96" />
 		</node>
 
 	</group>

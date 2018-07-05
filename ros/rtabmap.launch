@@ -7,11 +7,11 @@
         args="$(arg optical_rotate) base_link camera_link 100" /> 
 
    <node pkg="tf" type="static_transform_publisher" name="camera_links"
-        args="0 0 0 0 0 0 camera_link left_camera 100" /> 
-
+        args="-0.2 0 0 0 0 0 camera_link left_camera 100" /> 
+<!-- Check left shift >> TODO -->
 
 <!-- Choose visualization -->
-  <arg name="rtabmapviz"              default="true" /> 
+  <arg name="rtabmapviz"              default="false" /> 
   <arg name="rviz"                    default="false" />
   
   <!-- Corresponding config files -->
