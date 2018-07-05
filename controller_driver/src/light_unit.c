@@ -32,21 +32,31 @@ static THD_FUNCTION(TurnSignalThd, arg)
     {
         /* Non-blinking */
         if ( lightMask & STOP_LIGHT_MASK )
+        {
             palSetLine( stopLight );
+            palSetLine( LINE_LED3 );
+        }
         else
+        {
             palClearLine( stopLight );
+            palClearLine( LINE_LED3 );
+        }
 
         if ( lightMask & LEFT_LIGHT_MASK )
         {
             /* Blink each 20th iteration (20 * 50ms = 1s) */
             if ( leftLightCntr++ % 20 )
+            {
                 palToggleLine( leftTurnLight );
+                palToggleLine( LINE_LED1 );
+            }
         }
         else
         {
             leftLightCntr = 0;
 
             palClearLine( leftTurnLight );
+            palClearLine( LINE_LED1 );
         }
 
         /* Same for right */
@@ -54,13 +64,17 @@ static THD_FUNCTION(TurnSignalThd, arg)
         {
             /* Blink each 20th iteration (20 * 50ms = 1s) */
             if ( rightLightCntr++ % 20 )
+            {
                 palToggleLine( rightTurnLight );
+                palToggleLine( LINE_LED2 );
+            }
         }
         else
         {
             rightLightCntr = 0;
 
             palClearLine( rightTurnLight );
+            palClearLine( LINE_LED2 );
         }
 
 

@@ -7,9 +7,6 @@ static const SerialConfig sdcfg = {
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
 
-
-
-
 void testLightningRoutineWorking( void )
 {
     sdStart( &SD7, &sdcfg );
@@ -20,8 +17,9 @@ void testLightningRoutineWorking( void )
 
     int32_t controlValue    = 0;
     int32_t controlValDelta = 10;
-    int32_t counter         = 0 ;
+    int32_t counter         = 0;
     chprintf( (BaseSequentialStream *)&SD7, "TEST\n\r" );
+
     while(1)
     {
 
@@ -30,14 +28,14 @@ void testLightningRoutineWorking( void )
             chprintf( (BaseSequentialStream *)&SD7, "Control Signal:%d\n\r", controlValue );
             counter = 0;
         }
-        char rcv_data = sdGet( &SD7 );
+        char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         switch ( rcv_data )
         {
-            case 'e':   // Positive steer
+            case 'q':   // Positive steer
                 controlValue += controlValDelta;
                 break;
 
-            case 'r':   // Negative steer
+            case 'w':   // Negative steer
                 controlValue -= controlValDelta;
                 break;
 
