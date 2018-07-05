@@ -1,14 +1,3 @@
-# We need to use a lower controller frequency. Otherwise we seem to
-# run into buffering problems in rosserial.
-controller_frequency: 10
-# base_local_planner: dwa_local_planner/DWAPlannerROS
-
-base_global_planner: global_planner/GlobalPlanner
-planner_frequency: 1
-planner_patience: 5
-
-base_local_planner: teb_local_planner/TebLocalPlannerROS
-controller_patience: 15
 
 recovery_behaviors:
     - name: aggressive_reset
@@ -30,14 +19,15 @@ local_costmap:
     publish_frequency: 2.0
     static_map: false
     rolling_window: true
-    width: 15
-    height: 15
+    width: 10
+    height: 10
     resolution: 0.05
     transform_tolerance: 0.5
 
     plugins:
-    - {name: static_layer,        type: "costmap_2d::StaticLayer"}
-    - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"}
+    # - {name: static_layer,        type: "costmap_2d::StaticLayer"}
+    - {name: obstacle_layer,        type: "costmap_2d::ObstacleLayer"}
+    - {name: inflation_layer,       type: "costmap_2d::InflationLayer"}
 
 global_costmap:
     global_frame: /map
@@ -54,10 +44,10 @@ global_costmap:
 
     transform_tolerance: 0.5
     
-    plugins:
-    - {name: static_layer,            type: "costmap_2d::StaticLayer"}
-    - {name: obstacle_layer,          type: "costmap_2d::VoxelLayer"}
-    - {name: inflation_layer,         type: "costmap_2d::InflationLayer"}
+    # plugins:
+    # - {name: static_layer,          type: "costmap_2d::StaticLayer"}
+    # - {name: obstacle_layer,        type: "costmap_2d::VoxelLayer"}
+    # - {name: inflation_layer,       type: "costmap_2d::InflationLayer"}
 
 
 TebLocalPlannerROS:
@@ -74,11 +64,11 @@ TebLocalPlannerROS:
 
     # Robot
          
-    wheelbase: 0.4
+    wheelbase: 1.3
     cmd_angle_instead_rotvel: True
 
-    max_vel_x: 0.4
-    max_vel_x_backwards: 0.2
+    max_vel_x: 1
+    max_vel_x_backwards: 0.5
     max_vel_theta: 0.3
     acc_lim_x: 0.5
     acc_lim_theta: 0.5
@@ -86,8 +76,8 @@ TebLocalPlannerROS:
     footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
         type: "line"
         # radius: 0.2 # for type "circular"
-        line_start: [0.0, 0.0] # for type "line"
-        line_end: [0.4, 0.0] # for type "line"
+        line_start: [-0.9, 0.0] # for type "line"
+        line_end: [0.9, 0.0] # for type "line"
         # front_offset: 0.2 # for type "two_circles"
         # front_radius: 0.2 # for type "two_circles"
         # rear_offset: 0.2 # for type "two_circles"
@@ -102,7 +92,7 @@ TebLocalPlannerROS:
 
     # Obstacles
 
-    min_obstacle_dist: 0.2
+    min_obstacle_dist: 0.7
     include_costmap_obstacles: True
     costmap_obstacles_behind_robot_dist: 1.0
     obstacle_poses_affected: 5
