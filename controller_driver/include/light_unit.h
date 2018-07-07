@@ -10,7 +10,10 @@ typedef enum
     LIGHTS_TURN_OFF,
 
     LIGHTS_BRAKE_ON,
-    LIGHTS_BRAKE_OFF
+    LIGHTS_BRAKE_OFF,
+
+    LIGHTS_BACK_ON,
+    LIGHTS_BACK_OFF
 
 } light_state_t;
 

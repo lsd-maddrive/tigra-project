@@ -28,6 +28,7 @@ void testLightningRoutineWorking( void )
             chprintf( (BaseSequentialStream *)&SD7, "Control Signal:%d\n\r", controlValue );
             counter = 0;
         }
+        
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         switch ( rcv_data )
         {
