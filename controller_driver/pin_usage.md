@@ -22,12 +22,14 @@ PAL  | PE3 | output
 Driver | Pins | Input / Output
 -------|------|-------
 PWM1 | PE11 | output (channel 1)
+PAL  | PE15 | output
+PAL  | PG1  | output
 
 ## Драйвер управления приводом движения 
 Driver | Pins | Input / Output
 -------|------|-------
 DAC | PA4  | output (channel 1)
-PAL | PF12 | output
+PAL | PD3 | output (open-drain)
 
 ## Драйвер датчика положения и скорости колес
 Driver | Pins | Input / Output
@@ -54,7 +56,7 @@ Driver | Pins | Input / Output
 GPT4 | Trg  | -
 PAL | PG2  | output
 PAL | PG3  | output
-SD7 | PE7  | RX
+SD5 | PD2  | RX
 SD4 | PC11 | RX 
 
 ## Драйвер ИК-датчика 
@@ -62,3 +64,11 @@ Driver | Pins | Input / Output
 -------|------|-------
 GPT8 | Trg  | -
 ADC3 | PF3  | input (AN 9)
+
+## Модули света
+Driver | Pins | Input / Output
+-------|------|-------
+PAL | E2  | output (open-drain)
+PAL | E4 | output (open-drain)
+PAL | E6 | output (open-drain)
+PAL | E3 | output (open-drain)

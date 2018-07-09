@@ -58,7 +58,6 @@ static  DACDriver       *dacDriver      = &DACD1;
 #define lineMotorDir        PAL_LINE( GPIOD, 3 )
 
 
-
 /*** E_15 for Braking Set Direction        ***/
 #define lineBrakeDirIN1     PAL_LINE( GPIOE, 15 )
 #define lineBrakeDirIN2     PAL_LINE( GPIOG, 1 )

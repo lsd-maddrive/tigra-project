@@ -7,6 +7,8 @@ static const SerialConfig sdcfg = {
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
 
+
+
 void testLightningRoutineWorking( void )
 {
     sdStart( &SD7, &sdcfg );
@@ -19,6 +21,7 @@ void testLightningRoutineWorking( void )
     int32_t controlValDelta = 10;
     int32_t counter         = 0;
     bool sireneState        = false;
+    bool testState          = false;
     chprintf( (BaseSequentialStream *)&SD7, "TEST\n\r" );
 
     while(1)
@@ -29,46 +32,63 @@ void testLightningRoutineWorking( void )
             chprintf( (BaseSequentialStream *)&SD7, "Control Signal:%d, Sirene State: %i\n\r", controlValue, sireneState );
             counter = 0;
         }
+
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         switch ( rcv_data )
         {
-            case 'q':   // Positive steer
-                controlValue += controlValDelta;
+            case 'q':   // turn on left lights
+                turnLightsSetState( LIGHTS_TURN_LEFT );
                 break;
 
             case 'w':   // Negative steer
-                controlValue -= controlValDelta;
+                turnLightsSetState( LIGHTS_TURN_RIGHT );
                 break;
-            case 'e':   // turn on sirene
-              sireneState = true;
-              sireneSetState( sireneState );
-              break;
+            case 'e':   // turn on brake light
+                turnLightsSetState( LIGHTS_BRAKE_ON );
+                break;
             case 'r':   // turn off sirene
-              sireneState = false;
-              sireneSetState( sireneState );
-              break;
+                turnLightsSetState( LIGHTS_TURN_OFF);
+                break;
+            case 't':
+                turnLightsSetState( LIGHTS_BRAKE_OFF );
+                break;
+            case 'y':
+                sireneSetState( true );
+                break;
+            case 'u':
+                sireneSetState( false );
+                break;
+
             default:
                     ;
         }
 
         controlValue = CLIP_VALUE( controlValue, -100, 100 );
 
-        /*      Light Unit      */
-        if( controlValue <= -20 )
+#ifdef SIMPLE_TEST
+        if( ++counter >= 10 )
         {
-            turnLightsSetState( LIGHTS_TURN_LEFT );
+            chprintf( (BaseSequentialStream *)&SD7, "state: %i\n\r", palReadPad( GPIOE, 6 ) );
+            counter = 0;
         }
-        else if( controlValue >= 20 )
+        char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
+        switch ( rcv_data )
         {
-            turnLightsSetState( LIGHTS_TURN_RIGHT );
+            case 'y':   // Positive steer
+                testState = true;
+                break;
+
+            case 'u':   // Negative steer
+                testState = false;
+                break;
+
+            default:
+                    ;
         }
-        else
-        {
-          turnLightsSetState( LIGHTS_TURN_OFF );
-        }
+
+        turnOnEverthing( testState );
+#endif
 
         chThdSleepMilliseconds( 10 );
-
     }
-
 }
