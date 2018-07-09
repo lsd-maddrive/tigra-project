@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-<arg name="video_device_right" default="/dev/video0" />
-<arg name="video_device_left" default="/dev/video1" />
+<arg name="video_device_right" default="/dev/video1" />
+<arg name="video_device_left" default="/dev/video0" />
 
 <arg name="image_width" default="640" />
 <arg name="image_height" default="480" />
@@ -29,7 +29,7 @@
 
 <arg name="framerate" default="30" />
 
-<arg name="camera_info" default="false" />
+<arg name="camera_info" default="true" />
 <arg name="camera_info_path" default="stereo_camera_info" />
 
 <node ns="$(arg right_image_namespace)" name="$(arg right_image_node)" pkg="usb_cam" type="usb_cam_node" output="screen" >

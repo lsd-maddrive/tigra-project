@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="cameras_driver_usb.launch">
-        <arg name="camera_info" value="true" />
-        <arg name="video_device_right" value="/dev/video0" />
-        <arg name="video_device_left" value="/dev/video1" />
-    </include>
+    <include file="cameras_driver_usb.launch"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="static_tf_map_to_base_radar_link" 
+            args="0.9 0 0 0 0 0 base_link base_radar_link 100" />
+
+    <include file="radar.launch" />
 
     <group ns="stereo">
+
   
         <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" output="screen">
             <param name="approximate_sync" value="true" />
