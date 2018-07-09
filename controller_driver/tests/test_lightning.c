@@ -18,6 +18,7 @@ void testLightningRoutineWorking( void )
     int32_t controlValue    = 0;
     int32_t controlValDelta = 10;
     int32_t counter         = 0;
+    bool sireneState        = false;
     chprintf( (BaseSequentialStream *)&SD7, "TEST\n\r" );
 
     while(1)
@@ -25,7 +26,7 @@ void testLightningRoutineWorking( void )
 
         if( ++counter >= 10 )
         {
-            chprintf( (BaseSequentialStream *)&SD7, "Control Signal:%d\n\r", controlValue );
+            chprintf( (BaseSequentialStream *)&SD7, "Control Signal:%d, Sirene State: %i\n\r", controlValue, sireneState );
             counter = 0;
         }
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
@@ -38,7 +39,14 @@ void testLightningRoutineWorking( void )
             case 'w':   // Negative steer
                 controlValue -= controlValDelta;
                 break;
-
+            case 'e':   // turn on sirene
+              sireneState = true;
+              sireneSetState( sireneState );
+              break;
+            case 'r':   // turn off sirene
+              sireneState = false;
+              sireneSetState( sireneState );
+              break;
             default:
                     ;
         }

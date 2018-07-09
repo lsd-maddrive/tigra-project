@@ -55,7 +55,9 @@ static  DACDriver       *dacDriver      = &DACD1;
 
 /*** Direction pins configuration          ***/
 /*** F_12 for Driving Wheels Set Direction ***/
-#define lineMotorDir        PAL_LINE( GPIOF, 12 )
+#define lineMotorDir        PAL_LINE( GPIOD, 3 )
+
+
 
 /*** E_15 for Braking Set Direction        ***/
 #define lineBrakeDirIN1     PAL_LINE( GPIOE, 15 )
@@ -123,9 +125,11 @@ void lldControlInit( void )
     palSetLineMode( pwm1LineCh1,  PAL_MODE_ALTERNATE(1) );
 
     /*** PAL pins configuration ***/
-    palSetLineMode( lineMotorDir, PAL_MODE_OUTPUT_PUSHPULL );
+    palSetLineMode( lineMotorDir, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( lineBrakeDirIN1, PAL_MODE_OUTPUT_PUSHPULL );
     palSetLineMode( lineBrakeDirIN2, PAL_MODE_OUTPUT_PUSHPULL );
+
+
 
     /*
     * DAC has two channels
@@ -165,12 +169,24 @@ void lldControlInit( void )
  */
 void lldControlSetDrMotorPower( controlValue_t inputPrc )
 {
-    inputPrc = CLIP_VALUE( inputPrc, 0, 100 );
+    inputPrc = CLIP_VALUE( inputPrc, -100, 100 );
 
-    uint16_t drDriveDAC = inputPrc * speedConvRate + speedMinDACValue;
+    if( inputPrc < 0 )
+    {
+        palClearLine( lineMotorDir );
+
+
+    }
+    else if( inputPrc >= 0 )
+    {
+        palSetLine( lineMotorDir );
+
+    }
+
+    uint16_t drDriveDAC = abs(inputPrc) * speedConvRate + speedMinDACValue;
 
     /* Just to avoid heating */
-    if ( inputPrc < 2 )
+    if ( inputPrc < 7 && inputPrc > -7 )
         drDriveDAC = 0;
 
     /*

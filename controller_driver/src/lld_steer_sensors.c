@@ -5,9 +5,9 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
-static int32_t  steerPosCenterAdc       = 2065;
-static int32_t  steerPosMaxAdc          = 2800;
-static int32_t  steerPosMinAdc          = 1190;
+static int32_t  steerPosCenterAdc       = 2126;
+static int32_t  steerPosMaxAdc          = 2900;
+static int32_t  steerPosMinAdc          = 1300;
 
 static int32_t  steerPosValidGap        = 100;
 

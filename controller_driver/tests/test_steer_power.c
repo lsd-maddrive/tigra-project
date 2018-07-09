@@ -56,5 +56,6 @@ void testSteerPoweredStatus( void )
             /*  to avoid motor overheating   */
             lldControlSetSteerPower( 0 );
         }
+
     }
 }

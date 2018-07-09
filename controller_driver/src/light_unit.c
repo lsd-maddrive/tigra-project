@@ -8,6 +8,8 @@
 #define rightTurnLight      PAL_LINE( GPIOH, 1 )
 #define leftTurnLight       PAL_LINE( GPIOH, 0 )
 
+
+#define lineSirene          PAL_LINE( GPIOD, 4 )
 /***************************************/
 /*** HARDWARE CONFIGURATION ZONE END ***/
 /***************************************/
@@ -95,6 +97,7 @@ void lightUnitInit( void )
     palSetLineMode( leftTurnLight, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( rightTurnLight, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( stopLight, PAL_MODE_OUTPUT_OPENDRAIN );
+    palSetLineMode( lineSirene, PAL_MODE_OUTPUT_OPENDRAIN );
 
     chThdCreateStatic( waTurnSignalThd, sizeof(waTurnSignalThd), NORMALPRIO, TurnSignalThd, NULL );
 
@@ -134,4 +137,22 @@ void turnLightsSetState( light_state_t state )
         default:
             lightMask = 0;
     }
+}
+
+
+/**
+ * @brief   Set state for sirene and warning light
+ * @param   state == true  -> turn on sirene and warnings
+ *          state == false -> turn off
+ */
+void sireneSetState( bool state )
+{
+  if( state )
+  {
+      palClearLine( lineSirene );
+  }
+  else if( state == false )
+  {
+      palSetLine( lineSirene );
+  }
 }

@@ -41,7 +41,7 @@ void testBrakeUnitCSRoutine( void )
                 brakePower += 2;
                 break;
 
-            case 'x':   // Negative brake
+            case 'x':   // Negative brakex
                 brakePower -= 2;
                 break;
 

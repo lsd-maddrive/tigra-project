@@ -25,4 +25,11 @@ void lightUnitInit( void );
  */
 void turnLightsSetState( light_state_t state );
 
+/**
+ * @brief   Set state for sirene and warning light
+ * @param   state == true  -> turn on sirene and warnings
+ *          state == false -> turn off
+ */
+void sireneSetState( bool state )
+
 #endif /* INCLUDE_LIGHT_UNIT_H_ */

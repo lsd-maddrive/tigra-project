@@ -28,6 +28,7 @@ static const SerialConfig sdcfg = {
   .cr1 = 0, .cr2 = 0, .cr3 = 0
 };
 
+
 void testDriverControlRoutineSerial( void )
 {
     sdStart( &SD7, &sdcfg );
@@ -35,6 +36,7 @@ void testDriverControlRoutineSerial( void )
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
     lldControlInit();
+
 
     controlValue_t  steer_values_delta  = 10;
     controlValue_t  steer_value         = 0;
@@ -44,6 +46,8 @@ void testDriverControlRoutineSerial( void )
 
     controlValue_t  brake_values_delta  = 10;
     controlValue_t  brake_value         = 0;
+
+    chprintf( (BaseSequentialStream *)&SD7, "TEST\n\r" );
 
     while ( 1 )
     {
@@ -73,7 +77,6 @@ void testDriverControlRoutineSerial( void )
             case 'x':   // Negative brake
                 brake_value -= brake_values_delta;
                 break;
-
             default:
                 ;
         }
@@ -84,7 +87,7 @@ void testDriverControlRoutineSerial( void )
 
         lldControlSetSteerPower( steer_value );
 
-        lldControlSetDrMotorDirection( steer_value > 0 );
+//        lldControlSetDrMotorDirection( steer_value > 0 );
         lldControlSetDrMotorPower( speed_value );
 
         lldControlSetBrakePower( brake_value );
