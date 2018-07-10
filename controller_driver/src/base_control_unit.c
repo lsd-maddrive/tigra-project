@@ -77,7 +77,7 @@ int mainUnitsInit ( void )
     return EOK;
 }
 
-static void watchdog__mode_cb(void *arg)
+static void watchdog_mode_cb(void *arg)
 {
     arg = arg;
 
@@ -87,7 +87,7 @@ static void watchdog__mode_cb(void *arg)
 /**
  * @brief       set working mode
  * @return      mode number
- * @note        when 0 is returned, it means that 500 ms there was no connection
+ * @note        when 0 is returned, it means that 500 ms there was no reply from high level
  */
 void setMode( uint8_t currentMode )
 {
