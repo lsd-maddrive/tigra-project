@@ -12,6 +12,7 @@
     #define rightTurnLight      PAL_LINE( GPIOE, 6 )
     #define leftTurnLight       PAL_LINE( GPIOE, 3 )
 
+
 #else
     #define backLight           LINE_LED1
     #define stopLight           LINE_LED1
@@ -173,6 +174,7 @@ void sireneSetState( bool state )
   }
 }
 
+
 /**
  * @brief   Set state for stop, right and left turn lights
  * @param   state == true  -> turn on lights
@@ -186,6 +188,7 @@ void turnOnEverthing( bool switchFlag )
         palClearLine( stopLight );
         palClearLine( rightTurnLight );
         palClearLine( leftTurnLight );
+        palClearLine( backLight );
 
     }
     else if( switchFlag == false)
@@ -193,6 +196,7 @@ void turnOnEverthing( bool switchFlag )
         palSetLine( stopLight );
         palSetLine( rightTurnLight );
         palSetLine( leftTurnLight );
+        palSetLine( backLight );
     }
 
 }

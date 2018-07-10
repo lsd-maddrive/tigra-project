@@ -56,6 +56,12 @@ void testLightningRoutineWorking( void )
             case 'u':
                 sireneSetState( false );
                 break;
+            case 'a':
+                turnLightsSetState( LIGHTS_BACK_ON );
+                break;
+            case 's':
+                turnLightsSetState( LIGHTS_BACK_OFF );
+                break;
 
             default:
                     ;
