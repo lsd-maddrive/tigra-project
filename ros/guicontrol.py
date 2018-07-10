@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 import time
 
 import rospy
-from std_msgs.msg import Int8MultiArray
+from std_msgs.msg import Int8
 from sensor_msgs.msg import Image, Range, JointState
 
 import cv2
@@ -32,7 +32,7 @@ manual_control_enable_publish = False
 manual_control_steering_set_only = False
 manual_control_velocity_set_only = False
 
-manual_control_publish_period_ms = 200
+manual_control_publish_period_ms = 100
 
 manual_control_enabled = True
 
@@ -53,7 +53,7 @@ def manual_control_callback_mouse_released(event):
 
     manual_control_velocity_value = 0
     manual_control_steering_value = 0
-    manual_control_enable_publish = False
+    # manual_control_enable_publish = False
     manual_control_velocity_set_only = False
     manual_control_steering_set_only = False
     # print ('Released')
@@ -119,16 +119,17 @@ def ros_controller_set_control(velocity, steering):
     steering = np.clip(steering, -steering_abs_limit, steering_abs_limit)
 
     cmd = [velocity, steering]
-    cmd = Int8MultiArray(data=cmd)
-    
-    cmd_pub.publish( cmd )
+
+    speed_pub.publish( velocity )
+    steer_pub.publish( steering )
     print ('Publishing cmd', cmd)
 
 
 def ros_controller_init_connection():
-    global cmd_pub
+    global speed_pub, steer_pub
     
-    cmd_pub = rospy.Publisher('control_raw', Int8MultiArray, queue_size=10)
+    speed_pub = rospy.Publisher('quadro/speed_perc', Int8, queue_size=1)
+    steer_pub = rospy.Publisher('quadro/steer_perc', Int8, queue_size=1)
 
 # ---------------------------------------------------------------------------
 
