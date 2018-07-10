@@ -25,14 +25,22 @@ static void watchdog_cb(void *arg)
     steerExtTask = speedExtTask = 0;
 }
 
-void mainControlSetTask ( int32_t speed, int32_t steer )
+void mainControlSetSpeed ( int32_t speed )
 {
-    chprintf( (BaseSequentialStream *)&SD7, "Set: %d / %d\n", speed, steer );
+    chprintf( (BaseSequentialStream *)&SD7, "Set spd: %d\n", speed );
 
-    steerExtTask = CLIP_VALUE( steer, -100, 100 );
     speedExtTask = CLIP_VALUE( speed, -40, 40 );
 
     chVTSet( &watchdog_vt, MS2ST( CONTROL_SET_TIMEOUT_MS ), watchdog_cb, NULL );
+}
+
+void mainControlSetSteer ( int32_t steer )
+{
+    chprintf( (BaseSequentialStream *)&SD7, "Set str: %d\n", steer );
+
+    steerExtTask = CLIP_VALUE( steer, -100, 100 );
+
+    // chVTSet( &watchdog_vt, MS2ST( CONTROL_SET_TIMEOUT_MS ), watchdog_cb, NULL );
 }
 
 static THD_WORKING_AREA(waThread, 128);
@@ -54,7 +62,6 @@ void mainControlTask ( void )
     chVTObjectInit( &watchdog_vt );
 
     chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO + 1, Thread, NULL );
-    mainControlSetTask( 0, 0 );
 
     /* Main thread */
     while ( true )
@@ -117,6 +124,7 @@ static void watchdog_mode_cb(void *arg)
  */
 void mainControlSetMode( uint8_t mode )
 {
+    chprintf( (BaseSequentialStream *)&SD7, "Mode: %d\n", mode );
     currentMode = mode;
 
     chVTSet( &watchdog_mode, MS2ST( MODE_SET_TIMEOUT_MS ), watchdog_mode_cb, NULL );

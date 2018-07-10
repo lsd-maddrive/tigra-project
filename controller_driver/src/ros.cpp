@@ -20,22 +20,19 @@ BaseChannel     *ros_sd_ptr = (BaseChannel *)ros_sd;
 /* ROS things */
 /**************/
 
-#include <std_msgs/String.h>
-#include <std_msgs/Int32.h>
-#include <std_msgs/Int8MultiArray.h>
 #include <std_msgs/UInt8.h>
-#include <std_msgs/Bool.h>
-
-#include <std_srvs/Trigger.h>
+#include <std_msgs/Int8.h>
 
 ros::NodeHandle                                 ros_node;
 
-void control_cb( const std_msgs::Int8MultiArray &msg )
+void speed_cb( const std_msgs::Int8 &msg )
 {
-    if ( msg.data_length != 2 )
-        return;
+    mainControlSetSpeed( msg.data );
+}
 
-    mainControlSetTask( msg.data[0], msg.data[1] );
+void steer_cb( const std_msgs::Int8 &msg )
+{
+    mainControlSetSteer( msg.data );
 }
 
 void mode_cb( const std_msgs::UInt8 &msg )
@@ -43,8 +40,9 @@ void mode_cb( const std_msgs::UInt8 &msg )
     mainControlSetMode( msg.data );
 }
 
-ros::Subscriber<std_msgs::Int8MultiArray>       topic_control( "control_raw", &control_cb);
-ros::Subscriber<std_msgs::UInt8>                topic_mode( "mode_status", mode_cb );
+ros::Subscriber<std_msgs::Int8>       topic_speed( "speed_perc", &speed_cb);
+ros::Subscriber<std_msgs::Int8>       topic_steer( "steer_perc", &steer_cb);
+ros::Subscriber<std_msgs::UInt8>      topic_mode( "mode_status", mode_cb );
 //=======================================================
 
 /*
@@ -74,12 +72,13 @@ void rosInit( tprio_t prio )
 
     /* ROS setup */
     ros_node.initNode();
-    // ros_node.setSpinTimeout( 20 );
+    ros_node.setSpinTimeout( 20 );
 
     /* ROS publishers */
 
     /* ROS subscribers */
-    ros_node.subscribe( topic_control );
+    ros_node.subscribe( topic_speed );
+    ros_node.subscribe( topic_steer );
     ros_node.subscribe( topic_mode );
     /* ROS service client */
 

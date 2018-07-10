@@ -132,7 +132,8 @@ int mainUnitsInit ( void );
  * @param   speed   Desired speed of base
  * @param   steer   Desired steer angle
  */
-void mainControlSetTask ( int32_t speed, int32_t steer );
+void mainControlSetSpeed ( int32_t speed );
+void mainControlSetSteer ( int32_t steer );
 
 typedef struct
 {
