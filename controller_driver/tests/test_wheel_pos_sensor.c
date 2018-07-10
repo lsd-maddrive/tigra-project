@@ -48,17 +48,22 @@ void testWheelPosSensorRoutine( void )
 
     while ( 1 )
     {
-        wheelVelocity_t velocity   =   wheelPosSensorGetVelocity ();
-        wheelPosition_t position   =   wheelPosSensorGetPosition ();
+        wheelVelocity_t velocity = wheelPosSensorGetVelocity();
+        wheelVelocity_t linSpeed = wheelPosSensorGetLinSpeed();
+        wheelPosition_t position = wheelPosSensorGetPosition();
 
         double speedIntPart;
         double speedFrctPart = modf( velocity, &speedIntPart );
 
+        double linSpeedIntPart;
+        double linSpeedFrctPart = modf( linSpeed, &linSpeedIntPart );
+
         double posIntPart;
         double posFrctPart = modf( position, &posIntPart );
 
-        chprintf( (BaseSequentialStream *)&SD7, "Vel: %d.%03d\tPos: %d.%03d\r\n" ,
+        chprintf( (BaseSequentialStream *)&SD7, "Vel: %d.%03d\tSpd: %d.%03d\tPos: %d.%03d\r\n" ,
                     (int)(speedIntPart), (int)(speedFrctPart * 1000),
+                    (int)(linSpeedIntPart), (int)(linSpeedFrctPart * 1000),
                     (int)(posIntPart), (int)(posFrctPart * 1000) );
 
         chThdSleepMilliseconds( 100 );
