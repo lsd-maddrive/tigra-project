@@ -6,6 +6,7 @@
 
 //#define LIGHTS_LED_TEST
 
+#define     TURN_BLINK_CNTR     10      // delay 500 ms
 #ifndef LIGHTS_LED_TEST
     #define backLight           PAL_LINE( GPIOE, 4 )
     #define stopLight           PAL_LINE( GPIOE, 2 )
@@ -64,8 +65,7 @@ static THD_FUNCTION(TurnSignalThd, arg)
 
         if ( lightMask & LEFT_LIGHT_BIT )
         {
-            /* Blink each 20th iteration (20 * 50ms = 1s) */
-            if ( leftLightCntr++ % 20 == 0 )
+            if ( leftLightCntr++ % TURN_BLINK_CNTR == 0 )
                 palToggleLine( leftTurnLight );
         }
         else
@@ -77,8 +77,7 @@ static THD_FUNCTION(TurnSignalThd, arg)
         /* Same for right */
         if ( lightMask & RIGHT_LIGHT_BIT )
         {
-            /* Blink each 20th iteration (20 * 50ms = 1s) */
-            if ( rightLightCntr++ % 20 == 0 )
+            if ( rightLightCntr++ % TURN_BLINK_CNTR == 0 )
                 palToggleLine( rightTurnLight );
         }
         else
