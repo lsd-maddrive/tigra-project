@@ -7,7 +7,7 @@
 /***************/
 
 SerialConfig sdcfg = {
-      .speed = 115200,
+      .speed = 9600,
       .cr1 = 0,
       .cr2 = USART_CR2_LINEN,
       .cr3 = 0

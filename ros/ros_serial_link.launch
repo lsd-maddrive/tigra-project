@@ -7,7 +7,7 @@
         <node pkg="rosserial_python" type="serial_node.py" name="quadro_node" output="screen" respawn="true">
             <param name="port" value="/dev/serial/by-path/pci-0000:06:00.0-usb-0:2.2:1.0-port0" /> 
             <param name="port" value="/dev/ttyUSB0" /> 
-            <param name="baud" value="115200" /> 
+            <param name="baud" value="9600" /> 
         </node> 
     </group>
 </launch>
