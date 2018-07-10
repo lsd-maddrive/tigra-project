@@ -12,8 +12,10 @@ static int32_t          speedExtTask  = 0;
 
 /* Watchdog timer realization */
 #define     CONTROL_SET_TIMEOUT_MS  500
+#define     MODE_SET_TIMEOUT_MS     500
 
 static virtual_timer_t  watchdog_vt;
+static virtual_timer_t  watchdog_mode;
 
 static void watchdog_cb(void *arg)
 {
@@ -27,7 +29,7 @@ void mainControlSetTask ( int32_t speed, int32_t steer )
     steerExtTask = CLIP_VALUE( steer, -100, 100 );
     speedExtTask = CLIP_VALUE( speed, -100, 100 );
 
-    chVTSetI( &watchdog_vt, MS2ST( CONTROL_SET_TIMEOUT_MS ), watchdog_cb, NULL );
+    chVTSet( &watchdog_vt, MS2ST( CONTROL_SET_TIMEOUT_MS ), watchdog_cb, NULL );
 }
 
 static THD_WORKING_AREA(waThread, 128);
@@ -73,4 +75,23 @@ int mainUnitsInit ( void )
     }
 
     return EOK;
+}
+
+static void watchdog__mode_cb(void *arg)
+{
+    arg = arg;
+
+    return 0;
+}
+
+/**
+ * @brief       set working mode
+ * @return      mode number
+ * @note        when 0 is returned, it means that 500 ms there was no connection
+ */
+void setMode( uint8_t currentMode )
+{
+    return currentMode;
+
+    chVTSet( &watchdog_mode, MS2ST( MODE_SET_TIMEOUT_MS ), watchdog_mode_cb, NULL );
 }
