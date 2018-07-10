@@ -74,3 +74,13 @@ int mainUnitsInit ( void )
 
     return EOK;
 }
+
+mainControlInfo_t mainControlGetInfo( void )
+{
+    mainControlInfo_t   info;
+
+    info.speedTask  = speedExtTask;
+    info.steerTask  = steerExtTask;
+
+    // info.mode    = mode;
+}

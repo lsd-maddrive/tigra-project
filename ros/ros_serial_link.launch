@@ -3,10 +3,10 @@
 <!-- ros-kinetic-rosserial-msgs required!! -->
 
 <launch>
-    <group ns="car">
-        <node pkg="rosserial_python" type="serial_node.py" name="car_serial" output="screen" respawn="true">
-            <!-- <param name="port" value="/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0" />  -->
-            <param name="port" value="/dev/ttyUSB0" /> 
+    <group ns="quadro">
+        <node pkg="rosserial_python" type="serial_node.py" name="quadro_node" output="screen" respawn="true">
+            <param name="port" value="/dev/serial/by-path/pci-0000:06:00.0-usb-0:2.2:1.0-port0" /> 
+            <!-- <param name="port" value="/dev/ttyUSB0" />  -->
             <param name="baud" value="115200" /> 
         </node> 
     </group>
