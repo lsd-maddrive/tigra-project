@@ -15,12 +15,12 @@ local_costmap:
     global_frame: /map
     robot_base_frame: base_link
 
-    update_frequency: 5.0
-    publish_frequency: 2.0
+    update_frequency: 10
+    publish_frequency: 10
     static_map: false
     rolling_window: true
-    width: 20
-    height: 20
+    width: 10
+    height: 10
     resolution: 0.05
     transform_tolerance: 0.5
 
@@ -32,8 +32,8 @@ local_costmap:
 global_costmap:
     global_frame: /map
     robot_base_frame: base_link
-    update_frequency: 5.0
-    publish_frequency: 0.5
+    update_frequency: 10
+    publish_frequency: 1
     static_map: false
 
     width: 100
@@ -67,12 +67,12 @@ TebLocalPlannerROS:
     wheelbase: 1.3
     cmd_angle_instead_rotvel: True
 
-    max_vel_x: 1
-    max_vel_x_backwards: 0.5
+    max_vel_x: 0.7
+    max_vel_x_backwards: 0.3
     max_vel_theta: 0.3
     acc_lim_x: 0.5
     acc_lim_theta: 0.5
-    min_turning_radius: 0.2
+    min_turning_radius: 1
     footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
         type: "line"
         # radius: 0.2 # for type "circular"
@@ -92,7 +92,7 @@ TebLocalPlannerROS:
 
     # Obstacles
 
-    min_obstacle_dist: 0.7
+    min_obstacle_dist: 1
     include_costmap_obstacles: True
     costmap_obstacles_behind_robot_dist: 1.0
     obstacle_poses_affected: 5
@@ -121,7 +121,7 @@ TebLocalPlannerROS:
 
     # Homotopy Class Planner
 
-    enable_homotopy_class_planning: False
+    enable_homotopy_class_planning: True
     enable_multithreading: True
     simple_exploration: False
     max_number_classes: 4
