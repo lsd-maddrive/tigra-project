@@ -121,6 +121,7 @@ static void reset_cb(void *arg)
 uint8_t countGPT = 0;
 static void gpt4cb( GPTDriver *gptp )
 {
+    gptp = gptp;
 
     countGPT += 1;
     if( countGPT == 1)
@@ -181,7 +182,7 @@ static THD_FUNCTION(GetSonarValU4Thd, arg)
          sdRead( &SD4, buf4Son, 3 );
          buf4Son[3] = 0;
          // convert bufSon into string, after this srt convert into long
-         brownSonarVal = strtoul( buf4Son, NULL, 0 );
+         brownSonarVal = strtoul( (char *)buf4Son, NULL, 0 );
       }
     }
 }
@@ -203,7 +204,7 @@ static THD_FUNCTION(GetSonarValU5Thd, arg)
          sdRead( &SD5, buf5Son, 3 );
          buf5Son[3] = 0;
          // convert bufSon into string, after this srt convert into long
-         greenSonarVal = strtoul( buf5Son, NULL, 0 );
+         greenSonarVal = strtoul( (char *)buf5Son, NULL, 0 );
        }
     }
 }

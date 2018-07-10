@@ -13,7 +13,7 @@ SerialConfig sdcfg = {
       .cr3 = 0
     };
 
-SerialDriver    *ros_sd     = &SD5;
+SerialDriver    *ros_sd     = &SD2;
 BaseChannel     *ros_sd_ptr = (BaseChannel *)ros_sd;
 
 /**************/
@@ -30,9 +30,6 @@ BaseChannel     *ros_sd_ptr = (BaseChannel *)ros_sd;
 
 ros::NodeHandle                                 ros_node;
 
-std_msgs::Int32                                 i32_test_msg;
-ros::Publisher                                  test_topic("test_i32_pub", &i32_test_msg);
-
 void control_cb( const std_msgs::Int8MultiArray &msg )
 {
     if ( msg.data_length != 2 )
@@ -41,38 +38,14 @@ void control_cb( const std_msgs::Int8MultiArray &msg )
     mainControlSetTask( msg.data[0], msg.data[1] );
 }
 
-ros::Subscriber<std_msgs::Int8MultiArray>       topic_control("control_raw", &control_cb);
-
-bool (*test_srv_cb_func)() = NULL;
-
-void rosTestSrvSetCb( bool (*cb_func)() )
+void mode_cb( const std_msgs::UInt8 &msg )
 {
-    test_srv_cb_func = cb_func;
+    mainControlSetMode( msg.data );
 }
 
-void test_srv_cb( const std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp )
-{
-    (void)req;
-
-    if ( test_srv_cb_func != NULL )
-    {
-        bool loc_resp = test_srv_cb_func();
-
-        resp.success = true;
-        resp.message = loc_resp ? "On" : "Off";
-    }
-}
-
-ros::ServiceServer<std_srvs::TriggerRequest, std_srvs::TriggerResponse> test_srv_serv("test_srv", &test_srv_cb);
-
+ros::Subscriber<std_msgs::Int8MultiArray>       topic_control( "control_raw", &control_cb);
+ros::Subscriber<std_msgs::UInt8>                topic_mode( "mode_status", mode_cb );
 //=======================================================
-
-void rosSendTestI32Msg( int32_t value )
-{
-    i32_test_msg.data = value;
-
-    test_topic.publish( &i32_test_msg );
-}
 
 /*
  * ROS spin thread - used to receive messages
@@ -96,21 +69,20 @@ void rosInit( tprio_t prio )
 {
     /* Serial driver */
     sdStart( ros_sd, &sdcfg );
-    palSetPadMode( GPIOC, 12, PAL_MODE_ALTERNATE(8) );      // TX
-    palSetPadMode( GPIOD, 2, PAL_MODE_ALTERNATE(8) );      // RX
+    palSetPadMode( GPIOD, 5, PAL_MODE_ALTERNATE(7) );      // TX
+    palSetPadMode( GPIOD, 6, PAL_MODE_ALTERNATE(7) );      // RX
 
     /* ROS setup */
     ros_node.initNode();
     ros_node.setSpinTimeout( 10 );
 
     /* ROS publishers */
-    ros_node.advertise( test_topic );
 
     /* ROS subscribers */
     ros_node.subscribe( topic_control );
-
+    ros_node.subscribe( topic_mode );
     /* ROS service client */
-    ros_node.advertiseService( test_srv_serv );
 
+    /* Main ROS thread */
     chThdCreateStatic( waSpinner, sizeof(waSpinner), prio, Spinner, NULL );
 }

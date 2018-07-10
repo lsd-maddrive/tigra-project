@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="pi/2" value="1.5707963267948966" />
+
+    <!-- TFs -->
+
+    <node pkg="tf" type="static_transform_publisher" name="camera_base_link"
+        args="0.4 0 0.9 -$(arg pi/2) 0 -$(arg pi/2) base_link camera_link 100" /> 
+
+    <node pkg="tf" type="static_transform_publisher" name="camera_links"
+        args="-0.2 0 0 0 0 -0.03 camera_link left_camera 100" /> 
+
+    <node pkg="tf" type="static_transform_publisher" name="static_tf_map_to_base_radar_link" 
+            args="0.9 0 0 0 0 0 base_link base_radar_link 100" />
+
+    <!-- Radar -->
+
+    <include file="radar.launch" />
+
+    <!-- Stereo -->
+
+    <include file="cameras_driver_usb.launch"/>
+
+    <group ns="stereo">
+
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" output="screen">
+            <param name="approximate_sync" value="true" />
+            <param name="speckle_size" value="450" />
+            <param name="speckle_range" value="4" />
+            <param name="min_disparity" value="18" />
+            <param name="disparity_range" value="112" />
+        </node>
+
+    </group>
+
+    <include file="ros_serial_link.launch" />
+
+</launch>

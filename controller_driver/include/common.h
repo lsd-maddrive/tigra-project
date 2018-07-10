@@ -27,28 +27,28 @@
  */
 /* !! When you define new variable use much higher values than last defined !! */
 
-#define     PROGRAM_ROUTINE_MASTER                  	0
+#define     PROGRAM_ROUTINE_MASTER                      0
 
-#define     PROGRAM_ROUTINE_TEST_BRAKE_SENSOR       	1
-#define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR   	2
-#define     PROGRAM_ROUTINE_TEST_LL_DRIVER          	3
-#define     PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL		4
-#define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER       	5
-#define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS      	6
+#define     PROGRAM_ROUTINE_TEST_BRAKE_SENSOR           1
+#define     PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR       2
+#define     PROGRAM_ROUTINE_TEST_LL_DRIVER              3
+#define     PROGRAM_ROUTINE_TEST_LL_DRIVER_SERIAL       4
+#define     PROGRAM_ROUTINE_TEST_CLUTCH_LEVER           5
+#define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_CS          6
 #define     PROGRAM_ROUTINE_TEST_BRAKE_UNIT_OPENED      7
-#define     PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS     	8
-#define     PROGRAM_ROUTINE_TEST_DRIVE_SPEED_OPENED 	9
+#define     PROGRAM_ROUTINE_TEST_DRIVE_SPEED_CS         8
+#define     PROGRAM_ROUTINE_TEST_DRIVE_SPEED_OPENED     9
 #define     PROGRAM_ROUTINE_TEST_STEER_UNIT_CS          10
-#define     PROGRAM_ROUTINE_TEST_STEER_SENSORS      	11
-#define 	PROGRAM_ROUTINE_TEST_STEER_POWERED			12
-#define     PROGRAM_ROUTINE_TEST_ROS_DRIVER         	13
-#define     PROGRAM_ROUTINE_TEST_LL_SONAR           	14
-#define     PROGRAM_ROUTINE_TEST_LL_SHARP           	15
+#define     PROGRAM_ROUTINE_TEST_STEER_SENSORS          11
+#define     PROGRAM_ROUTINE_TEST_STEER_POWERED          12
+#define     PROGRAM_ROUTINE_TEST_ROS_DRIVER             13
+#define     PROGRAM_ROUTINE_TEST_LL_SONAR               14
+#define     PROGRAM_ROUTINE_TEST_LL_SHARP               15
 #define     PROGRAM_ROUTINE_TEST_TOOLS_MATLAB_SLIDER    16
 #define     PROGRAM_ROUTINE_TEST_LIGHTNING              17
-#define 	PROGRAM_ROUTINE_TEST_LL_DRIVER_STEER		18
+#define     PROGRAM_ROUTINE_TEST_LL_DRIVER_STEER        18
 
-#define     MAIN_PROGRAM_ROUTINE                    	PROGRAM_ROUTINE_TEST_LL_SONAR
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROUTINE_TEST_ROS_DRIVER
 
 /******************/
 /*** Prototypes ***/
@@ -86,7 +86,7 @@ void commonExtDriverInit ( void );
 #define COMMON_ADC_SEQ4_CH          3
 
 
-typedef float	adc1SampleMV_t;
+typedef float   adc1SampleMV_t;
 
 /**
  * @brief   Initialize common ADC1 unit
@@ -103,9 +103,9 @@ void commonADC1UnitInit ( void );
 adcsample_t commonADC1UnitGetValue ( uint8_t ch );
 
 /**
- * @brief 		Get value of required channel in units
- * @param ch 	Number of channel
- * @return 		Filtered (if realized) value of ADC sampling [mV]
+ * @brief       Get value of required channel in units
+ * @param ch    Number of channel
+ * @return      Filtered (if realized) value of ADC sampling [mV]
  *              Zero if channel is invalid 
  */
 adc1SampleMV_t commonADC1UnitGetValueMV ( uint8_t ch );
@@ -133,6 +133,27 @@ int mainUnitsInit ( void );
  * @param   steer   Desired steer angle
  */
 void mainControlSetTask ( int32_t speed, int32_t steer );
+
+typedef struct
+{
+    int32_t speedTask;
+    int32_t steerTask;
+
+    uint8_t mode;
+
+} mainControlInfo_t;
+
+/**
+ * @brief   Debug function
+ * @return  Structure with main info from controller
+ */
+mainControlInfo_t mainControlGetInfo( void );
+
+/**
+ * @brief       set working mode
+ */
+void mainControlSetMode( uint8_t mode );
+
 
 /**************/
 /*** Macros ***/
