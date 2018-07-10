@@ -16,13 +16,13 @@ void testROSDriverRoutine( void )
 
     rosInit( NORMALPRIO );
 
-    int32_t cntr = 0;
+    // int32_t cntr = 0;
 
     while ( 1 )
     {
         mainControlInfo_t   info = mainControlGetInfo();
 
-        chprintf( (BaseSequentialStream *)&SD7, "Task speed: %d / steer: %d / mode: %d\n", info.speedTask, info.steerTask );
+        chprintf( (BaseSequentialStream *)&SD7, "Task speed: %d / steer: %d / mode: %d\n", info.speedTask, info.steerTask, info.mode );
 
         chThdSleepMilliseconds( 100 );
     }

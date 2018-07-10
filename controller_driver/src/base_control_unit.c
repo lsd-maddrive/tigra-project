@@ -86,6 +86,8 @@ mainControlInfo_t mainControlGetInfo( void )
     info.steerTask  = steerExtTask;
 
     info.mode       = currentMode;
+
+    return info;
 }
 
 static void watchdog_mode_cb(void *arg)

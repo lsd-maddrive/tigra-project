@@ -14,9 +14,6 @@
 /*** Variables ***/
 typedef float                   wheelVelocity_t;
 typedef float                   wheelPosition_t;
-/* Wheel position sensor configuration
- * impulse quantity per revolution*/
-#define ImpsPerRevQuantity      8
 
 
 /*** Prototypes ***/
@@ -49,6 +46,11 @@ wheelPosition_t wheelPosSensorGetPosition ( void );
  *                                  w = ((60 / ImpsPerRevQuantity) * timer frequency)/ time interval
  */
 wheelVelocity_t wheelPosSensorGetVelocity ( void );
+
+/**
+ *	TODO - description
+ */	
+wheelVelocity_t wheelPosSensorGetLinSpeed ( void );
 
 /**
  *	@brief		Get rotation time

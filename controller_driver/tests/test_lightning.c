@@ -18,10 +18,8 @@ void testLightningRoutineWorking( void )
     lightUnitInit();
 
     int32_t controlValue    = 0;
-    int32_t controlValDelta = 10;
     int32_t counter         = 0;
     bool sireneState        = false;
-    bool testState          = false;
     chprintf( (BaseSequentialStream *)&SD7, "TEST\n\r" );
 
     while(1)

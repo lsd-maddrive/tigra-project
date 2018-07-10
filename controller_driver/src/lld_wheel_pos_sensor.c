@@ -36,6 +36,11 @@ static bool         wheelsRotating                  = false;
 
 static int32_t      wheelSpeedSensorMaxOverflows    = 0;
 
+/* Wheel position sensor configuration
+ * impulse quantity per revolution*/
+#define ImpsPerRevQuantity      8
+
+
 /* PartOfWheelRevPerMinute stands for part of revolution per minute
  * uses for velocity calculation   */
 static float        velocityCalcTicksToRPM  = 0;
@@ -60,6 +65,7 @@ void wheelPosSensorInit (void)
 
     /* Set up EXT channel hardware pin mode as digital input  */
     palSetLineMode( wheelPosSensorInLine, PAL_MODE_INPUT_PULLUP );
+    // palSetLineMode( wheelPosSensorInLine, PAL_MODE_INPUT );
 
     /* Start working GPT driver in continuous (asynchronous) mode */
     gptStart( timeIntervalsDriver, &timeIntervalsCfg );
@@ -159,6 +165,13 @@ wheelVelocity_t wheelPosSensorGetVelocity ( void )
     }
 
     return velocity;
+}
+
+wheelVelocity_t wheelPosSensorGetLinSpeed ( void )
+{
+    static float WHEEL_POS_RPM_2_KPH = 3.6 / 38.2;
+
+    return wheelPosSensorGetVelocity() * WHEEL_POS_RPM_2_KPH;
 }
 
 wheelVelocity_t wheelPosSensorGetVelocityADC ( void )

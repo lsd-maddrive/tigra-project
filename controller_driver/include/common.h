@@ -48,7 +48,7 @@
 #define     PROGRAM_ROUTINE_TEST_LIGHTNING              17
 #define     PROGRAM_ROUTINE_TEST_LL_DRIVER_STEER        18
 
-#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROUTINE_TEST_WHEEL_POS_SENSOR
+#define     MAIN_PROGRAM_ROUTINE                        PROGRAM_ROUTINE_TEST_DRIVE_SPEED_OPENED
 
 /******************/
 /*** Prototypes ***/

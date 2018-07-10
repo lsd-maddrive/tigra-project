@@ -93,11 +93,11 @@ void testDriveSpeedOpenedRoutine( void )
         {
             sdCntr = 0;
             chprintf( (BaseSequentialStream *)&SD7, 
-                        "pow: %d / rotTime: %d [ms] / vel: %d / velAn: %d\n\r", 
+                        "pow: %d / rotTime: %d [ms] / vel: %d / spd: %d\n\r", 
                         speedPower,
                         (int)(wheelPosSensorGetRotTime() * 1000),
                         (int)wheelPosSensorGetVelocity(),
-                        (int)wheelPosSensorGetVelocityADC() );
+                        1 );
         }
 
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
@@ -105,18 +105,17 @@ void testDriveSpeedOpenedRoutine( void )
         {
             case 'c':
                 speedPower += 5;
-                speedPower = CLIP_VALUE( speedPower, 0, 100 );
                 break;
 
             case 'v':
                 speedPower -= 5;
-                speedPower = CLIP_VALUE( speedPower, 0, 100 );
                 break;
 
             default:
                 ;
         }
 
+        speedPower = CLIP_VALUE( speedPower, -100, 100 );
         lldControlSetDrMotorPower( speedPower );
 
         chThdSleepMilliseconds( 10 );
