@@ -40,7 +40,7 @@ uint16_t getSonarValU4cm( void );
  * @brief                   Get sonar values from memory
  * @return                  values of sonar in cm
  */
-uint16_t getSonarValU7cm( void );
+uint16_t getSonarValU5cm( void );
 
 #endif
 #endif /* INCLUDE_LLD_SONARS_H_ */

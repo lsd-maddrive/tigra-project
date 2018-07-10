@@ -1,8 +1,10 @@
 #include <tests.h>
 #include <lld_sonars.h>
+#include <chprintf.h>
 
-
-#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SHARP)
+#define portSD7                     GPIOE
+#define padTX7                      8
+#define padRX7                      7
 
 static const SerialConfig sd7cfg = {
   .speed = 115200,
@@ -11,10 +13,7 @@ static const SerialConfig sd7cfg = {
   .cr3 = 0
 };
 
-#define portSD7                     GPIOE
-#define padTX7                      8
-#define padRX7                      7
-
+#if (MAIN_PROGRAM_ROUTINE == PROGRAM_ROUTINE_TEST_LL_SHARP)
 
 void testSharpRoutineWorking( void )
 {
@@ -61,18 +60,32 @@ void testSharpRoutineWorking( void )
 void testSonarsRoutineWorking( void )
 {
     lldSonarsInit( );
-    uint16_t blueSonar = 0, brownSonar = 0;
+    sdStart( &SD7, &sd7cfg );
+    palSetPadMode( portSD7, padTX7, PAL_MODE_ALTERNATE(8) );
+    palSetPadMode( portSD7, padRX7, PAL_MODE_ALTERNATE(8) );
+
+
+    uint16_t blueSonar = 0, brownSonar = 0, counter = 0;
+    uint16_t testSonar = 0;
     while( true )
     {
-      palToggleLine( LINE_LED2 );
-      blueSonar  =  getSonarValU7cm();
+#if 1
+      blueSonar  =  getSonarValU5cm();
       brownSonar =  getSonarValU4cm();
 
       chprintf( (BaseSequentialStream *)&SD7, "Br: %d Bl: %d\n\r", brownSonar, blueSonar );
 
       chThdSleepMilliseconds( 100 );
+#endif
+#if 0
+        testSonar = sdGet( &SD5 );
+//        chprintf( &SD7, testSonar);
+        sdWrite( &SD7, &testSonar, 1 );
 
-    }
+        chThdSleepMilliseconds( 10 );
+#endif
+      }
 
 }
+
 #endif

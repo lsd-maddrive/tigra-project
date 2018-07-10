@@ -93,13 +93,13 @@ static GPTDriver                    *trSonarGPT            = &GPTD4;
 #define padBrownSonar               3
 #define portSonar                   GPIOG
 
-#define portSD7                     GPIOE
-#define padTX7                      8
-#define padRX7                      7
+#define portSD5                     GPIOD
+//#define padTX5                      12
+#define padRX5                      2
 
-#define portTXSD4                   GPIOA
+//#define portTXSD4                   GPIOA
 #define portRXSD4                   GPIOC
-#define padTX4                      0
+//#define padTX4                      0
 #define padRX4                      11
 
 /***      Virtual timer Related   ***/
@@ -109,6 +109,7 @@ static uint32_t port_arg;
 /***  Reset pals to generate kick for sonars ***/
 static void reset_cb(void *arg)
 {
+    arg = arg;
 
     palClearPad( portSonar, port_arg );
 
@@ -149,7 +150,7 @@ static const GPTConfig gpt4cfg1 = {
   .dier      =  0U
 };
 
-static const SerialConfig sd7cfg = {
+static const SerialConfig sd5cfg = {
   .speed = 9600,
   .cr1 = 0,
   .cr2 = USART_CR2_LINEN,
@@ -164,7 +165,7 @@ static const SerialConfig sd4cfg = {
 };
 
 uint16_t brownSonarVal = 0;
-uint8_t buf5Son[4];
+uint8_t buf4Son[4];
 
 static THD_WORKING_AREA(waGetSonarValU4Thd, 1024);
 static THD_FUNCTION(GetSonarValU4Thd, arg)
@@ -177,37 +178,35 @@ static THD_FUNCTION(GetSonarValU4Thd, arg)
       firstR = sdGet( &SD4);
       if( firstR == 'R' )
       {
-         sdRead( &SD4, buf5Son, 3 );
-         buf5Son[3] = 0;
+         sdRead( &SD4, buf4Son, 3 );
+         buf4Son[3] = 0;
          // convert bufSon into string, after this srt convert into long
-         brownSonarVal = strtoul( buf5Son, NULL, 0 );
+         brownSonarVal = strtoul( buf4Son, NULL, 0 );
       }
     }
 }
 
-uint8_t buf7Son[4];
+uint8_t buf5Son[4];
 uint16_t greenSonarVal = 0;
 
-static THD_WORKING_AREA(waGetSonarValU7Thd, 1024);
-static THD_FUNCTION(GetSonarValU7Thd, arg)
+static THD_WORKING_AREA(waGetSonarValU5Thd, 1024);
+static THD_FUNCTION(GetSonarValU5Thd, arg)
 {
 
     arg = arg;
     uint8_t firstR = 0;
     while( 1 )
     {
-      firstR = sdGet( &SD7 );
+      firstR = sdGet( &SD5 );
       if( firstR == 'R' )
       {
-         sdRead( &SD7, buf7Son, 3 );
-         buf7Son[3] = 0;
+         sdRead( &SD5, buf5Son, 3 );
+         buf5Son[3] = 0;
          // convert bufSon into string, after this srt convert into long
-         greenSonarVal = strtoul( buf7Son, NULL, 0 );
+         greenSonarVal = strtoul( buf5Son, NULL, 0 );
        }
     }
 }
-
-
 
 /*
  * @brief                   Initialize periphery connected to sonars
@@ -223,16 +222,16 @@ void lldSonarsInit( void )
 
     gptStartContinuous( trSonarGPT, 10000);   // triggering each 100 ms => 10 Hz
 
-    sdStart( &SD7, &sd7cfg );
-    palSetPadMode( portSD7, padTX7, PAL_MODE_ALTERNATE(8) );
-    palSetPadMode( portSD7, padRX7, PAL_MODE_ALTERNATE(8) );
+    sdStart( &SD5, &sd5cfg );
+//    palSetPadMode( portSD7, padTX7, PAL_MODE_ALTERNATE(8) );
+    palSetPadMode( portSD5, padRX5, PAL_MODE_ALTERNATE(8) );
 
     sdStart( &SD4, &sd4cfg );
-    palSetPadMode( portTXSD4, padTX4, PAL_MODE_ALTERNATE(8) );
+//    palSetPadMode( portTXSD4, padTX4, PAL_MODE_ALTERNATE(8) );
     palSetPadMode( portRXSD4, padRX4, PAL_MODE_ALTERNATE(8) );
 
     chThdCreateStatic( waGetSonarValU4Thd, sizeof(waGetSonarValU4Thd), NORMALPRIO, GetSonarValU4Thd, NULL ); // brown
-    chThdCreateStatic( waGetSonarValU7Thd, sizeof(waGetSonarValU7Thd), NORMALPRIO, GetSonarValU7Thd, NULL ); // green
+    chThdCreateStatic( waGetSonarValU5Thd, sizeof(waGetSonarValU5Thd), NORMALPRIO, GetSonarValU5Thd, NULL ); // green
 
 }
 
@@ -251,7 +250,7 @@ uint16_t getSonarValU4cm( void )
  * @brief                   Get sonar values from memory
  * @return                  values of sonar in cm
  */
-uint16_t getSonarValU7cm( void )
+uint16_t getSonarValU5cm( void )
 {
 
       return greenSonarVal;
