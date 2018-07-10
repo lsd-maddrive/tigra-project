@@ -32,7 +32,7 @@ manual_control_enable_publish = False
 manual_control_steering_set_only = False
 manual_control_velocity_set_only = False
 
-manual_control_publish_period_ms = 200
+manual_control_publish_period_ms = 100
 
 manual_control_enabled = True
 
@@ -128,7 +128,7 @@ def ros_controller_set_control(velocity, steering):
 def ros_controller_init_connection():
     global cmd_pub
     
-    cmd_pub = rospy.Publisher('control_raw', Int8MultiArray, queue_size=10)
+    cmd_pub = rospy.Publisher('quadro/control_raw', Int8MultiArray, queue_size=10)
 
 # ---------------------------------------------------------------------------
 

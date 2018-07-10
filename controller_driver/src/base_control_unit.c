@@ -27,8 +27,10 @@ static void watchdog_cb(void *arg)
 
 void mainControlSetTask ( int32_t speed, int32_t steer )
 {
+    chprintf( (BaseSequentialStream *)&SD7, "Set: %d / %d\n", speed, steer );
+
     steerExtTask = CLIP_VALUE( steer, -100, 100 );
-    speedExtTask = CLIP_VALUE( speed, -100, 100 );
+    speedExtTask = CLIP_VALUE( speed, -40, 40 );
 
     chVTSet( &watchdog_vt, MS2ST( CONTROL_SET_TIMEOUT_MS ), watchdog_cb, NULL );
 }
@@ -39,8 +41,10 @@ static THD_FUNCTION(Thread, arg)
     arg = arg;
     chRegSetThreadName( "Base control" );
 
-    while (true)
+    while ( true )
     {
+        lldControlSetDrMotorPower( speedExtTask );
+
         chThdSleepMilliseconds( 10 );
     }
 }
@@ -49,19 +53,28 @@ void mainControlTask ( void )
 {
     chVTObjectInit( &watchdog_vt );
 
-    chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO, Thread, NULL );
+    chThdCreateStatic( waThread, sizeof(waThread), NORMALPRIO + 1, Thread, NULL );
     mainControlSetTask( 0, 0 );
 
     /* Main thread */
-    while (true)
+    while ( true )
     {
-        palToggleLine( LINE_LED3 );
         chThdSleepSeconds(1);
     }
 }
 
 int mainUnitsInit ( void )
 {
+    /*** Debug ***/
+    static const SerialConfig sdcfg = {
+      .speed = 115200,
+      .cr1 = 0, .cr2 = 0, .cr3 = 0
+    };
+    sdStart( &SD7, &sdcfg );
+    palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
+    palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
+
+
     steerUnitCSInit();
     driveSpeedCSInit();
     brakeUnitCSInit();

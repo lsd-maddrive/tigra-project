@@ -7,6 +7,7 @@
 const uint32_t  wheelSpeedSensorTimeoutMs   = 1000;
 
 #define WHEEL_POS_ADC_2_RPM_RATE            1.0f
+#define IMPULSE_FILTER_TICK_LIMIT           10
 
 /******************************/
 /*** CONFIGURATION ZONE END ***/
@@ -29,8 +30,16 @@ static const GPTConfig timeIntervalsCfg = {
 
 };
 
-int32_t impulseCounter = 0,  prev_time = 0, measured_width = 0;
-int32_t overflow_counter = 0;
+int32_t impulseCounter      = 0,  
+        prev_time           = 0, 
+        prev_prev_time      = 0,
+        measured_width      = 0;
+
+
+int32_t overflow_counter    = 0;
+int32_t prev_overflow_cntr  = 0;
+
+
 static bool         isInitialized                   = false;
 static bool         wheelsRotating                  = false;
 
@@ -117,11 +126,26 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
     if ( wheelsRotating )
     {
         measured_width = curr_time + (overflow_counter-1) * TimerPeriod + (TimerPeriod - prev_time) ;
+#if 0
+        if ( measured_width < IMPULSE_FILTER_TICK_LIMIT )
+        {
+            prev_time = prev_prev_time;
+            impulseCounter--;
+
+            overflow_counter += prev_overflow_cntr;
+
+            return;
+        }
+#endif
     }
 
     wheelsRotating = true;
 
+    prev_overflow_cntr = 0;
     overflow_counter = 0;
+
+
+    prev_prev_time = prev_time;
     prev_time = curr_time;
 
     impulseCounter++;
