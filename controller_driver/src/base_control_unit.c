@@ -9,6 +9,7 @@
 
 static int32_t          steerExtTask  = 0;
 static int32_t          speedExtTask  = 0;
+static uint8_t          currentMode   = 0;
 
 /* Watchdog timer realization */
 #define     CONTROL_SET_TIMEOUT_MS  500
@@ -84,24 +85,24 @@ mainControlInfo_t mainControlGetInfo( void )
     info.speedTask  = speedExtTask;
     info.steerTask  = steerExtTask;
 
-    // info.mode    = mode;
+    info.mode       = currentMode;
 }
 
-static void watchdog__mode_cb(void *arg)
+static void watchdog_mode_cb(void *arg)
 {
     arg = arg;
 
-    return 0;
+    /* TODO - mode timeout processing */
+
+
 }
 
 /**
  * @brief       set working mode
- * @return      mode number
- * @note        when 0 is returned, it means that 500 ms there was no connection
  */
-void setMode( uint8_t currentMode )
+void setMode( uint8_t mode )
 {
-    return currentMode;
+    currentMode = mode;
 
     chVTSet( &watchdog_mode, MS2ST( MODE_SET_TIMEOUT_MS ), watchdog_mode_cb, NULL );
 }
