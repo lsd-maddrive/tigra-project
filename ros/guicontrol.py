@@ -182,7 +182,13 @@ if __name__ == '__main__':
     rospy.init_node('gui_control')
     ros_controller_init_connection()
 
+    for i in range(10):
+        mode_pub.publish( 1 )
+        time.sleep( 0.2 )
 
+    for i in range(10):
+        mode_pub.publish( 2 )
+        time.sleep( 0.2 )
 
     root.mainloop()
 

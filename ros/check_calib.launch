@@ -8,9 +8,9 @@
             <param name="approximate_sync" value="true" />
             <param name="speckle_size" value="500" />
             <param name="speckle_range" value="4" />
-            <param name="min_disparity" value="-28" />
-            <param name="disparity_range" value="80" />
-            <param name="stereo_algorithm" value="1" />
+            <param name="min_disparity" value="-24" />
+            <param name="disparity_range" value="96" />
+            <param name="stereo_algorithm" value="0" />
         </node>
 
     </group>
@@ -20,5 +20,7 @@
         <remap from="image" to="image_rect_color" />
         <param name="approximate_sync" value="true" />
     </node>
+
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="configure" />
 
 </launch>

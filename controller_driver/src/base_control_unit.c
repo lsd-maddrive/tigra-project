@@ -69,6 +69,11 @@ static THD_FUNCTION(Thread, arg)
         {
             sireneSetState( true );
         }
+        else
+        {
+            steerUnitCSSetPosition( 0 );
+            sireneSetState( false );
+        }
 
         if ( printCntr++ > 10 )
         {

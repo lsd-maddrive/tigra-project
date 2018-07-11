@@ -11,10 +11,10 @@ def cmd_cb(msg):
     # print(msg)
     print(msg.linear.x, msg.angular.z)
 
-    speed_pub.publish( msg.linear.x * 150 )
-    steer_pub.publish( msg.angular.z * -100 )
+    speed_pub.publish( msg.linear.x * 100 )
+    steer_pub.publish( msg.angular.z * -150 )
 
-    cmd = [msg.linear.x * 150, msg.angular.z * -100]
+    cmd = [msg.linear.x * 100, msg.angular.z * -150]
 
     print('Cmd: ', cmd)
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     goal = MoveBaseGoal()
     goal.target_pose.header.frame_id = "map"
     goal.target_pose.header.stamp = rospy.Time.now()
-    goal.target_pose.pose.position.x = 5
+    goal.target_pose.pose.position.x = 40
     goal.target_pose.pose.orientation.w = 1.0
 
     client.send_goal(goal)

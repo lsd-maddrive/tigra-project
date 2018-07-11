@@ -15,7 +15,7 @@ local_costmap:
     global_frame: /map
     robot_base_frame: base_link
 
-    update_frequency: 5
+    update_frequency: 2
     publish_frequency: 2
     static_map: false
     rolling_window: true
@@ -32,7 +32,7 @@ local_costmap:
 global_costmap:
     global_frame: /map
     robot_base_frame: base_link
-    update_frequency: 5
+    update_frequency: 1
     publish_frequency: 1
     static_map: false
 
@@ -92,7 +92,7 @@ TebLocalPlannerROS:
 
     # Obstacles
 
-    min_obstacle_dist: 1.2
+    min_obstacle_dist: 1.5
     include_costmap_obstacles: True
     costmap_obstacles_behind_robot_dist: 1.0
     obstacle_poses_affected: 5

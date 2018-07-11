@@ -4,4 +4,7 @@
     <include file="rtabmap.launch" />
     <include file="move_base.launch" />
 
+      <node pkg="rviz" type="rviz" name="rviz" />
+
+
 </launch>
