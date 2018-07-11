@@ -1,15 +1,7 @@
 #include <drive_speed_cs.h>
 
-/* Configure minimum and maximum speed reference values (rpm)*/
-#define speedReferenceMaxVal   30000
-#define speedReferenceMinVal   0
-
-static PIDControllerContext_t  pidCtx = {
-    .kp   = 1,
-    .ki   = 0.1,
-    .kd   = 0,
-    .integrLimit  = 100
-};
+#define speedReferenceMaxVal    100
+#define speedReferenceMinVal    -100
 
 static bool             isInitialized = false;
 
@@ -22,47 +14,40 @@ void driveSpeedCSInit( void )
     wheelPosSensorInit();
     lldControlInit();
     
-    PIDControlInit( &pidCtx );
-
     isInitialized = true;
 }
 
+bool isForward( controlValue_t motorPower )
+{
+    return ( motorPower >= 0);
+}
 
-controlValue_t driveSpeedControl ( wheelVelocity_t speedReference )
+controlValue_t driveSpeedControl ( int32_t speedReference )
 {
   /* Check if all modules initialized. if not return -1 */
     if( !isInitialized )
         return 0;
 
-    wheelVelocity_t     currentSpeed;
-    controlValue_t      motorPower;
+    controlValue_t      motorPower      = speedReference;
+    static bool         isForwardMode   = true;
 
     speedReference  = CLIP_VALUE( speedReference, speedReferenceMinVal, speedReferenceMaxVal );
-    currentSpeed    = wheelPosSensorGetVelocity ();
 
-    /* Compute error and set to context */
-    pidCtx.err      = speedReference - currentSpeed;
-
-    /* float to int32_t */
-    motorPower = PIDControlResponse( &pidCtx );
+    if( isForward( motorPower ) != isForwardMode )
+    {
+        /* wheels don't move */
+        if( !wheelPosSensorIsRotating() )
+        {
+            isForwardMode = isForward( motorPower );
+        }
+        else
+        {
+            motorPower = 0;
+        }
+    }
 
     lldControlSetDrMotorPower ( motorPower );
 
     return motorPower;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

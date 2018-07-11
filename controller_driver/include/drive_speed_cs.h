@@ -33,7 +33,10 @@ void driveSpeedCSInit( void );
  *               it will be saturated
  * @return       Controller output, if all required lld's is initialized
  *               -1               , if not
+ *          TODO check comments
  */
-controlValue_t driveSpeedControl ( wheelVelocity_t speedReference );
+controlValue_t driveSpeedControl ( int32_t speedReference );
+
+bool isForward( controlValue_t motorPower );
 
 #endif /* INCLUDE_DRIVE_SPEED_CS_H_*/

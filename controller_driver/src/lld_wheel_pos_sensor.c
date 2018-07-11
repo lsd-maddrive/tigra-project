@@ -101,8 +101,13 @@ static void gpt_overflow_cb(GPTDriver *gptd)
 
     if ( overflow_counter >= wheelSpeedSensorMaxOverflows )
     {
-        wheelsRotating = false;
+        wheelsRotating = false; // not moved
     }
+}
+
+bool wheelPosSensorIsRotating( void )
+{
+    return wheelsRotating;
 }
 
 /**
