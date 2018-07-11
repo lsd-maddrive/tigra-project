@@ -17,7 +17,7 @@ void lldControlInit ( void );
  * @brief   Set power for driving motor
  * @param   inputPrc   Motor power value percentage [0 100]
  */
-void lldControlSetDrMotorPower ( controlValue_t inputPrc );
+int16_t lldControlSetDrMotorPower ( controlValue_t inputPrc );
 
 /**
  * @brief   Set power for steering motor (via ESC)

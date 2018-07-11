@@ -13,7 +13,6 @@
     #define rightTurnLight      PAL_LINE( GPIOE, 6 )
     #define leftTurnLight       PAL_LINE( GPIOE, 3 )
 
-
 #else
     #define backLight           LINE_LED1
     #define stopLight           LINE_LED1
@@ -101,11 +100,14 @@ void lightUnitInit( void )
 
     /*** PAL pins configuration ***/
 #ifndef LIGHTS_LED_TEST
+
     palSetLineMode( leftTurnLight, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( rightTurnLight, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( stopLight, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( lineSirene, PAL_MODE_OUTPUT_OPENDRAIN );
     palSetLineMode( backLight, PAL_MODE_OUTPUT_OPENDRAIN );
+
+#endif
 
     chThdCreateStatic( waTurnSignalThd, sizeof(waTurnSignalThd), NORMALPRIO, TurnSignalThd, NULL );
 
@@ -199,5 +201,3 @@ void turnOnEverthing( bool switchFlag )
     }
 
 }
-
-#endif

@@ -28,11 +28,11 @@ control_canvas_height = 400
 manual_control_steering_value = 0
 manual_control_velocity_value = 0
 
-manual_control_enable_publish = False
+manual_control_enable_publish = True
 manual_control_steering_set_only = False
 manual_control_velocity_set_only = False
 
-manual_control_publish_period_ms = 100
+manual_control_publish_period_ms = 200
 
 manual_control_enabled = True
 
@@ -73,10 +73,10 @@ def manual_conrtol_callback_mouse_motion(event):
         y = np.clip(event.y, 0, control_canvas_height)
         manual_control_velocity_value = (float(y) / control_canvas_height - 0.5) * -2 * velocity_abs_limit
 
-    if not manual_control_enable_publish:
-        root.after(manual_control_publish_period_ms, manual_publish_control)
+    # if not manual_control_enable_publish:
+        # root.after(manual_control_publish_period_ms, manual_publish_control)
 
-    manual_control_enable_publish = True
+    # manual_control_enable_publish = True
     # print ('Motion', x, y)
 
 def manual_control_callback_ctrl_mouse_click(event):
@@ -91,11 +91,42 @@ def manual_control_callback_shift_mouse_click(event):
 
 # ---------------------------------------------------------------------------
 
+def leftKey(event):
+    global manual_control_steering_value
+
+    manual_control_steering_value -= 1
+    manual_control_steering_value = np.clip(manual_control_steering_value, -steering_abs_limit, steering_abs_limit)
+
+
+def rightKey(event):
+    global manual_control_steering_value
+
+    manual_control_steering_value += 1
+    manual_control_steering_value = np.clip(manual_control_steering_value, -steering_abs_limit, steering_abs_limit)
+
+
+def upKey(event):
+    global manual_control_velocity_value
+
+    manual_control_velocity_value += 1
+    manual_control_velocity_value = np.clip(manual_control_velocity_value, -velocity_abs_limit, velocity_abs_limit)
+
+def downKey(event):
+    global manual_control_velocity_value
+
+    manual_control_velocity_value -= 1
+    manual_control_velocity_value = np.clip(manual_control_velocity_value, -velocity_abs_limit, velocity_abs_limit)
+
+
+def spaceKeyCb(event):
+    global manual_control_velocity_value, manual_control_steering_value
+
+    manual_control_velocity_value = 0
+    manual_control_steering_value = 0
+
+
 def init_gui():
-    global rangefinder1_text, rangefinder2_text, \
-            rangefinder3_text, rangefinder4_text, \
-            manual_control_canvas_wgt, toggle_control_state_btn, \
-            lpf_rangefinder_coefficient
+    global manual_control_canvas_wgt
 
     manual_control_canvas_wgt = Canvas(root, width=control_canvas_width, height=control_canvas_height, \
                                         highlightbackground='red', highlightthickness=3)
@@ -108,6 +139,15 @@ def init_gui():
     manual_control_canvas_wgt.bind('<ButtonRelease-1>', manual_control_callback_mouse_released)
     manual_control_canvas_wgt.bind('<Control-1>', manual_control_callback_ctrl_mouse_click)
     manual_control_canvas_wgt.bind('<Shift-1>', manual_control_callback_shift_mouse_click)
+
+    manual_control_canvas_wgt.bind('<Left>', leftKey)
+    manual_control_canvas_wgt.bind('<Right>', rightKey)
+    manual_control_canvas_wgt.bind('<Up>', upKey)
+    manual_control_canvas_wgt.bind('<Down>', downKey)
+
+    manual_control_canvas_wgt.bind('<space>', spaceKeyCb)
+
+    manual_control_canvas_wgt.focus_set()
 
 # ---------------------------------------------------------------------------
 
@@ -130,6 +170,8 @@ def ros_controller_init_connection():
     
     speed_pub = rospy.Publisher('quadro/speed_perc', Int8, queue_size=1)
     steer_pub = rospy.Publisher('quadro/steer_perc', Int8, queue_size=1)
+
+    root.after(manual_control_publish_period_ms, manual_publish_control)
 
 # ---------------------------------------------------------------------------
 

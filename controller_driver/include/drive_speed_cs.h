@@ -4,6 +4,7 @@
 #include <common.h>
 #include <lld_wheel_pos_sensor.h>
 #include <lld_control.h>
+#include <light_unit.h>
 
 #include <controllers.h>
 

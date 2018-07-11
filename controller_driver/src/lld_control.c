@@ -6,12 +6,12 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
-static float    speedMaxVoltage     = 3;
+static float    speedMaxVoltage     = 1.5;
 /* Can be set or set to 0 to calculate from <speedMaxVoltage> */
 static int32_t  speedMaxDACValue    = 0;
 
 
-static float    speedMinVoltage     = 1.3;
+static float    speedMinVoltage     = 1.4;
 /* Can be set or set to 0 to calculate from <speedMinVoltage> */
 static int32_t  speedMinDACValue    = 0;
 
@@ -164,29 +164,41 @@ void lldControlInit( void )
 
 /**
  * @brief   Set power for driving motor
- * @param   inputPrc   Motor power value [0 100]
+ * @param   inputPrc   Motor power value [-100 100]
  */
-void lldControlSetDrMotorPower( controlValue_t inputPrc )
+int16_t lldControlSetDrMotorPower( controlValue_t inputPrc )
 {
     inputPrc = CLIP_VALUE( inputPrc, -100, 100 );
 
-    if( inputPrc < 0 )
-    {
-        palClearLine( lineMotorDir );
+    // lldControlSetDrMotorDirection( inputPrc > 0 );
 
-
-    }
-    else if( inputPrc >= 0 )
-    {
-        palSetLine( lineMotorDir );
-
-    }
+    // if( inputPrc < 0 )
+    // {
+    //     palClearLine( lineMotorDir );
+    // }
+    // else if( inputPrc > 0 )
+    // {
+    //     palSetLine( lineMotorDir );
+    // }
 
     uint16_t drDriveDAC = abs(inputPrc) * speedConvRate + speedMinDACValue;
 
-    /* Just to avoid heating */
-    if ( inputPrc < 7 && inputPrc > -7 )
-        drDriveDAC = 0;
+    /* Just to avoid heating in reverse */
+    // if ( inputPrc < 0 && inputPrc > -7 )
+    //     drDriveDAC = 0;
+
+    // static uint16_t prevDAC = 0;
+    // static float    dacRate = 0.5f;
+
+    uint16_t dacInput = drDriveDAC; // prevDAC * dacRate + drDriveDAC * (1.0f - dacRate);
+
+    // prevDAC = dacInput;
+
+    /* Set it zero with no offset */
+    if ( inputPrc == 0 )
+    {
+        dacInput = 0;
+    }
 
     /*
     * Write value to DAC channel
@@ -195,7 +207,9 @@ void lldControlSetDrMotorPower( controlValue_t inputPrc )
     *              <drMotorPower>   - output value (according to mode/size)
     */
 
-    dacPutChannelX( dacDriver, 0, drDriveDAC );
+    dacPutChannelX( dacDriver, 0, dacInput );
+
+    return dacInput;
 }
 
 

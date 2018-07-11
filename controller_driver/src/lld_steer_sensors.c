@@ -5,9 +5,9 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
-static int32_t  steerPosCenterAdc       = 2126;
+static int32_t  steerPosCenterAdc       = 1880;
 static int32_t  steerPosMaxAdc          = 2900;
-static int32_t  steerPosMinAdc          = 1300;
+static int32_t  steerPosMinAdc          = 1100;
 
 static int32_t  steerPosValidGap        = 100;
 
@@ -87,6 +87,14 @@ int16_t lldSteerGetPositionPrc( void )
     steerValPerc = CLIP_VALUE( steerValPerc, -100, 100 );
 
     return steerValPerc;
+}
+
+int16_t lldSteerGetPositionADC( void )
+{
+    if ( !isInitialized )
+        return 0;
+
+    return commonADC1UnitGetValue( steerPosAnalogInputCh );;
 }
 
 int16_t lldSteerGetCurrentPrc( void )

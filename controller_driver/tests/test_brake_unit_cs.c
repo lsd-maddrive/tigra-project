@@ -77,18 +77,25 @@ void testBrakeUintOpenedRoutine( void )
         {
             case 'z':   // Positive brake
                 brakePower += 10;
-                brakePower = CLIP_VALUE( brakePower, -100, 100 );
                 break;
 
             case 'x':   // Negative brake
                 brakePower -= 10;
-                brakePower = CLIP_VALUE( brakePower, -100, 100 );
+                break;
+
+            case '1':   // Negative brake
+                brakePower = 90;
+                break;
+
+            case ' ':   // Negative brake
+                brakePower = 0;
                 break;
 
             default:
                 ;
         }
 
+        brakePower = CLIP_VALUE( brakePower, -100, 100 );
         lldControlSetBrakePower( brakePower );
 
         chThdSleepMilliseconds( 100 );

@@ -12,7 +12,7 @@ static int32_t          speedExtTask  = 0;
 static uint8_t          currentMode   = 0;
 
 /* Watchdog timer realization */
-#define     CONTROL_SET_TIMEOUT_MS  500
+#define     CONTROL_SET_TIMEOUT_MS  1000
 #define     MODE_SET_TIMEOUT_MS     500
 
 static virtual_timer_t  watchdog_vt;
@@ -29,7 +29,7 @@ void mainControlSetSpeed ( int32_t speed )
 {
     chprintf( (BaseSequentialStream *)&SD7, "Set spd: %d\n", speed );
 
-    speedExtTask = CLIP_VALUE( speed, -40, 40 );
+    speedExtTask = CLIP_VALUE( speed, -100, 100 );
 
     chVTSet( &watchdog_vt, MS2ST( CONTROL_SET_TIMEOUT_MS ), watchdog_cb, NULL );
 }
@@ -38,7 +38,7 @@ void mainControlSetSteer ( int32_t steer )
 {
     chprintf( (BaseSequentialStream *)&SD7, "Set str: %d\n", steer );
 
-    steerExtTask = CLIP_VALUE( steer, -100, 100 );
+    steerExtTask = CLIP_VALUE( steer, -80, 80 );
 
     // chVTSet( &watchdog_vt, MS2ST( CONTROL_SET_TIMEOUT_MS ), watchdog_cb, NULL );
 }
@@ -51,7 +51,8 @@ static THD_FUNCTION(Thread, arg)
 
     while ( true )
     {
-        lldControlSetDrMotorPower( speedExtTask );
+        driveSpeedControl( speedExtTask );
+        steerUnitCSSetPosition( steerExtTask );
 
         chThdSleepMilliseconds( 10 );
     }

@@ -106,7 +106,8 @@ void testDriverControlSteerRoutine( void )
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
     lldControlInit();
-
+    lldSteerSensorsInit();
+    
     controlValue_t  steer_values_delta  = 10;
     controlValue_t  steer_value         = 0;
 
@@ -155,7 +156,7 @@ void testDriverControlSteerRoutine( void )
 
         if ( ++printCntr > 10 )
         {
-            chprintf( (BaseSequentialStream *)&SD7, "Steer (%d)\n", steer_value );
+            chprintf( (BaseSequentialStream *)&SD7, "Steer (%d) / ADC(%d)\n", steer_value, lldSteerGetPositionADC() );
 
             printCntr = 0;
         }

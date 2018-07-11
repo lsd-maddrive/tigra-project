@@ -23,7 +23,7 @@ void testDriveSpeedCSRoutine( void )
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
-    wheelVelocity_t speedRef            = 0;
+    int32_t         speedRef            = 0;
     wheelVelocity_t currentSpeed        = 0;
     uint32_t        printCntr           = 0;
     int32_t         motorControlValue   = 0;
@@ -34,15 +34,12 @@ void testDriveSpeedCSRoutine( void )
         {
             currentSpeed = wheelPosSensorGetVelocity ();
 
-            double speedRefIntPart;
-            double speedRefFrctPart = modf( speedRef, &speedRefIntPart );
+            // double currSpeedIntPart;
+            // double currSpeedFrctPart = modf( currentSpeed, &currSpeedIntPart );
 
-            double currSpeedIntPart;
-            double currSpeedFrctPart = modf( currentSpeed, &currSpeedIntPart );
-
-            chprintf( (BaseSequentialStream *)&SD7, "Ref: %d.%03d\tVel: %d.%03d\tOut: %d\r\n" ,
-                        (int)(speedRefIntPart), (int)(speedRefFrctPart * 1000),
-                        (int)(currSpeedIntPart), (int)(currSpeedFrctPart * 1000),
+            chprintf( (BaseSequentialStream *)&SD7, "Ref: %d\tVel: %d\tOut: %d\r\n" ,
+                        speedRef, (int)currentSpeed,
+                        // (int)(currSpeedIntPart), (int)(currSpeedFrctPart * 1000),
                         motorControlValue );
 
             printCntr = 0;
@@ -52,22 +49,36 @@ void testDriveSpeedCSRoutine( void )
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         switch ( rcv_data )
         {
-            case 'z':   // Positive ref
-                speedRef += 0.1;
+            case 'z':
+                speedRef += 10;
                 break;
 
-            case 'x':   // Negative ref
-                speedRef -= 0.1;
+            case 'x':
+                speedRef -= 10;
                 break;
+
+            case ' ':
+                speedRef = 0;
+                break;
+
+            case '1':
+                speedRef = 50;
+                break;
+
+            case '2':
+                speedRef = -50;
+                break;
+
 
             default:
                 ;
-        }
+        }   
+        speedRef = CLIP_VALUE( speedRef, -100, 100 );
 
         /* Limit RPM value */
-        speedRef = speedRef < 0 ? 0 : speedRef > 10 ? 10 : speedRef;
 
         motorControlValue   = driveSpeedControl ( speedRef );
+        // lldControlSetDrMotorPower( speedRef );
 
         chThdSleepMilliseconds( 10 );
 
@@ -83,7 +94,8 @@ void testDriveSpeedOpenedRoutine( void )
     palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );   // TX
     palSetPadMode( GPIOE, 7, PAL_MODE_ALTERNATE(8) );   // RX
 
-    int32_t speedPower = 0;
+    int32_t speedPower  = 0;
+    int32_t ctrlPower   = 0;
 
     uint32_t    sdCntr = 0;
 
@@ -93,11 +105,12 @@ void testDriveSpeedOpenedRoutine( void )
         {
             sdCntr = 0;
             chprintf( (BaseSequentialStream *)&SD7, 
-                        "pow: %d / rotTime: %d [ms] / vel: %d / spd: %d\n\r", 
+                        "pow: %d / rotTime: %d [ms] / vel: %d / spd: %d / ctrl: %d\n\r", 
                         speedPower,
                         (int)(wheelPosSensorGetRotTime() * 1000),
                         (int)wheelPosSensorGetVelocity(),
-                        1 );
+                        (int)wheelPosSensorGetLinSpeed(),
+                        ctrlPower );
         }
 
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
@@ -111,12 +124,27 @@ void testDriveSpeedOpenedRoutine( void )
                 speedPower -= 5;
                 break;
 
+            case '1':
+                speedPower = 50;
+                break;
+
+            case '2':
+                speedPower = -50;
+                break;
+
+            case ' ':
+                speedPower = 0;
+                break;
+
             default:
                 ;
         }
 
         speedPower = CLIP_VALUE( speedPower, -100, 100 );
-        lldControlSetDrMotorPower( speedPower );
+        // ctrlPower = lldControlSetDrMotorPower( speedPower );
+
+        /*** Bad way -- TODO - recover ***/
+        ctrlPower = driveSpeedControl ( speedPower );
 
         chThdSleepMilliseconds( 10 );
 

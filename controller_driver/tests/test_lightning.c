@@ -34,31 +34,38 @@ void testLightningRoutineWorking( void )
         char rcv_data = sdGetTimeout( &SD7, TIME_IMMEDIATE );
         switch ( rcv_data )
         {
-            case 'q':   // turn on left lights
+            case 'q':
                 turnLightsSetState( LIGHTS_TURN_LEFT );
                 break;
 
-            case 'w':   // Negative steer
+            case 'w':
                 turnLightsSetState( LIGHTS_TURN_RIGHT );
                 break;
-            case 'e':   // turn on brake light
+
+            case 'e':
                 turnLightsSetState( LIGHTS_BRAKE_ON );
                 break;
-            case 'r':   // turn off sirene
+
+            case 'r':
                 turnLightsSetState( LIGHTS_TURN_OFF);
                 break;
+
             case 't':
                 turnLightsSetState( LIGHTS_BRAKE_OFF );
                 break;
+
             case 'y':
                 sireneSetState( true );
                 break;
+
             case 'u':
                 sireneSetState( false );
                 break;
+
             case 'a':
                 turnLightsSetState( LIGHTS_BACK_ON );
                 break;
+
             case 's':
                 turnLightsSetState( LIGHTS_BACK_OFF );
                 break;

@@ -1,8 +1,5 @@
 #include <drive_speed_cs.h>
 
-#define speedReferenceMaxVal    100
-#define speedReferenceMinVal    -100
-
 static bool             isInitialized = false;
 
 
@@ -13,13 +10,11 @@ void driveSpeedCSInit( void )
 
     wheelPosSensorInit();
     lldControlInit();
-    
-    isInitialized = true;
-}
+    brakeUnitCSInit();
 
-bool isForward( controlValue_t motorPower )
-{
-    return ( motorPower >= 0);
+    lightUnitInit();
+
+    isInitialized = true;
 }
 
 controlValue_t driveSpeedControl ( int32_t speedReference )
@@ -28,25 +23,74 @@ controlValue_t driveSpeedControl ( int32_t speedReference )
     if( !isInitialized )
         return 0;
 
-    controlValue_t      motorPower      = speedReference;
-    static bool         isForwardMode   = true;
+    controlValue_t      motorPower          = speedReference;
+    static bool         isForwardMode       = true;
+    static bool         isForwardModeDes    = true;
+    static bool         changingState       = false;
+    static bool         setDirection        = true;
 
-    speedReference  = CLIP_VALUE( speedReference, speedReferenceMinVal, speedReferenceMaxVal );
+    static uint32_t     featureCntr     = 0;
 
-    if( isForward( motorPower ) != isForwardMode )
+    motorPower  = CLIP_VALUE( motorPower, -100, 100 );
+
+    if ( !changingState )
     {
-        /* wheels don't move */
-        if( !wheelPosSensorIsRotating() )
+        if( isForwardMode && motorPower < 0 )
         {
-            isForwardMode = isForward( motorPower );
+            changingState       = true;
+            isForwardModeDes    = false;
+
+            featureCntr         = 0;
+        }
+        else if ( !isForwardMode && motorPower > 0 )
+        {
+            changingState       = true;
+            isForwardModeDes    = true;
+
+            featureCntr         = 0;
         }
         else
         {
-            motorPower = 0;
+            setDirection = isForwardMode;
+            brakeUnitCSSetPower( -1 );
+        }
+    }
+    else
+    {
+        motorPower = 0;
+        brakeUnitCSSetPower( 10 );
+
+        if ( isForwardModeDes )
+        {
+            setDirection = true;
+        }
+        else
+        {
+            setDirection = false;
+        }
+
+        if ( featureCntr++ > 20 && !wheelPosSensorIsRotating() )
+        {
+            changingState = false;
+
+            isForwardMode = isForwardModeDes;
         }
     }
 
+
     lldControlSetDrMotorPower ( motorPower );
+    lldControlSetDrMotorDirection( setDirection );
+
+    /* Lights */
+
+    if ( !isForwardMode && motorPower != 0 )
+    {
+        turnLightsSetState( LIGHTS_BACK_ON );
+    }
+    else
+    {
+        turnLightsSetState( LIGHTS_BACK_OFF );
+    }
 
     return motorPower;
 }

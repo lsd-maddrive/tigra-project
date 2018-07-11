@@ -1,5 +1,4 @@
 #include <steer_unit_cs.h>
-#include <light_unit.h>
 
 #define CSErrorDeadzoneHalfwidth        2
 
@@ -56,6 +55,7 @@ void steerUnitInit( void )
     lldSteerSensorsInit();
     lldControlInit();
 
+    lightUnitInit();
 }
 
 /**
@@ -118,11 +118,11 @@ int32_t steerUnitCSSetPosition( int32_t position )
     controlValue = CLIP_VALUE( controlValue, -80, 80 );
 
     /*      Light Unit      */
-    if( controlValue <= -20 )
+    if( position <= -20 )
     {
         turnLightsSetState( LIGHTS_TURN_LEFT );
     }
-    else if( controlValue >= 20 )
+    else if( position >= 20 )
     {
         turnLightsSetState( LIGHTS_TURN_RIGHT );
     }

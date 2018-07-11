@@ -21,7 +21,7 @@ static PIDControllerContext_t  pidCtx = {
     .kp   = 3,
     .ki   = 0.07,
     .kd   = 0,
-    .integrLimit  = 1000
+    .integrLimit  = 200
 };
 
 static bool             isInitialized   = false;
@@ -35,6 +35,8 @@ void brakeUnitCSInit( void )
     /* Some initialization sequence */
     brakeSensorInit();
     lldControlInit();
+
+    lightUnitInit();
 
     PIDControlInit( &pidCtx );
 
@@ -61,6 +63,8 @@ controlValue_t brakeUnitCSSetPower( int16_t pressPower )
 
         /* Set direct power */
         controlValue = CLIP_VALUE( controlValue, -100, 100 );
+
+        turnLightsSetState( LIGHTS_BRAKE_ON );
     }
     else if( pressPower < 0 )
     {
@@ -75,11 +79,15 @@ controlValue_t brakeUnitCSSetPower( int16_t pressPower )
             /* In the end - disable power */
             controlValue = 0;
         }
+
+        turnLightsSetState( LIGHTS_BRAKE_OFF );
     }
     else
     {
         /* Just disable the system */
         controlValue = 0;
+
+        turnLightsSetState( LIGHTS_BRAKE_OFF );
     }
 
     lldControlSetBrakePower( controlValue );

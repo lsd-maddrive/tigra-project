@@ -6,6 +6,8 @@
 #include <lld_steer_sensors.h>
 #include <lld_control.h>
 
+#include <light_unit.h>
+
 #include <controllers.h>
 
 /**

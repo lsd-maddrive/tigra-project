@@ -5,6 +5,8 @@
 #include <lld_brake_sensor.h>
 #include <lld_control.h>
 
+#include <light_unit.h>
+
 #include <controllers.h>
 
 /**

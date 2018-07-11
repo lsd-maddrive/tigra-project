@@ -47,13 +47,16 @@ void testSteerUnitCSRoutine( void )
         if( flag == 1)
         {
 
-            int32_t currentPosSensor  = lldSteerGetPositionPrc();
-            int32_t control           = steerUnitCSSetPosition( refPosition );
+            int32_t currentPosSensor        = lldSteerGetPositionPrc();
+            int32_t control                 = steerUnitCSSetPosition( refPosition );
+            int32_t posADC                  = lldSteerGetPositionADC(); 
 
 
             if ( ++counterT >= 10 )
             {
-                chprintf( (BaseSequentialStream *)&SD7, "Ref: %d, Control: %d, posSensor: %d\n\r", refPosition, control, currentPosSensor );
+                chprintf( (BaseSequentialStream *)&SD7, 
+                                "Ref: %d, Control: %d, posSensor: %d, adc: %d\n\r", 
+                                refPosition, control, currentPosSensor, posADC );
 
                 counterT = 0;
             }
@@ -75,7 +78,8 @@ void testSteerUnitCSRoutine( void )
 
             refPosition = CLIP_VALUE( refPosition, -100, 100 );
         }
-        chThdSleepMilliseconds( 2.5 );
+
+        chThdSleepMilliseconds( 10 );
     }
 
 
