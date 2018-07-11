@@ -67,7 +67,7 @@ static THD_FUNCTION(Thread, arg)
 
         if ( currentMode == BASE_MODE_PREPARE || currentMode == BASE_MODE_START )
         {
-            sireneSetState( true );
+            // sireneSetState( true );
         }
         else
         {
@@ -77,8 +77,11 @@ static THD_FUNCTION(Thread, arg)
 
         if ( printCntr++ > 10 )
         {
-            chprintf( (BaseSequentialStream *)&SD7, "Task speed: %d / steer: %d / mode: %d\n", 
-                                                    speedExtTask, steerExtTask, currentMode );
+            wheelVelocity_t lspeed = wheelPosSensorGetLinSpeed();
+            wheelVelocity_t speed = wheelPosSensorGetVelocity();
+
+            chprintf( (BaseSequentialStream *)&SD7, "Task speed: %d / steer: %d / mode: %d / ls %d / s %d\n", 
+                                                    speedExtTask, steerExtTask, currentMode, (int)lspeed, (int)speed );
             printCntr = 0;
         }
 

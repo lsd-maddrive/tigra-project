@@ -20,6 +20,8 @@ uint16_t sharpADCval           = 0;
 
 /*** Callback prototype ***/
 
+
+
 /*
  * @brief                   get adc value from buffer and write to variable
  */
@@ -209,6 +211,25 @@ static THD_FUNCTION(GetSonarValU5Thd, arg)
     }
 }
 
+#define SOFT_INV_INPUT  PAL_LINE ( GPIOC, 10 )
+#define SOFT_INV_OUTPUT PAL_LINE ( GPIOC, 12 )
+
+static void extcb(EXTDriver *extp, expchannel_t channel)
+{
+    /* The input arguments are not used now */
+    /* Just to avoid Warning from compiler */
+    extp = extp; channel = channel;
+
+    if ( palReadLine( SOFT_INV_INPUT ) == PAL_HIGH )
+    {
+        palClearLine( SOFT_INV_OUTPUT );
+    }
+    else
+    {
+        palSetLine( SOFT_INV_OUTPUT );
+    }
+}
+
 /*
  * @brief                   Initialize periphery connected to sonars
  */
@@ -234,6 +255,20 @@ void lldSonarsInit( void )
     chThdCreateStatic( waGetSonarValU4Thd, sizeof(waGetSonarValU4Thd), NORMALPRIO, GetSonarValU4Thd, NULL ); // brown
     chThdCreateStatic( waGetSonarValU5Thd, sizeof(waGetSonarValU5Thd), NORMALPRIO, GetSonarValU5Thd, NULL ); // green
 
+
+    /* Software inversion */
+    EXTChannelConfig ch_conf;
+
+    /* Fill in configuration for channel */
+    ch_conf.mode  = EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC;
+    ch_conf.cb    = extcb;
+
+    commonExtDriverInit();
+
+    /* Set channel (second arg) mode with filled configuration */
+    extSetChannelMode( &EXTD1, 10, &ch_conf );
+    palSetLineMode( SOFT_INV_INPUT, PAL_MODE_INPUT );
+    palSetLineMode( SOFT_INV_OUTPUT, PAL_MODE_OUTPUT_PUSHPULL );
 }
 
 /*
