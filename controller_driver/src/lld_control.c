@@ -6,7 +6,7 @@
 /*** CONFIGURATION ZONE ***/
 /**************************/
 
-static float    speedMaxVoltage     = 1.5;
+static float    speedMaxVoltage     = 1.6;
 /* Can be set or set to 0 to calculate from <speedMaxVoltage> */
 static int32_t  speedMaxDACValue    = 0;
 

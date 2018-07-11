@@ -1,4 +1,5 @@
 #include <drive_speed_cs.h>
+#include <brake_unit_cs.h>
 
 static bool             isInitialized = false;
 
@@ -58,7 +59,7 @@ controlValue_t driveSpeedControl ( int32_t speedReference )
     else
     {
         motorPower = 0;
-        brakeUnitCSSetPower( 10 );
+        // brakeUnitCSSetPower( 50 );
 
         if ( isForwardModeDes )
         {

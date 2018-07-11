@@ -208,6 +208,16 @@ wheelVelocity_t wheelPosSensorGetVelocityADC ( void )
     return commonADC1UnitGetValueMV( COMMON_ADC_SEQ4_CH ) * WHEEL_POS_ADC_2_RPM_RATE;
 }
 
+void wheelPosSensorResetMeasuredPath ( void )
+{
+    impulseCounter = 0;
+}
+
+float wheelPosSensorGetPassedMeters ( void )
+{
+    return wheelPosSensorGetPosition() * 1.57f;
+}
+
 float wheelPosSensorGetRotTime ( void )
 {
     if ( !isInitialized )

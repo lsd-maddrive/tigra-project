@@ -6,8 +6,6 @@
 
 /* Constant power of cylinder return (up to the endpoint sensor) */
 #define BRAKE_UNIT_RETURN_CONST_POWER   50
-/* Rate for conversion from reference to comparison with sensor output */
-#define BRAKE_UNIT_PRESS_POWER_RATE     1.0f
 
 /******************************/
 /*** CONFIGURATION ZONE END ***/
@@ -16,13 +14,6 @@
 /*** Typedefs ***/
 
 /*** Variables ***/
-
-static PIDControllerContext_t  pidCtx = {
-    .kp   = 3,
-    .ki   = 0.07,
-    .kd   = 0,
-    .integrLimit  = 200
-};
 
 static bool             isInitialized   = false;
 /*** Functions ***/
@@ -38,8 +29,6 @@ void brakeUnitCSInit( void )
 
     lightUnitInit();
 
-    PIDControlInit( &pidCtx );
-
     isInitialized = true;
 }
 
@@ -54,15 +43,8 @@ controlValue_t brakeUnitCSSetPower( int16_t pressPower )
 
     if ( pressPower > 0 )
     {
-        int16_t current_sensor_value = 0;
-        current_sensor_value = brakeSensorGetPressPower();
-
-        pidCtx.err = pressPower * BRAKE_UNIT_PRESS_POWER_RATE - current_sensor_value;
-
-        controlValue = PIDControlResponse( &pidCtx );
-
         /* Set direct power */
-        controlValue = CLIP_VALUE( controlValue, -100, 100 );
+        controlValue = pressPower;
 
         turnLightsSetState( LIGHTS_BRAKE_ON );
     }

@@ -64,7 +64,12 @@ float wheelPosSensorGetRotTime ( void );
  */
 wheelVelocity_t wheelPosSensorGetVelocityADC ( void );
 
+/*** TODO - description ***/
 
 bool wheelPosSensorIsRotating( void );
+
+void wheelPosSensorResetMeasuredPath ( void );
+
+float wheelPosSensorGetPassedMeters ( void );
 
 #endif /* INCLUDE_LLD_WHEEL_POS_SENSOR_H_ */

@@ -2,5 +2,6 @@
 <launch>
     
     <include file="rtabmap.launch" />
+    <include file="move_base.launch" />
 
 </launch>

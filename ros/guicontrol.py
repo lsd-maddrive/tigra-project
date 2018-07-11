@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 import time
 
 import rospy
-from std_msgs.msg import Int8
+from std_msgs.msg import Int8, UInt8
 from sensor_msgs.msg import Image, Range, JointState
 
 import cv2
@@ -94,14 +94,14 @@ def manual_control_callback_shift_mouse_click(event):
 def leftKey(event):
     global manual_control_steering_value
 
-    manual_control_steering_value -= 1
+    manual_control_steering_value -= 5
     manual_control_steering_value = np.clip(manual_control_steering_value, -steering_abs_limit, steering_abs_limit)
 
 
 def rightKey(event):
     global manual_control_steering_value
 
-    manual_control_steering_value += 1
+    manual_control_steering_value += 5
     manual_control_steering_value = np.clip(manual_control_steering_value, -steering_abs_limit, steering_abs_limit)
 
 
@@ -152,7 +152,7 @@ def init_gui():
 # ---------------------------------------------------------------------------
 
 velocity_abs_limit = 100
-steering_abs_limit = 100
+steering_abs_limit = 80
 
 def ros_controller_set_control(velocity, steering):
     velocity = np.clip(velocity, -velocity_abs_limit, velocity_abs_limit)
@@ -166,10 +166,12 @@ def ros_controller_set_control(velocity, steering):
 
 
 def ros_controller_init_connection():
-    global speed_pub, steer_pub
+    global speed_pub, steer_pub, mode_pub
     
     speed_pub = rospy.Publisher('quadro/speed_perc', Int8, queue_size=1)
     steer_pub = rospy.Publisher('quadro/steer_perc', Int8, queue_size=1)
+
+    mode_pub = rospy.Publisher('quadro/mode_status', UInt8, queue_size=1)
 
     root.after(manual_control_publish_period_ms, manual_publish_control)
 
@@ -179,5 +181,8 @@ if __name__ == '__main__':
     init_gui()
     rospy.init_node('gui_control')
     ros_controller_init_connection()
+
+
+
     root.mainloop()
 

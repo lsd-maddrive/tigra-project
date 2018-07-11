@@ -6,10 +6,11 @@
   
         <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" output="screen">
             <param name="approximate_sync" value="true" />
-            <param name="speckle_size" value="450" />
+            <param name="speckle_size" value="500" />
             <param name="speckle_range" value="4" />
-            <param name="min_disparity" value="18" />
-            <param name="disparity_range" value="112" />
+            <param name="min_disparity" value="-28" />
+            <param name="disparity_range" value="80" />
+            <param name="stereo_algorithm" value="1" />
         </node>
 
     </group>
