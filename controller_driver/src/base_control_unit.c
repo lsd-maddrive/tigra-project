@@ -67,7 +67,7 @@ static THD_FUNCTION(Thread, arg)
 
         if ( currentMode == BASE_MODE_PREPARE || currentMode == BASE_MODE_START )
         {
-            // sireneSetState( true );
+            sireneSetState( true );
         }
         else
         {
