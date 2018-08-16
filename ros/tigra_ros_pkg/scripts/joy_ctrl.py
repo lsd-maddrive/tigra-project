@@ -73,8 +73,6 @@ def joy_cb(msg):
     # print(msg)
 
 
-
-
     if msg.buttons[0]:
         current_mode = 0
         mode_pub.publish( current_mode ) 
@@ -82,31 +80,36 @@ def joy_cb(msg):
     if msg.buttons[1]:
         pass
 
+    # Press yellow then red
+
     if msg.buttons[6] and msg.buttons[7]:
-        if msg.buttons[2]:
-            # Start
-            current_mode = 2
-            mode_pub.publish( current_mode ) 
-
-
         if msg.buttons[3]:
             # Prepare
             current_mode = 1
             mode_pub.publish( current_mode ) 
 
+        if msg.buttons[2]:
+            # Start
+            current_mode = 2
+            mode_pub.publish( current_mode )
+
 
     if msg.buttons[4]:
         steer_value = 0
 
-    if msg.axes[0] != 0:
-        steer_value += -10 * msg.axes[0]
+    # if msg.axes[0] != 0:
+    #     steer_value += -10 * msg.axes[0]
 
+    steer_value = msg.axes[0] * 80
     speed_value = msg.axes[3] * 100
 
     speed_limit = 100
     steer_limit = 80
 
-    speed_value = np.clip( speed_value, -10, speed_limit ) 
+    if speed_value < 0:
+        speed_value = speed_value * 0.3
+
+    speed_value = np.clip( speed_value, -30, speed_limit ) 
     steer_value = np.clip( steer_value, -steer_limit, steer_limit ) 
 
     # speed_pub.publish( msg.linear.x * 100 )
