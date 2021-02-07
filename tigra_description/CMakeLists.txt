@@ -1,6 +1,6 @@
 
 cmake_minimum_required(VERSION 2.8.3)
-project(tigra_project_nkt)
+project(tigra_description)
 
 # Check for c++11 / c++0x support
 include(CheckCXXCompilerFlag)
