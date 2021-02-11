@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>tigra_project_nkt</name>
+  <name>tigra_description</name>
   <version>0.0.0</version>
   <description>The tigra-project package</description>
   <maintainer email="user@todo.todo">user</maintainer>

@@ -47,7 +47,7 @@ class ModelPush : public ModelPlugin
       			wheel_joint->SetVelocity(0, speed);
     	}
 	private: 
-	double speed;
+	double speed=0;
 	physics::ModelPtr model;
 	physics::JointPtr wheel_joint;
 	sdf::ElementPtr sdf;
@@ -56,6 +56,5 @@ class ModelPush : public ModelPlugin
 	ros::Subscriber sub;
 	event::ConnectionPtr updateConnection;
 };
-  
   GZ_REGISTER_MODEL_PLUGIN(ModelPush)
 }

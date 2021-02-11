@@ -24,12 +24,12 @@ Wr8InterfacePlugin::Wr8InterfacePlugin()
 void Wr8InterfacePlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
 {
     // Gazebo initialization
-    steer_fl_joint_ = model->GetJoint("fl_steer_joint");
-    steer_fr_joint_ = model->GetJoint("fr_steer_joint");
-    wheel_rl_joint_ = model->GetJoint("rl_speed_joint");
-    wheel_rr_joint_ = model->GetJoint("rr_speed_joint");
-    wheel_fl_joint_ = model->GetJoint("fl_speed_joint");
-    wheel_fr_joint_ = model->GetJoint("fr_speed_joint");
+    steer_fl_joint_ = model->GetJoint("joint_left_wheel_1_steer_joint");
+    steer_fr_joint_ = model->GetJoint("joint_right_wheel_1_steer_joint");
+    wheel_rl_joint_ = model->GetJoint("joint_right_wheel_1__speed_joint");
+    wheel_rr_joint_ = model->GetJoint("joint_left_wheel_1_speed_joint");
+    wheel_fl_joint_ = model->GetJoint("joint_left_wheel_2_speed_joint");
+    wheel_fr_joint_ = model->GetJoint("joint_right_wheel_2_speed_joint");
     footprint_link_ = model->GetLink("base_footprint");
 
     assert(steer_fl_joint_);
@@ -67,14 +67,6 @@ void Wr8InterfacePlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
         robot_name_ = std::string("");
     }
 
-    // if (sdf->HasElement("pubTf"))
-    // {
-    //     sdf->GetElement("pubTf")->GetValue()->Get(pub_tf_);
-    // }
-    // else
-    // {
-    //     pub_tf_ = false;
-    // }
 
     if (sdf->HasElement("maxSteerRad"))
     {
@@ -122,57 +114,6 @@ void Wr8InterfacePlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
         tf_freq_ = 100.0;
     }
 
-    /* TODO - read from SDF */
-    odom_frame_id_ = "odom";
-    base_frame_id_ = "base_footprint";
-    publish_period_ = 1. / 100;
-
-    update_connection_ = event::Events::ConnectWorldUpdateBegin(boost::bind(&Wr8InterfacePlugin::OnUpdate, this, _1));
-
-    mps2rpm = 60 / wheel_radius_ / (2*M_PI);
-    mps2rps = 1.0 / wheel_radius_;
-
-    steer_fl_joint_->SetParam("fmax", 0, 99999.0);
-    steer_fr_joint_->SetParam("fmax", 0, 99999.0);
-
-    // ROS initialization
-    n_ = ros::NodeHandle(robot_name_);
-
-    sub_vel_cmd_ = n_.subscribe("cmd_vel", 1, &Wr8InterfacePlugin::onCmdVel, this);
-
-    /* Prepare publishers */
-    double pose_cov_list[6] = { 0.001, 0.001, 0.001, 0.001, 0.001, 0.03 }; 
-    double twist_cov_list[6] = { 0.001, 0.001, 0.001, 0.001, 0.001, 0.03 }; 
-
-    // Setup odometry realtime publisher + odom message constant fields
-    odom_pub_.reset(new realtime_tools::RealtimePublisher<nav_msgs::Odometry>(n_, "odom", 100));
-    odom_pub_->msg_.header.frame_id = odom_frame_id_;
-    odom_pub_->msg_.child_frame_id = base_frame_id_;
-    odom_pub_->msg_.pose.pose.position.z = 0;
-    // odom_pub_->msg_.pose.covariance = boost::assign::list_of
-    //                                   (static_cast<double>(pose_cov_list[0])) (0)  (0)  (0)  (0)  (0)
-    //                                   (0)  (static_cast<double>(pose_cov_list[1])) (0)  (0)  (0)  (0)
-    //                                   (0)  (0)  (static_cast<double>(pose_cov_list[2])) (0)  (0)  (0)
-    //                                   (0)  (0)  (0)  (static_cast<double>(pose_cov_list[3])) (0)  (0)
-    //                                   (0)  (0)  (0)  (0)  (static_cast<double>(pose_cov_list[4])) (0)
-    //                                   (0)  (0)  (0)  (0)  (0)  (static_cast<double>(pose_cov_list[5]));
-    odom_pub_->msg_.twist.twist.linear.y  = 0;
-    odom_pub_->msg_.twist.twist.linear.z  = 0;
-    odom_pub_->msg_.twist.twist.angular.x = 0;
-    odom_pub_->msg_.twist.twist.angular.y = 0;
-    // odom_pub_->msg_.twist.covariance = boost::assign::list_of
-    //                                    (static_cast<double>(twist_cov_list[0])) (0)  (0)  (0)  (0)  (0)
-    //                                    (0)  (static_cast<double>(twist_cov_list[1])) (0)  (0)  (0)  (0)
-    //                                    (0)  (0)  (static_cast<double>(twist_cov_list[2])) (0)  (0)  (0)
-    //                                    (0)  (0)  (0)  (static_cast<double>(twist_cov_list[3])) (0)  (0)
-    //                                    (0)  (0)  (0)  (0)  (static_cast<double>(twist_cov_list[4])) (0)
-    //                                    (0)  (0)  (0)  (0)  (0)  (static_cast<double>(twist_cov_list[5]));
-    tf_odom_pub_.reset(new realtime_tools::RealtimePublisher<tf::tfMessage>(n_, "/tf", 100));
-    tf_odom_pub_->msg_.transforms.resize(1);
-    tf_odom_pub_->msg_.transforms[0].transform.translation.z = 0.0;
-    tf_odom_pub_->msg_.transforms[0].child_frame_id = base_frame_id_;
-    tf_odom_pub_->msg_.transforms[0].header.frame_id = odom_frame_id_;
-
     cout << "Wr8 plugin loaded!" << endl;
 }
 
@@ -181,7 +122,6 @@ void Wr8InterfacePlugin::OnUpdate(const common::UpdateInfo &info)
     if (last_update_time_ == common::Time(0))
     {
         last_update_time_ = info.simTime;
-        last_odom_update_time_ = info.simTime;
         return;
     }
 
@@ -194,59 +134,6 @@ void Wr8InterfacePlugin::OnUpdate(const common::UpdateInfo &info)
 
     driveUpdate();
     steeringUpdate();
-}
-
-void Wr8InterfacePlugin::updateOdometry()
-{
-    const double linear = cur_virtual_speed_rps_ / mps2rps * time_step_;
-    const double angular = linear * tan(cur_virtual_steering_rad_) / wheelbase_;
-    const double curvature_radius = wheelbase_ / cos(M_PI/2.0 - cur_virtual_steering_rad_);
-
-    linear_ = linear;
-    angular_ = angular;
-
-    if (fabs(curvature_radius) > 0.0001)
-    {
-        const double elapsed_distance = linear;
-        const double elapsed_angle = elapsed_distance / curvature_radius;
-        const double x_curvature = curvature_radius * sin(elapsed_angle);
-        const double y_curvature = curvature_radius * (cos(elapsed_angle) - 1.0);
-        const double wheel_heading = yaw_ + cur_virtual_steering_rad_;
-        y_ += x_curvature * sin(wheel_heading) + y_curvature * cos(wheel_heading);
-        x_ += x_curvature * cos(wheel_heading) - y_curvature * sin(wheel_heading);
-        yaw_ += elapsed_angle;
-    }
-    
-    /*** Update publishers ***/
-    if ( last_odom_update_time_ + publish_period_ > last_update_time_ )
-    {
-        return;
-    }
-
-    last_odom_update_time_ += publish_period_;
-
-    const geometry_msgs::Quaternion orientation(tf::createQuaternionMsgFromYaw(yaw_));
-
-    if (odom_pub_->trylock())
-    {
-        odom_pub_->msg_.header.stamp = ros::Time( last_update_time_.Double() );
-        odom_pub_->msg_.pose.pose.position.x = x_ + wheelbase_ * (1.0 - cos(yaw_));
-        odom_pub_->msg_.pose.pose.position.y = y_ - wheelbase_ * sin(yaw_);
-        odom_pub_->msg_.pose.pose.orientation = orientation;
-        odom_pub_->msg_.twist.twist.linear.x  = 0;
-        odom_pub_->msg_.twist.twist.angular.z = 0;
-        odom_pub_->unlockAndPublish();
-    }
-
-    if (tf_odom_pub_->trylock())
-    {
-        geometry_msgs::TransformStamped& odom_frame = tf_odom_pub_->msg_.transforms[0];
-        odom_frame.header.stamp = ros::Time( last_update_time_.Double() );
-        odom_frame.transform.translation.x = x_ + wheelbase_ * (1.0 - cos(yaw_));
-        odom_frame.transform.translation.y = y_ - wheelbase_ * sin(yaw_);
-        odom_frame.transform.rotation = orientation;
-        tf_odom_pub_->unlockAndPublish();
-    }
 }
 
 void Wr8InterfacePlugin::driveUpdate()
