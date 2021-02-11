@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- overwriting these args -->
+  <arg name="debug" default="false" />
+  <arg name="gui" default="true" />
+  <arg name="pause" default="false" />
+  <arg name="x" default="0" />
+  <arg name="y" default="0" />
+  <arg name="z" default="1" />
+  
+  <param name="robot_description" command="$(find xacro)/xacro '$(find spring_simple_sample)/urdf/simple.urdf.xacro'" />
+  
+  <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
+  <!-- include gazebo_ros launcher -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg pause)" />
+    <arg name="use_sim_time" value="true" />
+  </include>
+</launch>
