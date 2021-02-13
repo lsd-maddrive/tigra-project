@@ -4,16 +4,15 @@
 <xacro:property name="length" value="1.85" />
 <xacro:property name="width" value="0.75" />
 <xacro:property name="heigth" value="0.6" />
-<xacro:property name="mass" value="420" />
+<xacro:property name="mass" value="0.42" />
 
 <xacro:property name="wheel_width" value="0.25" />
 <xacro:property name="wheel_radius" value="0.25" />
-<xacro:property name="wheel_mass" value="20" />
+<xacro:property name="wheel_mass" value="0.02" />
 <xacro:property name="wheel_turn_limit" value="${pi/4}"/> 
 
-<xacro:property name="wheelbase" value="1.24" />
-<xacro:property name="trackbase" value="1.00" />
-<xacro:property name="base_center" value="${length/2}" />
+<xacro:property name="springStiffness" value="105" />
+
 
 <!-- inertia -->
 <xacro:macro name="null_inertial">
@@ -105,22 +104,24 @@
       <xacro:null_inertial/>
     </link>
 
+    <gazebo reference="${name}_spring_joint">
+    	<implicitSpringDamper>true</implicitSpringDamper>
+    	<springStiffness>${springStiffness}</springStiffness>
+    	<springReference>0</springReference>
+    </gazebo>
+
+ 
     <joint name="${name}_spring_joint" type="prismatic">
-    <limit lower="-0.00001" upper="0.00001" effort="0" velocity="0"/> 
+    <limit lower="-0.05" upper="0.05" effort="0" velocity="0"/> 
       <parent link="${base_name}"/>
       <child link="spring1_${name}"/>
 	  <dynamics damping="0.0" friction="0.0"/>
 	  <axis xyz="0 0 1"/>
     </joint>
-    
-  <gazebo reference="${name}_spring_joint">
-    <implicitSpringDamper>true</implicitSpringDamper>
-    <springStiffness>4200</springStiffness>
-    <springReference>0.2</springReference>
-  </gazebo>
-      
+   
+
     <joint name="${name}_speed_joint" type="continuous">
-      <parent link="spring1_${name}"/>
+      <parent link="spring1_${name}"/> 
       <child link="wheel_${name}"/>
       <origin xyz="${xyz}" rpy="${pi/2} 0 0"/>
       <axis xyz="0 0 -1"/>
@@ -131,7 +132,7 @@
 <!-- steer -->
 <xacro:macro name="steer_wheel" params="name base_name xyz">
     <xacro:wheels name="wheel_${name}" />
-
+ 
     <link name="spring2_${name}">
       <xacro:null_inertial/>
     </link>
@@ -140,29 +141,18 @@
       <xacro:null_inertial/>
     </link>
 
+    <gazebo reference="${name}_spring_joint">
+    	<implicitSpringDamper>true</implicitSpringDamper>
+    	<springStiffness>${springStiffness}</springStiffness>
+    	<springReference>0</springReference>
+    </gazebo>
+    
     <joint name="${name}_spring_joint" type="prismatic">
-    <limit lower="-0.01" upper="0.01" effort="0" velocity="0"/>
+    <limit lower="-0.05" upper="0.05" effort="0" velocity="0"/>
       <parent link="${base_name}"/>
       <child link="spring2_${name}"/>
-      	<axis>
-      		<dynamics>
-      			<spring_stiffness>420000</spring_stiffness>
-      			<spring_reference>1</spring_reference>
-     			<damping>100000000</damping>
-      			<friction>100</friction>
-    		</dynamics>
-    		<use_parent_model_frame>0</use_parent_model_frame>
-  		</axis>
-  		<physics>
-    		<ode>
-      			<implicit_spring_damper>1</implicit_spring_damper>
-      			<cfm_damping>1</cfm_damping>
-      				<limit>
-        				<cfm>0</cfm>
-        				<erp>0.2</erp>
-      				</limit>
-    		</ode>
-  		</physics>
+	  <dynamics damping="0.0" friction="0.0"/>
+	  <axis xyz="0 0 1"/>
     </joint>
 
     <joint name="${name}_steer_joint" type="revolute">
@@ -186,17 +176,12 @@
 
 </xacro:macro>
 <!-- steer_wheel -->
-	<xacro:speed_wheel name="joint_right_wheel_1" base_name="base_link" xyz="0.5 -0.375 -0.35" />
-	<xacro:speed_wheel name="joint_left_wheel_1" base_name="base_link" xyz="0.5 0.375 -0.35" />
+	<xacro:steer_wheel name="joint_right_wheel_1" base_name="base_link" xyz="0.5 -0.375 -0.35" />
+	<xacro:steer_wheel name="joint_left_wheel_1" base_name="base_link" xyz="0.5 0.375 -0.35" />
 <!-- speed_wheel -->
 	<xacro:speed_wheel name="joint_right_wheel_2" base_name="base_link" xyz="-0.5 -0.375 -0.35" />
 	<xacro:speed_wheel name="joint_left_wheel_2" base_name="base_link" xyz="-0.5 0.375 -0.35" />
-<!--<gazebo>
-    <plugin name="ModelPlugin" filename="librobot_gazebo.so" >
-      <robotName>tigra</robotName>
-      <_joint>joint_right_wheel_2_speed_joint</_joint>
-    </plugin>
-</gazebo> -->
+
 
 </robot>
 
