@@ -4,11 +4,11 @@
 <xacro:property name="length" value="1.85" />
 <xacro:property name="width" value="0.75" />
 <xacro:property name="heigth" value="0.6" />
-<xacro:property name="mass" value="0.42" />
+<xacro:property name="mass" value="420" />
 
 <xacro:property name="wheel_width" value="0.25" />
 <xacro:property name="wheel_radius" value="0.25" />
-<xacro:property name="wheel_mass" value="0.02" />
+<xacro:property name="wheel_mass" value="20" />
 <xacro:property name="wheel_turn_limit" value="${pi/4}"/> 
 
 <xacro:property name="springStiffness" value="105" />
@@ -99,7 +99,7 @@
 <!-- speed -->
 <xacro:macro name="speed_wheel" params="name base_name xyz ">
     <xacro:wheels name="wheel_${name}" />
-
+<!-- 
     <link name="spring1_${name}">
       <xacro:null_inertial/>
     </link>
@@ -119,9 +119,10 @@
 	  <axis xyz="0 0 1"/>
     </joint>
    
-
+-->
     <joint name="${name}_speed_joint" type="continuous">
-      <parent link="spring1_${name}"/> 
+<!--      <parent link="spring1_${name}"/> -->
+      <parent link="${base_name}"/>
       <child link="wheel_${name}"/>
       <origin xyz="${xyz}" rpy="${pi/2} 0 0"/>
       <axis xyz="0 0 -1"/>
@@ -132,15 +133,15 @@
 <!-- steer -->
 <xacro:macro name="steer_wheel" params="name base_name xyz">
     <xacro:wheels name="wheel_${name}" />
- 
+<!--  
     <link name="spring2_${name}">
       <xacro:null_inertial/>
     </link>
-
+-->
      <link name="steer_${name}">
       <xacro:null_inertial/>
     </link>
-
+<!--
     <gazebo reference="${name}_spring_joint">
     	<implicitSpringDamper>true</implicitSpringDamper>
     	<springStiffness>${springStiffness}</springStiffness>
@@ -154,12 +155,13 @@
 	  <dynamics damping="0.0" friction="0.0"/>
 	  <axis xyz="0 0 1"/>
     </joint>
-
+-->
     <joint name="${name}_steer_joint" type="revolute">
       <limit lower="${-wheel_turn_limit}"
              upper="${wheel_turn_limit}"
              effort="0" velocity="0"/>
-      <parent link="spring2_${name}"/>
+<!--      <parent link="spring2_${name}"/>-->
+      <parent link="${base_name}"/>     
       <child link="steer_${name}"/>
       <origin xyz="${xyz}" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
