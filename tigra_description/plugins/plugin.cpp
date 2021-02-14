@@ -1,4 +1,4 @@
-#include "car_interface.h"
+#include "plugin.h"
 
 #include <boost/assign.hpp>
 
@@ -8,7 +8,7 @@ using namespace std;
 namespace gazebo
 {
 
-Wr8InterfacePlugin::Wr8InterfacePlugin()
+TigraPlugin::TigraPlugin()
 {
     target_angle_ = 0.0;
     target_speed_mps_ = 0.0;
@@ -18,10 +18,10 @@ Wr8InterfacePlugin::Wr8InterfacePlugin()
 
     x_ = 0; y_ = 0; yaw_ = 0;
 
-    cout << "Wr8 plugin created!" << endl;
+    cout << "TigraPlugin plugin created!" << endl;
 }
 
-void Wr8InterfacePlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
+void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
 {
     // Gazebo initialization
     steer_fl_joint_ = model->GetJoint("joint_left_wheel_1_steer_joint");
@@ -30,7 +30,6 @@ void Wr8InterfacePlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     wheel_rr_joint_ = model->GetJoint("joint_left_wheel_1_speed_joint");
     wheel_fl_joint_ = model->GetJoint("joint_left_wheel_2_speed_joint");
     wheel_fr_joint_ = model->GetJoint("joint_right_wheel_2_speed_joint");
-    footprint_link_ = model->GetLink("base_footprint");
 
     assert(steer_fl_joint_);
     assert(steer_fr_joint_);
@@ -39,16 +38,6 @@ void Wr8InterfacePlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     assert(wheel_fl_joint_);
     assert(wheel_fr_joint_);
     assert(footprint_link_);
-
-    // Load SDF parameters
-    if (sdf->HasElement("pubTf"))
-    {
-        sdf->GetElement("pubTf")->GetValue()->Get(pub_tf_);
-    }
-    else
-    {
-        pub_tf_ = false;
-    }
 
     if (sdf->HasElement("robotName"))
     {
@@ -114,10 +103,10 @@ void Wr8InterfacePlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
         tf_freq_ = 100.0;
     }
 
-    cout << "Wr8 plugin loaded!" << endl;
+    cout << "TigraPlugin plugin loaded!" << endl;
 }
 
-void Wr8InterfacePlugin::OnUpdate(const common::UpdateInfo &info)
+void TigraPlugin::OnUpdate(const common::UpdateInfo &info)
 {
     if (last_update_time_ == common::Time(0))
     {
@@ -136,7 +125,7 @@ void Wr8InterfacePlugin::OnUpdate(const common::UpdateInfo &info)
     steeringUpdate();
 }
 
-void Wr8InterfacePlugin::driveUpdate()
+void TigraPlugin::driveUpdate()
 {
     double ref_rotation_speed_rps = target_speed_mps_ * mps2rps;
 
@@ -157,7 +146,7 @@ void Wr8InterfacePlugin::driveUpdate()
     wheel_rr_joint_->SetVelocity(0, ref_left_rspeed);   
 }
 
-void Wr8InterfacePlugin::updateCurrentState()
+void TigraPlugin::updateCurrentState()
 {
     double t_cur_lsteer = tan(steer_fl_joint_->Position(0));
     double t_cur_rsteer = tan(steer_fr_joint_->Position(0));
@@ -176,10 +165,10 @@ void Wr8InterfacePlugin::updateCurrentState()
     // ROS_INFO_STREAM( "Estimated state: " << cur_virtual_steering_rad_ << " / " << cur_virtual_speed_rps_ );
 }
 
-void Wr8InterfacePlugin::steeringUpdate()
+void TigraPlugin::steeringUpdate()
 {
     // Arbitrarily set maximum steering rate to 800 deg/s
-    const double max_rate = 800.0 * M_PI / 180.0 * WR8_STEERING_RATIO;
+    const double max_rate = 800.0 * M_PI / 180.0 * TIGRA_STEERING_RATIO;
     double max_inc = time_step_ * max_rate;
 
     // if ((target_angle_ - current_steering_angle_) > max_inc)
@@ -207,9 +196,9 @@ void Wr8InterfacePlugin::steeringUpdate()
 #endif
 }
 
-void Wr8InterfacePlugin::onCmdVel(const geometry_msgs::Twist& command)
+void TigraPlugin::onCmdVel(const geometry_msgs::Twist& command)
 {
-    target_angle_ = command.angular.z * WR8_STEERING_RATIO;
+    target_angle_ = command.angular.z * TIGRA_STEERING_RATIO;
     if (target_angle_ > max_steer_rad_)
     {
         target_angle_ = max_steer_rad_;
@@ -222,11 +211,11 @@ void Wr8InterfacePlugin::onCmdVel(const geometry_msgs::Twist& command)
     target_speed_mps_ = command.linear.x;
 }
 
-void Wr8InterfacePlugin::Reset()
+void TigraPlugin::Reset()
 {
 }
 
-Wr8InterfacePlugin::~Wr8InterfacePlugin()
+TigraPlugin::~TigraPlugin()
 {
     n_.shutdown();
 }

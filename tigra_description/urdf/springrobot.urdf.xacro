@@ -4,23 +4,22 @@
 <xacro:property name="length" value="1.85" />
 <xacro:property name="width" value="0.75" />
 <xacro:property name="heigth" value="0.6" />
-<xacro:property name="mass" value="0.42" />
+<xacro:property name="mass" value="420" />
 
 <xacro:property name="wheel_width" value="0.25" />
 <xacro:property name="wheel_radius" value="0.25" />
-<xacro:property name="wheel_mass" value="0.02" />
-<xacro:property name="wheel_turn_limit" value="${pi/4}"/> 
+<xacro:property name="wheel_mass" value="20" />
+<xacro:property name="wheel_turn_limit" value="${pi/4}"/>
 
-<xacro:property name="springStiffness" value="105" />
-
-
+<xacro:property name="springStiffness" value="125000" />
+<xacro:property name="springReference" value="0" />
 <!-- inertia -->
 <xacro:macro name="null_inertial">
     <inertial>
-      <mass value="0.001"/>
-      <inertia ixx="0.001" ixy="0" ixz="0"
-               iyy="0.001" iyz="0"
-               izz="0.001"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0"
+               iyy="0.01" iyz="0"
+               izz="0.01"/>
     </inertial>
 </xacro:macro>
 
@@ -50,7 +49,6 @@
  
 <!-- xacro base new -->
 <link name="base_link">
-<pose>0 0 0 0 0 0</pose>
     <visual>
      	<origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
@@ -76,13 +74,13 @@
 <xacro:macro name="wheels" params="name">
     <link name="${name}">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
         <geometry>
           <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
         <geometry>
           <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
         </geometry>
@@ -90,42 +88,39 @@
       <xacro:wheel_inertial
           r="${wheel_radius}" h="${wheel_width}"
           mass="${wheel_mass}" >
-	  <origin xyz="0 0 0" rpy="0 0 0" />
+	  <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
       </xacro:wheel_inertial>
     </link>
 </xacro:macro>
 
-<!-- zawarka solution -->
 <!-- speed -->
 <xacro:macro name="speed_wheel" params="name base_name xyz ">
     <xacro:wheels name="wheel_${name}" />
 
-    <link name="spring1_${name}">
-      <xacro:null_inertial/>
-    </link>
-
     <gazebo reference="${name}_spring_joint">
     	<implicitSpringDamper>true</implicitSpringDamper>
     	<springStiffness>${springStiffness}</springStiffness>
-    	<springReference>0</springReference>
+    	<springReference>${springReference}</springReference>
     </gazebo>
 
- 
     <joint name="${name}_spring_joint" type="prismatic">
-    <limit lower="-0.05" upper="0.05" effort="0" velocity="0"/> 
+    <limit lower="-0.1" upper="0.1" effort="0" velocity="0"/> 
       <parent link="${base_name}"/>
       <child link="spring1_${name}"/>
 	  <dynamics damping="0.0" friction="0.0"/>
 	  <axis xyz="0 0 1"/>
     </joint>
-   
+
+    <link name="spring1_${name}">
+      <xacro:null_inertial/>
+    </link>   
 
     <joint name="${name}_speed_joint" type="continuous">
       <parent link="spring1_${name}"/> 
       <child link="wheel_${name}"/>
-      <origin xyz="${xyz}" rpy="${pi/2} 0 0"/>
-      <axis xyz="0 0 -1"/>
-      <limit effort="500.0" velocity="11.0" />
+      <origin xyz="${xyz}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="500.0" velocity="10.0" />
     </joint>
 </xacro:macro>
 
@@ -133,28 +128,24 @@
 <xacro:macro name="steer_wheel" params="name base_name xyz">
     <xacro:wheels name="wheel_${name}" />
  
-    <link name="spring2_${name}">
-      <xacro:null_inertial/>
-    </link>
-
-     <link name="steer_${name}">
-      <xacro:null_inertial/>
-    </link>
-
     <gazebo reference="${name}_spring_joint">
     	<implicitSpringDamper>true</implicitSpringDamper>
     	<springStiffness>${springStiffness}</springStiffness>
-    	<springReference>0</springReference>
+    	<springReference>${springReference}</springReference>
     </gazebo>
     
     <joint name="${name}_spring_joint" type="prismatic">
-    <limit lower="-0.05" upper="0.05" effort="0" velocity="0"/>
+    <limit lower="-0.1" upper="0.1" effort="0" velocity="0"/>
       <parent link="${base_name}"/>
       <child link="spring2_${name}"/>
 	  <dynamics damping="0.0" friction="0.0"/>
 	  <axis xyz="0 0 1"/>
     </joint>
-
+   
+    <link name="spring2_${name}">
+      <xacro:null_inertial/>
+    </link>
+    
     <joint name="${name}_steer_joint" type="revolute">
       <limit lower="${-wheel_turn_limit}"
              upper="${wheel_turn_limit}"
@@ -163,25 +154,36 @@
       <child link="steer_${name}"/>
       <origin xyz="${xyz}" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      
     </joint>
 
+     <link name="steer_${name}">
+      <xacro:null_inertial/>
+    </link>
+    
     <joint name="${name}_speed_joint" type="continuous">
       <parent link="steer_${name}"/>
       <child link="wheel_${name}"/>
-      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
-      <axis xyz="0 0 -1"/>
-      <limit effort="500" velocity="11.0" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="500" velocity="10.0" />
     </joint>
-
 </xacro:macro>
+
+  	<gazebo>
+    		<plugin name="ModelPlugin" filename="libtigra_description.so" >
+      			<robotName>tigra</robotName>
+            <wheel_rl_joint_>joint_right_wheel_1_speed_joint</wheel_rl_joint_>
+            <wheel_rr_joint_>joint_left_wheel_1_speed_joint</wheel_rr_joint_>
+            <wheel_fl_joint_>joint_right_wheel_2_speed_joint</wheel_fl_joint_>
+            <wheel_fr_joint_>joint_left_wheel_2_speed_joint</wheel_fr_joint_>
+   		 </plugin>
+	</gazebo>
+	
 <!-- steer_wheel -->
 	<xacro:steer_wheel name="joint_right_wheel_1" base_name="base_link" xyz="0.5 -0.375 -0.35" />
 	<xacro:steer_wheel name="joint_left_wheel_1" base_name="base_link" xyz="0.5 0.375 -0.35" />
 <!-- speed_wheel -->
 	<xacro:speed_wheel name="joint_right_wheel_2" base_name="base_link" xyz="-0.5 -0.375 -0.35" />
 	<xacro:speed_wheel name="joint_left_wheel_2" base_name="base_link" xyz="-0.5 0.375 -0.35" />
-
-
 </robot>
 

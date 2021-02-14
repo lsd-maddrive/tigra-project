@@ -5,12 +5,12 @@
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
         <arg name="world" default="$(find tigra_description)/worlds/empty.world" />
-	
+
 <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/robot.urdf.xacro'" />
-    
+<!-- <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/springrobot.urdf.xacro'" />  -->  
     <arg name="x" default="0"/>
     <arg name="y" default="0"/>
-    <arg name="z" default="0.7"/>
+    <arg name="z" default="1.0"/>
     
 <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
           args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
