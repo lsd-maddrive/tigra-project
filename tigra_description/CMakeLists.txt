@@ -38,4 +38,5 @@ add_library(${CAR_INTERFACE_PLUGIN}
 target_link_libraries(${CAR_INTERFACE_PLUGIN}
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
+
 )
