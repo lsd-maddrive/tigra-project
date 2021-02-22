@@ -62,3 +62,4 @@ rostopic pub /tigra/cmd_vel geometry_msgs/Twist -r 5 -- '[3.0, 0.0, 0.0]' '[0.0,
 - [DEM карта в недалеком будущем](http://gazebosim.org/tutorials/?tut=dem)
 - [Database models](https://github.com/osrf/gazebo_models)
 
+
