@@ -4,9 +4,9 @@
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
         <arg name="pause" default="false" />
-        <arg name="world" default="$(find tigra_description)/worlds/empty.world" />
+        <arg name="world" default="$(find tigra_description)/worlds/volcano.world" />
 
-<param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/robot.urdf.xacro'" />
+<param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/springrobot.urdf.xacro'" />
 <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/springrobot.urdf.xacro'" />  -->  
     <arg name="x" default="0"/>
     <arg name="y" default="0"/>

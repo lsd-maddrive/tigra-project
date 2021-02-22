@@ -26,8 +26,8 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     // Gazebo initialization
     steer_fl_joint_ = model->GetJoint("joint_left_wheel_1_steer_joint");
     steer_fr_joint_ = model->GetJoint("joint_right_wheel_1_steer_joint");
-    wheel_rl_joint_ = model->GetJoint("joint_right_wheel_1__speed_joint");
-    wheel_rr_joint_ = model->GetJoint("joint_left_wheel_1_speed_joint");
+    wheel_rl_joint_ = model->GetJoint("joint_left_wheel_1_speed_joint");
+    wheel_rr_joint_ = model->GetJoint("joint_right_wheel_1_speed_joint");
     wheel_fl_joint_ = model->GetJoint("joint_left_wheel_2_speed_joint");
     wheel_fr_joint_ = model->GetJoint("joint_right_wheel_2_speed_joint");
 
@@ -37,7 +37,6 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     assert(wheel_rr_joint_);
     assert(wheel_fl_joint_);
     assert(wheel_fr_joint_);
-    assert(footprint_link_);
 
     if (sdf->HasElement("robotName"))
     {
@@ -72,7 +71,7 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     }
     else
     {
-        wheelbase_ = 0.3;
+        wheelbase_ = 1.0;
     }
 
     
@@ -82,7 +81,7 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     }
     else
     {
-        wheel_radius_ = 0.04;
+        wheel_radius_ = 0.25;
     }
 
     if (sdf->HasElement("trackWidth"))
@@ -91,7 +90,7 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     }
     else
     {
-        track_width_ = 0.23;
+        track_width_ = 0.8;
     }
 
     if (sdf->HasElement("tfFreq"))
@@ -100,11 +99,30 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     }
     else
     {
-        tf_freq_ = 100.0;
+        tf_freq_ = 10.0;
     }
+
+    /* TODO - read from SDF */
+    odom_frame_id_ = "odom";
+    base_frame_id_ = "base_footprint";
+    publish_period_ = 1. / 100;
+
+    update_connection_ = event::Events::ConnectWorldUpdateBegin(boost::bind(&TigraPlugin::OnUpdate, this, _1));
+
+    mps2rpm = 60 / wheel_radius_ / (2*M_PI);
+    mps2rps = 1.0 / wheel_radius_;
+
+    steer_fl_joint_->SetParam("fmax", 0, 99999.0);
+    steer_fr_joint_->SetParam("fmax", 0, 99999.0);
+
+    // ROS initialization
+    n_ = ros::NodeHandle(robot_name_);
+
+    sub_vel_cmd_ = n_.subscribe("cmd_vel", 1, &TigraPlugin::onCmdVel, this);
 
     cout << "TigraPlugin plugin loaded!" << endl;
 }
+
 
 void TigraPlugin::OnUpdate(const common::UpdateInfo &info)
 {
@@ -119,7 +137,6 @@ void TigraPlugin::OnUpdate(const common::UpdateInfo &info)
 
     // twistStateUpdate();
     updateCurrentState();
-    updateOdometry();
 
     driveUpdate();
     steeringUpdate();

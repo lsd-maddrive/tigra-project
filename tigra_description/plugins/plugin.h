@@ -26,8 +26,8 @@ namespace gazebo {
 #define VEHICLE_MASS              1700.0
 #define MAX_BRAKE_TORQUE          3000.0
 
-#define STEER_P_RATE    100.0
-#define SPEED_P_RATE    100.0
+#define STEER_P_RATE    10.0
+#define SPEED_P_RATE    10.0
 
 class TigraPlugin : public ModelPlugin {
 public:

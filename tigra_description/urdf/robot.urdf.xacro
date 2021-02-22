@@ -92,7 +92,7 @@
 			<child link="steer_${name}" />
 			<origin xyz="${xyz}" rpy="0 0 0" />
 			<axis xyz="0 0 1" />
-			<limit lower="${-wheel_turn_limit}" upper="${wheel_turn_limit}" effort="0" velocity="0" />
+			<limit lower="${-wheel_turn_limit}" upper="${wheel_turn_limit}" effort="1000" velocity="0" />
 		</joint>
     
 		<link name="steer_${name}">
@@ -111,12 +111,12 @@
 	</xacro:macro>
 
   	<gazebo>
-    		<plugin name="ModelPlugin" filename="libtigra_description.so" >
+    		<plugin name="tigra_interface_plugin" filename="libtigra_interface_plugin.so" >
       			<robotName>tigra</robotName>
-            <wheel_rl_joint_>joint_right_wheel_1_speed_joint</wheel_rl_joint_>
-            <wheel_rr_joint_>joint_left_wheel_1_speed_joint</wheel_rr_joint_>
-            <wheel_fl_joint_>joint_right_wheel_2_speed_joint</wheel_fl_joint_>
-            <wheel_fr_joint_>joint_left_wheel_2_speed_joint</wheel_fr_joint_>
+            <wheel_rl_joint_>joint_left_wheel_1_speed_joint</wheel_rl_joint_>
+            <wheel_rr_joint_>joint_right_wheel_1_speed_joint</wheel_rr_joint_>
+            <wheel_fl_joint_>joint_left_wheel_2_speed_joint</wheel_fl_joint_>
+            <wheel_fr_joint_>joint_right_wheel_2_speed_joint</wheel_fr_joint_>
    		 </plugin>
 	</gazebo>
 
