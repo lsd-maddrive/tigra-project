@@ -19,3 +19,4 @@
     <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
   </export>
 </package>
+
