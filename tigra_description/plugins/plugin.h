@@ -122,4 +122,5 @@ private:
     };
 
     GZ_REGISTER_MODEL_PLUGIN(TigraPlugin)
+
 }
