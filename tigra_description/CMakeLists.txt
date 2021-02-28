@@ -22,7 +22,6 @@ catkin_package(
     DEPENDS
     roscpp
     gazebo_ros
-    LIBRARIES ${CAR_INTERFACE_PLUGIN}
 )
 
 include_directories(
