@@ -22,6 +22,7 @@ catkin_package(
     DEPENDS
     roscpp
     gazebo_ros
+    LIBRARIES
 )
 
 include_directories(
