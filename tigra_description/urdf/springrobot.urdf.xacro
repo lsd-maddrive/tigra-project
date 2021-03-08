@@ -25,6 +25,12 @@
 <xacro:property name="lidar_height" value="0.02"/>
 <xacro:property name="lidar_radius" value="0.04"/>
 
+
+<!-- base_footprint - base_link on floor -->
+<link name="base_footprint">
+</link>
+<gazebo reference="base_footprint"/>
+  
 <xacro:arg name="pub_tf" default="true" />
   
 <!-- inertia -->
@@ -250,6 +256,12 @@
     <child link="lidar_link"/>
   </joint>
 
+  <joint name="base_footprint_2_link" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <!-- base_footprint - base_link on floor -->
+    <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+  </joint>
 
 <gazebo>
 	<plugin name="tigra_interface_plugin" filename="libtigra_interface_plugin.so" >
