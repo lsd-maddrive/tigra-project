@@ -14,15 +14,12 @@
 
 
 
-	<!-- TF stuff -->
-	<!-- send fake joint values -->
-<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 100"/>
-<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-	<param name="use_gui" value="False"/>
-</node>
+<!-- TF stuff -->
+<!-- send fake joint values -->
+<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 map odom 0"/>
 
-        <!-- Combine joint values -->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+<!-- Combine joint values -->
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
     
 <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
           args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
