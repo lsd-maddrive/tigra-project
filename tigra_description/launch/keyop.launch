@@ -6,7 +6,7 @@
     <param name="turbo/linear_forward_max" value="10" />
     <param name="turbo/linear_backward_min" value="0.5" />
     <param name="turbo/linear_backward_max" value="10" />
-    <param name="turbo/angular_min" value="0.05" /> <!-- 2.864789 deg = 0.05 rad -->
+    <param name="turbo/angular_min" value="0.1" /> <!-- 2.864789 deg = 0.05 rad *2 -->
     <param name="turbo/angular_max" value="0.5" /> <!-- 28.647891 deg = 0.5 rad -->
     <remap from="key_vel" to="tigra/cmd_vel" />
   </node>
