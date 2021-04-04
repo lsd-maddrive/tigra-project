@@ -1,0 +1,12 @@
+<launch>
+  <arg name="input_topics" default="[/tigra/leftside/points2, /tigra/front/points2, /tigra/rightside/points2, /tigra/backside/points2]" />
+  <arg name="output_topic" default="/tigra/merged_points" />
+  <arg name="output_frame_id" default="base_link" />
+
+  <node pkg="tigra_circle_overview" type="concatenate_point_cloud_tigra"
+        name="points_concat_filter" output="screen">
+    <param name="output_frame_id" value="$(arg output_frame_id)" />
+    <param name="input_topics" value="$(arg input_topics)" />
+    <remap from="/points_concat" to="$(arg output_topic)" />
+  </node>
+</launch>

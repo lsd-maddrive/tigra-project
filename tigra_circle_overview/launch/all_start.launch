@@ -1,0 +1,7 @@
+<launch>
+    <include file="$(find tigra_circle_overview)/launch/tigra_overview_spawner.launch" />
+    <include file="$(find tigra_circle_overview)/launch/start_video_broadcast.launch" />
+    <include file="$(find tigra_circle_overview)/launch/rviz_start.launch" />
+    <include file="$(find tigra_circle_overview)/launch/start_concatenate.launch" />
+
+</launch>

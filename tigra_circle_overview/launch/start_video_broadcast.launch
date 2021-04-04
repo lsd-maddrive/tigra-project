@@ -1,0 +1,43 @@
+ 
+<launch>
+
+    <arg name="robot_name" default="tigra" />
+
+    <group ns="$(arg robot_name)/front">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="front_direction" output="screen" />
+    </group>
+
+    <group ns="$(arg robot_name)/backside">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="backside_direction" output="screen" />
+    </group>
+
+    <group ns="$(arg robot_name)/rightside">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="rightside_direction" output="screen" />
+    </group>
+
+    <group ns="$(arg robot_name)/leftside">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="leftside_direction" output="screen" />
+    </group>
+
+
+    <!-- <node pkg="image_view" type="stereo_view" name="front_stereo_picture" output="screen">
+        <remap from="stereo" to="circle_overview_bot/front" />
+        <remap from="image" to="image_rect_color" />
+    </node>
+
+    <node pkg="image_view" type="stereo_view" name="backside_stereo_picture" output="screen">
+        <remap from="stereo" to="circle_overview_bot/backside" />
+        <remap from="image" to="image_rect_color" />
+    </node>
+
+    <node pkg="image_view" type="stereo_view" name="rightside_stereo_picture" output="screen">
+        <remap from="stereo" to="circle_overview_bot/rightside" />
+        <remap from="image" to="image_rect_color" />
+    </node>
+
+    <node pkg="image_view" type="stereo_view" name="leftside_stereo_picture" output="screen">
+        <remap from="stereo" to="circle_overview_bot/leftside" />
+        <remap from="image" to="image_rect_color" />
+    </node> -->
+
+</launch>

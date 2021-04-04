@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find visual_custom_telemetry)/launch/overview_bot.launch" />
+    <include file="$(find visual_custom_telemetry)/launch/rviz_start.launch" />
+    <include file="$(find visual_custom_telemetry)/launch/start_video_broadcast.launch" />
+
+</launch>
