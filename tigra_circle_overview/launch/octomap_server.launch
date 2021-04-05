@@ -1,8 +1,0 @@
-<launch>
-    <node name="octomap" pkg="octomap_server" type="octomap_server_node">
-        <remap from="cloud_in" to="/tigra/merged_points"/>
-        <!-- <remap from="scan" to="/tigra/scan" /> -->
-        <param name="frame_id" value="/base_link"/>
-        <!-- <param name="resolution" value=".4"/> -->
-    </node>
-</launch>
