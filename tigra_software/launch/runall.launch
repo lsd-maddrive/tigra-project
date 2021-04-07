@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	
+	<include file="$(find tigra_description)/launch/tigra.launch"/>
+
+	<include file="$(find tigra_software)/launch/tigra_software.launch"/>
+
+</launch>
+
