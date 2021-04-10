@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<robot name="sample" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<property name="length" value="1.85" />
+	<property name="width" value="0.75" />
+	<property name="heigth" value="0.6" />
+	<property name="mass" value="420" />
+	<property name="wheel_width" value="0.25" />
+	<property name="wheel_radius" value="0.25" />
+	<property name="wheel_mass" value="20" />
+	<property name="wheel_turn_limit" value="${pi/4}" />
+	<property name="wheelbase" value="1.24" />
+	<property name="trackbase" value="1.00" />
+	<property name="base_center" value="${length/2}" />
+	<!-- inertia -->
+	<macro name="null_inertial">
+		<inertial>
+			<mass value="0.001" />
+			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+		</inertial>
+	</macro>
+	<macro name="base_inertial" params="width length height mass *origin">
+		<inertial>
+			<insert_block name="origin" />
+			<mass value="${mass}" />
+			<inertia ixx="${mass * (width * width + height * height) / 12}" ixy="0" ixz="0" iyy="${mass * (length * length + height * height) / 12}" iyz="0" izz="${mass * (width * width + length * length) / 12}" />
+		</inertial>
+	</macro>
+	<macro name="wheel_inertial" params="r h mass *origin">
+		<inertial>
+			<insert_block name="origin" />
+			<mass value="${mass}" />
+			<inertia ixx="${mass / 12 * (3 * r * r + h * h)}" ixy="0.0" ixz="0.0" iyy="${mass / 12 * (3 * r * r + h * h)}" iyz="0.0" izz="${mass / 2 * r * r}" />
+		</inertial>
+	</macro>
+	<!-- xacro base new -->
+	<link name="base_link">
+		<pose>0 0 0 0 0 0</pose>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="1 1 0.1" />
+			</geometry>
+			<material name="blue" />
+		</visual>
+		<collision name="base_collision">
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="1 1 0.1" />
+			</geometry>
+		</collision>
+		<base_inertial width="1" length="1" height="0.1" mass="100">
+			<origin xyz="0 0 0" rpy="0 0 0" />
+		</base_inertial>
+	</link>
+
+	<joint name="spring_joint" type="prismatic">
+		<limit lower="-0.5" upper="0.5" effort="0" velocity="0" />
+		<parent link="base_link" />
+		<child link="second_link" />
+		<origin xyz="0 0 1" rpy="0 0 0"/>
+    	<dynamics damping="0.0" friction="0.0"/>
+	    <axis xyz="0 0 1"/>
+	</joint>
+
+  <gazebo reference="spring_joint">
+    <implicitSpringDamper>true</implicitSpringDamper>
+    <springStiffness>1000</springStiffness>
+    <springReference>0</springReference>
+  </gazebo>
+
+	<link name="second_link">
+		<pose>0 0 0 0 0 0</pose>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="1 1 0.1" />
+			</geometry>
+			<material name="blue" />
+		</visual>
+		<collision name="base_collision">
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="1 1 0.1" />
+			</geometry>
+		</collision>
+		<base_inertial width="1" length="1" height="0.1" mass="10">
+			<origin xyz="0 0 0" rpy="0 0 0" />
+		</base_inertial>
+	</link>
+</robot>

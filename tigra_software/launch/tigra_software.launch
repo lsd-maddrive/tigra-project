@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<!-- Run map from gmapping -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find tigra_software)/maps/my_map.yaml" />
+	
+	<!-- Run RViZ with settings -->
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/config.rviz" />
+	
+	<include file="$(find tigra_software)/launch/move_base.launch"/>
+
+	<include file="$(find tigra_software)/launch/gmap.launch"/>
+
+	<!-- gmap with amcl working not good -->
+
+<!--	<include file="$(find tigra_software)/launch/amcl.launch"/> --> 
+
+</launch>
