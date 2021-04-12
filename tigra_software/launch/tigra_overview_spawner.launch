@@ -2,11 +2,11 @@
 
     <arg name="paused" default="false"/>
     <arg name="use_sim_time" default="true"/>
-    <arg name="gui" default="false"/>
+    <arg name="gui" default="true"/>
     <arg name="headless" default="false"/>
     <arg name="debug" default="false"/>
 
-    <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/robot_with_cameras.urdf.xacro'" />
+    <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/springrobot_new.urdf.xacro'" />
         <arg name="x" default="0"/>
         <arg name="y" default="0"/>
         <arg name="z" default="1.0"/>
@@ -25,7 +25,11 @@
     command="$(find xacro)/xacro --inorder '$(find tigra_description)/urdf/robot_with_cameras.urdf.xacro'" />
 
     <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-          args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
+      args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
+
+    <node pkg="tf" type="static_transform_publisher" name="baselink_scan" 
+      args="0 0 0 0 0 0 /base_link /base_laser 50" />
+
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
 </launch>

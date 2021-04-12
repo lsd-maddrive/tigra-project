@@ -1,15 +1,12 @@
+<?xml version="1.0"?>
 <launch>
 <!-- GMAP -->
-  		<arg name="base_frame" default="base_link"/>
+    <arg name="base_frame" default="base_laser"/>
 		<arg name="odom_frame" default="odom"/>
-		<arg name="scan_topic" default="/tigra/scan" />
-        <!-- <arg name="scan_topic" default="tigra_description/laser/scan" /> -->
-  
-  		<node pkg="tf" type="static_transform_publisher" name="baselink_scan" 
-          args="0 0 0 0 0 0 /base_link /tigra/scan 50" />
-   
-  		<!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"> </node> -->
-
+		<!-- <arg name="scan_topic" default="/pointcloud_scan" /> -->
+		<arg name="scan_topic" default="/pointcloud_scan" />
+		
+          <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
   		<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     		<param name="base_frame" value="$(arg base_frame)"/>
     		<param name="odom_frame" value="$(arg odom_frame)"/>
@@ -17,7 +14,8 @@
     		<param name="maxUrange" value="6.0"/>
     		<param name="maxRange" value="8.0"/>
     		<param name="sigma" value="0.05"/>
-    		<param name="kernelSize" value="1"/>
+    		<param name="use_sim_time" value="true"/>
+        <param name="kernelSize" value="1"/>
     		<param name="lstep" value="0.05"/>
    			<param name="astep" value="0.05"/>
     		<param name="iterations" value="5"/>
@@ -47,5 +45,4 @@
     		<param name="lasamplestep" value="0.005"/>
     		<remap from="scan" to="$(arg scan_topic)"/>
   		</node>
-
 </launch>

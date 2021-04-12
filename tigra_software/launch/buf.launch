@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<launch>
+        <!-- overwriting these args -->
+        <arg name="debug" default="false" />
+        <arg name="gui" default="true" />
+        <arg name="pause" default="false" />
+        <arg name="world" default="$(find tigra_description)/worlds/ETU.world" />
+
+		<param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/springrobot_new.urdf.xacro'" />
+    		<arg name="x" default="0"/>
+    		<arg name="y" default="0"/>
+    		<arg name="z" default="1.0"/>
+
+
+		<node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
+		<!-- <node name="rviz" pkg="rviz" type="rviz" /> -->
+    <include file="$(find tigra_software)/launch/stereo_image_processing.launch" />
+    <include file="$(find tigra_software)/launch/rviz_start.launch" />
+    <include file="$(find tigra_software)/launch/concatenate_point_cloud.launch" />
+    <include file="$(find tigra_software)/launch/point_to_laser.launch" />
+        <!-- include gazebo_ros launcher -->
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+                <arg name="world_name" value="$(arg world)" />
+                <arg name="debug" value="$(arg debug)" />
+                <arg name="gui" value="$(arg gui)" />
+                <arg name="paused" value="$(arg pause)" />
+                <arg name="use_sim_time" value="true" />
+        </include>
+
+		<!-- <include file="$(find tigra_description)/launch/keyop.launch" /> -->
+
+<!-- GMAP -->
+  		<arg name="base_frame" default="base_link"/>
+		<arg name="odom_frame" default="odom_new"/>
+		<arg name="scan_topic" default="/base_laser" />
+  
+  		<node pkg="tf" type="static_transform_publisher" name="baselink_scan" 
+          args="0 0 0 0 0 0 /base_link /base_laser 50" />
+   
+  		<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"> </node>
+
+  		<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    		<param name="base_frame" value="$(arg base_frame)"/>
+    		<param name="odom_frame" value="$(arg odom_frame)"/>
+    		<param name="map_update_interval" value="1"/>
+    		<param name="maxUrange" value="6.0"/>
+    		<param name="maxRange" value="8.0"/>
+    		<param name="sigma" value="0.05"/>
+    		<param name="kernelSize" value="1"/>
+    		<param name="lstep" value="0.05"/>
+   			<param name="astep" value="0.05"/>
+    		<param name="iterations" value="5"/>
+    		<param name="lsigma" value="0.075"/>
+    		<param name="ogain" value="3.0"/>
+    		<param name="lskip" value="0"/>
+    		<param name="minimumScore" value="200"/>
+   			<param name="srr" value="0.01"/>
+    		<param name="srt" value="0.02"/>
+    		<param name="str" value="0.01"/>
+    		<param name="stt" value="0.02"/>
+    		<param name="linearUpdate" value="0.1"/>
+    		<param name="angularUpdate" value="0.2"/>
+    		<param name="temporalUpdate" value="-1.0"/>
+    		<param name="resampleThreshold" value="0.5"/>
+    		<param name="particles" value="80"/>
+
+    		<param name="xmin" value="-1.0"/>
+    		<param name="ymin" value="-1.0"/>
+    		<param name="xmax" value="1.0"/>
+    		<param name="ymax" value="1.0"/>
+
+    		<param name="delta" value="0.05"/>
+   			<param name="llsamplerange" value="0.01"/>
+    		<param name="llsamplestep" value="0.01"/>
+    		<param name="lasamplerange" value="0.005"/>
+    		<param name="lasamplestep" value="0.005"/>
+    		<remap from="scan" to="$(arg scan_topic)"/>
+  		</node>
+
+</launch>
+
