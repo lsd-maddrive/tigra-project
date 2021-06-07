@@ -12,10 +12,10 @@ git clone --branch feature/gazebo_model https://github.com/lsd-maddrive/tigra-pr
 ## Запуск осуществляется следующей командой в терминале:
 
 ```bash
-roslaunch tigra_description robot.launch
+roslaunch tigra_description tigra.launch
 ```
 
-> В лаунч-файле Вы можете поставить модель без пружин, поменяв имя модели с `springrobot.urdf.xacro` на `robot.urdf.xacro`.
+> В лаунч-файле Вы можете поставить модель без пружин, поменяв имя модели с `tigra.urdf.xacro` на `tigra_no_spring.urdf.xacro`.
 
 ## Управление задается : 
 

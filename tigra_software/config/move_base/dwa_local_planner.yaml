@@ -1,0 +1,85 @@
+base_global_planner: "global_planner/GlobalPlanner"
+base_local_planner: "dwa_local_planner/DWAPlannerROS"
+
+recovery_behaviors: #[]
+  - name: conservative_reset
+    type: clear_costmap_recovery/ClearCostmapRecovery
+  - name: agressive_reset
+    type: clear_costmap_recovery/ClearCostmapRecovery
+  
+controller_frequency: 20.
+planner_frequency: 0.  # 0. is only plan on a new goal or when local planner fails
+planner_patience: 5.
+controller_patience: 15.
+recovery_behavior_enables: true
+shutdown_costmaps: false
+oscillation_timeout: 0.  # 0. is infinite
+oscillation_distance: 0.5
+map_planning_retries: -1.  # -1 is infinite
+
+# Planners
+GlobalPlanner:
+  allow_unknown: true
+  default_tolerance: 0.
+  visualize_potential: true
+  use_dijkstra: true  # although A* is faster, implementation pecularities here make it undesirable
+  use_quadratic: true
+  use_grid_path: false
+  old_navfn_behavior: false
+  lethal_cost: 253 #253 # how far from obstacle
+  neutral_cost: 66 #40
+  cost_factor:  0.55 #3
+  publish_potential: True
+  orientation_mode: 0.
+  orientation_window_size: 1
+
+
+DWAPlannerROS:
+  use_dwa: true
+  global_frame_id: odom
+
+  acc_lim_x: 6.5
+  acc_lim_y: 0.
+  acc_lim_th: 9.2
+  max_vel_trans: 0.48
+  min_vel_trans: 0.18
+  max_vel_x: 5.54
+  min_vel_x: -2.0
+  max_vel_y: 0.
+  min_vel_y: 0.
+  max_vel_theta: 9.0  # 0.5  
+  max_rot_vel: 1.0
+
+  yaw_goal_tolerance: 0.3
+  xy_goal_tolerance: 0.3
+  latch_xy_goal_tolerance: false
+
+  sim_time: 1.7
+  sim_granularity: 0.025
+  vx_samples: 3
+  vy_samples: 1
+  vth_samples: 20
+  
+  path_distance_bias: 32.  # 32
+  goal_distance_bias: 28.
+  occdist_scale: 0.01  # 0.01
+  forward_point_distance: 0.325
+  stop_time_buffer: 0.2
+  scaling_speed: 0.25
+  max_scaling_factor: 0.2
+  publish_cost_grid: true  # kinetic or obsolete?
+  publish_cost_grid_pc: true
+  publish_traj_pc: true
+
+  oscillation_reset_dist: 0.05
+  oscillation_reset_angle: 10.
+
+  prune_plan: true
+
+  
+# Recovery behaviors
+conservative_reset:
+  reset_distance: 3.0
+
+agressive_reset:
+  reset_distance: 4.0
