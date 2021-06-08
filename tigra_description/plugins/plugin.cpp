@@ -102,8 +102,16 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
         tf_freq_ = 10.0;
     }
 
+    if (sdf->HasElement("odomFrame"))
+    {
+        sdf->GetElement("odomFrame")->GetValue()->Get(odom_frame_);
+    }
+    else
+    {
+        odom_frame_ = "wheel_odom";
+    }
+
     /* TODO - read from SDF */
-    odom_frame_id_ = "odom_plugin";
     base_frame_id_ = "base_footprint";
     publish_period_ = 1. / 100;
 
@@ -166,20 +174,19 @@ void TigraPlugin::OnUpdate(const common::UpdateInfo &info)
         return;
     }
 
-    time_step_ = (info.simTime - last_update_time_).Double();
+    double time_step_ = (info.simTime - last_update_time_).Double();
     last_update_time_ = info.simTime;
 
-    // twistStateUpdate();
     updateCurrentState();
-    updateOdometry();
+    updateOdometry(time_step_);
 
     driveUpdate();
-    steeringUpdate();
+    steeringUpdate(time_step_);
 }
 
-void TigraPlugin::updateOdometry()
+void TigraPlugin::updateOdometry(double time_step)
 {
-    const double linear = cur_virtual_speed_rps_ / mps2rps * time_step_;
+    const double linear = cur_virtual_speed_rps_ / mps2rps * time_step;
     const double angular = linear * tan(cur_virtual_steering_rad_) / wheelbase_;
     const double curvature_radius = wheelbase_ / cos(M_PI/2.0 - cur_virtual_steering_rad_);
 
@@ -216,7 +223,7 @@ void TigraPlugin::updateOdometry()
         odom_pub_->msg_.pose.pose.orientation = orientation;
         odom_pub_->msg_.twist.twist.linear.x  = 0;
         odom_pub_->msg_.twist.twist.angular.z = 0;
-        // odom_pub_->unlockAndPublish();
+        odom_pub_->unlockAndPublish();
     }
 
     if (tf_odom_pub_->trylock())
@@ -226,7 +233,7 @@ void TigraPlugin::updateOdometry()
         odom_frame.transform.translation.x = x_ + wheelbase_ * (1.0 - cos(yaw_));
         odom_frame.transform.translation.y = y_ - wheelbase_ * sin(yaw_);
         odom_frame.transform.rotation = orientation;
-        // tf_odom_pub_->unlockAndPublish();
+        tf_odom_pub_->unlockAndPublish();
     }
 }
 
@@ -270,11 +277,10 @@ void TigraPlugin::updateCurrentState()
     // ROS_INFO_STREAM( "Estimated state: " << cur_virtual_steering_rad_ << " / " << cur_virtual_speed_rps_ );
 }
 
-void TigraPlugin::steeringUpdate()
+void TigraPlugin::steeringUpdate(double time_step)
 {
     // Arbitrarily set maximum steering rate to 800 deg/s
-    const double max_rate = 800.0 * M_PI / 180.0 * TIGRA_STEERING_RATIO;
-    double max_inc = time_step_ * max_rate;
+    double max_inc = time_step * MAX_STEERING_RATE;
 
     // if ((target_angle_ - current_steering_angle_) > max_inc)
     // {

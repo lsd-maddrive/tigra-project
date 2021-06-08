@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(tigra_software)
 
-
-
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -18,7 +16,6 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   pcl_ros
   gazebo_ros
-  
 )
 
 find_package(PCL REQUIRED)
@@ -34,28 +31,10 @@ generate_messages(
   std_msgs  
 )
 
-
 catkin_package(
   CATKIN_DEPENDS message_runtime
-
 )
 
-set(CONCATENATE_POINT_CLOUD_TIGRA_NODE_NAME concatenate_point_cloud_tigra)
-set(CONCATENATE_POINT_CLOUD_TIGRA_NODE_SRC  src/concatenate_point_cloud_tigra.cpp)
-
-add_executable(${CONCATENATE_POINT_CLOUD_TIGRA_NODE_NAME} ${CONCATENATE_POINT_CLOUD_TIGRA_NODE_SRC})
-
-add_dependencies(${CONCATENATE_POINT_CLOUD_TIGRA_NODE_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(${CONCATENATE_POINT_CLOUD_TIGRA_NODE_NAME} 
-${catkin_LIBRARIES} 
-
-${PCL_ROS_LIBRARIES}
-${YAML_CPP_LIBRARIES})
-
-
 include_directories(
-
   ${catkin_INCLUDE_DIRS}
-
 )

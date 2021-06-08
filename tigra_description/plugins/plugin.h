@@ -41,14 +41,14 @@ protected:
 private:
     void onCmdVel(const geometry_msgs::Twist& command);
     void updateCurrentState();
-    void updateOdometry();
+    void updateOdometry(double time_step);
 
     void twistTimerCallback(const ros::TimerEvent& event);
     void tfTimerCallback(const ros::TimerEvent& event);
     void OnUpdate(const common::UpdateInfo& info);
 
     void driveUpdate();
-    void steeringUpdate();
+    void steeringUpdate(double time_step);
 
     void stopWheels();
     
@@ -79,8 +79,6 @@ private:
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Odometry> > odom_pub_;
     std::shared_ptr<realtime_tools::RealtimePublisher<tf::tfMessage> > tf_odom_pub_;
 
-    double time_step_;
-
     std::string odom_frame_id_;
     std::string base_frame_id_;
 
@@ -89,6 +87,9 @@ private:
 
     double linear_;  //   [m/s]
     double angular_; // [rad/s]
+
+    // Arbitrarily set maximum steering rate to 800 deg/s
+    const double MAX_STEERING_RATE = 800.0 * M_PI / 180.0 * TIGRA_STEERING_RATIO;
 
     // Odometry
     double x_;
@@ -99,6 +100,7 @@ private:
 
     // SDF parameters
     std::string robot_name_;
+    std::string odom_frame_;
     bool pub_tf_;
     double max_steer_rad_;
     double tf_freq_;
