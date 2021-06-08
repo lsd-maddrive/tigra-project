@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<property name="springStiffness" value="125000" />
-	<property name="springReference" value="0" />
+	<xacro:property name="springStiffness" value="125000" />
+	<xacro:property name="springReference" value="0" />
 
 	<xacro:include filename="$(find tigra_description)/urdf/macros/inertia.urdf.xacro" />
 	<xacro:include filename="$(find tigra_description)/urdf/macros/common.urdf.xacro" />
 	<xacro:include filename="$(find tigra_description)/urdf/macros/wheels.urdf.xacro" />
 
 	<!-- XACRO SPEED -->
-	<macro name="speed_wheel" params="name base_name xyz ">
+	<xacro:macro name="speed_wheel" params="name base_name xyz ">
 		<base_wheel name="wheel_${name}" />
 		<gazebo reference="${name}_spring_joint">
 			<implicitSpringDamper>true</implicitSpringDamper>
@@ -33,10 +33,10 @@
 			<axis xyz="0 1 0" />
 			<limit effort="500.0" velocity="10.0" />
 		</joint>
-	</macro>
+	</xacro:macro>
 
 	<!-- XACRO STEER -->
-	<macro name="steer_wheel" params="name base_name xyz">
+	<xacro:macro name="steer_wheel" params="name base_name xyz">
 		<base_wheel name="wheel_${name}" />
 		<gazebo reference="${name}_spring_joint">
 			<implicitSpringDamper>true</implicitSpringDamper>
@@ -70,5 +70,5 @@
 			<axis xyz="0 1 0" />
 			<limit effort="500" velocity="10.0" />
 		</joint>
-	</macro>
+	</xacro:macro>
 </robot>

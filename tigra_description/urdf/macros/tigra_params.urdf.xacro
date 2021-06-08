@@ -15,6 +15,8 @@
 
     <xacro:property name="lidar_location" value="${heigth/2+0.01}" />
 
-	<xacro:property name="robot_name" value="tigra" />
 	<xacro:property name="odom_frame" value="odom_wheel" />
+
+    <xacro:arg name="pub_tf" default="true" />
+    <xacro:arg name="robot_name" default="tigra" />
 </robot>

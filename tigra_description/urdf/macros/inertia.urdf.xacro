@@ -9,14 +9,14 @@
 	</xacro:macro>
 	<xacro:macro name="box_inertia" params="width length height mass *origin">
 		<inertial>
-			<insert_block name="origin" />
+			<xacro:insert_block name="origin" />
 			<mass value="${mass}" />
 			<inertia ixx="${mass * (width * width + height * height) / 12}" ixy="0" ixz="0" iyy="${mass * (length * length + height * height) / 12}" iyz="0" izz="${mass * (width * width + length * length) / 12}" />
 		</inertial>
 	</xacro:macro>
 	<xacro:macro name="cylinder_inertia" params="r h mass *origin">
 		<inertial>
-			<insert_block name="origin" />
+			<xacro:insert_block name="origin" />
 			<mass value="${mass}" />
 			<inertia ixx="${mass / 12 * (3 * r * r + h * h)}" ixy="0.0" ixz="0.0" iyy="${mass / 12 * (3 * r * r + h * h)}" iyz="0.0" izz="${mass / 2 * r * r}" />
 		</inertial>

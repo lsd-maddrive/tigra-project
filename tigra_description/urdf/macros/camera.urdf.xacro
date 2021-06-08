@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<property name="cam_mass" value="0" />
-	<property name="cam_size" value="0.02" />
+	<xacro:property name="cam_mass" value="0" />
+	<xacro:property name="cam_size" value="0.02" />
 
 	<xacro:include filename="$(find tigra_description)/urdf/macros/inertia.urdf.xacro" />
 
-	<macro name="camera_link" params="name direction position">
+	<xacro:macro name="camera_link" params="name direction position">
 		<link name="${direction}_${position}_cam_frame">
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0" />
@@ -21,9 +21,9 @@
 			</collision>
 			<null_inertial />
 		</link>
-	</macro>
+	</xacro:macro>
 
-	<macro name="single_camera" params="name direction position xyz rpy fov">
+	<xacro:macro name="single_camera" params="name direction position xyz rpy fov">
 		<camera_link name="${name}" direction="${direction}" position="${position}" />
 		<joint name="${direction}_${position}_joint" type="fixed">
 			<child link="${direction}_${position}_cam_frame" />
@@ -64,7 +64,7 @@
 				<plugin name="${direction}_${position}_cam_controller" filename="libgazebo_ros_camera.so">
 					<alwaysOn>true</alwaysOn>
 					<updateRate>30.0</updateRate>
-					<cameraName>${robot_name}/${direction}/${position}</cameraName>
+					<cameraName>$(arg robot_name)/${direction}/${position}</cameraName>
 					<imageTopicName>image_raw</imageTopicName>
 					<frameName>${direction}_${position}_optical_frame</frameName>
 					<hackBaseline>0.07</hackBaseline>
@@ -76,5 +76,5 @@
 				</plugin>
 			</sensor>
 		</gazebo>
-	</macro>
+	</xacro:macro>
 </robot>
