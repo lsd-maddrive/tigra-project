@@ -103,7 +103,7 @@ void TigraPlugin::Load(physics::ModelPtr model, sdf::ElementPtr sdf)
     }
 
     /* TODO - read from SDF */
-    odom_frame_id_ = "odom";
+    odom_frame_id_ = "odom_plugin";
     base_frame_id_ = "base_footprint";
     publish_period_ = 1. / 100;
 
@@ -216,7 +216,7 @@ void TigraPlugin::updateOdometry()
         odom_pub_->msg_.pose.pose.orientation = orientation;
         odom_pub_->msg_.twist.twist.linear.x  = 0;
         odom_pub_->msg_.twist.twist.angular.z = 0;
-        odom_pub_->unlockAndPublish();
+        // odom_pub_->unlockAndPublish();
     }
 
     if (tf_odom_pub_->trylock())
@@ -226,7 +226,7 @@ void TigraPlugin::updateOdometry()
         odom_frame.transform.translation.x = x_ + wheelbase_ * (1.0 - cos(yaw_));
         odom_frame.transform.translation.y = y_ - wheelbase_ * sin(yaw_);
         odom_frame.transform.rotation = orientation;
-        tf_odom_pub_->unlockAndPublish();
+        // tf_odom_pub_->unlockAndPublish();
     }
 }
 

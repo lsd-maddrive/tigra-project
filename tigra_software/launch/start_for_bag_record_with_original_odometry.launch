@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find tigra_software)/launch/tigra_overview_spawner.launch" />
+    <include file="$(find tigra_software)/launch/keyop.launch" />
+    <include file="$(find tigra_software)/launch/trajectory_record_real_odom.launch" />
+
+</launch>

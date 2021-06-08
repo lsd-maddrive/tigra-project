@@ -1,0 +1,12 @@
+<launch>
+    <include file="$(find tigra_software)/launch/tigra_overview_spawner.launch" />
+    <include file="$(find tigra_software)/launch/rviz_start.launch" />
+
+    <node pkg="tigra_software" type="pub_odom_from_gazebo.py" name="odom_pub" />
+    <node pkg="tigra_software" type="my_odom.py" name="tf_broadcast" />
+    
+    <include file="$(find tigra_software)/launch/trajectory_record.launch" />
+    <include file="$(find tigra_software)/launch/keyop.launch" />
+    <include file="$(find tigra_software)/launch/concatenate_point_cloud.launch" />
+
+</launch>

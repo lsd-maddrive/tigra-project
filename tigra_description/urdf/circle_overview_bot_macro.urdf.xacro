@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<robot name="tigra" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<link name="base_footprint" />
+
+<joint name="base_footprint_joint" type="fixed">
+  <parent link="base_footprint" />
+  <child link="base_link" />
+</joint>
+
+    <xacro:property name="mass" value="1" />
+    <xacro:property name="width" value="0.1" />
+    <xacro:property name="height1" value="1" />
+
+    <xacro:property name="cam_mass" value="0"/>
+    <xacro:property name="cam_size" value="0.02" />
+    <!-- <xacro:include filename="$(find visual_custom_telemetry)/urdf/circle_overview_bot.gazebo" /> -->
+
+    <xacro:property name="degrees_90" value="${pi/2}"/>
+    <xacro:property name="degrees_180" value="${pi}"/>
+
+    <xacro:property name="robot_name" value="tigra" />
+
+
+<!-- BASE LINK DESCRIPTION -->
+    <link name="base_link">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${width} ${width} ${height1}" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${width} ${width} ${height1}" />
+            </geometry>
+            <material name="green" />
+        </visual>
+    
+        <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia
+        ixx="${mass / 12.0 * (width*width + height1*height1)}" ixy="0.0" ixz="0.0"
+        iyy="${mass / 12.0 * (height1*height1 + width*width)}" iyz="0.0"
+        izz="${mass / 12.0 * (width*width + width*width)}"/>
+        </inertial>
+
+    </link>
+
+    <gazebo reference="base_link">
+        <material>Gazebo/Green</material>
+    </gazebo>
+<!-- BASE LINK DESCRIPTION -->
+
+<!-- START MACROS FOR VISUAL CAM -->
+    <xacro:macro name="camera_link" params="name direction position">
+        <link name="${direction}_${position}_cam_frame">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="${cam_size} ${cam_size} ${cam_size}" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="${cam_size} ${cam_size} ${cam_size}" />
+                </geometry>
+            </collision>
+
+            <inertial>
+                <mass value="1e-5" />
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+            </inertial>
+        </link>
+    </xacro:macro>
+<!-- END MACROS FOR VISUAL CAM -->
+
+
+<!-- START MACROS FOR CREATE CAM IN THE GAZEBO -->
+
+    <xacro:macro name="single_camera" params="name direction position xyz rpy fov">
+
+        <xacro:camera_link name="${name}" direction="${direction}" position="${position}" />
+
+        <joint name="${direction}_${position}_joint" type="fixed">
+            <child link="${direction}_${position}_cam_frame" />
+            <parent link="base_link" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+        </joint>
+
+        <link name="${direction}_${position}_optical_frame" />
+
+        <joint name="${direction}_${position}_optical_joint" type="fixed">
+            <child link="${direction}_${position}_optical_frame" />
+            <parent link="${direction}_${position}_cam_frame" />
+            <origin xyz="0 0 0" rpy="-${degrees_90} 0.0 -${degrees_90}" />
+        </joint>
+
+        <gazebo reference="${direction}_${position}_cam_frame">
+            <material>Gazebo/Orange</material>
+
+            <sensor type="camera" name="${direction}_${position}_cam">
+                <update_rate>30.0</update_rate>
+                <camera name="${direction}_${position}_cam">
+                    <horizontal_fov>${fov}</horizontal_fov>
+                    <image>
+                        <width>800</width>
+                        <height>600</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.001</stddev>
+                    </noise>
+                </camera>
+                <plugin name="${direction}_${position}_cam_controller" filename="libgazebo_ros_camera.so">
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>30.0</updateRate>
+                    <cameraName>${robot_name}/${direction}/${position}</cameraName>
+                    <imageTopicName>image_raw</imageTopicName>
+                    <frameName>${direction}_${position}_optical_frame</frameName>
+                    <hackBaseline>0.07</hackBaseline>
+                    <distortionK1>0.0</distortionK1>
+                    <distortionK2>0.0</distortionK2>
+                    <distortionK3>0.0</distortionK3>
+                    <distortionT1>0.0</distortionT1>
+                    <distortionT2>0.0</distortionT2>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>   
+<!-- END MACROS FOR CREATE CAM IN THE GAZEBO -->
+
+    <xacro:single_camera name="front_direction_left" direction="front" position="left" xyz="0.5 0.2 0" rpy="0 0 0" fov="1.3962634" />
+    <xacro:single_camera name="front_direction_right" direction="front" position="right" xyz="0.5 -0.2 0" rpy="0 0 0" fov="1.3962634" />
+
+    <xacro:single_camera name="backside_direction_left" direction="backside" position="left" xyz="-0.5 -0.2 0" rpy="0 0.0 ${degrees_180}" fov="1.3962634" />
+    <xacro:single_camera name="backside_direction_right" direction="backside" position="right" xyz="-0.5 0.2 0" rpy="0 0.0 ${degrees_180}" fov="1.3962634" />
+
+
+    <xacro:single_camera name="rightside_direction_left" direction="rightside" position="left" xyz="0.2 -0.5 0" rpy="0 0.0 -${degrees_90}" fov="1.3962634" />
+    <xacro:single_camera name="rightside_direction_right" direction="rightside" position="right" xyz="-0.2 -0.5 0" rpy="0 0.0 -${degrees_90}" fov="1.3962634" />
+
+    <xacro:single_camera name="leftside_direction_left" direction="leftside" position="left" xyz="-0.2 0.5 0" rpy="0 0.0 ${degrees_90}" fov="1.3962634" />
+    <xacro:single_camera name="leftside_direction_right" direction="leftside" position="right" xyz="0.2 0.5 0" rpy="0 0.0 ${degrees_90}" fov="1.3962634" />
+<!-- 
+    <xacro:single_camera name="back_direction_left" direction="back" position="left" xyz="-1 0 0" rpy="0 0 0" fov="1.3962634" />
+    <xacro:single_camera name="back_direction_right" direction="back" position="right" xyz="1 0 0" rpy="0 0 0" fov="1.3962634" />
+
+
+    <xacro:single_camera name="forward_direction_left" direction="r" position="left" xyz="-1 0 0" rpy="0 0 0" fov="1.3962634" />
+    <xacro:single_camera name="forward_direction_right" direction="front" position="right" xyz="1 0 0" rpy="0 0 0" fov="1.3962634" />
+
+
+    <xacro:single_camera name="forward_direction_left" direction="front" position="left" xyz="-1 0 0" rpy="0 0 0" fov="1.3962634" />
+    <xacro:single_camera name="forward_direction_right" direction="front" position="right" xyz="1 0 0" rpy="0 0 0" fov="1.3962634" /> -->
+    <!-- <xacro:camera_link name="kekw" direction="left" position="forward" /> -->
+</robot>

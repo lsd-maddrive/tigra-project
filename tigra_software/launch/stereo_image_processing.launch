@@ -1,0 +1,41 @@
+<launch>
+
+    <arg name="robot_name" default="tigra" />
+
+    <group ns="$(arg robot_name)/front">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="front_direction" output="screen" >
+            <param name="correlation_window_size" value="21"/>
+            <param name="disparity_range" value="63"/>
+            <param name="uniqueness_ratio" value="25"/>
+            <param name="speckle_size" value="276"/>
+        </node>
+    </group>
+
+    <group ns="$(arg robot_name)/backside">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="backside_direction" output="screen">
+            <param name="correlation_window_size" value="21"/>
+            <param name="disparity_range" value="63"/>
+            <param name="uniqueness_ratio" value="25"/>
+            <param name="speckle_size" value="276"/>
+        </node>
+    </group>
+
+    <group ns="$(arg robot_name)/rightside">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="rightside_direction" output="screen" >
+            <param name="correlation_window_size" value="21"/>
+            <param name="disparity_range" value="63"/>
+            <param name="uniqueness_ratio" value="25"/>
+            <param name="speckle_size" value="276"/>
+        </node>
+    </group>
+
+    <group ns="$(arg robot_name)/leftside">
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="leftside_direction" output="screen">
+            <param name="correlation_window_size" value="21"/>
+            <param name="disparity_range" value="63"/>
+            <param name="uniqueness_ratio" value="25"/>
+            <param name="speckle_size" value="276"/>
+        </node>
+    </group>
+
+</launch>

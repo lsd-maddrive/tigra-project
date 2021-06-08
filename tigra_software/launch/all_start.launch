@@ -1,0 +1,8 @@
+<launch>
+    <include file="$(find tigra_software)/launch/tigra_overview_spawner.launch" />
+    <include file="$(find tigra_software)/launch/rviz_start.launch" />
+    <include file="$(find tigra_software)/launch/stereo_image_processing.launch" />
+    <include file="$(find tigra_software)/launch/concatenate_point_cloud.launch" />
+    <!-- <include file="$(find tigra_description)/launch/point_to_laser.launch" /> -->
+
+</launch>

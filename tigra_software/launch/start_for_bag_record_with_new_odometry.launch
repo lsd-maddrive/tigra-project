@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find tigra_software)/launch/rtabmap_visual_SLAM_front_cam.launch" />
+    <include file="$(find tigra_software)/launch/trajectory_record_visual_odom.launch" />
+
+</launch>

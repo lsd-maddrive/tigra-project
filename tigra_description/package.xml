@@ -13,10 +13,31 @@
   <run_depend>gazebo_ros</run_depend>
   <run_depend>roscpp</run_depend>
 
+  <build_depend>message_generation</build_depend>
+  <run_depend>message_runtime</run_depend>
+
+  <build_depend>tf</build_depend>
+  <!-- <build_export_depend>tf</build_export_depend> -->
+  <run_depend>tf</run_depend>
+  <build_depend>yaml-cpp</build_depend>
+  <!-- <build_export_depend>yaml-cpp</build_export_depend> -->
+  <run_depend>yaml-cpp</run_depend>
+
+  <build_depend>libpcl-all-dev</build_depend>
+  <!-- <build_export_depend>libpcl-all-dev</build_export_depend> -->
+  <run_depend>libpcl-all</run_depend>
+
+  <build_depend>pcl</build_depend>
+  <!-- <build_export_depend>pcl</build_export_depend> -->
+  <run_depend>pcl</run_depend>
+
+  <build_depend>gazebo_ros</build_depend>
+  <run_depend>gazebo_ros</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+    <gazebo_ros gazebo_model_path="${prefix}/models"/> 
   </export>
 </package>
 
