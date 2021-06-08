@@ -29,15 +29,15 @@ namespace gazebo
         steer_fr_joint_ = model->GetJoint("joint_right_wheel_1_steer_joint");
         wheel_rl_joint_ = model->GetJoint("joint_left_wheel_1_speed_joint");
         wheel_rr_joint_ = model->GetJoint("joint_right_wheel_1_speed_joint");
-        wheel_fl_joint_ = model->GetJoint("joint_left_wheel_2_speed_joint");
-        wheel_fr_joint_ = model->GetJoint("joint_right_wheel_2_speed_joint");
+        // wheel_fl_joint_ = model->GetJoint("joint_left_wheel_2_speed_joint");
+        // wheel_fr_joint_ = model->GetJoint("joint_right_wheel_2_speed_joint");
 
         assert(steer_fl_joint_);
         assert(steer_fr_joint_);
         assert(wheel_rl_joint_);
         assert(wheel_rr_joint_);
-        assert(wheel_fl_joint_);
-        assert(wheel_fr_joint_);
+        // assert(wheel_fl_joint_);
+        // assert(wheel_fr_joint_);
 
         if (sdf->HasElement("robotName"))
         {

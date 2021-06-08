@@ -36,7 +36,7 @@
 	</joint>
 
     <gazebo>
-        <plugin name="tigra_interface_plugin" filename="libtigra_interface_plugin.so">
+        <plugin name="tigra_interface_plugin" filename="libackermann_controller_plugin.so">
             <maxSteerRad>${mid_wheel_turn_limit}</maxSteerRad>
             <wheelbase>${wheelbase}</wheelbase>
             <wheelRadius>${wheel_radius}</wheelRadius>
@@ -47,10 +47,8 @@
         </plugin>
     </gazebo>
 
-	<!-- STEER WHEEL -->
 	<xacro:steer_wheel name="joint_right_wheel_1" base_name="base_link" xyz="0.5 -0.375 -0.35" />
 	<xacro:steer_wheel name="joint_left_wheel_1" base_name="base_link" xyz="0.5 0.375 -0.35" />
-	<!-- SPEED WHEEL -->
 	<xacro:speed_wheel name="joint_right_wheel_2" base_name="base_link" xyz="-0.5 -0.375 -0.35" />
 	<xacro:speed_wheel name="joint_left_wheel_2" base_name="base_link" xyz="-0.5 0.375 -0.35" />
 </robot>
