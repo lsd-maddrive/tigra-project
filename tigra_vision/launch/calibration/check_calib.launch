@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="cameras_driver_usb.launch"/>
+	<include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch" />
 
     <group ns="stereo">
   
