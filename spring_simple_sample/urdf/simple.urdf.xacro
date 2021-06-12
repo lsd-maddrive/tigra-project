@@ -1,37 +1,37 @@
 <?xml version="1.0"?>
 <robot name="sample" xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<property name="length" value="1.85" />
-	<property name="width" value="0.75" />
-	<property name="heigth" value="0.6" />
-	<property name="mass" value="420" />
-	<property name="wheel_width" value="0.25" />
-	<property name="wheel_radius" value="0.25" />
-	<property name="wheel_mass" value="20" />
-	<property name="wheel_turn_limit" value="${pi/4}" />
-	<property name="wheelbase" value="1.24" />
-	<property name="trackbase" value="1.00" />
-	<property name="base_center" value="${length/2}" />
+	<xacro:property name="length" value="1.85" />
+	<xacro:property name="width" value="0.75" />
+	<xacro:property name="heigth" value="0.6" />
+	<xacro:property name="mass" value="420" />
+	<xacro:property name="wheel_width" value="0.25" />
+	<xacro:property name="wheel_radius" value="0.25" />
+	<xacro:property name="wheel_mass" value="20" />
+	<xacro:property name="wheel_turn_limit" value="${pi/4}" />
+	<xacro:property name="wheelbase" value="1.24" />
+	<xacro:property name="trackbase" value="1.00" />
+	<xacro:property name="base_center" value="${length/2}" />
 	<!-- inertia -->
-	<macro name="null_inertial">
+	<xacro:macro name="null_inertial">
 		<inertial>
 			<mass value="0.001" />
 			<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
 		</inertial>
-	</macro>
-	<macro name="base_inertial" params="width length height mass *origin">
+	</xacro:macro>
+	<xacro:macro name="base_inertial" params="width length height mass *origin">
 		<inertial>
-			<insert_block name="origin" />
+			<xacro:insert_block name="origin" />
 			<mass value="${mass}" />
 			<inertia ixx="${mass * (width * width + height * height) / 12}" ixy="0" ixz="0" iyy="${mass * (length * length + height * height) / 12}" iyz="0" izz="${mass * (width * width + length * length) / 12}" />
 		</inertial>
-	</macro>
-	<macro name="wheel_inertial" params="r h mass *origin">
+	</xacro:macro>
+	<xacro:macro name="wheel_inertial" params="r h mass *origin">
 		<inertial>
-			<insert_block name="origin" />
+			<xacro:insert_block name="origin" />
 			<mass value="${mass}" />
 			<inertia ixx="${mass / 12 * (3 * r * r + h * h)}" ixy="0.0" ixz="0.0" iyy="${mass / 12 * (3 * r * r + h * h)}" iyz="0.0" izz="${mass / 2 * r * r}" />
 		</inertial>
-	</macro>
+	</xacro:macro>
 	<!-- xacro base new -->
 	<link name="base_link">
 		<pose>0 0 0 0 0 0</pose>

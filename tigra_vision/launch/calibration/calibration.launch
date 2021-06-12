@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+	<include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch" />
+
+	<node pkg="camera_calibration" type="cameracalibrator.py" name="cameracalibrator" 
+		args="--size 8x6 --square 0.101 --no-service-check --approximate=0.01
+		right:=/stereo/right/image_raw left:=/stereo/left/image_raw 
+		right_camera:=/stereo/right left_camera:=/stereo/left" 
+		output="screen">
+	</node>
+
+</launch>
+
+<!-- 		size 10x7  square 0.03  -->
+		<!-- square 0.072  -->

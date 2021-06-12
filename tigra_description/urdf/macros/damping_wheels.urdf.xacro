@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:property name="springStiffness" value="125000" />
+	<xacro:property name="springReference" value="0" />
+
+	<xacro:include filename="$(find tigra_description)/urdf/macros/inertia.urdf.xacro" />
+	<xacro:include filename="$(find tigra_description)/urdf/macros/common.urdf.xacro" />
+	<xacro:include filename="$(find tigra_description)/urdf/macros/wheels.urdf.xacro" />
+
+	<!-- XACRO SPEED -->
+	<xacro:macro name="speed_wheel" params="name base_name xyz ">
+		<base_wheel name="wheel_${name}" />
+		<gazebo reference="${name}_spring_joint">
+			<implicitSpringDamper>true</implicitSpringDamper>
+			<springStiffness>${springStiffness}</springStiffness>
+			<springReference>${springReference}</springReference>
+		</gazebo>
+		<joint name="${name}_spring_joint" type="prismatic">
+			<limit lower="-0.1" upper="0.1" effort="0" velocity="0" />
+			<parent link="${base_name}" />
+			<child link="spring1_${name}" />
+			<dynamics damping="0.0" friction="0.0" />
+			<axis xyz="0 0 1" />
+		</joint>
+		<link name="spring1_${name}">
+			<null_inertial />
+		</link>
+		<joint name="${name}_speed_joint" type="continuous">
+			<parent link="spring1_${name}" />
+			<child link="wheel_${name}" />
+			<origin xyz="${xyz}" rpy="0 0 0" />
+			<axis xyz="0 1 0" />
+			<limit effort="500.0" velocity="10.0" />
+		</joint>
+	</xacro:macro>
+
+	<!-- XACRO STEER -->
+	<xacro:macro name="steer_wheel" params="name base_name xyz">
+		<base_wheel name="wheel_${name}" />
+		<gazebo reference="${name}_spring_joint">
+			<implicitSpringDamper>true</implicitSpringDamper>
+			<springStiffness>${springStiffness}</springStiffness>
+			<springReference>${springReference}</springReference>
+		</gazebo>
+		<joint name="${name}_spring_joint" type="prismatic">
+			<limit lower="-0.1" upper="0.1" effort="0" velocity="0" />
+			<parent link="${base_name}" />
+			<child link="spring2_${name}" />
+			<dynamics damping="0.0" friction="0.0" />
+			<axis xyz="0 0 1" />
+		</joint>
+		<link name="spring2_${name}">
+			<null_inertial />
+		</link>
+		<joint name="${name}_steer_joint" type="revolute">
+			<limit lower="${-wheel_turn_limit}" upper="${wheel_turn_limit}" effort="1000" velocity="0" />
+			<parent link="spring2_${name}" />
+			<child link="steer_${name}" />
+			<origin xyz="${xyz}" rpy="0 0 0" />
+			<axis xyz="0 0 1" />
+		</joint>
+		<link name="steer_${name}">
+			<null_inertial />
+		</link>
+		<joint name="${name}_speed_joint" type="continuous">
+			<parent link="steer_${name}" />
+			<child link="wheel_${name}" />
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<axis xyz="0 1 0" />
+			<limit effort="500" velocity="10.0" />
+		</joint>
+	</xacro:macro>
+</robot>

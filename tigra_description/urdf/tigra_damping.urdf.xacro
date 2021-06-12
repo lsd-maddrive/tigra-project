@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <robot name="tigra" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:include filename="$(find tigra_description)/urdf/macros/wheels.urdf.xacro" />
+	<xacro:include filename="$(find tigra_description)/urdf/macros/lidar.urdf.xacro" />
+	<xacro:include filename="$(find tigra_description)/urdf/macros/damping_wheels.urdf.xacro" />
 	<xacro:include filename="$(find tigra_description)/urdf/macros/inertia.urdf.xacro" />
 	<xacro:include filename="$(find tigra_description)/urdf/macros/tigra_params.urdf.xacro" />
 
-	<!-- xacro base new -->
 	<link name="base_link">
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0" />
@@ -42,8 +42,8 @@
             <wheelRadius>${wheel_radius}</wheelRadius>
             <trackWidth>${track_width}</trackWidth>
             <odomFrame>${odom_frame}</odomFrame>
-            <pubTf>$(arg pub_tf)</pubTf>
-            <robotName>$(arg robot_name)</robotName>
+            <pubTf>${arg pub_tf}</pubTf>
+            <robotName>${arg robot_name}</robotName>
         </plugin>
     </gazebo>
 

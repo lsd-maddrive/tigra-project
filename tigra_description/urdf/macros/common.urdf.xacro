@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:property name="degrees_30" value="${pi/6}" />
+    <xacro:property name="degrees_90" value="${pi/2}" />
+    <xacro:property name="degrees_180" value="${pi}" />
+</robot>

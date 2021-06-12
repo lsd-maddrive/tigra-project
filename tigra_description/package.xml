@@ -40,4 +40,3 @@
     <gazebo_ros gazebo_model_path="${prefix}/models"/> 
   </export>
 </package>
-

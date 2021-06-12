@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:property name="cam_mass" value="0" />
+	<xacro:property name="cam_size" value="0.02" />
+
+	<xacro:include filename="$(find tigra_description)/urdf/macros/inertia.urdf.xacro" />
+
+	<xacro:macro name="camera_link" params="name direction position">
+		<link name="${direction}_${position}_cam_frame">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="${cam_size} ${cam_size} ${cam_size}" />
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="${cam_size} ${cam_size} ${cam_size}" />
+				</geometry>
+			</collision>
+			<null_inertial />
+		</link>
+	</xacro:macro>
+
+	<xacro:macro name="single_camera" params="name direction position xyz rpy fov">
+		<camera_link name="${name}" direction="${direction}" position="${position}" />
+		<joint name="${direction}_${position}_joint" type="fixed">
+			<child link="${direction}_${position}_cam_frame" />
+			<parent link="base_link" />
+			<origin xyz="${xyz}" rpy="${rpy}" />
+		</joint>
+		<link name="${direction}_${position}_optical_frame" />
+		<joint name="${direction}_${position}_optical_joint" type="fixed">
+			<child link="${direction}_${position}_optical_frame" />
+			<parent link="${direction}_${position}_cam_frame" />
+			<origin xyz="0 0 0" rpy="-${degrees_90} 0.0 -${degrees_90}" />
+		</joint>
+		<gazebo reference="${direction}_${position}_cam_frame">
+			<material>
+			Gazebo/Orange
+		</material>
+			<sensor type="camera" name="${direction}_${position}_cam">
+				<update_rate>
+				30.0
+			</update_rate>
+				<camera name="${direction}_${position}_cam">
+					<horizontal_fov>${fov}</horizontal_fov>
+					<image>
+						<width>800</width>
+						<height>600</height>
+						<format>R8G8B8</format>
+					</image>
+					<clip>
+						<near>0.02</near>
+						<far>300</far>
+					</clip>
+					<noise>
+						<type>gaussian</type>
+						<mean>0.0</mean>
+						<stddev>0.001</stddev>
+					</noise>
+				</camera>
+				<plugin name="${direction}_${position}_cam_controller" filename="libgazebo_ros_camera.so">
+					<alwaysOn>true</alwaysOn>
+					<updateRate>30.0</updateRate>
+					<cameraName>$(arg robot_name)/${direction}/${position}</cameraName>
+					<imageTopicName>image_raw</imageTopicName>
+					<frameName>${direction}_${position}_optical_frame</frameName>
+					<hackBaseline>0.07</hackBaseline>
+					<distortionK1>0.0</distortionK1>
+					<distortionK2>0.0</distortionK2>
+					<distortionK3>0.0</distortionK3>
+					<distortionT1>0.0</distortionT1>
+					<distortionT2>0.0</distortionT2>
+				</plugin>
+			</sensor>
+		</gazebo>
+	</xacro:macro>
+</robot>

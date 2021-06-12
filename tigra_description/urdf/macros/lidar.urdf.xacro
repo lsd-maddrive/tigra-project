@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="lidar_mass" value="0.1" />
+  <xacro:property name="lidar_height" value="0.02" />
+  <xacro:property name="lidar_radius" value="0.04" />
+
+  <xacro:macro name="simple_lidar" params="name base_name place_height">
+    <link name="${name}">
+      <cylinder_inertial r="${lidar_radius}" h="${lidar_height}" mass="${lidar_mass}">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </cylinder_inertial>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <cylinder length="${lidar_height}" radius="${lidar_radius}" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <cylinder length="${lidar_height}" radius="${lidar_radius}" />
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="lidar_joint" type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="0 0 ${place_height}" rpy="0 0 0" />
+      <parent link="${base_name}" />
+      <child link="lidar_link" />
+    </joint>
+
+    <!-- GAZEBO -->
+    <gazebo reference="lidar_link">
+      <material>Gazebo/Red</material>
+      <sensor type="ray" name="head_hokuyo_sensor">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>40</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14</min_angle>
+              <max_angle>3.14</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.10</min>
+            <max>30.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+          <topicName>/tigra_description/laser/scan</topicName>
+          <frameName>lidar_link</frameName>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>
