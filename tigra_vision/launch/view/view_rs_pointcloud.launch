@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_vision)/rviz/rs_pointcloud.rviz" required="true" />
+</launch>
