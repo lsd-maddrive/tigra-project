@@ -4,15 +4,14 @@
   <arg name="debug" default="false" />
   <arg name="gui" default="true" />
   <arg name="pause" default="false" />
-  <arg name="pub_tf" default="true" />
   <arg name="world" default="$(find tigra_description)/worlds/lab.world" />
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra_w_360_cameras.urdf.xacro' pub_tf:=$(arg pub_tf) robot_name:=tigra" />
+  <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra.urdf.xacro' robot_name:=tigra" />
   <arg name="x" default="0" />
   <arg name="y" default="0" />
-  <arg name="z" default="0.6" />
+  <arg name="z" default="0.5" />
 
-  <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
+  <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model robot -x $(arg x) -y $(arg y) -z $(arg z)" />
 
   <!-- include gazebo_ros launcher -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">

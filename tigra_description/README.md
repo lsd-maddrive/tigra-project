@@ -63,3 +63,6 @@ rostopic pub /tigra/cmd_vel geometry_msgs/Twist -r 5 -- '[3.0, 0.0, 0.0]' '[0.0,
 - [Database models](https://github.com/osrf/gazebo_models)
 
 
+# Проверка корректности модели
+
+`check_urdf <(xacro tigra_description/urdf/tigra.urdf.xacro)`
