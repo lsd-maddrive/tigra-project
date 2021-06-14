@@ -1,0 +1,12 @@
+debug: 2
+device: /dev/ttyUSB0
+tmode3: 0
+
+uart1:
+  baudrate: 9600          
+  in: 9                   
+  out: 1                  
+
+
+publish:
+  all: true
