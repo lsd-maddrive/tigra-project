@@ -1,19 +1,15 @@
 # Tigra
 
-## Подгрузить все наработки помжно командой:
+## Запуск GPS: 
 
 ```bash
-roslaunch tigra_software runall.launch
+roslaunch tigra_software tigra_gps.launch
 ```
 
-## Запуск осуществляется следующей командой в терминале:
+
+## references: 
 
 ```bash
-roslaunch tigra_software tigra_software.launch
+https://github.com/KumarRobotics/ublox
 ```
 
-## Настройка планера подргружается с помощью команды: 
-
-```bash
-rosrun rqt_reconfigure rqt_reconfigure
-```

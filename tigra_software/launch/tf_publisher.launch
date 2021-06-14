@@ -1,4 +1,0 @@
-<launch>
-    <node pkg="tf" type="static_transform_publisher" name="right_camera" args="1 -0.335 0 0 0 0 1 base_link right_camera 100" />
-    <node pkg="tf" type="static_transform_publisher" name="left_camera" args="1 0.335 0 0 0 0 1 base_link left_camera 100" />
-</launch>
