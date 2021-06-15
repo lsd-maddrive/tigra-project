@@ -1,0 +1,1 @@
+cp 10.tigra.rules /etc/udev/rules.d/10.tigra.rules
