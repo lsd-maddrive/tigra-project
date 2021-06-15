@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
+<arg name="show_images_from_cameras" default="false" />
+
 <arg name="video_device_right" default="/dev/video0" />
 <arg name="video_device_left" default="/dev/video1" />
 
@@ -31,4 +33,8 @@
 
 </node>
 
+<group if="$(arg show_images_from_cameras)">
+
+	<include file="$(find tigra_vision)/launch/view/show_images_from_cameras.launch" />
+</group>
 </launch>
