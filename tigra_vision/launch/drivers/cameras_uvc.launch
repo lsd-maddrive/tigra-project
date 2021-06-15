@@ -35,6 +35,6 @@
 
 <group if="$(arg show_images_from_cameras)">
 
-  <include file="$(find tigra_vision)/launch/show_images_from_cameras.launch" />
+	<include file="$(find tigra_vision)/launch/view/show_images_from_cameras.launch" />
 </group>
 </launch>
