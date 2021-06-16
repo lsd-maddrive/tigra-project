@@ -1,5 +1,7 @@
 #include <robot_layer/odom_model.hpp>
 
+#include <ros/ros.h>
+
 
 void OdometryBicycleModel::updateState(double steer_rad, double speed_rps, double ts)
 {
@@ -11,6 +13,10 @@ void OdometryBicycleModel::updateState(double steer_rad, double speed_rps, doubl
 
     const double dt = ts - prev_ts_;
     prev_ts_ = ts;
+    if (dt < 0) {
+        ROS_WARN("OdometryModel: Time delta is negative - update skipped");
+        return;
+    }
 
     const double linear = speed_rps * rps2mps_ * dt;
     const double angular = linear * tan(steer_rad) / wheelbase_;
