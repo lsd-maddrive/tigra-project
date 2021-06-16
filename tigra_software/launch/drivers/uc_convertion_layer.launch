@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <node pkg="tf" type="static_transform_publisher" name="base_footprint_2_link" args="0 0 0.6 0 0 0 /base_footprint /base_link 10" />
+
+
+</launch>
