@@ -23,11 +23,13 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
+  include
 )
 
 set(ROBOT_LAYER_NAME robot_layer)
 set(ROBOT_LAYER_SRC 
   src/robot_layer/main.cpp
+  src/robot_layer/odom_model.cpp
 )
 
 add_executable(${ROBOT_LAYER_NAME}

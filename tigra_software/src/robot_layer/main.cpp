@@ -3,9 +3,10 @@
 using namespace std;
 
 #include <boost/thread/thread.hpp>
+#include <boost/assign.hpp>
 
+// ROS
 #include <ros/ros.h>
-
 #include <tf/tf.h>
 
 #include <nav_msgs/Odometry.h>
@@ -15,65 +16,8 @@ using namespace std;
 #include <realtime_tools/realtime_buffer.h>
 #include <realtime_tools/realtime_publisher.h>
 
-class OdometryBicycleModel
-{
-public:
-    OdometryBicycleModel(double wheel_radius, double wheelbase) : x_(0), y_(0), yaw_(0), prev_ts_(-1), wheel_radius_(wheel_radius), wheelbase_(wheelbase)
-    {
-        rps2mps_ = wheel_radius;
-    }
-
-    void updateState(double steer_rad, double speed_rps, double ts);
-
-    double getX() { return x_ + wheelbase_ * (1.0 - cos(yaw_)); }
-    double getY() { return y_ - wheelbase_ * sin(yaw_); }
-    double getYaw() { return yaw_; }
-
-private:
-    // 2D coordinates [m]
-    double x_;
-    double y_;
-    // Yaw angle [rad]
-    double yaw_;
-
-    double prev_ts_;
-
-    double wheel_radius_;
-    double wheelbase_;
-
-    double rps2mps_;
-
-    const double MIN_CURVATURE_RADIUS = 0.0001;
-};
-
-void OdometryBicycleModel::updateState(double steer_rad, double speed_rps, double ts)
-{
-    if (prev_ts_ < 0)
-    {
-        prev_ts_ = ts;
-        return;
-    }
-
-    const double dt = ts - prev_ts_;
-    prev_ts_ = ts;
-
-    const double linear = speed_rps * rps2mps_ * dt;
-    const double angular = linear * tan(steer_rad) / wheelbase_;
-
-    const double curvature_radius = wheelbase_ / cos(M_PI / 2.0 - steer_rad);
-
-    if (fabs(curvature_radius) > MIN_CURVATURE_RADIUS)
-    {
-        const double elapsed_distance = linear;
-        const double elapsed_angle = elapsed_distance / curvature_radius;
-        const double x_curvature = curvature_radius * sin(elapsed_angle);
-        const double y_curvature = curvature_radius * (cos(elapsed_angle) - 1.0);
-        const double wheel_heading = yaw_ + steer_rad;
-        y_ += x_curvature * sin(wheel_heading) + y_curvature * cos(wheel_heading);
-        x_ += x_curvature * cos(wheel_heading) - y_curvature * sin(wheel_heading);
-        yaw_ += elapsed_angle;
-    }
-}
+// Local includes
+#include <robot_layer/odom_model.hpp>
 
 class OdometryConverter
 {
