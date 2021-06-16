@@ -16,6 +16,15 @@ sudo apt-get install \
 
 > Для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
 
+# Некоторые правила разработки
+
+- Перед началом работы над задачей (созданием ветки под задачу) сделайте `git pull` в `develop` ветке
+- Каждый комит должен содержать номер таски, в рамках которой делалась работа в этом комите. Пример: `#88 designed config structure and added comments`
+- Имя ветки, в которой ведется работа, должна содержать номер таски. Пример: `feature/88_radar_config`
+- При создании задачи указывайте проект в меню Projects
+- После завершения работы над задачей создавайте Pull Request на вивание ветки в `develop`. При создании указывайте ревьюверов (как минимум ведущего, можно и остальных), проект в Projects и связанные задачи (Linked Issues)
+- После апрува сливает в `develop` ведущий
+
 # Полезные доки
 
 - [Схема системы](https://drive.google.com/file/d/1iIvuMr4xtmul_ea4DkjYoXMdhi8A7dez/view?usp=sharing)
