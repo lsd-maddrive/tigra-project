@@ -3,6 +3,9 @@
 ## Пакеты для ROS
 
 - https://github.com/KumarRobotics/ublox
+- https://github.com/srv/viso2/tree/melodic_develop
+
+> Для сборки на `noetic` достаточно из CMakeLists.txt удалить Boost зависимость - signals
 
 ```bash
 sudo apt-get install \
@@ -11,7 +14,6 @@ sudo apt-get install \
     ros-$ROS_DISTRO-uvc_camera \
     ros-$ROS_DISTRO-rosserial-server \
     ros-$ROS_DISTRO-rosserial-client
-
 ```
 
 ### Для симулятора
@@ -75,3 +77,7 @@ sudo apt install \
 
 - https://github.com/ros-controls/ros_controllers/tree/noetic-devel/ackermann_steering_controller
 - http://www.lcad.inf.ufes.br/wiki/images/b/b8/Ackerman-steering.pdf
+
+## Visual odometry
+
+- http://wiki.ros.org/viso2_ros?distro=indigo
