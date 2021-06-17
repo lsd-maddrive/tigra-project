@@ -17,3 +17,9 @@ roslaunch tigra_software tigra_software.launch
 ```bash
 rosrun rqt_reconfigure rqt_reconfigure
 ```
+
+## Запуск GPS M8N осуществляется следующей командой в терминале: 
+
+```bash
+roslaunch tigra_software tigra_gps.launch
+```

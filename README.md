@@ -58,6 +58,7 @@ sudo apt-get install \
 - https://www.github.com/methylDragon/ros-sensor-fusion-tutorial/tree/master/01%20-%20ROS%20and%20Sensor%20Fusion%20Tutorial.md
 - http://docs.ros.org/en/lunar/api/robot_localization/html/integrating_gps.html
 - http://docs.ros.org/en/kinetic/api/robot_localization/html/state_estimation_nodes.html
+- https://github.com/KumarRobotics/ublox
 
 ## Odometry
 
