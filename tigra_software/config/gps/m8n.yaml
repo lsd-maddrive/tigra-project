@@ -1,0 +1,15 @@
+debug: 2
+device: /dev/ttyUSB0
+tmode3: 0
+
+# rate: 1                     # Measurement rate in Hz
+# nav_rate: 1                 # in number of measurement cycles
+
+uart1:
+  baudrate: 9600          # baudrate 
+  in: 9                   # UBX
+  out: 1                  # RTCM
+
+
+publish:                  # publish all data
+  all: true
