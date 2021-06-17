@@ -81,3 +81,8 @@ sudo apt install \
 ## Visual odometry
 
 - http://wiki.ros.org/viso2_ros?distro=indigo
+
+## Gazebo models
+
+- https://github.com/NevzatBOL/ROS-Beginner/tree/master/catkin_ws/src/sensor_models/urdf
+
