@@ -38,11 +38,18 @@ sudo apt-get install \
 
 ## Rosserial socket
 
-- Склонируйте https://github.com/ros-drivers/rosserial
-- Соберите `rosserial_client` - `catkin build rosserial_client` в этом пакете
-- Сгенерируйте сообщения для встраивания `rosrun rosserial_client make_libraries .`
-- Соберите или установети `rosserial_server` (`catkin build rosserial_server`)
+- Соберите пример с помощью скрипта [build.sh](samples/rosserial_socket_sample/build.sh)
+- Установите `rosserial_client` и `rosserial_server` (команда есть выше)
+- Запустите `rosserial_server` - это поднимет сервер на порту 23456 (`roslaunch tigra_software uc_socket_server.launch`)
+- Запустите пример из папки `build` в примере и можете общаться через `rostopic`
 
+# Сборка `ros_lib` для встраивания в микроконтроллерную связку
+
+- Установите `rosserial_client`
+- Установите `rosserial_server`
+- соберите наши пакеты `tigra_software` и `tigra_msgs` (`catkin build tigra_software tigra_msgs`)
+- Сгенерируйте сообщения для встраивания `rosrun tigra_msgs create_uc_ros_lib.py`
+- Заберите из папки пакета `tigra_msgs` папку `ros_lib` и закиньте себе в сборку для МК
 
 # References
 
@@ -52,3 +59,7 @@ sudo apt-get install \
 - http://docs.ros.org/en/lunar/api/robot_localization/html/integrating_gps.html
 - http://docs.ros.org/en/kinetic/api/robot_localization/html/state_estimation_nodes.html
 
+## Odometry
+
+- https://github.com/ros-controls/ros_controllers/tree/noetic-devel/ackermann_steering_controller
+- http://www.lcad.inf.ufes.br/wiki/images/b/b8/Ackerman-steering.pdf
