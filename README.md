@@ -14,7 +14,18 @@ sudo apt-get install \
 
 ```
 
+### Для симулятора
+
+```bash
+sudo apt install \
+    ros-$ROS_DISTRO-hector-gazebo-plugins
+```
+
 > Для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
+
+# Старт симулятора
+
+`roslaunch tigra_software start_sim_robot.launch`
 
 # Некоторые правила разработки
 

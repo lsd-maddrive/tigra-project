@@ -13,14 +13,18 @@
     <xacro:property name="wheel_mass" value="20" />
     <xacro:property name="wheel_turn_limit" value="${pi/4}" />
 
-    <xacro:property name="wheel_shift_pos" value="0.35" />
-
+    <xacro:property name="wheel_shift_z" value="0.35" />
 
     <xacro:property name="wheelbase" value="${props['wheelbase']}" />
     <xacro:property name="half_wheelbase" value="${wheelbase/2}" />
     <xacro:property name="track_width" value="${props['track_width']}" />
 
     <xacro:property name="lidar_location" value="${heigth/2+0.01}" />
+
+    <xacro:property name="gps_height" value="0.05" />
+
+    <xacro:property name="imu_height" value="0.05" />
+    <xacro:property name="imu_length" value="0.2" />
 
     <xacro:property name="odom_frame" value="odom_wheel" />
 
