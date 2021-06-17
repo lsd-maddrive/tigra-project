@@ -75,3 +75,8 @@ sudo apt install \
 
 - https://github.com/ros-controls/ros_controllers/tree/noetic-devel/ackermann_steering_controller
 - http://www.lcad.inf.ufes.br/wiki/images/b/b8/Ackerman-steering.pdf
+
+## Gazebo models
+
+- https://github.com/NevzatBOL/ROS-Beginner/tree/master/catkin_ws/src/sensor_models/urdf
+- 
