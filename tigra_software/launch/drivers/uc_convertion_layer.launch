@@ -3,5 +3,16 @@
 <launch>
     <node pkg="tf" type="static_transform_publisher" name="base_footprint_2_link" args="0 0 0.6 0 0 0 /base_footprint /base_link 10" />
 
-
+    <node pkg="tigra_software" type="robot_layer" name="robot_layer" output="screen" ns="tigra">
+        <rosparam command="load" file="$(find tigra_description)/config/props.yaml" ns="model_props" />
+        <rosparam command="load" file="$(find tigra_software)/config/robot_layer/config.yaml" ns="main_config" />
+        <!-- State from robot -->
+        <!-- <remap from="state" to="state" /> -->
+        <!-- Odom to ROS -->
+        <remap from="odom" to="wheel_odom" />
+        <!-- Twist from ROS -->
+        <!-- <remap from="cmd_vel" to="cmd_vel" /> -->
+        <!-- State Cmd to robot -->
+        <!-- <remap from="state_cmd" to="state_cmd" /> -->
+    </node>
 </launch>

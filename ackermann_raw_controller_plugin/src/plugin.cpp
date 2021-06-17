@@ -133,6 +133,7 @@ namespace gazebo
         {
             state_pub_->msg_.angle_steering = cur_virtual_steering_rad_;
             state_pub_->msg_.rotation_speed = cur_virtual_speed_rps_;
+            state_pub_->msg_.stamp = ros::Time::now();
             state_pub_->unlockAndPublish();
         }
     }

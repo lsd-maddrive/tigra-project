@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
+#include "ros/time.h"
 
 namespace tigra_msgs
 {
@@ -12,12 +13,15 @@ namespace tigra_msgs
   class TigraState : public ros::Msg
   {
     public:
+      typedef ros::Time _stamp_type;
+      _stamp_type stamp;
       typedef float _rotation_speed_type;
       _rotation_speed_type rotation_speed;
       typedef float _angle_steering_type;
       _angle_steering_type angle_steering;
 
     TigraState():
+      stamp(),
       rotation_speed(0),
       angle_steering(0)
     {
@@ -26,6 +30,16 @@ namespace tigra_msgs
     virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
+      *(outbuffer + offset + 0) = (this->stamp.sec >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (this->stamp.sec >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (this->stamp.sec >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (this->stamp.sec >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->stamp.sec);
+      *(outbuffer + offset + 0) = (this->stamp.nsec >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (this->stamp.nsec >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (this->stamp.nsec >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (this->stamp.nsec >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->stamp.nsec);
       union {
         float real;
         uint32_t base;
@@ -52,6 +66,16 @@ namespace tigra_msgs
     virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
+      this->stamp.sec =  ((uint32_t) (*(inbuffer + offset)));
+      this->stamp.sec |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      this->stamp.sec |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      this->stamp.sec |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      offset += sizeof(this->stamp.sec);
+      this->stamp.nsec =  ((uint32_t) (*(inbuffer + offset)));
+      this->stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      this->stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      this->stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      offset += sizeof(this->stamp.nsec);
       union {
         float real;
         uint32_t base;
@@ -78,7 +102,7 @@ namespace tigra_msgs
     }
 
     virtual const char * getType() override { return "tigra_msgs/TigraState"; };
-    virtual const char * getMD5() override { return "70164e1370b7f4a9aceb7b66a42aec65"; };
+    virtual const char * getMD5() override { return "f33ef25a14a86ca752a5d1da20481e38"; };
 
   };
 
