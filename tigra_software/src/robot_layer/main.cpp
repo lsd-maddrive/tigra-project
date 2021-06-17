@@ -87,12 +87,17 @@ private:
         const double x = model_.getX();
         const double y = model_.getY();
 
+        const double vx = model_.getVX();
+        const double wyaw = model_.getWYaw();
+
         if (pub_->trylock())
         {
             pub_->msg_.header.stamp = ros::Time().now();
             pub_->msg_.pose.pose.position.x = x;
             pub_->msg_.pose.pose.position.y = y;
             pub_->msg_.pose.pose.orientation = orientation;
+            pub_->msg_.twist.twist.linear.x = vx;
+            pub_->msg_.twist.twist.angular.z = wyaw;
             pub_->unlockAndPublish();
         }
     }

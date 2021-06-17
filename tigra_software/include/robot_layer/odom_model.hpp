@@ -13,9 +13,14 @@ public:
 
     void updateState(double steer_rad, double speed_rps, double ts);
 
-    double getX() { return x_ + wheelbase_ * (1.0 - cos(yaw_)); }
-    double getY() { return y_ - wheelbase_ * sin(yaw_); }
+    // double getX() { return x_ + wheelbase_ * (1.0 - cos(yaw_)); }
+    double getX() { return x_; }
+    // double getY() { return y_ - wheelbase_ * sin(yaw_); }
+    double getY() { return y_; }
     double getYaw() { return yaw_; }
+
+    double getVX() { return vx_; }
+    double getWYaw() { return wyaw_; }
 
 private:
     // 2D coordinates [m]
@@ -24,6 +29,10 @@ private:
     // Yaw angle [rad]
     double yaw_;
 
+    // Linear speed
+    double vx_;
+    double wyaw_;
+
     double prev_ts_;
 
     double wheel_radius_;
@@ -31,7 +40,7 @@ private:
 
     double rps2mps_;
 
-    const double MIN_CURVATURE_RADIUS = 0.0001;
+    const double MIN_CURVATURE_RADIUS = 1e-4;
 };
 
 #endif // ODOM_MODEL_H_
