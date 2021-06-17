@@ -47,7 +47,7 @@ void OdometryBicycleModel::updateState(double steer_rad, double speed_rps, doubl
     // --- Old way to compute odometry ---
 
     // const double curvature_radius = wheelbase_ / cos(M_PI / 2.0 - steer_rad);
-    // const double curvature_radius = wheelbase_ / sin(Msteer_rad);
+    // const double curvature_radius = wheelbase_ / sin(steer_rad);
 
     // if (fabs(curvature_radius) > MIN_CURVATURE_RADIUS)
     // {

@@ -23,14 +23,15 @@ public:
     double getWYaw() { return wyaw_; }
 
 private:
-    // 2D coordinates [m]
+    // 2D coordinates in global positioning [m]
     double x_;
     double y_;
     // Yaw angle [rad]
     double yaw_;
 
-    // Linear speed
+    // Linear speed [m/s]
     double vx_;
+    // Angular speed [rad/s]
     double wyaw_;
 
     double prev_ts_;
