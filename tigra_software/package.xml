@@ -20,6 +20,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>gazebo_ros</build_depend>
+  <build_depend>tigra_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>roscpp</exec_depend>
@@ -51,5 +52,3 @@
 
   </export>
 </package>
-
-
