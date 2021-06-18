@@ -1,0 +1,7 @@
+<launch>
+    <include file="$(find tigra_vision)/launch/rtabmap_visual_SLAM.launch" />
+    <include file="$(find tigra_software)/launch/tf_publisher.launch" />
+    <include file="$(find tigra_vision)/launch/camera_info_from_calib_param.launch" />
+
+
+</launch>
