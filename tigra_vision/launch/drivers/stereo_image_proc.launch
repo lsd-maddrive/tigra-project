@@ -1,0 +1,12 @@
+<launch>
+    <group ns="/stereo" >
+        <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc">
+            <remap from="left/image_raw"    to="left/image_raw"/>
+            <remap from="left/camera_info"  to="left/camera_info"/>
+            <remap from="right/image_raw"   to="right/image_raw"/>
+            <remap from="right/camera_info" to="right/camera_info"/>
+            <!-- <param name="disparity_range"   value="128"/> -->
+            <param name="approximate_sync"   value="true"/>
+        </node>
+    </group>
+</launch>

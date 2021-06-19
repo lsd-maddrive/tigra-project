@@ -1,0 +1,10 @@
+ 
+<launch>
+
+    <node pkg="image_view" type="stereo_view" name="front_stereo" output="screen">
+        <remap from="stereo"    to="/stereo" />
+        <remap from="image"     to="image_rect_color" />
+        <param name="approximate_sync"   value="true"/>
+    </node>
+
+</launch>

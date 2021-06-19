@@ -13,7 +13,8 @@ sudo apt-get install \
     ros-$ROS_DISTRO-usb_cam \
     ros-$ROS_DISTRO-uvc_camera \
     ros-$ROS_DISTRO-rosserial-server \
-    ros-$ROS_DISTRO-rosserial-client
+    ros-$ROS_DISTRO-rosserial-client \
+    ros-$ROS_DISTRO-rtabmap-ros
 ```
 
 ### Для симулятора

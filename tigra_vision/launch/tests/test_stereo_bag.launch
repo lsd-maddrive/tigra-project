@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+    <param name="use_sim_time" type="bool" value="True"/>
+
+    <!-- cameras_record_2021-06-06-00-08-14.bag -->
+
+    <node pkg="rosbag" type="play" name="player" output="screen" args="--clock --loop $(find tigra_vision)/bags/cameras_record_2021-06-11-14-28-05.bag"/>
+
+    <include file="$(find tigra_vision)/launch/drivers/stereo_image_proc.launch" />
+    <include file="$(find tigra_vision)/launch/view/view_stereo_image.launch" />
+</launch>
