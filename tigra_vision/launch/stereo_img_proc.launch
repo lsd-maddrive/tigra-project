@@ -13,7 +13,7 @@
      <!-- <remap from="/stereo/right/image_rect" to="/stereo_camera/left/image_rect_color" /> -->
 
     <group ns="/stereo" >
-        <!-- <node pkg="nodelet" type="nodelet" name="stereo_nodelet"  args="manager"/> -->
+        <node pkg="nodelet" type="nodelet" name="stereo_nodelet"  args="manager"/>
 
         <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc">
             <remap from="left/image_raw"    to="left/image_raw"/>
@@ -21,7 +21,9 @@
             <remap from="right/image_raw"   to="right/image_raw"/>
             <remap from="right/camera_info" to="from_param/right_camera_info"/>
             <param name="disparity_range" value="128"/>
-            <param name="approximate_sync" value="True"/>
+            <param name="approximate_sync" value="true"/>
+            <param name="queue_size" value="30"/>
+            <!-- <param name="approximate_sync" value="True"/> -->
         </node>
     </group>
 

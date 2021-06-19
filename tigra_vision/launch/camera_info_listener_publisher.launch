@@ -1,0 +1,14 @@
+<launch>
+    <arg name="right_camera" default="right"/>
+    <arg name="left_camera" default="left"/>
+    <!-- <arg name="boud" default="57600"/> -->
+
+    <node pkg="tigra_vision" type="camera_info_listener.py" name="left_param" output="log" respawn="true">
+        <param name="direction" value="$(arg right_camera)"/>
+        <!-- <param name="boud" value="$(arg boud)"/> -->
+    </node>
+        <node pkg="tigra_vision" type="camera_info_listener.py" name="right_param" output="log" respawn="true">
+        <param name="direction" value="$(arg left_camera)"/>
+        <!-- <param name="boud" value="$(arg boud)"/> -->
+    </node>
+</launch>
