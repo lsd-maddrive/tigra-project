@@ -82,6 +82,7 @@ sudo apt install \
 ## Visual odometry
 
 - http://wiki.ros.org/viso2_ros?distro=indigo
+- https://github.com/klintan/vo-survey
 
 ## Gazebo models
 
