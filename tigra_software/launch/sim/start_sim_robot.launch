@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
-    <include file="$(find tigra_description)/launch/tigra.launch" />
+    <include file="$(find tigra_description)/launch/tigra.launch">
+        <arg name="world" value="$(find tigra_maps)/worlds/lab.world" />
+    </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
+
+    <include file="$(find tigra_software)/launch/drivers/ekl_odom.launch"></include>
+
+    <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+        <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz" />
+    </include>
+    
+    <include file="$(find tigra_software)/launch/drivers/move_base.launch"></include>
 
 </launch>

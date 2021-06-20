@@ -2,10 +2,12 @@
 
 <launch>
     <!-- BaseFootprint - frame on ground level near rear wheels axis -->
-    <node pkg="tf" type="static_transform_publisher" name="base_link_2_footprint" args="0 0 0.6 0 0 0 /base_footprint /base_link 10" />
-    <node pkg="tf" type="static_transform_publisher" name="base_link_2_center" args="0.5 0 0 0 0 0 /base_link /base_center 10" />
-    <node pkg="tf" type="static_transform_publisher" name="center_2_imu" args="0.5 0 0.3 0 0 0 /base_center /imu_link 10" />
-    <node pkg="tf" type="static_transform_publisher" name="center_2_gps" args="0 0 0.3 0 0 0 /base_center /gps_link 10" />
+    <node pkg="tf" type="static_transform_publisher" name="base_footprint_2_link" args="0 0 0.6 0 0 0 /base_footprint /base_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="base_link_2_center" args="0.5 0 0 0 0 0 /base_link /base_center 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="center_2_imu" args="0.5 0 0.3 0 0 0 /base_center /imu_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="center_2_gps" args="0 0 0.3 0 0 0 /base_center /gps_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="center_2_camera_left" args="0.5 0.1 0.5 0 0 0 /base_center /camera_left 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="center_2_camera_right" args="0.5 -0.1 0.5 0 0 0 /base_center /camera_right 1000" />
 
     <node pkg="tigra_software" type="robot_layer" name="robot_layer" output="screen" ns="tigra">
         <rosparam command="load" file="$(find tigra_description)/config/props.yaml" ns="model_props" />

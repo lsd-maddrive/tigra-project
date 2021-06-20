@@ -1,6 +1,7 @@
 TebLocalPlannerROS:
-    odom_topic: odom
-    map_frame: map
+    odom_topic: odometry/local/filtered
+    # TODO - change this when full system done
+    map_frame: odom
 
     # Trajectory
 
@@ -14,7 +15,7 @@ TebLocalPlannerROS:
 
     # Robot
          
-    wheelbase: 0.3
+    wheelbase: 1.0
     cmd_angle_instead_rotvel: True
 
     max_vel_x: 0.4
@@ -37,7 +38,7 @@ TebLocalPlannerROS:
         # front_radius: 0.2 # for type "two_circles"
         # rear_offset: 0.2 # for type "two_circles"
         # rear_radius: 0.2 # for type "two_circles"
-        vertices: [ [0.4, 0.17], [-0.08, 0.17], [-0.08, -0.17], [0.4, -0.17] ] # for type "polygon"
+        vertices: [ [0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4] ] # for type "polygon"
 
     # GoalTolerance
 

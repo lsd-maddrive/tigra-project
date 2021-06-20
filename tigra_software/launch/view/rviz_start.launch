@@ -1,7 +1,7 @@
 <launch>
 
   <!-- <arg name="rvizconfig" default="$(find tigra_description)/rviz/tigra_overview_setting.rviz" /> -->
-   <arg name="rvizconfig" default="$(find tigra_description)/rviz/laser_scan_overview.rviz" />
+  <arg name="rvizconfig" default="$(find tigra_description)/rviz/laser_scan_overview.rviz" />
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 

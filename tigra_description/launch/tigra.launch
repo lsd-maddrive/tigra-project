@@ -4,7 +4,7 @@
   <arg name="debug" default="false" />
   <arg name="gui" default="true" />
   <arg name="pause" default="false" />
-  <arg name="world" default="$(find tigra_description)/worlds/lab.world" />
+  <arg name="world" default="" />
 
   <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra_robocross21.urdf.xacro' robot_name:=tigra" />
   <arg name="x" default="0" />

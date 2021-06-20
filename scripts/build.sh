@@ -5,4 +5,5 @@ catkin build \
     tigra_description \
     tigra_software \
     tigra_vision \
+    tigra_maps \
     ackermann_raw_controller_plugin

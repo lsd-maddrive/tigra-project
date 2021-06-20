@@ -1,8 +1,8 @@
-transform_tolerance: 1.5  # 0.2
+transform_tolerance: 0.2
 
 always_send_full_costmap: true
 
-footprint: [[0.9, 0.4], [0.9, -0.4], [-0.9, -0.4], [-0.9, 0.4]]
+footprint: [ [0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4] ]
 
 static_layer:
   unknown_cost_value: -1
@@ -18,20 +18,20 @@ inflation_layer:
   inflation_radius: 30.  # the bigger the better, defines where the gradient is
   cost_scaling_factor: 0.9  # 0.5 the bigger the steeper the gradient is
 
-laser_obstacle_layer:
-    observation_sources: laser_scan
-    track_unknown_space: true
-    footprint_clearing_enabled: true
-    combination_method: 1  # 0 - overwrite, 1 - max, 99 - nothing
+# laser_obstacle_layer:
+#     observation_sources: laser_scan
+#     track_unknown_space: true
+#     footprint_clearing_enabled: true
+#     combination_method: 1  # 0 - overwrite, 1 - max, 99 - nothing
 
-    laser_scan: 
-        sensor_frame: hokuyo
-        data_type: LaserScan
-        topic: /tigra_description/laser/scan
-        marking: true
-        clearing: true
-        obstacle_range: 10.
-        raytrace_range: 12.
-        inf_is_valid: true
+#     laser_scan: 
+#         sensor_frame: hokuyo
+#         data_type: LaserScan
+#         topic: /tigra_description/laser/scan
+#         marking: true
+#         clearing: true
+#         obstacle_range: 10.
+#         raytrace_range: 12.
+#         inf_is_valid: true
 
 
