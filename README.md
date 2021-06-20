@@ -91,3 +91,6 @@ sudo apt install \
 
 - https://github.com/NevzatBOL/ROS-Beginner/tree/master/catkin_ws/src/sensor_models/urdf
 
+## Movebase
+
+- https://blog.zhaw.ch/icclab/configuring-the-ros-navigation-stack-on-a-new-robot/

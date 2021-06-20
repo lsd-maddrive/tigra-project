@@ -99,4 +99,73 @@
     </plugin>
   </gazebo>
 
+  <!-- Depth sensor - emulation of Intel RealSense D435 -->
+  <joint name="base_rs_camera_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="rs_camera_link" />
+    <origin xyz="${body_length/2} 0 ${body_heigth/2+0.1}" rpy="0 0 0" />
+  </joint>
+
+  <link name="rs_camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.02 0.2 0.02" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.02 0.2 0.02" />
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <gazebo reference="rs_camera_link">
+    <material>Gazebo/Black</material>
+    <sensor name="rs_camera_link_camera" type="depth">
+      <update_rate>20</update_rate>
+      <camera>
+        <horizontal_fov>1.3962634016</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>300</far>
+        </clip>
+      </camera>
+      <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+        <baseline>0.2</baseline>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>20.0</updateRate>
+        <cameraName>rs_camera</cameraName>
+        <imageTopicName>/rs_camera/color/image_raw</imageTopicName>
+        <cameraInfoTopicName>/rs_camera/color/camera_info</cameraInfoTopicName>
+        <depthImageTopicName>/rs_camera/depth/image_raw</depthImageTopicName>
+        <depthImageCameraInfoTopicName>/rs_camera/depth/camera_info</depthImageCameraInfoTopicName>
+        <pointCloudTopicName>/rs_camera/depth/color/points</pointCloudTopicName>
+        <frameName>rs_camera_optical_frame</frameName>
+        <pointCloudCutoff>0.05</pointCloudCutoff>
+        <distortionK1>0</distortionK1>
+        <distortionK2>0</distortionK2>
+        <distortionK3>0</distortionK3>
+        <distortionT1>0</distortionT1>
+        <distortionT2>0</distortionT2>
+        <CxPrime>0</CxPrime>
+        <Cx>0</Cx>
+        <Cy>0</Cy>
+        <focalLength>0</focalLength>
+        <hackBaseline>0</hackBaseline>
+      </plugin>
+    </sensor>
+  </gazebo>
+
 </robot>
