@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global">
+    <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_map.yaml"/>
+    
+    <remap from="/odometry/filtered" to="/Kalman/GPS/odom" />
+  </node>
+
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
+
+    <param name="magnetic_declination_radians" value="0"/>
+
+    <param name="yaw_offset" value="0"/>
+    <param name="publish_filtered_gps" value="true"/>
+    <param name="broadcast_cartesian_transform_as_parent_frame" value="false"/>
+    <!-- <param name="broadcast_utm_transform" value="false"/> -->
+    
+
+    <remap from="/imu/data" to="/tigra/imu" />
+    <!-- <remap from="/gps/fix" to="/tigra/nav/gps" /> -->
+    <remap from="/odometry/filtered" to="/odometry/global/filtered" />
+    
+    <remap from="odometry/gps" to="/tigra/nav/gps" />
+
+  </node>
+
+
+
+</launch>
