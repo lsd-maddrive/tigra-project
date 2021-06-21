@@ -4,6 +4,8 @@ global_costmap:
   update_frequency: 2.0
   publish_frequency: 2.0
 
+  transform_tolerance: 1.0
+
   width: 30.0
   height: 15.0
   origin_x: -5.0
