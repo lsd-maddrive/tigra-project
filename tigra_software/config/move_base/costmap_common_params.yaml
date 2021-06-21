@@ -1,8 +1,7 @@
-transform_tolerance: 0.2
 
 always_send_full_costmap: true
 
-footprint: [ [0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4] ]
+footprint: [[0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4]]
 
 static_layer:
   unknown_cost_value: -1
@@ -13,10 +12,22 @@ static_layer:
   use_maximum: true
   trinary_costmap: true
 
-
 inflation_layer:
-  inflation_radius: 30.  # the bigger the better, defines where the gradient is
-  cost_scaling_factor: 0.9  # 0.5 the bigger the steeper the gradient is
+  inflation_radius: 3.5 # the bigger the better, defines where the gradient is
+  cost_scaling_factor: 1.5 # 0.5 the bigger the steeper the gradient is
+
+depth_obstacle_layer:
+  # https://github.com/SteveMacenski/spatio_temporal_voxel_layer/issues/129
+  observation_sources: point_cloud_sensor
+
+  point_cloud_sensor:
+    data_type: PointCloud2
+    topic: /rs_camera/depth/color/points
+    marking: true
+    clearing: true
+    expected_update_rate: 0
+    min_obstacle_height: 0.3    # default 0, meters
+    max_obstacle_height: 3.0     # default 3, meters
 
 # laser_obstacle_layer:
 #     observation_sources: laser_scan
@@ -24,7 +35,7 @@ inflation_layer:
 #     footprint_clearing_enabled: true
 #     combination_method: 1  # 0 - overwrite, 1 - max, 99 - nothing
 
-#     laser_scan: 
+#     laser_scan:
 #         sensor_frame: hokuyo
 #         data_type: LaserScan
 #         topic: /tigra_description/laser/scan
@@ -33,5 +44,4 @@ inflation_layer:
 #         obstacle_range: 10.
 #         raytrace_range: 12.
 #         inf_is_valid: true
-
 

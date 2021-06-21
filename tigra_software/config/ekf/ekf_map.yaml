@@ -1,6 +1,6 @@
 #Configuation for robot odometry EKF
 #
-frequency: 20
+frequency: 50
 
 two_d_mode: true
 publish_tf: true
@@ -37,7 +37,7 @@ imu0_nodelay: true
 imu0_differential: false
 imu0_relative: false
 
-odom1: odometry/gps
+odom1: /tigra/nav/gps
 odom1_config: 
   [true,  true,  false,
    false, false, false,

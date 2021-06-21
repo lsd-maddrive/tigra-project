@@ -6,14 +6,18 @@
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
-    <include file="$(find tigra_software)/launch/drivers/ekl_odom.launch"></include>
-
+    <include file="$(find tigra_software)/launch/drivers/ekf_odom.launch"></include>
     <include file="$(find tigra_software)/launch/drivers/ekg_odom.launch"></include>
+
 
     <include file="$(find tigra_software)/launch/view/rviz_start.launch">
         <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz" />
     </include>
-    
+
     <include file="$(find tigra_software)/launch/drivers/move_base.launch"></include>
+
+    <!-- rs_camera_depth_optical_frame - required only for simulator, in real driver it publishes itself -->
+    <!-- rs_camera_optical_frame - for simulator we make small rename =) -->
+    <node pkg="tf" type="static_transform_publisher" name="rs_camera_link_2_rs_camera_optical_frame" args="0 0 0 -1.57079632679 0 -1.57079632679 /rs_camera_link /rs_camera_optical_frame 1000" />
 
 </launch>

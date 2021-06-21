@@ -76,11 +76,13 @@ sudo apt install \
 - http://docs.ros.org/en/lunar/api/robot_localization/html/integrating_gps.html
 - http://docs.ros.org/en/kinetic/api/robot_localization/html/state_estimation_nodes.html
 - https://github.com/KumarRobotics/ublox
+- https://docs.ros.org/en/melodic/api/robot_localization/html/integrating_gps.html#required-inputs
 
 ## Odometry
 
 - https://github.com/ros-controls/ros_controllers/tree/noetic-devel/ackermann_steering_controller
 - http://www.lcad.inf.ufes.br/wiki/images/b/b8/Ackerman-steering.pdf
+- https://www.theconstructsim.com/wp-content/uploads/2018/05/ros-extra-2.pdf
 
 ## Visual odometry
 
@@ -91,3 +93,6 @@ sudo apt install \
 
 - https://github.com/NevzatBOL/ROS-Beginner/tree/master/catkin_ws/src/sensor_models/urdf
 
+## Movebase
+
+- https://blog.zhaw.ch/icclab/configuring-the-ros-navigation-stack-on-a-new-robot/

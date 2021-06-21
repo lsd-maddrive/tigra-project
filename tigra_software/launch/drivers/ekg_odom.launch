@@ -4,7 +4,7 @@
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global">
     <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_map.yaml"/>
     
-    <remap from="/odometry/filtered" to="/Kalman/GPS/odom" />
+    <remap from="/odometry/filtered" to="/odometry/global/filtered" />
   </node>
 
   <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
@@ -18,7 +18,7 @@
     
 
     <remap from="/imu/data" to="/tigra/imu" />
-    <!-- <remap from="/gps/fix" to="/tigra/nav/gps" /> -->
+    <!-- <remap from="/gps/fix" to="" /> -->
     <remap from="/odometry/filtered" to="/odometry/global/filtered" />
     
     <remap from="odometry/gps" to="/tigra/nav/gps" />
