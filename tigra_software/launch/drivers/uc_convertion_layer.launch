@@ -14,7 +14,7 @@
 
     <node pkg="tigra_software" type="robot_layer" name="robot_layer" output="screen" ns="tigra">
         <rosparam command="load" file="$(find tigra_description)/config/props.yaml" ns="model_props" />
-        <rosparam command="load" file="$(find tigra_software)/config/robot_layer/config.yaml" ns="main_config" />
+        <rosparam command="load" file="$(find tigra_software)/config/robot_layer.yaml" ns="main_config" />
         <!-- State from robot -->
         <!-- <remap from="state" to="state" /> -->
         <!-- Odom to ROS -->

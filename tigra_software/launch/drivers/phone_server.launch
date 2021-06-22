@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <node pkg="tigra_software" type="phone_server.py" name="phone_sensors_server" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/phone_sensors.yaml" />
+
+        <remap from='imu' to='tigra/phome_imu' />
+    </node>
+</launch>
