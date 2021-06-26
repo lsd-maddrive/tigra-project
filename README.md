@@ -45,6 +45,7 @@ sudo apt install \
 # Полезные доки
 
 - [Схема системы](https://drive.google.com/file/d/1iIvuMr4xtmul_ea4DkjYoXMdhi8A7dez/view?usp=sharing)
+- [Папка в облаке с корпусами для сенсоров](https://disk.yandex.ru/d/k_3tlJFRWigokQ)
 
 # Заметки
 
