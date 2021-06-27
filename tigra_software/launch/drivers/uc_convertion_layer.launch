@@ -10,7 +10,7 @@
     <node pkg="tf" type="static_transform_publisher" name="center_2_camera_right" args="0.5 -0.1 0.5 0 0 0 /base_center /camera_right 1000" />
     <node pkg="tf" type="static_transform_publisher" name="center_2_rs_camera" args="0.5 0 0.4 0 0 0 /base_center /rs_camera_link 1000" />
     <!-- Phone sensors - rotates -90 deg by Z as X_phone goes right -->
-    <node pkg="tf" type="static_transform_publisher" name="center_2_phone_sensors" args="-0.3 0 0.2 -1.5707963 0 0 /base_center /phone_sensors 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="center_2_phone_sensors" args="-0.3 0 0.2 0 0 0 /base_center /phone_sensors 1000" />
 
     <node pkg="tigra_software" type="robot_layer" name="robot_layer" output="screen" ns="tigra">
         <rosparam command="load" file="$(find tigra_description)/config/props.yaml" ns="model_props" />

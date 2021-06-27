@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import asyncio
+import threading
 
 from numpy.lib.arraysetops import isin
 import websockets
@@ -11,9 +12,9 @@ from threading import Thread
 import rospy
 import numpy as np
 
-from sensor_msgs.msg import Imu
+from sensor_msgs.msg import Imu, NavSatFix, NavSatStatus
 
-from tf.transformations import quaternion_from_euler, euler_from_quaternion
+from tf.transformations import quaternion_from_euler
 
 
 def get_ip():
@@ -47,7 +48,6 @@ class ImuState:
         self.state.orientation.w = q[3]
 
         self.state_initial_update[0] = True
-        self.publish()
 
     def update_accel(self, x, y, z):
         self.state.linear_acceleration.x = x
@@ -55,7 +55,6 @@ class ImuState:
         self.state.linear_acceleration.z = z
 
         self.state_initial_update[1] = True
-        self.publish()
 
     def update_gyro(self, x, y, z):
         self.state.angular_velocity.x = x
@@ -63,24 +62,62 @@ class ImuState:
         self.state.angular_velocity.z = z
 
         self.state_initial_update[2] = True
-        self.publish()
 
     def publish(self):
         if not all(self.state_initial_update):
             return
 
         self.state.header.stamp = rospy.Time.now()
-
         self.pub.publish(self.state)
 
 
 class GpsState:
     def __init__(self, frame_id, cov):
-        pass
+        # latch - to send data after connect
+        self.pub = rospy.Publisher("gps", NavSatFix, queue_size=10, latch=True)
+
+        self.state = NavSatFix()
+        self.state.header.frame_id = frame_id
+        self.state.position_covariance = cov
+        self.state.status.service = NavSatStatus.SERVICE_GPS
+        self.state.position_covariance_type = NavSatFix.COVARIANCE_TYPE_APPROXIMATED
+
+        self.updated = False
+        self.sender = None
+
+    def start_sender(self):
+        if self.sender is None:
+            self.sender = threading.Timer(interval=1, function=self._send_cb)
+            self.sender.start()
+
+    def _send_cb(self):
+        self.sender = None
+        self._publish()
+
+    def update_state(self, latitude, longitude, altitude):
+        if any(d is None for d in [latitude, longitude]):
+            self.state.status.status = NavSatStatus.STATUS_NO_FIX
+            self.state.latitude = 0
+            self.state.longitude = 0
+            self.state.altitude = 0
+            return
+
+        self.state.status.status = NavSatStatus.STATUS_FIX
+        self.state.latitude = latitude
+        self.state.longitude = longitude
+        self.state.altitude = altitude
+
+    def publish(self):
+        self.start_sender()
+
+    def _publish(self):
+        self.state.header.stamp = rospy.Time.now()
+        self.pub.publish(self.state)
 
 
 async def ws_handler(websocket, path, extra_argument):
     imu_state = extra_argument["imu_state"]
+    gps_state = extra_argument["gps_state"]
 
     async for message in websocket:
         if path == "//sensors":
@@ -102,12 +139,13 @@ async def ws_handler(websocket, path, extra_argument):
                 sensors_data = message.get("sensors")
                 if sensors_data is None:
                     continue
-                
+
                 # X on phone goes right from screen
                 # Y goes up
                 def orientation_handler(data):
                     rospy.logwarn_throttle(
-                        1, "Orientation is deprecated! Only rotation vector should be used!"
+                        1,
+                        "Orientation is deprecated! Only rotation vector should be used!",
                     )
                     # Deprecated
                     azimuth = data["value0"]
@@ -115,7 +153,10 @@ async def ws_handler(websocket, path, extra_argument):
                     roll = data["value2"]
 
                     q = quaternion_from_euler(
-                        np.deg2rad(roll), np.deg2rad(pitch), np.deg2rad(azimuth), axes='sxyz'
+                        np.deg2rad(roll),
+                        np.deg2rad(pitch),
+                        np.deg2rad(azimuth),
+                        axes="sxyz",
                     )
                     imu_state.update_orient(q)
 
@@ -126,7 +167,7 @@ async def ws_handler(websocket, path, extra_argument):
                     w = data["value3"]
                     q = [x, y, z, w]
                     imu_state.update_orient(q)
-                    
+
                     # a = euler_from_quaternion(q, axes='sxyz')
                     # print(f'>>> {np.rad2deg(a)} / {q}')
 
@@ -142,29 +183,36 @@ async def ws_handler(websocket, path, extra_argument):
                     z = data["value2"]
                     imu_state.update_accel(x, y, z)
 
+                def location_handler(data):
+                    latitude = data["value0"]
+                    longitude = data["value1"]
+                    altitude = data["value2"]
+
+                    gps_state.update_state(latitude, longitude, altitude)
+
                 name_2_obj = {
                     "Accelerometer": accelerometer_handler,
                     "Orientation": orientation_handler,
                     "Rotation vector": rotation_vector_handler,
                     "Gyroscope": gyroscope_handler,
+                    "Location": location_handler,
                 }
 
                 for msg in sensors_data:
-                    handler = name_2_obj.get(msg["name"])
+                    ds_name = msg["name"]
+                    handler = name_2_obj.get(ds_name)
                     if handler is None:
+                        rospy.logwarn_throttle(
+                            5, f"Unknown data source found: {ds_name}"
+                        )
                         continue
                     handler(msg)
+
+                imu_state.publish()
+                gps_state.publish()
+
             except Exception as e:
                 rospy.logerr(f"Exception: {e}")
-
-
-# async def _server(stop, state):
-#     bound_handler = functools.partial(ws_handler, extra_argument=state)
-#     async with websockets.serve(bound_handler, "0.0.0.0", 5000):
-#         await stop
-
-# ws_server = await websockets.serve(hello, "localhost", 8765)
-# await ws_server.server.serve_forever()
 
 
 def start_server(loop, server):
@@ -184,6 +232,7 @@ def main():
     param_port = rospy.get_param("~port", 5000)
     param_frame_id_prefix = rospy.get_param("~frame_id_prefix", "phone_sensors")
 
+    ## IMU
     param_accel_cov = rospy.get_param(
         "~accel_cov", [0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01]
     )
@@ -195,7 +244,6 @@ def main():
     )
 
     imu_frame_id = f"{param_frame_id_prefix}_imu"
-    gps_frame_id = f"{param_frame_id_prefix}_gps"
 
     imu_state = ImuState(
         frame_id=imu_frame_id,
@@ -204,34 +252,28 @@ def main():
         orient_cov=param_orient_cov,
     )
 
+    ## GPS
     param_gps_cov = rospy.get_param("~gps_cov", [0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01])
 
-    # TODO - complete GPS publication
+    gps_frame_id = f"{param_frame_id_prefix}_gps"
+
     gps_state = GpsState(frame_id=gps_frame_id, cov=param_gps_cov)
 
+    ## Server init
     bound_handler = functools.partial(
-        ws_handler, extra_argument={"imu_state": imu_state}
+        ws_handler, extra_argument={"imu_state": imu_state, "gps_state": gps_state}
     )
 
     loop = asyncio.new_event_loop()
-    # stop = loop.create_future()
-    # loop.run_until_complete(_server(stop, internal_state))
     _server = websockets.serve(bound_handler, "0.0.0.0", param_port, loop=loop)
 
-    # start_server(loop, _server)
     t = Thread(target=start_server, args=(loop, _server))
     t.start()
-
-    # asyncio.get_event_loop().run_until_complete(
-    #     websockets.serve(bound_handler, "0.0.0.0", 5000)
-    # )
-    # asyncio.get_event_loop().run_forever()
 
     try:
         rospy.spin()
     finally:
         loop.stop()
-        # stop.set_result()
 
 
 if __name__ == "__main__":
