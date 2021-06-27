@@ -28,11 +28,20 @@
 # Полезные доки
 
 - [Схема системы](https://drive.google.com/file/d/1iIvuMr4xtmul_ea4DkjYoXMdhi8A7dez/view?usp=sharing)
+- [Папка в облаке с корпусами для сенсоров](https://disk.yandex.ru/d/k_3tlJFRWigokQ)
 
 # Заметки
 
 - Firmware перенесен в [другой репо](https://github.com/lsd-maddrive/tigra-firmware). По результатам разработки сделаем объединение, если потребуется.
 
+## Аппаратура
+
+- Камеры
+    - [Xiaomi IMILAB](https://market.yandex.ru/product--veb-kamera-xiaomi-imilab-chernyi/668572011?cpa=1&sku=100956420730)
+    - [Microsoft Lifecam HD-3000](https://www.microsoft.com/ru-ru/accessories/products/webcams/lifecam-hd-3000)
+- [GPS Ublox M8N](https://www.u-blox.com/en/product/neo-m8-series)
+    - https://microem.ru/produkti/besprovodnie-tehnologii/glonass-gps-moduli/glonass-gps-modul-neo-m8/
+- 
 
 # Примеры
 
