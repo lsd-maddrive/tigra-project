@@ -1,33 +1,16 @@
 # Tigra project
 
-## Пакеты для ROS
+## Подготовка к работе
 
-- https://github.com/KumarRobotics/ublox
-- https://github.com/srv/viso2/tree/melodic_develop
+- Установите требуемые пакеты командой `./scripts/install_packages.sh`
+- Установите пакеты для сборки командой `./scripts/install_third_party.sh`
+- Соберите требуемые пакеты командой `./scripts/build.sh`
+- Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
 
-> Для сборки на `noetic` достаточно из CMakeLists.txt удалить Boost зависимость - signals
+### Для разработки
 
-```bash
-sudo apt-get install \
-    ros-$ROS_DISTRO-realsense2-camera \
-    ros-$ROS_DISTRO-usb-cam \
-    ros-$ROS_DISTRO-rosserial-server \
-    ros-$ROS_DISTRO-rosserial-client \
-    ros-$ROS_DISTRO-rtabmap-ros \
-    ros-$ROS_DISTRO-robot-localization \
-    ros-$ROS_DISTRO-move-base \
-    ros-$ROS_DISTRO-global-planner \
-    ros-$ROS_DISTRO-teb-local-planner
-```
+- Установите требуемые пакеты командой `./scripts/install_packages_dev.sh`
 
-### Для симулятора
-
-```bash
-sudo apt install \
-    ros-$ROS_DISTRO-hector-gazebo-plugins
-```
-
-> Для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
 
 # Старт симулятора
 

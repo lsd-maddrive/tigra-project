@@ -6,4 +6,7 @@ catkin build \
     tigra_software \
     tigra_vision \
     tigra_maps \
-    ackermann_raw_controller_plugin
+    ackermann_raw_controller_plugin \
+    ublox \
+    elp_stereo_camera \
+    viso2
