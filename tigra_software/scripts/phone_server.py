@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import asyncio
+
+from numpy.lib.arraysetops import isin
 import websockets
 import socket
 import json
@@ -11,7 +13,7 @@ import numpy as np
 
 from sensor_msgs.msg import Imu
 
-from tf.transformations import quaternion_from_euler
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
 
 def get_ip():
@@ -37,10 +39,8 @@ class ImuState:
         self.state.angular_velocity_covariance = gyro_cov
         self.state.orientation_covariance = orient_cov
         self.state.header.frame_id = frame_id
-        
-    def update_orient(self, x, y, z):
-        q = quaternion_from_euler(x, y, z)
 
+    def update_orient(self, q):
         self.state.orientation.x = q[0]
         self.state.orientation.y = q[1]
         self.state.orientation.z = q[2]
@@ -73,6 +73,12 @@ class ImuState:
 
         self.pub.publish(self.state)
 
+
+class GpsState:
+    def __init__(self, frame_id, cov):
+        pass
+
+
 async def ws_handler(websocket, path, extra_argument):
     imu_state = extra_argument["imu_state"]
 
@@ -80,27 +86,49 @@ async def ws_handler(websocket, path, extra_argument):
         if path == "//sensors":
             message = json.loads(message)
 
+            if not isinstance(message, dict):
+                rospy.logwarn_throttle(
+                    1, "Message has invalid format - check app settings"
+                )
+                continue
+
             try:
                 # Sample: {"timestamp":1624386177562,"sensors":[
-                        # {"name":"Accelerometer","value0":0.09303284,"value1":-0.3250122,"value2":9.86026},
-                        # {"name":"Gyroscope","value0":3.6621094E-4,"value1":2.746582E-4,"value2":-0.0011138916},
-                        # {"name":"Orientation","value0":209.60489,"value1":1.9141718,"value2":0.57536465},
-                        # {"name":"Location","value0":null,"value1":null,"value2":null}]}
+                # {"name":"Accelerometer","value0":0.09303284,"value1":-0.3250122,"value2":9.86026},
+                # {"name":"Gyroscope","value0":3.6621094E-4,"value1":2.746582E-4,"value2":-0.0011138916},
+                # {"name":"Orientation","value0":209.60489,"value1":1.9141718,"value2":0.57536465},
+                # {'name': 'Rotation vector', 'value0': 0.003773575, 'value1': -0.0034588643, 'value2': 0.9765298, 'value3': 0.21532162, 'value4': 0.0},
+                # {"name":"Location","value0":null,"value1":null,"value2":null}]}
                 sensors_data = message.get("sensors")
                 if sensors_data is None:
                     continue
-
+                
                 # X on phone goes right from screen
                 # Y goes up
                 def orientation_handler(data):
-                    z = data["value0"]
-                    x = data["value1"]
-                    y = data["value2"]
-                    imu_state.update_orient(
-                        np.deg2rad(x), 
-                        np.deg2rad(y), 
-                        np.deg2rad(z) 
+                    rospy.logwarn_throttle(
+                        1, "Orientation is deprecated! Only rotation vector should be used!"
                     )
+                    # Deprecated
+                    azimuth = data["value0"]
+                    pitch = data["value1"]
+                    roll = data["value2"]
+
+                    q = quaternion_from_euler(
+                        np.deg2rad(roll), np.deg2rad(pitch), np.deg2rad(azimuth), axes='sxyz'
+                    )
+                    imu_state.update_orient(q)
+
+                def rotation_vector_handler(data):
+                    x = data["value0"]
+                    y = data["value1"]
+                    z = data["value2"]
+                    w = data["value3"]
+                    q = [x, y, z, w]
+                    imu_state.update_orient(q)
+                    
+                    # a = euler_from_quaternion(q, axes='sxyz')
+                    # print(f'>>> {np.rad2deg(a)} / {q}')
 
                 def gyroscope_handler(data):
                     x = data["value0"]
@@ -117,6 +145,7 @@ async def ws_handler(websocket, path, extra_argument):
                 name_2_obj = {
                     "Accelerometer": accelerometer_handler,
                     "Orientation": orientation_handler,
+                    "Rotation vector": rotation_vector_handler,
                     "Gyroscope": gyroscope_handler,
                 }
 
@@ -126,7 +155,7 @@ async def ws_handler(websocket, path, extra_argument):
                         continue
                     handler(msg)
             except Exception as e:
-                rospy.logerr(f'Exception: {e}')
+                rospy.logerr(f"Exception: {e}")
 
 
 # async def _server(stop, state):
@@ -151,20 +180,39 @@ def main():
 
     rospy.init_node("phone_data_sender")
 
-    
     # ROS params
-    param_port = rospy.get_param('~port', 5000)
+    param_port = rospy.get_param("~port", 5000)
+    param_frame_id_prefix = rospy.get_param("~frame_id_prefix", "phone_sensors")
 
-    param_accel_cov = rospy.get_param('~accel_cov', [0.01,0,0, 0,0.01,0, 0,0,0.01])
-    param_gyro_cov = rospy.get_param('~gyro_cov', [0.0025,0,0, 0,0.0025,0, 0,0,0.0025])
-    param_orient_cov = rospy.get_param('~orient_cov', [0.001,0,0, 0,0.001,0, 0,0,0.001])
+    param_accel_cov = rospy.get_param(
+        "~accel_cov", [0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01]
+    )
+    param_gyro_cov = rospy.get_param(
+        "~gyro_cov", [0.0025, 0, 0, 0, 0.0025, 0, 0, 0, 0.0025]
+    )
+    param_orient_cov = rospy.get_param(
+        "~orient_cov", [0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001]
+    )
 
-    imu_state = ImuState(frame_id="imu", accel_cov=param_accel_cov, gyro_cov=param_gyro_cov, orient_cov=param_orient_cov)
+    imu_frame_id = f"{param_frame_id_prefix}_imu"
+    gps_frame_id = f"{param_frame_id_prefix}_gps"
+
+    imu_state = ImuState(
+        frame_id=imu_frame_id,
+        accel_cov=param_accel_cov,
+        gyro_cov=param_gyro_cov,
+        orient_cov=param_orient_cov,
+    )
+
+    param_gps_cov = rospy.get_param("~gps_cov", [0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01])
+
+    # TODO - complete GPS publication
+    gps_state = GpsState(frame_id=gps_frame_id, cov=param_gps_cov)
 
     bound_handler = functools.partial(
         ws_handler, extra_argument={"imu_state": imu_state}
     )
-    
+
     loop = asyncio.new_event_loop()
     # stop = loop.create_future()
     # loop.run_until_complete(_server(stop, internal_state))
