@@ -23,3 +23,10 @@ rosrun rqt_reconfigure rqt_reconfigure
 ```bash
 roslaunch tigra_software tigra_gps.launch
 ```
+
+
+## Запуск проверки снятия одометрии с GPS и IMU осуществляется следующей командой в терминале: 
+
+```bash
+roslaunch tigra_software ekg_odom_test.launch
+```
