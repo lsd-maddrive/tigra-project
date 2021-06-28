@@ -6,10 +6,10 @@ global_costmap:
 
   transform_tolerance: 1.0
 
-  width: 30.0
-  height: 15.0
+  width: 40.0
+  height: 25.0
   origin_x: -5.0
-  origin_y: -7.5
+  origin_y: -12.5
 
   plugins:
   #   - {name: static_layer, type: "costmap_2d::StaticLayer"}
