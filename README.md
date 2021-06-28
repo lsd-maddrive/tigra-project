@@ -24,7 +24,16 @@
 /tigra/wheel_odom
 ```
 
-- 
+- Для управления с клавиатуры необходимо запустить лаунч `start_keyboard_teleop.launch` и управлять в терминале. Настраиваются пределы в самом лаунче.
+```bash
+    roslaunch tigra_software start_keyboard_teleop.launch
+```
+
+- Для управления с джойстика необходимо запустить лаунч `start_joy_teleop.launch`. Настраиваются пределы в самом лаунче.
+```bash
+    roslaunch tigra_software start_joy_teleop.launch
+```
+
 
 ### Сборка `ros_lib` для встраивания в микроконтроллерную связку
 
