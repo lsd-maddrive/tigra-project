@@ -28,6 +28,7 @@
 <arg name="right_camera_frame_id" default="right_camera" />
 
 <arg name="framerate" default="30" />
+<arg name="pixel_format" default="yuyv" />
 
 <arg name="camera_info" default="true" />
 <arg name="camera_info_path" default="xiaomi_wooden_stereo" />
@@ -36,7 +37,7 @@
 	<param name="video_device" value="$(arg video_device_right)" />
 	<param name="image_width" value="$(arg image_width)" />
 	<param name="image_height" value="$(arg image_height)"/>
-	<param name="pixel_format" value="yuyv" />
+	<param name="pixel_format" value="$(arg pixel_format)" />
 	<param name="io_method" value="mmap"/>
 	<remap from="/usb_cam/image_raw" to="$(arg image_topic_name_right)" />
 	<param name="framerate" value="$(arg framerate)"/> 
@@ -52,7 +53,7 @@
 	<param name="video_device" value="$(arg video_device_left)" />
 	<param name="image_width" value="$(arg image_width)" />
 	<param name="image_height" value="$(arg image_height)"/>
-	<param name="pixel_format" value="yuyv" />
+	<param name="pixel_format" value="$(arg pixel_format)" />
 	<param name="io_method" value="mmap"/>
 	<param name="framerate" value="$(arg framerate)"/> 
 	<remap from="/usb_cam/image_raw" to="$(arg image_topic_name_left)"/>
@@ -65,6 +66,6 @@
 
 <group if="$(arg show_images_from_cameras)">
 
-  <include file="$(find tigra_vision)/launch/view/show_images_from_cameras.launch" />
+  <include file="$(find tigra_vision)/launch/view/view_left_right_image.launch" />
 </group>
 </launch>

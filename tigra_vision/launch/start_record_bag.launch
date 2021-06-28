@@ -2,10 +2,8 @@
 <launch>
       <node pkg="rosbag" type="record" name="rosbag_record_cam" args="record -o cameras_record 
        /stereo/right/image_raw 
-       /stereo/right/image_raw/compressed 
        /stereo/right/camera_info 
        /stereo/left/image_raw 
-       /stereo/left/image_raw/compressed 
        /stereo/left/camera_info" />
 
 </launch>
