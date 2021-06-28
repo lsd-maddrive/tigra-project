@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="tigra_software" type="key_teleop.py" name="key_ctrl" output="screen" >
+    	<param name="debug" value="True" />
+
+        <param name="hz" value="10" />        
+        <param name="turbo/linear_steps" value="4" />        
+        <param name="turbo/angular_steps" value="5" />        
+
+        <!-- m/s -->
+        <param name="turbo/linear_forward_min" value="0.5" />        
+        <param name="turbo/linear_forward_max" value="3.0" />       
+
+        <!-- m/s -->
+        <param name="turbo/linear_backward_min" value="0.3" />        
+        <param name="turbo/linear_backward_max" value="0.6" />  
+
+        <!-- rad -->
+        <param name="turbo/angular_min" value="0.1" />        
+        <param name="turbo/angular_max" value="0.5" />  
+
+        <remap from="key_vel" to="tigra/cmd_vel" />
+    </node>
+</launch>
