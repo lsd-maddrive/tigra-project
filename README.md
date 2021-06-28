@@ -1,33 +1,16 @@
 # Tigra project
 
-## Пакеты для ROS
+## Подготовка к работе
 
-- https://github.com/KumarRobotics/ublox
-- https://github.com/srv/viso2/tree/melodic_develop
+- Установите требуемые пакеты командой `./scripts/install_packages.sh`
+- Установите пакеты для сборки командой `./scripts/install_third_party.sh`
+- Соберите требуемые пакеты командой `./scripts/build.sh`
+- Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
 
-> Для сборки на `noetic` достаточно из CMakeLists.txt удалить Boost зависимость - signals
+### Для разработки
 
-```bash
-sudo apt-get install \
-    ros-$ROS_DISTRO-realsense2-camera \
-    ros-$ROS_DISTRO-usb-cam \
-    ros-$ROS_DISTRO-rosserial-server \
-    ros-$ROS_DISTRO-rosserial-client \
-    ros-$ROS_DISTRO-rtabmap-ros \
-    ros-$ROS_DISTRO-robot-localization \
-    ros-$ROS_DISTRO-move-base \
-    ros-$ROS_DISTRO-global-planner \
-    ros-$ROS_DISTRO-teb-local-planner
-```
+- Установите требуемые пакеты командой `./scripts/install_packages_dev.sh`
 
-### Для симулятора
-
-```bash
-sudo apt install \
-    ros-$ROS_DISTRO-hector-gazebo-plugins
-```
-
-> Для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
 
 # Старт симулятора
 
@@ -45,11 +28,20 @@ sudo apt install \
 # Полезные доки
 
 - [Схема системы](https://drive.google.com/file/d/1iIvuMr4xtmul_ea4DkjYoXMdhi8A7dez/view?usp=sharing)
+- [Папка в облаке с корпусами для сенсоров](https://disk.yandex.ru/d/k_3tlJFRWigokQ)
 
 # Заметки
 
 - Firmware перенесен в [другой репо](https://github.com/lsd-maddrive/tigra-firmware). По результатам разработки сделаем объединение, если потребуется.
 
+## Аппаратура
+
+- Камеры
+    - [Xiaomi IMILAB](https://market.yandex.ru/product--veb-kamera-xiaomi-imilab-chernyi/668572011?cpa=1&sku=100956420730)
+    - [Microsoft Lifecam HD-3000](https://www.microsoft.com/ru-ru/accessories/products/webcams/lifecam-hd-3000)
+- [GPS Ublox M8N](https://www.u-blox.com/en/product/neo-m8-series)
+    - https://microem.ru/produkti/besprovodnie-tehnologii/glonass-gps-moduli/glonass-gps-modul-neo-m8/
+- 
 
 # Примеры
 
@@ -70,13 +62,15 @@ sudo apt install \
 
 # References
 
+## Common
+
+- https://linklab-uva.github.io/autonomousracing/assets/files/L11-compressed.pdf
+
 ## GPS
 
 - https://www.github.com/methylDragon/ros-sensor-fusion-tutorial/tree/master/01%20-%20ROS%20and%20Sensor%20Fusion%20Tutorial.md
-- http://docs.ros.org/en/lunar/api/robot_localization/html/integrating_gps.html
-- http://docs.ros.org/en/kinetic/api/robot_localization/html/state_estimation_nodes.html
-- https://github.com/KumarRobotics/ublox
-- https://docs.ros.org/en/melodic/api/robot_localization/html/integrating_gps.html#required-inputs
+- https://docs.ros.org/en/noetic/api/robot_localization/html/integrating_gps.html
+- http://docs.ros.org/en/noetic/api/robot_localization/html/state_estimation_nodes.html
 
 ## Odometry
 
@@ -96,3 +90,10 @@ sudo apt install \
 ## Movebase
 
 - https://blog.zhaw.ch/icclab/configuring-the-ros-navigation-stack-on-a-new-robot/
+
+
+# IMU heading (orientation) notes
+
+- the signs of your orientation angles increase in the right direction
+- all heading data is assumed to start with its zero point facing east
+- If your IMU does not conform to this standard and instead reports zero when facing north, you can still use the yaw_offset parameter to correct this. In this case, the value for yaw_offset would be 𝜋/2 (approximately 1.5707963).

@@ -2,3 +2,4 @@ accel_cov: [0.01,0,0, 0,0.01,0, 0,0,0.01]
 gyro_cov: [0.0025,0,0, 0,0.0025,0, 0,0,0.0025]
 orient_cov: [0.001,0,0, 0,0.001,0, 0,0,0.001]
 port: 5000
+frame_id_prefix: phone_sensors
