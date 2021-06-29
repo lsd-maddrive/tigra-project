@@ -9,4 +9,5 @@ catkin build \
     ackermann_raw_controller_plugin \
     ublox \
     elp_stereo_camera \
-    viso2
+    viso2 \
+    orb_slam2_ros
