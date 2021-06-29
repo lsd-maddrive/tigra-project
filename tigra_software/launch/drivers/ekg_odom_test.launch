@@ -14,21 +14,40 @@
     <remap from="/odometry/filtered" to="/odometry/global/filtered" />
   </node>
 
+
+
+
   <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
+  
+  <param name="frequency" value="30"/>  
+  <param name="delay" value="3.0"/>
+  
+  <!-- SPb parameters -->
+   
+    <param name="magnetic_declination_radians" value="0.2"/>  
 
-    <param name="magnetic_declination_radians" value="0"/>
+  <!-- SPb parameters -->
+ 
+  <!-- Robocross parameters -->
 
-    <param name="yaw_offset" value="0"/>
+    <!-- <param name="magnetic_declination_radians" value="0.2325"/>   -->
+
+  <!-- Robocross parameters -->
+
+    <param name="yaw_offset" value="1.57"/>
     <param name="publish_filtered_gps" value="true"/>
     <param name="broadcast_cartesian_transform_as_parent_frame" value="false"/>
-    <!-- <param name="broadcast_utm_transform" value="false"/> -->
-    
+    <param name="broadcast_utm_transform" value="false"/>
+    <param name="use_odometry_yaw" value="false"/>
+    <param name="wait_for_datum" value="false"/>
 
     <remap from="/imu/data" to="/tigra/phone_imu" />
     <remap from="/gps/fix" to="/ublox/fix" /> 
     <remap from="/odometry/filtered" to="/odometry/global/filtered" />
     
     <remap from="odometry/gps" to="/nav/gps" />
+
+ 
 
   </node>
 
