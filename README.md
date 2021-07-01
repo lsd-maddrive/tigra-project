@@ -2,6 +2,11 @@
 
 ## Запуск на роботе
 
+### Подготовка
+
+- Поставьте `catkin_tools` в виртуальное окружение или в систему
+- Соберите пакеты командой из [scripts/build.sh](scripts/build.sh)
+
 ### Server-side для связи с МК
 
 - Установите `rosserial_client` и `rosserial_server`
