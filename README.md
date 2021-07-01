@@ -9,6 +9,12 @@
 ```bash
     roslaunch tigra_software uc_socket_server.launch
 ```
+> Должны опубликоваться топики
+```
+/tigra/state
+/tigra/state_cmd
+```
+
 - Запустите `uc_convertion_layer.launch` - это запускает преобразования для привычного для ROS формата
 ```bash
     roslaunch tigra_software uc_convertion_layer.launch
