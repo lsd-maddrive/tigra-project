@@ -5,7 +5,15 @@
 ### Подготовка
 
 - Поставьте `catkin_tools` в виртуальное окружение или в систему
-- Соберите пакеты командой из [scripts/build.sh](scripts/build.sh)
+- Соберите пакеты командой
+```bash
+catkin build \
+    tigra_msgs \
+    tigra_description \
+    tigra_software \
+    tigra_vision \
+    tigra_maps
+```
 
 ### Server-side для связи с МК
 
@@ -59,9 +67,13 @@
 
 - Ставим апу https://play.google.com/store/apps/details?id=tech.unismart.dc&hl=en_US&gl=US
 - Подсоединяем телефон по USB к компу и включаем модем
-- Смотрим IP компа, задаем сервер и задачу в приложении
-- Адрес сервера: ws://192.168.1.45:5000//sensors
-- Протокол: ws
+- Смотрим IP компа, создаем сервер и задачу в приложении
+    - Адрес сервера: ws://192.168.1.45:5000//sensors
+    - Протокол: ws
+- Настраиваем задачу
+    - Датчики: acceleromenter, gyroscope, rotation, location
+    - Период: 20
+- Заходим в настройки приложения, выбираем формат данных - строгий JSON с названиями датчиков
 - Пускаем
 ```bash
 roslaunch tigra_software phone_server.launch
