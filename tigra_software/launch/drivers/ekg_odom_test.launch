@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <launch>
 
-  <param name="use_sim_time" value="true" />
+  <!-- <param name="use_sim_time" value="true" /> -->
 
   <node pkg="tf" type="static_transform_publisher" name="map_2_odom" args="0.5 0 0 0 0 0 map odom 50" />
-  <node pkg="tf" type="static_transform_publisher" name="base_2_imu" args="0 0 0 0 0 0 base_footprint imu 20" />
-  <node pkg="tf" type="static_transform_publisher" name="base_2_gps" args="0 0 0 0 0 0 base_footprint gps 20" />
+  <node pkg="tf" type="static_transform_publisher" name="base_2_imu" args="0 0 0 0 0 0 base_footprint gps 20" />
+  <node pkg="tf" type="static_transform_publisher" name="sensors_2_base" args="0 0 0 0 0 0 base_footprint phone_sensors 20" />
 
 
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global">
+  
     <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_map_test.yaml"/>
-    
     <remap from="/odometry/filtered" to="/odometry/global/filtered" />
+
   </node>
 
 
@@ -19,8 +20,8 @@
 
   <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
   
-  <param name="frequency" value="30"/>  
-  <param name="delay" value="3.0"/>
+    <param name="frequency" value="30"/>  
+    <param name="delay" value="3.0"/>
   
   <!-- SPb parameters -->
    
@@ -40,20 +41,23 @@
     <param name="broadcast_utm_transform" value="false"/>
     <param name="use_odometry_yaw" value="false"/>
     <param name="wait_for_datum" value="false"/>
+    <param name="zero_altitude" value="true"/>
 
-    <remap from="/imu/data" to="/tigra/phone_imu" />
+
+   <remap from="/imu/data" to="/tigra/phone_sensors/imu" />
     <remap from="/gps/fix" to="/ublox/fix" /> 
     <remap from="/odometry/filtered" to="/odometry/global/filtered" />
     
-    <remap from="odometry/gps" to="/nav/gps" />
 
- 
+    <remap from="odometry/gps" to="/nav/gps" />
 
   </node>
 
   <include file="$(find tigra_software)/launch/view/rviz_start.launch">
-        <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/ekg_test.rviz" />
+
+    <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/ekg_test.rviz" />
+
   </include>
 
-
+  
 </launch>

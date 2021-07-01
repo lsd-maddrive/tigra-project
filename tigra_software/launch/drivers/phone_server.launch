@@ -8,6 +8,7 @@
         <remap from='gps' to='tigra/phone_sensors/gps' />
     </node>
 
-    <node pkg="tf" type="static_transform_publisher" name="phone_base_2_phone_imu" args="0 0 0 -1.5707963 0 0 /phone_sensors /phone_sensors_imu 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="phone_base_2_phone_imu" args="0 0 0 0 0 0 /phone_sensors /phone_sensors_imu 1000" />
+    <!-- <node pkg="tf" type="static_transform_publisher" name="phone_base_2_phone_imu" args="0 0 0 -1.5707963 0 0 /phone_sensors /phone_sensors_imu 1000" /> -->
     <node pkg="tf" type="static_transform_publisher" name="phone_base_2_phone_gps" args="0 0 0 0 0 0 /phone_sensors /phone_sensors_gps 1000" />
 </launch>
