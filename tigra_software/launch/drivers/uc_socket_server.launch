@@ -4,4 +4,7 @@
     <node pkg="rosserial_server" type="socket_node" name="rosserial_server" output="screen" ns="tigra">
         <param name="port" value="23456" />
     </node>
+
+    <node pkg="rosservice" type="rosservice" name="set_log_level_1" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.rosserial_server' 'debug'" />
+    <node pkg="rosservice" type="rosservice" name="set_log_level_2" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.roscpp' 'debug'" />
 </launch>

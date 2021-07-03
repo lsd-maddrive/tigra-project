@@ -24,7 +24,7 @@
 
   <!-- Robocross parameters -->
 
-    <param name="yaw_offset" value="1.57"/>
+    <param name="yaw_offset" value="1.57079632679"/>
     <param name="publish_filtered_gps" value="true"/>
     <param name="broadcast_cartesian_transform_as_parent_frame" value="false"/>
     <param name="broadcast_utm_transform" value="false"/>
