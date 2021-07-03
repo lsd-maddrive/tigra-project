@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="joy" type="joy_node" name="joystick" output="screen" >
+        <param name="dev" value="/dev/input/js0" />
+    </node>
+
+    <!-- <rosparam  file="$(find tigra_software)/config/joy_teleop.yaml" command="load" ns="teleop" /> -->
+    <node pkg="tigra_software" type="joy_ctrl.py" name="joy_ctrl" output="screen" >
+    	<param name="debug" value="false" />
+
+    	<param name="speed/frwd_limit" value="3.0" />
+    	<param name="speed/bkwrd_limit" value="-1.0" />
+    	<param name="steer/limit" value="25" />
+
+        <remap from="cmd_vel" to="tigra/cmd_vel" />
+    </node>
+
+</launch>

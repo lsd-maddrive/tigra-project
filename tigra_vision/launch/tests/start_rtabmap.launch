@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch">
+    <arg name="video_device_right" value="/dev/right_cam" />
+    <arg name="video_device_left" value="/dev/left_cam" />
+    <arg name="camera_info_path" value="xiaomi_205mm" />
+    <arg name="pixel_format" value="mjpeg" />
+    <arg name="show_images_from_cameras" value="false" />
+  </include>
+
+  <include file="$(find tigra_vision)/launch/rtabmap_visual_SLAM.launch"></include>
+  <!-- <include file="$(find tigra_vision)/launch/drivers/stereo_image_proc.launch"></include> -->
+  <!-- <include file="$(find tigra_vision)/launch/view/view_stereo_image.launch"></include> -->
+
+</launch>
