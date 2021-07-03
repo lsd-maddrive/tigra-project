@@ -75,7 +75,7 @@ public:
     void thread_routine()
     {
         ros::Rate loop_rate_(10);
-        while (ros::ok())
+        while (ros::ok()) 
         {
             publishOdometry();
             loop_rate_.sleep();
