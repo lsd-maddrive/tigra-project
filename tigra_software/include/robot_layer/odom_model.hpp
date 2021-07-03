@@ -22,6 +22,12 @@ public:
     double getVX() { return vx_; }
     double getWYaw() { return wyaw_; }
 
+    void resetState() {
+        x_ = 0;
+        y_ = 0;
+        yaw_ = 0;
+    }
+
 private:
     // 2D coordinates in global positioning [m]
     double x_;

@@ -22,7 +22,7 @@ using namespace std;
 class OdometryConverter
 {
 public:
-    OdometryConverter(OdometryBicycleModel &model, ros::NodeHandle &nh, vector<double> &cov_diag, string &base_frame_id, string &odom_frame_id) : model_(model)
+    OdometryConverter(OdometryBicycleModel &model, ros::NodeHandle &nh, vector<double> &cov_diag, string &base_frame_id, string &odom_frame_id) : model_(model), last_ts(0)
     {
         sub_ = nh.subscribe("state", 100, &OdometryConverter::callback, this);
 
@@ -56,9 +56,19 @@ public:
 
     void callback(const tigra_msgs::TigraState::ConstPtr &msg)
     {
+        ROS_INFO_ONCE("Data received");
+
         double ts = msg->stamp.toSec();
+
+        if (ts < last_ts) {
+            model_.resetState();
+            ROS_WARN("State reset");
+        }
+
         model_.updateState(msg->angle_steering, msg->rotation_speed, ts);
         publishOdometry();
+
+        last_ts = ts;
     }
 
     // Disabled now
@@ -73,6 +83,8 @@ public:
     }
 
 private:
+    double last_ts;
+
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Odometry>> pub_;
     ros::Subscriber sub_;
 
