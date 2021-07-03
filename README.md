@@ -138,6 +138,7 @@ roslaunch tigra_software phone_server.launch
 - https://github.com/ros-controls/ros_controllers/tree/noetic-devel/ackermann_steering_controller
 - http://www.lcad.inf.ufes.br/wiki/images/b/b8/Ackerman-steering.pdf
 - https://www.theconstructsim.com/wp-content/uploads/2018/05/ros-extra-2.pdf
+- https://docs.swiftnav.com/wiki/ROS_Integration_Guide
 
 ### Visual odometry
 

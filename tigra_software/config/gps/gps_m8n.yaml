@@ -1,14 +1,31 @@
-debug: 2
+debug: 1
 tmode3: 0
 
-# rate: 1                     # Measurement rate in Hz
-# nav_rate: 1                 # in number of measurement cycles
+rate: 5                     # Measurement rate in Hz
+nav_rate: 5                 # in number of measurement cycles
+
+dgnss_mode: 3
+dr_limit: 1
+dynamic_model: 0
+
+fix_mode: 2d
 
 uart1:
   baudrate: 9600          # baudrate 
   in: 9                   # UBX
   out: 1                  # RTCM
 
+
+enable_ppp: True
+
+
+gnss:
+  beidou: False
+  gps: True
+  glonass: True
+  
+inf:
+  all: False
 
 publish:                  # publish all data
   all: true

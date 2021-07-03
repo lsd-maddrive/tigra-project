@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
-  <arg name="param_file_name"     default="m8n"/>
+  <arg name="param_file_name"     default="gps_m8n"/>
   <arg name="param_file_dir"      default="$(find tigra_software)/config/gps"/>
 
   <arg name="node_name"           doc="name of this node"
