@@ -32,6 +32,13 @@ catkin build \
 ```bash
     roslaunch tigra_software uc_convertion_layer.launch
 ```
+> Должны опубликоваться топики
+```
+/tigra/cmd_vel
+/tigra/state
+/tigra/state_cmd
+/tigra/wheel_odom
+```
 
 ### Телеуправление
 
@@ -54,6 +61,13 @@ catkin build \
 ```
 
 > Правый стик - скорость (верх-низ), левый стик - поворот (лево-право)
+
+> Джойстик должен быть в режиме "D"
+
+
+### Все и разом
+
+- Скрипт запуска всех нужных скриптов микроконтроллера и управление джойстиком - `full_start_joy_control.launch`
 
 
 ### Сборка `ros_lib` для встраивания в микроконтроллерную связку
@@ -159,3 +173,11 @@ roslaunch tigra_software phone_server.launch
 - the signs of your orientation angles increase in the right direction
 - all heading data is assumed to start with its zero point facing east
 - If your IMU does not conform to this standard and instead reports zero when facing north, you can still use the yaw_offset parameter to correct this. In this case, the value for yaw_offset would be 𝜋/2 (approximately 1.5707963).
+
+
+## Notes
+
+```xml
+    <node pkg="rosservice" type="rosservice" name="set_log_level_1" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.rosserial_server' 'debug'" />
+    <node pkg="rosservice" type="rosservice" name="set_log_level_2" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.roscpp' 'debug'" />
+```

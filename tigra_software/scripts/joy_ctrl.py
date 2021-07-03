@@ -112,7 +112,7 @@ if __name__ == "__main__":
     )
 
     rospy.loginfo("Ready, go!")
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(5)
 
     while not rospy.is_shutdown():
         command_state.linear.x = linear_vel.get_velocity()

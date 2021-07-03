@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
+    <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
+    <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
+
+</launch>
