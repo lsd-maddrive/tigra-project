@@ -5,24 +5,23 @@
 
   <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
     <arg name="camera"            value="rs_camera" />
-    <!-- <arg name="tf_publish_rate"   value="1000"/> -->
+    <arg name="align_depth"       value="true"/>
   </include>
 
   <include file="$(find tigra_software)/launch/drivers/imu_filter.launch" >
-    <arg name="in_topic"          value="rs_camera/imu" />
-    <arg name="out_topic"         value="rs_camera/imu/filtered" />
+    <arg name="in_topic"          value="/rs_camera/imu" />
+    <arg name="out_topic"         value="/rs_camera/imu/filtered" />
   </include>
 
   <!-- Here we use copy of rtabmap launch from our folder -->
   <include file="$(find tigra_vision)/launch/src/_src_rtabmap.launch">
     <arg name="frame_id"          value="base_footprint"/>
-    <arg name="rgb_topic"         value="color/image_raw"/>
-    <arg name="depth_topic"       value="aligned_depth_to_color/image_raw"/>
-    <arg name="camera_info_topic" value="color/camera_info"/>
+    <arg name="rgb_topic"         value="/rs_camera/color/image_raw"/>
+    <arg name="depth_topic"       value="/rs_camera/aligned_depth_to_color/image_raw"/>
+    <arg name="camera_info_topic" value="/rs_camera/color/camera_info"/>
     <arg name="approx_sync"       value="false"/>
     <arg name="wait_imu_to_init"  value="true"/>
-    <arg name="imu_topic"         value="imu/filtered"/>
-    <arg name="namespace"         value="rs_camera"/>
+    <arg name="imu_topic"         value="/rs_camera/imu/filtered"/>
 
     <arg name="rtabmap_args"      value="--delete_db_on_start --Grid/MaxGroundHeight 0.1 --Grid/MaxObstacleHeight 2 --Grid/NormalsSegmentation false"/>
     <arg name="rtabmapviz"        value="true"/>

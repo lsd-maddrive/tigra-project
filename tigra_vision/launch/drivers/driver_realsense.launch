@@ -50,7 +50,7 @@
   <arg name="ordered_pc"                default="false"/>
 
   <arg name="enable_sync"               default="true"/>
-  <arg name="align_depth"               default="true"/>
+  <arg name="align_depth"               default="false"/>
 
   <arg name="publish_tf"                default="true"/>
   <!-- 0 - Make it static! -->
