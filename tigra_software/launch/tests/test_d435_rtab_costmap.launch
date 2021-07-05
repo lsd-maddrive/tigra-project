@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- .53 - initial height -->
+  <node pkg="tf" type="static_transform_publisher" name="base_2_rs_camera" args="0 0 0.53 0 0.27 0 base_footprint rs_camera_link 1000" />
+
+  <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
+    <arg name="camera"            value="rs_camera" />
+    <arg name="tf_publish_rate"   value="1000"/>
+  </include>
+
+  <include file="$(find tigra_software)/launch/drivers/imu_filter.launch" >
+    <arg name="in_topic"          value="rs_camera/imu" />
+    <arg name="out_topic"         value="rs_camera/imu/filtered" />
+  </include>
+
+  <!-- Here we use copy of rtabmap launch from our folder -->
+  <include file="$(find tigra_vision)/launch/src/_src_rtabmap.launch">
+    <arg name="frame_id"          value="base_footprint"/>
+    <arg name="rgb_topic"         value="color/image_raw"/>
+    <arg name="depth_topic"       value="aligned_depth_to_color/image_raw"/>
+    <arg name="camera_info_topic" value="color/camera_info"/>
+    <arg name="approx_sync"       value="false"/>
+    <arg name="wait_imu_to_init"  value="true"/>
+    <arg name="imu_topic"         value="imu/filtered"/>
+    <arg name="namespace"         value="rs_camera"/>
+
+    <arg name="rtabmap_args"      value="--delete_db_on_start --Grid/MaxGroundHeight 0.1 --Grid/MaxObstacleHeight 2 --Grid/NormalsSegmentation false"/>
+    <arg name="rtabmapviz"        value="true"/>
+  </include>
+  
+  <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+    <arg name="rvizconfig"        value="$(find tigra_software)/config/rviz/rtab_d435_costmap.rviz" />
+  </include>
+</launch>

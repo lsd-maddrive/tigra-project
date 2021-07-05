@@ -101,10 +101,6 @@ roslaunch tigra_software phone_server.launch
 - Соберите требуемые пакеты командой `./scripts/build.sh`
 - Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
 
-### Для разработки
-
-- Установите требуемые пакеты командой `./scripts/install_packages_dev.sh`
-
 
 ## Старт симулятора
 
@@ -140,6 +136,8 @@ roslaunch tigra_software phone_server.launch
 ### Common
 
 - https://linklab-uva.github.io/autonomousracing/assets/files/L11-compressed.pdf
+- http://wiki.ros.org/rtabmap_ros/Tutorials/SetupOnYourRobot
+- http://wiki.ros.org/rtabmap_ros/Tutorials/HandHeldMapping
 
 ### GPS
 

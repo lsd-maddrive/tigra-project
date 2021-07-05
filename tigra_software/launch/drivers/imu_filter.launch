@@ -1,26 +1,15 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="in_topic" default="imu_in" />
+  <arg name="out_topic" default="imu_out" />
 
-  #### Nodelet manager ######################################################
+  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="ImuFilterNode" output="screen">
 
-  <node pkg="nodelet" type="nodelet" name="imu_manager" 
-    args="manager" output="screen" />
+    <param name="publish_tf" value="false" />
+    <param name="use_mag" value="false" />
+    <param name="world_frame" value="enu" />
 
-  #### IMU Driver ###########################################################
-
-  <node pkg="nodelet" type="nodelet" name="ImuFilterNodelet" 
-    args="load imu_filter_madgwick/ImuFilterNodelet imu_manager" 
-    output="screen">
-    
-    <param name="publish_tf" value="false"/>
-
-
-    <remap from="imu/data_raw" to="/tigra/phone_sensors/imu" />
-    <remap from="imu/data" to="/tigra/imu/filtered" />
-
-
+    <remap from="imu/data_raw" to="$(arg in_topic)" />
+    <remap from="imu/data" to="$(arg out_topic)" />
   </node>
-
-
-
 </launch>
