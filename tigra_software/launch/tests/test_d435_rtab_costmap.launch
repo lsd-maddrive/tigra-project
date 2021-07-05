@@ -5,7 +5,7 @@
 
   <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
     <arg name="camera"            value="rs_camera" />
-    <arg name="tf_publish_rate"   value="1000"/>
+    <!-- <arg name="tf_publish_rate"   value="1000"/> -->
   </include>
 
   <include file="$(find tigra_software)/launch/drivers/imu_filter.launch" >
