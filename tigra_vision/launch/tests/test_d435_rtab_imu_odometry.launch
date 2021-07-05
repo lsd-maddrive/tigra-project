@@ -36,7 +36,7 @@
       <param name="frame_id"               type="string" value="$(arg base_frame_id)"/>
       <param name="publish_tf"             type="bool"   value="false"/>
       <param name="publish_null_when_lost" type="bool"   value="true"/>
-      <param name="guess_from_tf"          type="bool"   value="true"/>
+      <param name="guess_frame_id"         type="string" value="odom"/>
 
       <param name="Odom/FillInfoData"      type="string" value="true"/>
       <param name="Odom/ResetCountdown"    type="string" value="10"/>
