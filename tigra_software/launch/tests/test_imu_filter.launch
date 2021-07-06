@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find tigra_software)/launch/drivers/phone_server.launch" >
+  </include>
+
+  <include file="$(find tigra_software)/launch/drivers/imu_filter.launch" >
+    <arg name="in_topic"          value="tigra/phone_sensors/imu" />
+    <arg name="out_topic"         value="filtered/imu" />
+  </include>
+</launch>

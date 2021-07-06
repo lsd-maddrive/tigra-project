@@ -1,0 +1,4 @@
+# speckle_range: 4
+min_disparity: 0
+# disparity_range: 96
+stereo_algorithm: 0

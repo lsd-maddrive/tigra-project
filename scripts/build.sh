@@ -10,4 +10,5 @@ catkin build \
     ublox \
     elp_stereo_camera \
     viso2 \
-    orb_slam2_ros
+    orb_slam2_ros \
+    rtabmap_ros

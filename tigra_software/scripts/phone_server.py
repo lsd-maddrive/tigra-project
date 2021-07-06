@@ -166,6 +166,11 @@ async def ws_handler(websocket, path, extra_argument):
                     z = data["value2"]
                     w = data["value3"]
                     q = [x, y, z, w]
+                    
+                    if not all(q):
+                        rospy.logwarn(f"Invalid quaternion data: {q}")
+                        return
+                        
                     imu_state.update_orient(q)
 
                     # a = euler_from_quaternion(q, axes='sxyz')

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- http://wiki.ros.org/rtabmap_ros -->
+  <arg name="rtabmap_args"            default="--delete_db_on_start"/>  
+
+  <arg name="rgb_topic_part"          default="image_rect_color" />
+  <arg name="mono_topic_part"         default="image_rect" />
+  <arg name="camera_info_topic_part"  default="camera_info" />
+
+  <arg name="base_frame_id"           default="base_footprint" />
+
+  <!-- .53 - initial height -->
+  <node pkg="tf" type="static_transform_publisher" name="tf_base_2_elp_camera" args="0 0 0.53 0 0 0 base_footprint elp_camera_link 1000" />
+
+  <include file="$(find elp_stereo_camera)/launch/camera_driver_elp.launch">
+    <arg name="camera"              value="elp_camera" />
+    <arg name="camera_info"         value="true" />
+    <arg name="calib_data_path"     value="$(find tigra_vision)/calib_info/elp" />
+    <arg name="stereo_params_path"  value="$(find tigra_vision)/config/elp_stereo.yaml" />
+
+		<arg name="image_width" value="1280" />
+		<arg name="image_height" value="720" />
+
+		<arg name="filter_type" value="gauss" />
+		<arg name="filter_kernel" value="7" />
+  </include>
+
+  <group ns="rtabmap">
+    <!-- Visual Odometry -->
+    <node pkg="rtabmap_ros" type="stereo_odometry" name="visual_odometry" output="screen" args="$(arg rtabmap_args)">
+      <remap from="left/image_rect"   to="/elp_camera/left/$(arg rgb_topic_part)"/>
+      <remap from="left/camera_info"  to="/elp_camera/left/$(arg camera_info_topic_part)"/>
+      <remap from="right/image_rect"  to="/elp_camera/right/$(arg mono_topic_part)"/>
+      <remap from="right/camera_info" to="/elp_camera/right/$(arg camera_info_topic_part)"/>
+      
+      <remap from="odom"              to="/elp_camera/vo"/>
+
+
+      <param name="frame_id"               type="string" value="$(arg base_frame_id)"/>
+      <param name="publish_tf"             type="bool"   value="false"/>
+      <param name="publish_null_when_lost" type="bool"   value="true"/>
+      <!-- <param name="guess_frame_id"         type="string" value="odom"/> -->
+
+      <param name="Odom/FillInfoData"      type="string" value="true"/>
+      <param name="Odom/ResetCountdown"    type="string" value="10"/>
+      <param name="Vis/FeatureType"        type="string" value="6"/> 
+      <param name="OdomF2M/MaxSize"        type="string" value="1000"/>
+    </node>
+    
+    <!-- SLAM -->
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg rtabmap_args)">
+      <param name="frame_id"          type="string" value="$(arg base_frame_id)"/>
+      <param name="subscribe_stereo"  type="bool" value="true"/>
+
+      <param name="approx_sync"       type="bool"   value="true"/>
+
+      <remap from="left/image_rect"   to="/elp_camera/left/$(arg rgb_topic_part)"/>
+      <remap from="left/camera_info"  to="/elp_camera/left/$(arg camera_info_topic_part)"/>
+      <remap from="right/image_rect"  to="/elp_camera/right/$(arg mono_topic_part)"/>
+      <remap from="right/camera_info" to="/elp_camera/right/$(arg camera_info_topic_part)"/>
+      <remap from="odom"              to="/odometry/filtered"/>
+      
+      <param name="Kp/DetectorStrategy"    type="string" value="6"/> <!-- use same features as odom -->
+      <param name="Mem/IncrementalMemory" type="string" value="true"/>
+    </node>
+  </group>
+
+  <!-- Odometry fusion (EKF), refer to demo launch file in robot_localization for more info -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+
+    <param name="frequency" value="50"/>
+    <param name="sensor_timeout" value="0.1"/>
+    <param name="two_d_mode" value="false"/>
+
+    <param name="odom_frame" value="odom"/>
+    <param name="base_link_frame" value="$(arg base_frame_id)"/>
+    <param name="world_frame" value="odom"/>
+
+    <param name="transform_time_offset" value="0.0"/>
+
+    <param name="odom0" value="/elp_camera/vo"/>
+
+    <!-- The order of the values is x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az. -->
+    <rosparam param="odom0_config">[true, true, true,
+                                    true, true, true,
+                                    true, true, true,
+                                    false, false, false,
+                                    false, false, false]</rosparam>
+
+    <param name="odom0_differential" value="false"/>
+
+    <param name="odom0_relative" value="true"/>
+
+    <param name="print_diagnostics" value="true"/>
+
+    <!-- ======== ADVANCED PARAMETERS ======== -->
+    <param name="odom0_queue_size" value="5"/>
+
+    <!-- The values are ordered as x, y, z, roll, pitch, yaw, vx, vy, vz,
+          vroll, vpitch, vyaw, ax, ay, az. -->
+    <rosparam param="process_noise_covariance">[0.005, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0.005, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0.006, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0.003, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0.003, 0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0.006, 0,     0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0.0025, 0,     0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0.0025, 0,    0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0.004, 0,    0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0.001, 0,    0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0.001, 0,    0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0.002, 0,    0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0.001, 0,    0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0.001, 0,
+                                                0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0.0015]</rosparam>
+
+    <!-- The values are ordered as x, y,
+          z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az. -->
+    <rosparam param="initial_estimate_covariance">[1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                  0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                  0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                  0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                  0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                  0,    0,    0,    0,    0,    1e-9, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                  0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                                                  0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
+                                                  0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                                                  0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                                                  0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                                                  0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,  0,    0,    0,
+                                                  0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
+                                                  0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                                                  0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]</rosparam>
+
+  </node>
+
+  <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+    <arg name="rvizconfig"        value="$(find tigra_software)/config/rviz/rtab_elp_odometry.rviz" />
+  </include>
+</launch>

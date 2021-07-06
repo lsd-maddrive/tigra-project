@@ -5,7 +5,7 @@
 > Если QT у вас конкретной версии стоит или собран самостоятельно, то уберите из установки
 
 ```bash
-sudo apt install qt5-default libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev python3-dev
+sudo apt install qt5-default libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev python3-dev libatlas-base-dev gfortran
 ```
 
 Создаем папку для сборки и клонируем нужные репки
@@ -13,8 +13,8 @@ sudo apt install qt5-default libgstreamer1.0-dev libgstreamer-plugins-base1.0-de
 ```bash
 mkdir -p opencv_build; cd $_
 
-git clone https://github.com/opencv/opencv.git -b 4.5.2
-git clone https://github.com/opencv/opencv_contrib.git -b 4.5.2
+git clone https://github.com/opencv/opencv.git -b 4.4.0
+git clone https://github.com/opencv/opencv_contrib.git -b 4.4.0
 ```
 
 Переходим в `opencv` и делаем папку для сборки
@@ -37,12 +37,14 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D WITH_IPP=ON \
         -D WITH_QT=ON \
         -D WITH_TBB=ON \
+        -D BUILD_opencv_python2=OFF \
         -D BUILD_opencv_python3=ON \
         -D WITH_GSTREAMER=ON \
         -D WITH_FFMPEG=ON \
         -D BUILD_DOCS=OFF \
         -D BUILD_PERF_TESTS=OFF \
         -D BUILD_TESTS=OFF \
+        -D BUILD_JAVA=OFF \
         -D WITH_OPENMP=ON \
         -D BUILD_EXAMPLES=OFF \
         -D BUILD_opencv_apps=OFF \
@@ -52,7 +54,9 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         ..
 ```
 
-Для GPU
+Для GPU (не забываем по [CUDA](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_network) и [сuDNN](https://developer.nvidia.com/rdp/cudnn-download))
+
+<!-- > Для CUDA версии выше 11 и сuDNN версии 8 и выше надо будет сделать фикс в OpenCV: https://github.com/opencv/opencv/pull/17499/files (`cmake/FindCUDNN.cmake` и `cmake/OpenCVDetectCUDA.cmake`) -->
 
 ```
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
@@ -63,12 +67,14 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D WITH_IPP=ON \
         -D WITH_QT=ON \
         -D WITH_TBB=ON \
+        -D BUILD_opencv_python2=OFF \
         -D BUILD_opencv_python3=ON \
         -D WITH_GSTREAMER=ON \
         -D WITH_FFMPEG=ON \
         -D BUILD_DOCS=OFF \
         -D BUILD_PERF_TESTS=OFF \
         -D BUILD_TESTS=OFF \
+        -D BUILD_JAVA=OFF \
         -D WITH_OPENMP=ON \
         -D BUILD_EXAMPLES=OFF \
         -D BUILD_opencv_apps=OFF \
@@ -79,6 +85,10 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D ENABLE_FAST_MATH=ON \
         -D CUDA_FAST_MATH=ON \
         -D WITH_CUBLAS=ON \
+        -D BUILD_opencv_cudacodec=OFF \
+        -D WITH_CUDNN=ON \
+        -D OPENCV_DNN_CUDA=ON \
+        -D CUDA_GENERATION=Pascal \
         ..
 ```
 
@@ -121,7 +131,14 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 ```
 --   Install to:                    /usr/local
 ```
-- GPU - TODO (драйвер не стоял, надо проверить, какие поля заполняются)
+- GPU - сборка с видюшечкой
+```
+--   NVIDIA CUDA:                   YES (ver 11.1, CUFFT CUBLAS FAST_MATH)
+--     NVIDIA GPU arch:             60 61
+--     NVIDIA PTX archs:
+-- 
+--   cuDNN:                         YES (ver 8.2.1)
+```
 
 Далее вызываем сборку и ждееееем
 
@@ -136,3 +153,17 @@ sudo cmake --build . --target install -- -j`nproc --all`
 > `sudo` нужен только для установки по системному пути. Если у вас указан `CMAKE_INSTALL_PREFIX` в домашней директории, то `sudo` не требуется
 
 
+## После сборки
+
+Установите переменные в rc файле
+
+```bash
+export PATH=/usr/local/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+```
+
+
+## References
+
+- https://gist.github.com/raulqf/f42c718a658cddc16f9df07ecc627be7
+- https://docs.opencv.org/4.5.2/db/d05/tutorial_config_reference.html
