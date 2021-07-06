@@ -20,8 +20,8 @@
 		<arg name="image_width" value="1280" />
 		<arg name="image_height" value="720" />
 
-		<arg name="filter_type" value="gauss" />
-		<arg name="filter_kernel" value="7" />
+		<!-- <arg name="filter_type" value="gauss" /> -->
+		<!-- <arg name="filter_kernel" value="7" /> -->
   </include>
 
   <group ns="elp_camera">

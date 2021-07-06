@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export CMAKE_PREFIX_PATH=/usr/local/lib/cmake/:$CMAKE_PREFIX_PATH
+
 catkin build \
     tigra_msgs \
     tigra_description \
