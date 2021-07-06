@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find elp_stereo_camera)/launch/camera_driver_elp.launch">
+    <arg name="camera"              value="elp_camera" />
+    <arg name="camera_info"         value="true" />
+    <arg name="calib_data_path"     value="$(find tigra_vision)/calib_info/elp" />
+    <arg name="stereo_params_path"  value="$(find tigra_vision)/config/elp_stereo.yaml" />
+
+		<arg name="image_width" value="1280" />
+		<arg name="image_height" value="720" />
+
+		<arg name="filter_type" value="gauss" />
+		<arg name="filter_kernel" value="7" />
+
+    
+  </include>
+
+	<node name="disparity_view" pkg="image_view" type="stereo_view" output="screen">
+		<remap from="stereo" to="elp_camera" />
+		<remap from="image" to="image_rect_color" />
+	</node>
+
+	<node name="reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" output="screen">
+	</node>
+
+  <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+    <arg name="rvizconfig"        value="$(find tigra_software)/config/rviz/elp_tuning.rviz" />
+  </include>
+</launch>
