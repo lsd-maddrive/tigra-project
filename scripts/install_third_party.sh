@@ -22,7 +22,7 @@ git -C $THIRD_PARTY_DIR/viso2 apply ../patches/viso2.patch
 
 git -C $THIRD_PARTY_DIR clone https://github.com/appliedAI-Initiative/orb_slam_2_ros -b v1.2
 
-# git -C $THIRD_PARTY_DIR clone https://github.com/ros-drivers/rosserial.git -b noetic-devel
+git -C $THIRD_PARTY_DIR clone https://github.com/ros-drivers/rosserial.git -b noetic-devel
 
 # Rtabmap
 
