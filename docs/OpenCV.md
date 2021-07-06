@@ -88,9 +88,9 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D BUILD_opencv_cudacodec=OFF \
         -D WITH_CUDNN=ON \
         -D OPENCV_DNN_CUDA=ON \
-        -D CUDA_GENERATION=Pascal \
         ..
 ```
+<!-- -D CUDA_GENERATION=Pascal \ -->
 
 Если OpenCV не определил архитектуру, то можно указать `-D CUDA_GENERATION=Pascal` или вашу архитектуру под сборку.
 
