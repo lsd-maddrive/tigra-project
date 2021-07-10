@@ -26,8 +26,6 @@ cd opencv; mkdir -p build; cd $_
 Конфигурируем CMake
 
 Для CPU
-        -D WITH_ITT=OFF \
-
 ```bash
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -53,6 +51,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D PYTHON_DEFAULT_EXECUTABLE=$(which python3.8) \
         ..
 ```
+<!-- -D WITH_ITT=OFF \ -->
 
 Для GPU (не забываем по [CUDA](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_network) и [сuDNN](https://developer.nvidia.com/rdp/cudnn-download))
 

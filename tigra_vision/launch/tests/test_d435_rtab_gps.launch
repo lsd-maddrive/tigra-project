@@ -12,7 +12,7 @@
   <arg name="imu_remove_gravitational_acceleration" default="true" />
 
   <!-- .53 - initial height -->
-  <node pkg="tf" type="static_transform_publisher" name="base_2_rs_camera" args="0 0 0.53 0 0.27 0 base_footprint rs_camera_link 1000" />
+  <node pkg="tf" type="static_transform_publisher" name="base_2_rs_camera" args="0 0 0.53 0 0.27 0 base_footprint rs_camera_link 1000" /> 
 
   <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
     <arg name="camera"            value="rs_camera" />
@@ -50,6 +50,8 @@
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg rtabmap_args)">
       <param name="frame_id"        type="string" value="$(arg base_frame_id)"/>
 
+      <remap from="gps/fix"         to="/ublox/fix"/>
+      
       <remap from="rgb/image"       to="$(arg rgb_topic)"/>
       <remap from="depth/image"     to="$(arg depth_topic)"/>
       <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
