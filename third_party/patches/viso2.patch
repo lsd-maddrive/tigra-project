@@ -111,7 +111,7 @@ index 225ea9a..08d9c9a 100755
 -  opencv_xphoto
 - opencv_xfeatures2d
 -)
-+# find_package(OpenCV 4.4.0 REQUIRED)
++find_package(OpenCV REQUIRED)
 +message("OpenCV version: " ${OpenCV_VERSION})
  
 +message("OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")

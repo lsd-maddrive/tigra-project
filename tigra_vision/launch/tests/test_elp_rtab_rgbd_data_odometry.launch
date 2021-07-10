@@ -25,17 +25,33 @@
   </include>
 
   <group ns="elp_camera">
-    <node pkg="nodelet" type="nodelet" name="elp_stereo_sync" args="standalone rtabmap_ros/stereo_sync">
+    <node pkg="nodelet" type="nodelet" name="camera_nodelet"  args="manager"/>
+
+    <!-- <node pkg="nodelet" type="nodelet" name="stereo_sync" args="load rtabmap_ros/stereo_sync camera_nodelet">
       <remap from="left/image_rect"   to="left/$(arg rgb_topic_part)"/>
       <remap from="left/camera_info"  to="left/$(arg camera_info_topic_part)"/>
       <remap from="right/image_rect"  to="right/$(arg rgb_topic_part)"/>
       <remap from="right/camera_info" to="right/$(arg camera_info_topic_part)"/>
+    </node> -->
+
+    <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync camera_nodelet">
+      <remap from="rgb/image"       to="left/$(arg rgb_topic_part)"/>
+      <remap from="depth/image"     to="depth"/>
+      <remap from="rgb/camera_info" to="left/$(arg camera_info_topic_part)"/>
+
+      <param name="approx_sync"     value="false" />
     </node>
+
+    <node pkg="nodelet" type="nodelet" name="disparity_2_depth" args="load rtabmap_ros/disparity_to_depth camera_nodelet">
+      <remap from="disparity"   to="disparity"/>
+      <remap from="depth"       to="depth"/>
+    </node>
+
    </group>
 
   <group ns="rtabmap">
     <!-- Visual Odometry -->
-    <node pkg="rtabmap_ros" type="stereo_odometry" name="visual_odometry" output="screen" args="$(arg rtabmap_args)">
+    <!-- <node pkg="rtabmap_ros" type="stereo_odometry" name="visual_odometry" output="screen" args="$(arg rtabmap_args)">
       <remap from="rgbd_image"  to="/elp_camera/rgbd_image"/>
       <remap from="odom"        to="/elp_camera/vo"/>
 
@@ -44,7 +60,23 @@
       <param name="frame_id"                type="string" value="$(arg base_frame_id)"/>
       <param name="publish_tf"              type="bool"   value="false"/>
       <param name="publish_null_when_lost"  type="bool"   value="true"/>
-      <!-- <param name="guess_frame_id"         type="string" value="odom"/> -->
+
+      <param name="Odom/FillInfoData"       type="string" value="true"/>
+      <param name="Odom/ResetCountdown"     type="string" value="10"/>
+      <param name="Vis/FeatureType"         type="string" value="6"/> 
+      <param name="OdomF2M/MaxSize"         type="string" value="1000"/>
+    </node> -->
+
+    <node pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odometry" output="screen" args="$(arg rtabmap_args)">
+      <remap from="rgbd_image"  to="/elp_camera/rgbd_image"/>
+      <remap from="odom"        to="/elp_camera/vo"/>
+
+      <param name="approx_sync"             type="bool" value="false"/>
+      <param name="subscribe_rgbd"          type="bool" value="true"/>
+      <param name="subscribe_depth"         type="bool" value="false"/>
+      <param name="frame_id"                type="string" value="$(arg base_frame_id)"/>
+      <param name="publish_tf"              type="bool"   value="false"/>
+      <param name="publish_null_when_lost"  type="bool"   value="true"/>
 
       <param name="Odom/FillInfoData"       type="string" value="true"/>
       <param name="Odom/ResetCountdown"     type="string" value="10"/>

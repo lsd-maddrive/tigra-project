@@ -27,3 +27,7 @@ git -C $THIRD_PARTY_DIR clone https://github.com/ros-drivers/rosserial.git -b no
 # Rtabmap
 
 git -C $THIRD_PARTY_DIR clone https://github.com/introlab/rtabmap_ros.git -b 0.20.10-noetic
+
+# cv_bridge
+
+# git -C $THIRD_PARTY_DIR clone https://github.com/ros-perception/vision_opencv.git -b noetic

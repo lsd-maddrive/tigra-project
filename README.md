@@ -151,6 +151,7 @@ roslaunch tigra_software phone_server.launch
 - http://www.lcad.inf.ufes.br/wiki/images/b/b8/Ackerman-steering.pdf
 - https://www.theconstructsim.com/wp-content/uploads/2018/05/ros-extra-2.pdf
 - https://docs.swiftnav.com/wiki/ROS_Integration_Guide
+- http://wiki.ros.org/rtabmap_ros/Tutorials/StereoOutdoorMapping
 
 ### Visual odometry
 

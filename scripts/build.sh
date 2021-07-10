@@ -13,4 +13,7 @@ catkin build \
     elp_stereo_camera \
     viso2 \
     orb_slam2_ros \
-    rtabmap_ros
+    rtabmap_ros \
+    --cmake-args -DOpenCV_DIR="/usr/local/lib/cmake/opencv4" 
+
+    # cv_bridge \
