@@ -1,0 +1,132 @@
+<!--
+  This file will launch rViz along with the mmWave sensor node and configure a TI mmWave 1642 sensor using a 2D config
+ -->
+
+<launch>
+
+<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+    <remap from="cloud_in" to="xyzi_filt_out" />
+<param name="max_hight" value="10"/>
+<param name="angle_min" value="-1.5"/>
+<param name="angle_max" value="1.5"/>
+<param name="angle_inccrement" value="0.01"/>
+<param name="range_min" value="0.04"/>
+<param name="range_max" value="11"/>
+<param name="scan_time" value="0.1"/>
+  </node>
+<!--<include file="$(find turtlebot_mmwave_launchers)/launch/single_sensor/radar_mapping.launch"/>-->
+
+  <include file="$(find turtlebot_mmwave_launchers)/launch/single_sensor/radar_limit_filters.launch"/>
+  <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">    
+    
+    <!--<param name="tf_map_scanmatch_transform_frame_name" value="ti_mmwave_pcl"/>-->
+    <param name="map_frame" value="map" />
+    <param name="odom_frame" value="odom" />
+    <param name="base_frame" value="ti_mmwave_pcl" />
+
+   
+    <param name="map_resolution" value="0.01"/>
+    <param name="map_size" value="256"/>
+    <param name="map_start_x" value="0.5"/>    
+    <param name="map_start_y" value="0.5" />
+    <param name="map_multi_res_levels" value="3" />
+    
+    
+    <param name="update_factor_free" value="0.4"/>
+    <param name="update_factor_occupied" value="0.9" />    
+    <param name="map_update_distance_thresh" value="0.05"/>
+    <param name="map_update_angle_thresh" value="0.05" />
+    <param name="laser_z_min_value" value="-1.0" />
+    <param name="laser_z_max_value" value="1.0" />
+    <param name="map_pub_period" value="0.1" /> 
+    
+    <param name="advertise_map_service" value="true"/>
+    <param name="scan_subscriber_queue_size" value="10"/>
+    <param name="scan_topic" value="scan"/>
+  </node>
+  <!--<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+    <param name="base_frame" value="ti_mmwave_pcl"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="map_update_interval" value="1"/>
+    <param name="maxUrange" value="11"/>
+ 
+    <param name="maxRange" value="10"/>
+    <param name="sigma" value="0.05"/>
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.05"/>
+    <param name="astep" value="0.05"/>
+    <param name="iterations" value="5"/>
+
+    <param name="lsigma" value="0.05"/>
+
+    <param name="ogain" value="3.0"/>
+    <param name="lskip" value="0"/>
+
+    <param name="srr" value="0.01"/>
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.01"/>
+    <param name="stt" value="0.02"/>
+
+
+    <param name="linearUpdate" value="0.01"/>
+    <param name="temporalUpdate" value="-1"/>
+
+    <param name="minimumScore" value="50"/>
+    <param name="angularUpdate" value="0.02"/>
+    <param name="occ_thresh" value="0.25"/>
+
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="particles" value="10"/>
+
+    <param name="xmin" value="-10"/>
+    <param name="ymin" value="-10"/>
+    <param name="xmax" value="10"/>
+    <param name="ymax" value="10"/>
+    <param name="delta" value="0.05"/>
+
+ 
+    <param name="llsamplerange" value="0.01"/>
+    <param name="llsamplestep" value="0.01"/>
+    <param name="lasamplerange" value="0.005"/>
+    <param name="lasamplestep" value="0.005"/>
+  </node>-->
+  <!--<node pkg="amcl" type="amcl" name="amcl">
+    <param name="use_map_topic" value="true"/>
+
+    <param name="odom_model_type" value="diff"/>
+
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame" value="ti_mmwave_pcl"/>
+<param name="gui_publish_rate" value="5.0"/>
+    <param name="laser_max_beams" value="2"/>
+    <param name="laser_max_range" value="11.0"/>
+    <param name="min_particles" value="2"/>
+    <param name="max_particles" value="2000"/>
+    <param name="odom_alpha5" value="0.1"/>
+    
+    <param name="kld_err" value="0.05"/>
+    <param name="kld_z" value="0.99"/>
+    <param name="odom_alpha1" value="0.2"/>
+    <param name="odom_alpha2" value="0.2"/>
+
+    <param name="odom_alpha3" value="0.2"/>
+    <param name="odom_alpha4" value="0.2"/>
+    <param name="laser_z_hit" value="0.5"/>
+    <param name="laser_z_short" value="0.05"/>
+    <param name="laser_z_max" value="0.05"/>
+    <param name="laser_z_rand" value="0.5"/>
+    <param name="laser_sigma_hit" value="0.2"/>
+    <param name="laser_lambda_short" value="0.1"/>
+    <param name="laser_model_type" value="likelihood_field"/>
+
+    <param name="laser_likelihood_max_dist" value="4.0"/>
+    <param name="update_min_d" value="0.25"/>
+    <param name="update_min_a" value="0.2"/>
+    <param name="resample_interval" value="1"/>
+
+    <param name="transform_tolerance" value="0.1"/>
+    <param name="recovery_alpha_slow" value="0.0"/>
+    <param name="recovery_alpha_fast" value="0.0"/>
+  </node>-->
+
+</launch>

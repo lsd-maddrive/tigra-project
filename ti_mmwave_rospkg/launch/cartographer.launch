@@ -1,0 +1,25 @@
+<!--
+  This file will launch rViz along with the mmWave sensor node and configure a TI mmWave 1642 sensor using a 2D config
+ -->
+
+<launch>
+
+<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+    <remap from="cloud_in" to="xyzi_filt_out" />
+<param name="max_hight" value="10"/>
+<param name="angle_min" value="-1.5"/>
+<param name="angle_max" value="1.5"/>
+<param name="angle_inccrement" value="0.01"/>
+<param name="range_min" value="0.04"/>
+<param name="range_max" value="11"/>
+<param name="scan_time" value="0.1"/>
+  </node>
+ <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="-configuration_directory $(find ouster_backpack_bringup)/configuration_files -configuration_basename 1_ouster_3d.lua" output="screen">
+    <remap from="/points2" to="ti_mmwave/radar_scan_pcl"/>
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.2" />
+
+</launch>

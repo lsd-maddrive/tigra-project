@@ -1,0 +1,32 @@
+<launch>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_map_to_odom" args="0 0 0 0 0 0 map odom 30"/>
+
+<!--<include file="$(find ti_mmwave_rospkg)/launch/radar_limit_filters.launch"/>-->
+<!--<include file="$(find ti_mmwave_rospkg)/launch/radar_mapping.launch"/>-->
+
+  <!--<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+    <remap from="cloud_in" to="ti_mmwave/radar_scan_pcl" />
+  </node>-->
+
+  <!--<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap">
+     <param name="subscribe_depth" value="false"/>
+     <param name="subscribe_scan" value="true"/>
+     <param name="frame_id" value="ti_mmwave"/>
+     <param name="odom_frame_id" value="odom"/>
+     <param name="approx_sync" value="true"/>
+     <param name="wait_for_transform_duration" value="0.5"/>
+     <param name="odom_tf_linear_variance" value="0.001"/>
+     <param name="odom_tf_angular_variance" value="0.001"/>
+     <param name="Grid/FromDepth" type="string" value="false"/>
+  </node>-->
+
+  <node name="rtabmap_odometry" pkg="rtabmap_ros" type="icp_odometry">
+     <remap from="scan_cloud" to="ti_mmwave/radar_scan_pcl" />
+     <param name="frame_id" value="ti_mmwave_pcl"/>
+     <param name="odom_frame_id" value="odom"/>
+     <param name="wait_for_transform" value="false"/>
+     <param name="scan_normal_k" value="0"/>
+  </node>
+
+</launch>

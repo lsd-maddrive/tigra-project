@@ -1,0 +1,120 @@
+<launch>
+
+  <!-- Input arguments -->
+  <arg name="device" value="1443" doc="TI mmWave sensor device type [1443, 1642]"/>
+  <arg name="config" value="3d" doc="TI mmWave sensor device configuration [3d_best_range_res (not supported by 1642 EVM), 2d_best_range_res]"/>
+  <arg name="max_allowed_elevation_angle_deg" default="90" doc="Maximum allowed elevation angle in degrees for detected object data [0 > value >= 90]}"/>
+  <arg name="max_allowed_azimuth_angle_deg" default="90" doc="Maximum allowed azimuth angle in degrees for detected object data [0 > value >= 90]}"/>
+
+  <!-- mmWave_Manager node -->
+  <node pkg="ti_mmwave_rospkg" type="ti_mmwave_rospkg" name="ti_mmwave" output="screen">
+    <param name="command_port" value="/dev/ttyACM0"  />
+    <param name="command_rate" value="115200"   />
+    <param name="data_port" value="/dev/ttyACM1"  />
+    <param name="data_rate" value="921600"   />
+    <param name="max_allowed_elevation_angle_deg" value="$(arg max_allowed_elevation_angle_deg)"   />
+    <param name="max_allowed_azimuth_angle_deg" value="$(arg max_allowed_azimuth_angle_deg)"   />
+    <param name="frame_id" value="ti_mmwave"/>
+  </node>
+  
+  <!-- mmWaveQuickConfig node (terminates after configuring mmWave sensor) -->
+  <node pkg="ti_mmwave_rospkg" type="mmWaveQuickConfig" name="mmWaveQuickConfig" args="$(find ti_mmwave_rospkg)/cfg/1443es1_mid_range_3d.cfg" output="screen" />
+
+  <!-- Static transform from map to base_radar_link for visualization of stand-alone mmWave sensor using Rviz -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_base_to_radar_link" args="0 0 0 0 0 0 ti_mmwave_pcl ti_mmwave"/>
+  <!--<node pkg="tf" type="static_transform_publisher" name="static_tf_map_to_base_radar_link" args="0 0 0 0 0 0 map ti_mmwave_pcl 100"/>-->
+  
+  <!--<node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_mmwave_launchers)/launch/single_sensor/mapping_visualization.rviz"/>-->
+
+  <!-- Launch Rviz with pre-defined configuration to view mmWave sensor detected object data (color by intensity) -->
+  <include file="$(find turtlebot_mmwave_launchers)/launch/single_sensor/radar_mapping.launch"/>
+
+  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+    <remap from="cloud_in" to="ti_mmwave/radar_scan_pcl" />
+  </node>
+
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+    <param name="base_frame" value="ti_mmwave_pcl"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="map_update_interval" value="1"/>
+    <param name="maxUrange" value="5"/>
+ 
+    <param name="maxRange" value="10"/>
+    <param name="sigma" value="0.05"/>
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.05"/>
+    <param name="astep" value="0.05"/>
+    <param name="iterations" value="5"/>
+
+    <param name="lsigma" value="0.05"/>
+
+    <param name="ogain" value="3.0"/>
+    <param name="lskip" value="0"/>
+
+    <param name="srr" value="0.01"/>
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.01"/>
+    <param name="stt" value="0.02"/>
+
+
+    <param name="linearUpdate" value="0.01"/>
+    <param name="temporalUpdate" value="-1"/>
+
+    <param name="minimumScore" value="50"/>
+    <param name="angularUpdate" value="0.02"/>
+    <param name="occ_thresh" value="0.25"/>
+
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="particles" value="10"/>
+
+    <param name="xmin" value="-1.0"/>
+    <param name="ymin" value="-1.0"/>
+    <param name="xmax" value="1.0"/>
+    <param name="ymax" value="1.0"/>
+    <param name="delta" value="0.05"/>
+
+ 
+    <param name="llsamplerange" value="0.01"/>
+    <param name="llsamplestep" value="0.01"/>
+    <param name="lasamplerange" value="0.005"/>
+    <param name="lasamplestep" value="0.005"/>
+  </node>
+
+  <node pkg="amcl" type="amcl" name="amcl">
+    <param name="use_map_topic" value="true"/>
+    <!-- Publish scans from best pose at a max of 10 Hz -->
+    <param name="odom_model_type" value="diff"/>
+    <param name="odom_alpha5" value="0.1"/>
+    <param name="gui_publish_rate" value="10.0"/>
+    <param name="laser_max_beams" value="200"/>
+    <param name="laser_max_range" value="8.0"/>
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="2000"/>
+    <param name="kld_err" value="0.05"/>
+    <param name="kld_z" value="0.99"/>
+    <param name="odom_alpha1" value="0.2"/>
+    <param name="odom_alpha2" value="0.2"/>
+    <!-- translation std dev, m -->
+    <param name="odom_alpha3" value="0.2"/>
+    <param name="odom_alpha4" value="0.2"/>
+    <param name="laser_z_hit" value="0.5"/>
+    <param name="laser_z_short" value="0.05"/>
+    <param name="laser_z_max" value="0.05"/>
+    <param name="laser_z_rand" value="0.5"/>
+    <param name="laser_sigma_hit" value="0.2"/>
+    <param name="laser_lambda_short" value="0.1"/>
+    <param name="laser_model_type" value="likelihood_field"/>
+    <!-- <param name="laser_model_type" value="beam"/> -->
+    <param name="laser_likelihood_max_dist" value="4.0"/>
+    <param name="update_min_d" value="0.25"/>
+    <param name="update_min_a" value="0.2"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame" value="ti_mmwave_pcl"/>
+    <param name="resample_interval" value="1"/>
+    <!-- Increase tolerance because the computer can get quite busy -->
+    <param name="transform_tolerance" value="1.0"/>
+    <param name="recovery_alpha_slow" value="0.0"/>
+    <param name="recovery_alpha_fast" value="0.0"/> 
+  </node>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find ti_mmwave_rospkg)/launch/rviz/ti_mmwave.rviz"/>
+</launch>

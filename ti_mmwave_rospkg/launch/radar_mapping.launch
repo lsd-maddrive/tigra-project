@@ -1,0 +1,44 @@
+<!--
+  Launch file to perform mapping using octomap with the radar
+ -->
+<launch>
+
+  <!--<node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_map_to_odom" args="0 0 0 0 0 0 map odom"/>-->
+
+		<!--MAPPING MTHFCK-->
+  <include file="$(find turtlebot_mmwave_launchers)/launch/single_sensor/radar_limit_filters.launch">
+  </include>
+
+  <!-- Create "raw" 3D map using first octomap node -->
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_raw" output="screen" >
+    <param name="frame_id" value="odom"  />
+    <param name="base_frame_id" value="ti_mmwave_pcl"  />
+    <remap from="cloud_in" to="xyzi_filt_out" />
+    <remap from="octomap_point_cloud_centers" to="raw_point_cloud_centers" />
+    <remap from="projected_map" to="raw_map" />
+  </node>
+<!-- Perform SOR filtering on output from "raw" octomap node -->
+  <node pkg="nodelet" type="nodelet" name="mapping_SOR_filt_mapping" args="standalone pcl/StatisticalOutlierRemoval" output="screen" >
+    <remap from="~input" to="raw_point_cloud_centers" />
+    <remap from="~output" to="mapping_SOR_filter_out" />
+    <param name="mean_k" value="20" />
+    <param name="stddev" value="0.04" />
+  </node>
+  
+  <!-- Create "filtered" 3D map using second octomap node -->
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_filtered" output="screen" >
+    <param name="frame_id" value="odom"  />
+    <param name="base_frame_id" value="ti_mmwave_pcl"  />
+    <remap from="octomap_point_cloud_centers" to="filtered_point_cloud_centers" />
+    <!--<remap from="projected_map" to="map" />-->
+    <param name="latch" value="false"/>
+    <param name="filter_ground" value="true"/>
+    <param name="ground_filter/distance" value=1"/>
+    <param name="ground_filter/plane" value="1"/>
+    <param name="ground_filter/angle" value="0.25"/>
+    <remap from="cloud_in" to="mapping_SOR_filter_out" />
+  </node>
+  <!--  **************** Visualisation ****************  -->
+	<!--<node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_mmwave_launchers)/launch/single_sensor/mapping_visualization.rviz"/>-->
+  <!--<node pkg="rviz" type="rviz" name="rviz" args="-d $(find ti_mmwave_rospkg)/launch/rviz/ti_mmwave.rviz"/>-->
+</launch>
