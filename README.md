@@ -100,6 +100,7 @@ roslaunch tigra_software phone_server.launch
 - Установите пакеты для сборки командой `./scripts/install_third_party.sh`
 - Соберите требуемые пакеты командой `./scripts/build.sh`
 - Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
+- `sudo usermod -aG dialout $USER` - для работы с Serial
 
 
 ## Старт симулятора
