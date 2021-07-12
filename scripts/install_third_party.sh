@@ -27,3 +27,6 @@ git -C $THIRD_PARTY_DIR clone https://github.com/ros-drivers/rosserial.git -b no
 # Rtabmap
 
 git -C $THIRD_PARTY_DIR clone https://github.com/introlab/rtabmap_ros.git -b 0.20.10-noetic
+
+
+git -C $THIRD_PARTY_DIR clone https://github.com/ros-perception/image_pipeline.git -b noetic

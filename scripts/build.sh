@@ -13,4 +13,6 @@ catkin build \
     elp_stereo_camera \
     viso2 \
     orb_slam2_ros \
-    rtabmap_ros
+    rtabmap_ros \
+    stereo_image_proc \
+    camera_calibration
