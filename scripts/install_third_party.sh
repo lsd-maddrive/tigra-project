@@ -30,3 +30,4 @@ git -C $THIRD_PARTY_DIR clone https://github.com/introlab/rtabmap_ros.git -b 0.2
 
 
 git -C $THIRD_PARTY_DIR clone https://github.com/ros-perception/image_pipeline.git -b noetic
+# git -C $THIRD_PARTY_DIR clone https://github.com/ros-perception/vision_opencv.git -b noetic

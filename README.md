@@ -100,6 +100,7 @@ roslaunch tigra_software phone_server.launch
 - Установите пакеты для сборки командой `./scripts/install_third_party.sh`
 - Соберите требуемые пакеты командой `./scripts/build.sh`
 - Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
+- `sudo usermod -aG dialout $USER` - для работы с Serial
 
 
 ## Старт симулятора
@@ -151,6 +152,7 @@ roslaunch tigra_software phone_server.launch
 - http://www.lcad.inf.ufes.br/wiki/images/b/b8/Ackerman-steering.pdf
 - https://www.theconstructsim.com/wp-content/uploads/2018/05/ros-extra-2.pdf
 - https://docs.swiftnav.com/wiki/ROS_Integration_Guide
+- http://wiki.ros.org/rtabmap_ros/Tutorials/StereoOutdoorMapping
 
 ### Visual odometry
 
@@ -178,4 +180,8 @@ roslaunch tigra_software phone_server.launch
 ```xml
     <node pkg="rosservice" type="rosservice" name="set_log_level_1" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.rosserial_server' 'debug'" />
     <node pkg="rosservice" type="rosservice" name="set_log_level_2" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.roscpp' 'debug'" />
+```
+
+```bash
+export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.8/site-packages
 ```

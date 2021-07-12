@@ -15,4 +15,7 @@ catkin build \
     orb_slam2_ros \
     rtabmap_ros \
     stereo_image_proc \
-    camera_calibration
+    camera_calibration \
+    --cmake-args -DOpenCV_DIR="/usr/local/lib/cmake/opencv4" 
+
+    # cv_bridge \

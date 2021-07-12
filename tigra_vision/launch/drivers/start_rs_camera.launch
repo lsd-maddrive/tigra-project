@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
+    <arg name="camera"            value="rs_camera" />
+    <arg name="align_depth"       value="true"/>
+  </include>
+
+  <include file="$(find tigra_software)/launch/drivers/imu_filter.launch" >
+    <arg name="in_topic"          value="rs_camera/imu" />
+    <arg name="out_topic"         value="rs_camera/imu/filtered" />
+  </include>
+</launch>
