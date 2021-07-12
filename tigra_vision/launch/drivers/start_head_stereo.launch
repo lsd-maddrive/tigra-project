@@ -1,0 +1,10 @@
+<launch>
+	<include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch" >
+		<arg name="camera_info" 		    value="true" />	
+        <!-- Set this for correct calibration info -->
+    <arg name="camera_info_path"    value="xiaomi_polygon_1207" />
+    <arg name="stereo_params_path"  value="$(find tigra_vision)/config/head_stereo.yaml" />
+		<arg name="camera_name" 		    value="head_stereo" />
+    <arg name="framerate"           value="15" />
+  </include>
+</launch>

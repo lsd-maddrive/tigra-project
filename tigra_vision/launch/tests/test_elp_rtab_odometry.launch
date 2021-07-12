@@ -35,7 +35,6 @@
       
       <remap from="odom"              to="/elp_camera/vo"/>
 
-
       <param name="frame_id"               type="string" value="$(arg base_frame_id)"/>
       <param name="publish_tf"             type="bool"   value="false"/>
       <param name="publish_null_when_lost" type="bool"   value="true"/>

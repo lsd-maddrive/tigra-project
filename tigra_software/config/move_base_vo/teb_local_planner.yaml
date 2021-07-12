@@ -1,7 +1,6 @@
 TebLocalPlannerROS:
-    odom_topic: odometry/local/filtered
-    # TODO - change this when full system done
-    map_frame: odom
+    odom_topic: /tigra/odometry/filtered
+    map_frame: map
 
     # Trajectory
 
@@ -18,11 +17,8 @@ TebLocalPlannerROS:
     wheelbase: 1.0
     cmd_angle_instead_rotvel: True
 
-    max_vel_x: 0.4
-    max_vel_x_backwards: 0.3
-    # For fast
-    # max_vel_x: 1.0
-    # max_vel_x_backwards: 0.6
+    max_vel_x: 0.7
+    max_vel_x_backwards: 0.4
 
     max_vel_theta: 0.43
     acc_lim_x: 0.03

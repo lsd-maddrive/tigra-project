@@ -3,6 +3,9 @@
   <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
     <arg name="camera"            value="rs_camera" />
     <arg name="align_depth"       value="true"/>
+    <arg name="linear_accel_cov"  value="1.0"/>
+    <arg name="depth_fps"         value="15"/>
+    <arg name="color_fps"         value="15"/>
   </include>
 
   <include file="$(find tigra_software)/launch/drivers/imu_filter.launch" >

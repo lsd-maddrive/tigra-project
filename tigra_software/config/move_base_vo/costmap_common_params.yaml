@@ -26,7 +26,7 @@ depth_obstacle_layer:
     marking: true
     clearing: true
     expected_update_rate: 0
-    min_obstacle_height: 0.3    # default 0, meters
+    min_obstacle_height: 0.1    # default 0, meters
     max_obstacle_height: 3.0     # default 3, meters
 
 # laser_obstacle_layer:
