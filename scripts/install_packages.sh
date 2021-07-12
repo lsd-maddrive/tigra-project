@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+    #!/usr/bin/env bash
 
 sudo apt-get install \
     ros-$ROS_DISTRO-realsense2-camera \

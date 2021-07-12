@@ -5,7 +5,7 @@
       <remap from="left/camera_info" to="left/camera_info" />
       <remap from="right/image_raw" to="right/image_raw" />
       <remap from="right/camera_info" to="right/camera_info" />
-      <param name="speckle_size"   value="300"/>
+      <!-- <param name="speckle_size"   value="300"/> -->
       <!-- <param name="disparity_range"   value="128"/> -->
       <param name="approximate_sync" value="true" />
     </node>

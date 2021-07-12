@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- <param name="use_sim_time" value="true" /> -->
+
+  <node pkg="tf" type="static_transform_publisher" name="map_2_odom" args="0.5 0 0 0 0 0 map odom 50" />
+  <node pkg="tf" type="static_transform_publisher" name="base_2_imu" args="0 0 0 0 0 0 base_footprint gps 20" />
+  <node pkg="tf" type="static_transform_publisher" name="sensors_2_base" args="0 0 0 0 0 0 base_footprint phone_sensors 20" />
+
+
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global">
+  
+    <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_map_test.yaml"/>
+    <remap from="/odometry/filtered" to="/odometry/global/filtered" />
+
+  </node>
+
+
+
+
+
+  <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+
+    <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_move_base.rviz" />
+
+  </include>
+
+  
+</launch>

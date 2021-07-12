@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch> 
 	<!-- http://wiki.ros.org/camera_calibration -->
-	<arg name="chessboard_params" default="--size 8x6 --square 0.055" />
+	<arg name="chessboard_params" default="--size 8x6 --square 0.101" />
 
 	<!-- Large board: 8x6 0.101 -->
 	<!-- Good board: 8x6 0.055 -->

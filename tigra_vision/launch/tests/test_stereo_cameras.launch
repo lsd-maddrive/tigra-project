@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <launch>
 	<include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch" >
-		<arg name="camera_info" value="true" />	
+		<arg name="camera_info" value="false" />	
         <!-- Set this for correct calibration info -->
-        <arg name="camera_info_path" default="xiaomi_wooden_stereo_v2" />
+        <!-- <arg name="camera_info_path" default="xiaomi_wooden_stereo_v2" /> -->
     
     </include>
 
     <include file="$(find tigra_vision)/launch/drivers/stereo_image_proc.launch" />
     <include file="$(find tigra_vision)/launch/view/view_stereo_image.launch" />
+    <!-- <include file="$(find tigra_vision)/launch/view/view_left_right_image.launch" /> -->
 </launch>
