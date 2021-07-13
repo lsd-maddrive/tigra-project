@@ -2,32 +2,39 @@
 always_send_full_costmap: true
 
 footprint: [[0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4]]
+obstacle_range: 4.0
+raytrace_range: 4.5
 
 static_layer:
   unknown_cost_value: -1
   lethal_cost_threshold: 254
-  first_map_only: true
+  first_map_only: false
   subscribe_to_updates: false
   track_unknown_space: true
   use_maximum: true
   trinary_costmap: true
 
+  map_topic: /rtabmap/grid_map
+
 inflation_layer:
-  inflation_radius: 3.5 # the bigger the better, defines where the gradient is
-  cost_scaling_factor: 1.5 # 0.5 the bigger the steeper the gradient is
+  inflation_radius: 0.5 # the bigger the better, defines where the gradient is
+  cost_scaling_factor: 10.5 # 0.5 the bigger the steeper the gradient is
 
 depth_obstacle_layer:
   # https://github.com/SteveMacenski/spatio_temporal_voxel_layer/issues/129
   observation_sources: point_cloud_sensor
+  track_unknown_space: true
 
   point_cloud_sensor:
     data_type: PointCloud2
     topic: /rs_camera/depth/color/points
     marking: true
     clearing: true
-    expected_update_rate: 0
-    min_obstacle_height: 0.1    # default 0, meters
+    expected_update_rate: 0.2
+    min_obstacle_height: 0.2    # default 0, meters
     max_obstacle_height: 3.0     # default 3, meters
+
+    observation_persistence: 0.0
 
 # laser_obstacle_layer:
 #     observation_sources: laser_scan
