@@ -5,61 +5,51 @@ from std_msgs.msg import Int8, UInt8
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from time import sleep
 
-rospy.init_node('control_link')
+GOALS_LIST = [
+    # x, y, angle, tolerance
+    (40, 0, 0, 1)
+]
 
-def cmd_cb(msg):
-    # print(msg)
-    print(msg.linear.x, msg.angular.z)
+def callback_active():
+    rospy.loginfo("Action server is processing the goal")
 
-    speed_pub.publish( msg.linear.x * 100 )
-    steer_pub.publish( msg.angular.z * -150 )
+def callback_done(state, result):
+    rospy.loginfo("Action server is done. State: %s, result: %s" % (str(state), str(result)))
 
-    cmd = [msg.linear.x * 100, msg.angular.z * -150]
+def callback_feedback(feedback):
+    rospy.loginfo("Feedback:%s" % str(feedback))
 
-    print('Cmd: ', cmd)
-
-cmd_sbs = rospy.Subscriber('cmd_vel', Twist, cmd_cb, queue_size = 1)
-
-speed_pub = rospy.Publisher('quadro/speed_perc', Int8, queue_size=1)
-steer_pub = rospy.Publisher('quadro/steer_perc', Int8, queue_size=1)
-mode_pub = rospy.Publisher('quadro/mode_status', UInt8, queue_size=1)
+    fb = feedback
+    # fb.base_position.pose.position.x
+    # fb.base_position.pose.orientation.x
 
 if __name__ == '__main__':
-
+    rospy.init_node('control_link')
     print('Ready, go')
 
-    for i in range(10):
-        mode_pub.publish( 1 )
-        sleep( 0.2 )
-
-
-    client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
+    client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
     client.wait_for_server()
 
-    goal = MoveBaseGoal()
-    goal.target_pose.header.frame_id = "map"
-    goal.target_pose.header.stamp = rospy.Time.now()
-    goal.target_pose.pose.position.x = 40
-    goal.target_pose.pose.orientation.w = 1.0
+    try:
 
-    client.send_goal(goal)
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.header.stamp = rospy.Time.now()
+        goal.target_pose.pose.position.x = 40
+        goal.target_pose.pose.orientation.w = 1.0
 
-    for i in range(10):
-        mode_pub.publish( 2 )
-        sleep( 0.2 )
+        client.send_goal(goal,
+                    active_cb=callback_active,
+                    feedback_cb=callback_feedback,
+                    done_cb=callback_done)
 
-    # goal = PoseStamped()
+        print('Set goal')
+        print(goal) 
 
-    # goal.header.frame_id = 'map'
-    # goal.header.stamp = rospy.Time.now()
-    # # goal.header.seq = 1
+    except:
+        client.cancel_goal()
+        print('Interrupted')
 
-    # goal.pose.position.x = 10.0
-
-
-    # goal_pub.publish( goal )
-
-    print('Set goal')
-    print(goal)
 
     rospy.spin()
+
