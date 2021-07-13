@@ -5,6 +5,10 @@
 
   <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch">
 	</include>
+    
+  <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
+  <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
+  <!-- <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" /> -->
 
   <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch">
   </include>
@@ -35,7 +39,7 @@
       <param name="OdomF2M/MaxSize"         type="string" value="1000"/>
     </node> -->
 
-    <node pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odometry" output="screen" args="$(arg rtabmap_args)">
+    <node pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odometry" output="log" args="$(arg rtabmap_args)">
       <remap from="rgb/image"       to="/rs_camera/color/image_raw"/>
       <remap from="depth/image"     to="/rs_camera/aligned_depth_to_color/image_raw"/>
       <remap from="rgb/camera_info" to="/rs_camera/color/camera_info"/>
@@ -74,11 +78,13 @@
       <param name="Reg/Force3DoF"           type="bool" value="true" />
       <!-- <param name="Optimizer/Slam2D"        type="bool" value="true" /> -->
 
-      <param name="Grid/MaxGroundHeight"     type="string" value="0.2"/>
+      <param name="Grid/MaxGroundHeight"     type="string" value="0.3"/>
       <param name="Grid/MaxObstacleHeight"   type="string" value="2"/>
       <param name="Grid/NormalsSegmentation" type="string" value="false"/>
+      <!-- <param name="Grid/RangeMax"           value="7.0"/> -->
+      <!-- <param name="Grid/RangeMin"           value="0.2"/> -->
 
-      <param name="GridGlobal/MinSize"      type="string" value="20"/>
+      <param name="GridGlobal/MinSize"      type="string" value="250"/>
       <param name="RGBD/LinearUpdate"       type="string" value="0"/>
       <param name="Kp/DetectorStrategy"     type="string" value="6"/> <!-- use same features as odom -->
       <param name="Mem/IncrementalMemory"   type="string" value="true"/>

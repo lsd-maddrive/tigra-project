@@ -6,12 +6,13 @@ local_costmap:
   publish_frequency: 5.0
   rolling_window: true
   
-  width: 10.0
-  height: 10.0
+  width: 20.0
+  height: 20.0
   resolution: 0.05
 
   plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}      
-  #   # - {name: laser_obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+    # - {name: laser_obstacle_layer, type: "costmap_2d::ObstacleLayer"}
     - {name: depth_obstacle_layer, type: "costmap_2d::VoxelLayer"}
+    # - {name: head_stereo_obstacle_layer, type: "costmap_2d::VoxelLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
