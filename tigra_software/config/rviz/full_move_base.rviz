@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Camera
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -81,28 +81,6 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: true
-        map:
-          Value: true
-        odom:
-          Value: true
-        rs_camera_accel_frame:
-          Value: true
-        rs_camera_accel_optical_frame:
-          Value: true
-        rs_camera_aligned_depth_to_color_frame:
-          Value: true
-        rs_camera_color_frame:
-          Value: true
-        rs_camera_color_optical_frame:
-          Value: true
-        rs_camera_depth_frame:
-          Value: true
-        rs_camera_depth_optical_frame:
-          Value: true
-        rs_camera_gyro_frame:
-          Value: true
-        rs_camera_imu_optical_frame:
-          Value: true
         rs_camera_link:
           Value: true
       Marker Alpha: 1
@@ -112,35 +90,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          odom:
-            base_footprint:
-              base_link:
-                {}
-              base_rear_axis_link:
-                base_front_axis_link:
-                  head_stereo_link:
-                    head_stereo_left:
-                      head_stereo_left_optical_frame:
-                        {}
-                    head_stereo_right:
-                      head_stereo_right_optical_frame:
-                        {}
-                  rs_camera_link:
-                    rs_camera_accel_frame:
-                      rs_camera_accel_optical_frame:
-                        {}
-                    rs_camera_aligned_depth_to_color_frame:
-                      rs_camera_color_optical_frame:
-                        {}
-                    rs_camera_color_frame:
-                      {}
-                    rs_camera_depth_frame:
-                      rs_camera_depth_optical_frame:
-                        {}
-                    rs_camera_gyro_frame:
-                      rs_camera_imu_optical_frame:
-                        {}
+        {}
       Update Interval: 0
       Value: true
     - Class: rviz/Camera
@@ -392,9 +342,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.399792343378067
+      Pitch: 0.6797923445701599
       Target Frame: <Fixed Frame>
-      Yaw: 3.3932251930236816
+      Yaw: 2.7282230854034424
     Saved: ~
 Window Geometry:
   Camera:

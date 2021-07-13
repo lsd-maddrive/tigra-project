@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
+    <arg name="publish_tf" default="false" />
+
     <node pkg="tigra_software" type="robot_layer" name="robot_layer" output="screen" ns="tigra">
         <rosparam command="load" file="$(find tigra_description)/config/props.yaml" ns="model_props" />
         <rosparam command="load" file="$(find tigra_software)/config/robot_layer.yaml" ns="main_config" />
@@ -12,5 +14,7 @@
         <!-- <remap from="cmd_vel" to="cmd_vel" /> -->
         <!-- State Cmd to robot -->
         <!-- <remap from="state_cmd" to="state_cmd" /> -->
+
+        <param name="publish_tf" value="$(arg publish_tf)" />
     </node>
 </launch>

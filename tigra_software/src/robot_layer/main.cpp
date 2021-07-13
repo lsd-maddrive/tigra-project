@@ -5,6 +5,10 @@ using namespace std;
 #include <boost/thread/thread.hpp>
 #include <boost/assign.hpp>
 
+#include <tf/tf.h>
+#include <tf/transform_broadcaster.h>
+#include <tf/tfMessage.h>
+
 // ROS
 #include <ros/ros.h>
 #include <tf/tf.h>
@@ -22,7 +26,14 @@ using namespace std;
 class OdometryConverter
 {
 public:
-    OdometryConverter(OdometryBicycleModel &model, ros::NodeHandle &nh, vector<double> &cov_diag, string &base_frame_id, string &odom_frame_id) : model_(model), last_ts(0)
+    OdometryConverter(
+        OdometryBicycleModel &model, 
+        ros::NodeHandle &nh, 
+        vector<double> &cov_diag, 
+        bool publish_tf,
+        string &base_frame_id, 
+        string &odom_frame_id) : 
+    model_(model), last_ts(0), m_publish_tf(publish_tf)
     {
         sub_ = nh.subscribe("state", 100, &OdometryConverter::callback, this);
 
@@ -43,13 +54,21 @@ public:
         pub_->msg_.twist.twist.angular.x = 0;
         pub_->msg_.twist.twist.angular.y = 0;
         pub_->msg_.twist.twist.angular.z = 0;
-        // pub_->msg_.twist.covariance = boost::assign::list_of
-        //                                    (static_cast<double>(cov_diag[0])) (0)  (0)  (0)  (0)  (0)
-        //                                    (0)  (static_cast<double>(cov_diag[1])) (0)  (0)  (0)  (0)
-        //                                    (0)  (0)  (static_cast<double>(cov_diag[2])) (0)  (0)  (0)
-        //                                    (0)  (0)  (0)  (static_cast<double>(cov_diag[3])) (0)  (0)
-        //                                    (0)  (0)  (0)  (0)  (static_cast<double>(cov_diag[4])) (0)
-        //                                    (0)  (0)  (0)  (0)  (0)  (static_cast<double>(cov_diag[5]));
+        pub_->msg_.twist.covariance = boost::assign::list_of
+                                           (static_cast<double>(cov_diag[0])) (0)  (0)  (0)  (0)  (0)
+                                           (0)  (static_cast<double>(cov_diag[1])) (0)  (0)  (0)  (0)
+                                           (0)  (0)  (static_cast<double>(cov_diag[2])) (0)  (0)  (0)
+                                           (0)  (0)  (0)  (static_cast<double>(cov_diag[3])) (0)  (0)
+                                           (0)  (0)  (0)  (0)  (static_cast<double>(cov_diag[4])) (0)
+                                           (0)  (0)  (0)  (0)  (0)  (static_cast<double>(cov_diag[5]));
+
+        if (m_publish_tf) {
+            tf_odom_pub_.reset(new realtime_tools::RealtimePublisher<tf::tfMessage>(nh, "/tf", 100));
+            tf_odom_pub_->msg_.transforms.resize(1);
+            tf_odom_pub_->msg_.transforms[0].transform.translation.z = 0.0;
+            tf_odom_pub_->msg_.transforms[0].child_frame_id = base_frame_id;
+            tf_odom_pub_->msg_.transforms[0].header.frame_id = odom_frame_id;
+        }
 
         // thr_ = new boost::thread(boost::bind(&OdometryConverter::thread_routine, this));
     }
@@ -84,6 +103,9 @@ public:
 
 private:
     double last_ts;
+    bool m_publish_tf;
+
+    std::shared_ptr<realtime_tools::RealtimePublisher<tf::tfMessage> > tf_odom_pub_;
 
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Odometry>> pub_;
     ros::Subscriber sub_;
@@ -102,15 +124,27 @@ private:
         const double vx = model_.getVX();
         const double wyaw = model_.getWYaw();
 
+        auto now = ros::Time().now();
+
         if (pub_->trylock())
         {
-            pub_->msg_.header.stamp = ros::Time().now();
+            pub_->msg_.header.stamp = now;
             pub_->msg_.pose.pose.position.x = x;
             pub_->msg_.pose.pose.position.y = y;
             pub_->msg_.pose.pose.orientation = orientation;
             pub_->msg_.twist.twist.linear.x = vx;
             pub_->msg_.twist.twist.angular.z = wyaw;
             pub_->unlockAndPublish();
+        }
+
+        if (m_publish_tf && tf_odom_pub_->trylock()) 
+        {
+            geometry_msgs::TransformStamped &odom_frame = tf_odom_pub_->msg_.transforms[0];
+            odom_frame.header.stamp = now;
+            odom_frame.transform.translation.x = x;
+            odom_frame.transform.translation.y = y;
+            odom_frame.transform.rotation = orientation;
+            tf_odom_pub_->unlockAndPublish();
         }
     }
 };
@@ -180,11 +214,15 @@ int main(int argc, char **argv)
     string odom_frame_id_param;
     ros::param::get("~main_config/odometry/frame_id", odom_frame_id_param);
 
-    ROS_INFO_STREAM("Odometry covariance daigonal: " << odom_cov_diag_param);
+    bool publish_tf_param;
+    ros::param::get("~publish_tf", publish_tf_param);
+
+    // ROS_INFO_STREAM("Odometry covariance daigonal: " << odom_cov_diag_param);
     ROS_INFO_STREAM("Frame IDs - Base: " << base_frame_id_param << " Odom: " << odom_frame_id_param);
+    ROS_INFO_STREAM("Publish TF: " << publish_tf_param);
 
     OdometryBicycleModel odom_model(wheel_radius_param, wheelbase_param);
-    OdometryConverter odom_conv(odom_model, nh, odom_cov_diag_param, base_frame_id_param, odom_frame_id_param);
+    OdometryConverter odom_conv(odom_model, nh, odom_cov_diag_param, publish_tf_param, base_frame_id_param, odom_frame_id_param);
     CommandConverter cmd_conv(nh, wheel_radius_param);
 
     ros::spin();

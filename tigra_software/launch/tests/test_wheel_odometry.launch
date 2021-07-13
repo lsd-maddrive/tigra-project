@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
+  <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
+    <arg name="publish_tf" value="true" />
+  </include>
+  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
+
+  
+
+  <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+    <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/test_wheel_odom.rviz" />
+  </include>  
+</launch>
