@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import rospy
 import actionlib
 from geometry_msgs.msg import Twist
@@ -83,7 +85,7 @@ class GoalsSender:
             self._send_goal()
         
     def reset(self):
-        self.client,cancel_goal()
+        self.client.cancel_goal()
     
     def _send_goal(self):
         goal = self.current_goal.get_move_base_goal()
@@ -128,7 +130,7 @@ if __name__ == '__main__':
 
     sender = GoalsSender(goals=GOALS_LIST)
     try:
-        while rospy.ok():
+        while not rospy.is_shutdown():
             sender.step()
             time.sleep(1)
 

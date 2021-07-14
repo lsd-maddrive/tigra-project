@@ -100,6 +100,7 @@ roslaunch tigra_software phone_server.launch
 - Установите пакеты для сборки командой `./scripts/install_third_party.sh`
 - Соберите требуемые пакеты командой `./scripts/build.sh`
 - Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
+> https://github.com/IntelRealSense/librealsense/blob/master/doc/installation.md
 - `sudo usermod -aG dialout $USER` - для работы с Serial
 - `sudo usermod -aG video $USER`
 
@@ -184,4 +185,5 @@ roslaunch tigra_software phone_server.launch
 
 ```bash
 export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.8/site-packages
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 # https://github.com/SteveMacenski/spatio_temporal_voxel_layer/issues/167
 ```

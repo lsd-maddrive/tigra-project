@@ -12,4 +12,5 @@ sudo apt-get install \
     ros-$ROS_DISTRO-joy \
     ros-$ROS_DISTRO-imu-filter-madgwick \
     ros-$ROS_DISTRO-rviz-imu-plugin \
-    ros-$ROS_DISTRO-hector-gazebo-plugins
+    ros-$ROS_DISTRO-hector-gazebo-plugins \
+    libopenvdb-dev

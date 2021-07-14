@@ -12,6 +12,7 @@ catkin build \
     elp_stereo_camera \
     rtabmap_ros \
     stereo_image_proc \
+    spatio_temporal_voxel_layer \
     camera_calibration \
     --cmake-args -DOpenCV_DIR="/usr/local/lib/cmake/opencv4" 
 

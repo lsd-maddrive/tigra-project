@@ -55,7 +55,7 @@ odom1_config:
     false,  false,  false]
 odom1_queue_size: 5
 odom1_differential: true
-odom1_relative: true
+odom1_relative: false
 
 process_noise_covariance: [0.005, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,    0.005, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
