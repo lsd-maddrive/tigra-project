@@ -6,6 +6,7 @@
     <arg name="calib_data_path"     value="$(find tigra_vision)/calib_info/elp_480" />
     <arg name="stereo_params_path"  value="$(find tigra_vision)/config/elp_stereo.yaml" />
 
+    <arg name="framerate"           value="10" />
 		<!-- <arg name="image_width" value="1280" /> -->
 		<!-- <arg name="image_height" value="720" /> -->
 

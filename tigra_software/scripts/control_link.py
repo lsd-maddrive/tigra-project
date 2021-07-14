@@ -7,7 +7,7 @@ from std_msgs.msg import Int8, UInt8
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
-from time import sleep
+import time
 
 import numpy as np
 
@@ -35,7 +35,14 @@ class GoalDescription:
         orientation_list = [q.x, q.y, q.z, q.w]
         (roll, pitch, yaw) = euler_from_quaternion(orientation_list)
 
-        return euclid_dist < self._pose_tol and np.abs(np.rad2deg(yaw)-self._angle_deg) < self._angle_tol
+        dist_constraint = euclid_dist < self._pose_tol
+
+        if self._angle_tol is not None:
+            angle_constraint = np.abs(np.rad2deg(yaw)-self._angle_deg) < self._angle_tol
+        else:
+            angle_constraint = True
+
+        return dist_constraint and angle_constraint
 
     def get_move_base_goal(self):
         goal = MoveBaseGoal()
@@ -90,7 +97,7 @@ class GoalsSender:
     def _send_goal(self):
         goal = self.current_goal.get_move_base_goal()
 
-        client.send_goal(goal,
+        self.client.send_goal(goal,
                     active_cb=self._callback_active,
                     feedback_cb=self._callback_feedback,
                     done_cb=self._callback_done)
@@ -105,7 +112,6 @@ class GoalsSender:
 
     def _callback_feedback(self, feedback):
         rospy.loginfo("Feedback:%s" % str(feedback))
-
         fb = feedback
 
         x = fb.base_position.pose.position.x
@@ -121,7 +127,9 @@ class GoalsSender:
 
 
 GOALS_LIST = [
-    GoalDescription(x=40, y=0, angle=0, pose_tol=1, angle_tol=30),
+    GoalDescription(x=60, y=-5, angle=-25, pose_tol=2, angle_tol=None),
+    GoalDescription(x=104, y=-47, angle=-45, pose_tol=2, angle_tol=None),
+    GoalDescription(x=0, y=0, angle=-180, pose_tol=1, angle_tol=10),
 ]
 
 if __name__ == '__main__':
@@ -134,8 +142,8 @@ if __name__ == '__main__':
             sender.step()
             time.sleep(1)
 
-    except:
+    except Exception as e:
         sender.reset()
-        print('Interrupted')
+        print(f'Interrupted: {e}')
 
 

@@ -5,8 +5,8 @@ local_costmap:
   publish_frequency: 2.0
   rolling_window: true
   
-  width: 15.0
-  height: 15.0
+  width: 20.0
+  height: 20.0
   resolution: 0.1
   transform_rolerance: 0.5
 

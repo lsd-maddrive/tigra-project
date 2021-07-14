@@ -17,8 +17,8 @@ static_layer:
   map_topic: /rtabmap/grid_map
 
 inflation_layer:
-  inflation_radius: 0.5 # the bigger the better, defines where the gradient is
-  cost_scaling_factor: 7.5 # 0.5 the bigger the steeper the gradient is
+  inflation_radius: 1.5 # the bigger the better, defines where the gradient is
+  cost_scaling_factor: 10.5 # 0.5 the bigger the steeper the gradient is
 
 depth_obstacle_layer:
   # https://github.com/SteveMacenski/spatio_temporal_voxel_layer/issues/129
