@@ -6,6 +6,8 @@
 
   <arg name="folder_name" default="move_base" />
 
+  <arg name="cmd_topic" default="cmd_vel" />
+
   <!-- Remove after global ekf connected -->
   <!-- <node pkg="tf" type="static_transform_publisher" name="odom_2_map" args="0 0 0 0 0 0 /odom /map 1000" /> -->
 
@@ -35,7 +37,7 @@
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
 
-    <remap from="cmd_vel" to="tigra/cmd_vel" />
+    <remap from="cmd_vel" to="$(arg cmd_topic)" />
   </node>
 
 

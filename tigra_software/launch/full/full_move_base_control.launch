@@ -107,7 +107,14 @@
 
   <include file="$(find tigra_software)/launch/drivers/move_base.launch">
     <arg name="folder_name" value="move_base_vo" />
+    <arg name="cmd_topic" value="tigra/cmd_vel_raw" />
   </include>
+
+  <node pkg="tigra_software" type="steering_filter" name="steering_filter" output="screen" />
+    <param name="alpha" value="0.1"/>
+    <remap from="cmd_vel_raw" to="tigra/cmd_vel_raw" />
+    <remap from="cmd_vel" to="tigra/cmd_vel" />
+  </node>
 
   <include file="$(find tigra_software)/launch/view/rviz_start.launch">
     <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_move_base.rviz" />

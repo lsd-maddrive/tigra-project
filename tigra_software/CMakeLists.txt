@@ -40,3 +40,16 @@ target_link_libraries(${ROBOT_LAYER_NAME}
   ${Boost_LIBRARIES} 
   Threads::Threads
 )
+
+
+set(STEERING_FILTER_NAME steering_filter)
+set(STEERING_FILTER_SRC 
+  src/cmd_filter/main.cpp
+)
+
+add_executable(${STEERING_FILTER_NAME}
+  ${STEERING_FILTER_SRC}
+)
+target_link_libraries(${STEERING_FILTER_NAME}
+  ${catkin_LIBRARIES}
+)
