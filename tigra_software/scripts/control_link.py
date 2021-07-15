@@ -4,6 +4,7 @@ import rospy
 import actionlib
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int8, UInt8
+from actionlib_msgs.msg import GoalStatus
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
@@ -96,22 +97,30 @@ class GoalsSender:
     
     def _send_goal(self):
         goal = self.current_goal.get_move_base_goal()
+        rospy.loginfo(f'Sending goal {goal}')
 
         self.client.send_goal(goal,
                     active_cb=self._callback_active,
                     feedback_cb=self._callback_feedback,
                     done_cb=self._callback_done)
+        self._is_sent = True
 
     def _callback_active(self):
         rospy.loginfo(f"Action server is processing the goal: {self.current_goal}")
 
     def _callback_done(self, state, result):
         rospy.loginfo("Action server is done. State: %s, result: %s" % (str(state), str(result)))
-        self._is_completed = True
-        self.current_goal = None
+        if state in [GoalStatus.PREEMPTED, GoalStatus.SUCCEEDED]:
+            self._is_completed = True
+            self.current_goal = None
+        elif state == GoalStatus.ABORTED:
+            # Reset
+            rospy.loginfo(f'Reset current target: {self.current_goal}')
+            self._is_sent = False
+
 
     def _callback_feedback(self, feedback):
-        rospy.loginfo("Feedback:%s" % str(feedback))
+        # rospy.loginfo("Feedback:%s" % str(feedback))
         fb = feedback
 
         x = fb.base_position.pose.position.x
@@ -127,8 +136,10 @@ class GoalsSender:
 
 
 GOALS_LIST = [
+    # GoalDescription(x=0, y=0, angle=-25, pose_tol=2, angle_tol=None),     # Debug target
     GoalDescription(x=60, y=-5, angle=-25, pose_tol=2, angle_tol=None),
     GoalDescription(x=104, y=-47, angle=-45, pose_tol=2, angle_tol=None),
+    GoalDescription(x=60, y=-5, angle=155, pose_tol=2, angle_tol=None),
     GoalDescription(x=0, y=0, angle=-180, pose_tol=1, angle_tol=10),
 ]
 

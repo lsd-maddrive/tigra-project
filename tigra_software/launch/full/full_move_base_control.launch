@@ -91,7 +91,7 @@
       <param name="Grid/MaxGroundHeight"     type="string" value="0.3"/>
       <param name="Grid/MaxObstacleHeight"   type="string" value="2"/>
       <param name="Grid/NormalsSegmentation" type="string" value="false"/>
-      <param name="Grid/RangeMax"           value="11.0"/>
+      <param name="Grid/RangeMax"           value="10.0"/>
       <param name="Grid/RangeMin"           value="2.0"/>
 
       <param name="GridGlobal/MinSize"      type="string" value="250"/>
@@ -142,7 +142,9 @@
   </include>
 
   <node pkg="tigra_software" type="steering_filter" name="steering_filter" output="screen" >
-    <param name="steering_alpha" value="0.3"/>
+    <!-- <param name="steering_alpha" value="0.3"/> -->
+    <!-- NB - Disabled filter -->
+    <param name="steering_alpha" value="1.0"/>
     <remap from="cmd_vel_raw" to="tigra/cmd_vel_raw" />
     <remap from="cmd_vel" to="tigra/cmd_vel" />
   </node>

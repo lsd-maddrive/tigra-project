@@ -5,12 +5,12 @@ TebLocalPlannerROS:
     # Trajectory
 
     teb_autosize: True
-    dt_ref: 0.3
+    dt_ref: 0.4
     dt_hysteresis: 0.1
     max_samples: 500
     global_plan_overwrite_orientation: True
     allow_init_with_backwards_motion: True
-    max_global_plan_lookahead_dist: 3.0
+    max_global_plan_lookahead_dist: -1
     global_plan_viapoint_sep: -1
     global_plan_prune_distance: 1
     exact_arc_length: False
@@ -22,12 +22,12 @@ TebLocalPlannerROS:
     wheelbase: 1.25
     cmd_angle_instead_rotvel: True
 
-    max_vel_x: 1.5
-    max_vel_x_backwards: 1.0
+    max_vel_x: 1.0
+    max_vel_x_backwards: 0.8
 
-    max_vel_theta: 0.43
-    acc_lim_x: 2.0
-    acc_lim_theta: 0.1
+    max_vel_theta: 0.4 # 0.43
+    acc_lim_x: 1.6
+    acc_lim_theta: 0.3
     # Just to avoid too high turn
     min_turning_radius: 2.68 # wheelbase / tan(max_steer)
     footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
@@ -43,8 +43,8 @@ TebLocalPlannerROS:
 
     # GoalTolerance
 
-    xy_goal_tolerance: 0.3
-    yaw_goal_tolerance: 0.1
+    xy_goal_tolerance: 0.7
+    yaw_goal_tolerance: 0.4
     free_goal_vel: False
     complete_global_plan: True
 
@@ -59,24 +59,24 @@ TebLocalPlannerROS:
     # costmap_converter_spin_thread: True
     # costmap_converter_rate: 5
 
-    dynamic_obstacle_inflation_dist: 0.6
-    include_dynamic_obstacles: True 
+    # dynamic_obstacle_inflation_dist: 0.6
+    # include_dynamic_obstacles: True 
 
-    global_plan_viapoint_sep: 0.1
+    # global_plan_viapoint_sep: 0.1
     # Optimization
 
     no_inner_iterations: 5
     no_outer_iterations: 4
-    optimization_activate: True
+    # optimization_activate: True
     optimization_verbose: False
-    penalty_epsilon: 0.01
-    obstacle_cost_exponent: 4
+    # penalty_epsilon: 0.03
+    # obstacle_cost_exponent: 4
     weight_max_vel_x: 2
     weight_max_vel_theta: 1
     weight_acc_lim_x: 1
     weight_acc_lim_theta: 1
     weight_kinematics_nh: 1000
-    weight_kinematics_forward_drive: 1
+    weight_kinematics_forward_drive: 20
     weight_kinematics_turning_radius: 10 #1
     weight_optimaltime: 3
     weight_obstacle: 100
@@ -93,11 +93,11 @@ TebLocalPlannerROS:
 
     enable_homotopy_class_planning: False
     enable_multithreading: True
-    max_number_classes: 2
-    selection_cost_hysteresis: 1.0
-    selection_prefer_initial_plan: 0.95
-    selection_obst_cost_scale: 1.0
-    selection_alternative_time_cost: False
+    max_number_classes: 4
+    # selection_cost_hysteresis: 1.0
+    # selection_prefer_initial_plan: 0.95
+    # selection_obst_cost_scale: 1.0
+    # selection_alternative_time_cost: False
 
     roadmap_graph_no_samples: 15
     roadmap_graph_area_width: 5
@@ -105,12 +105,12 @@ TebLocalPlannerROS:
     h_signature_prescaler: 0.5
     h_signature_threshold: 0.1
     obstacle_heading_threshold: 0.45
-    switching_blocking_period: 0.0
-    viapoints_all_candidates: True
-    delete_detours_backwards: True
-    max_ratio_detours_duration_best_duration: 3.0
-    visualize_hc_graph: False
-    visualize_with_time_as_z_axis_scale: False
+    # switching_blocking_period: 0.0
+    # viapoints_all_candidates: True
+    # delete_detours_backwards: True
+    # max_ratio_detours_duration_best_duration: 3.0
+    # visualize_hc_graph: False
+    # visualize_with_time_as_z_axis_scale: False
 
     # Recovery
     
