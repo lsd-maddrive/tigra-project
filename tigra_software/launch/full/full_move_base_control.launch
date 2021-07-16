@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="debug" default="false" />
-  <arg name="stereo" default="true" />
+  <arg name="stereo" default="false" />
 
 	<include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch">
 	</include>
@@ -91,7 +91,7 @@
       <param name="Grid/MaxGroundHeight"     type="string" value="0.3"/>
       <param name="Grid/MaxObstacleHeight"   type="string" value="2"/>
       <param name="Grid/NormalsSegmentation" type="string" value="false"/>
-      <param name="Grid/RangeMax"           value="10.0"/>
+      <param name="Grid/RangeMax"           value="9.0"/>
       <param name="Grid/RangeMin"           value="2.0"/>
 
       <param name="GridGlobal/MinSize"      type="string" value="250"/>
@@ -117,7 +117,7 @@
       <param name="Grid/MaxGroundHeight"     type="string" value="0.3"/>
       <param name="Grid/MaxObstacleHeight"   type="string" value="2"/>
       <param name="Grid/NormalsSegmentation" type="string" value="false"/>
-      <param name="Grid/RangeMax"           value="5.0"/>
+      <param name="Grid/RangeMax"           value="7.0"/>
       <!-- <param name="Grid/RangeMin"           value="2.0"/> -->
 
       <param name="GridGlobal/MinSize"      type="string" value="250"/>
