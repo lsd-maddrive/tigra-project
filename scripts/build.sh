@@ -15,10 +15,10 @@ catkin build \
     spatio_temporal_voxel_layer \
     ublox \
     camera_calibration \
-    ti_mmwave_rospkg \
-    serial \
     --cmake-args -DOpenCV_DIR="/usr/local/lib/cmake/opencv4" 
 
+    # serial \
+    # ti_mmwave_rospkg \
     # cv_bridge \
     # viso2 \
     # orb_slam2_ros \

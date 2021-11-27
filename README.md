@@ -1,5 +1,33 @@
 # Tigra project
 
+
+## Подготовка к работе
+
+### Установка catkin_tools
+
+- Установите с помощью `sudo apt install python3-catkin-tools`
+
+или
+
+- Создайте виртуальное окружение и в него поставьте с помощью `pip install catkin-tools`
+
+### Преднастройка
+
+- Установите требуемые пакеты командой `./scripts/install_packages.sh`
+- Установите пакеты для сборки командой `./scripts/install_third_party.sh`
+- Соберите требуемые пакеты командой `./scripts/build.sh`
+
+### Настройка камеры RealSense
+
+- Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
+> https://github.com/IntelRealSense/librealsense/blob/master/doc/installation.md
+
+### Настройки пользователей для работы с камерой и serial
+
+- `sudo usermod -aG dialout $USER` - для работы с Serial
+- `sudo usermod -aG video $USER`
+
+
 ## Запуск на роботе
 
 ### Подготовка
@@ -107,16 +135,6 @@ catkin build \
 roslaunch tigra_software phone_server.launch
 ```
 - Должны опубликоваться топики `/tigra/phone_sensors/imu` и `/tigra/phone_sensors/gps`
-
-## Подготовка к работе
-
-- Установите требуемые пакеты командой `./scripts/install_packages.sh`
-- Установите пакеты для сборки командой `./scripts/install_third_party.sh`
-- Соберите требуемые пакеты командой `./scripts/build.sh`
-- Установите библиотеки для realsense: https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages
-> https://github.com/IntelRealSense/librealsense/blob/master/doc/installation.md
-- `sudo usermod -aG dialout $USER` - для работы с Serial
-- `sudo usermod -aG video $USER`
 
 ## Старт симулятора
 
