@@ -13,10 +13,10 @@ catkin build \
     rtabmap_ros \
     stereo_image_proc \
     spatio_temporal_voxel_layer \
-    ublox \
     camera_calibration \
     --cmake-args -DOpenCV_DIR="/usr/local/lib/cmake/opencv4" 
 
+    # ublox \
     # serial \
     # ti_mmwave_rospkg \
     # cv_bridge \
