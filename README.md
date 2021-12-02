@@ -1,5 +1,10 @@
 # Tigra project
 
+## Тревобания
+
+- Ubuntu 20.04
+- Установленный [ROS Noetic](http://wiki.ros.org/noetic/Installation)
+- Готовность разбираться и улучшать систему! =)
 
 ## Подготовка к работе
 

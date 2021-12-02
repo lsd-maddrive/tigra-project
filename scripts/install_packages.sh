@@ -1,4 +1,4 @@
-    #!/usr/bin/env bash
+#!/usr/bin/env bash
 
 sudo apt-get install \
     ros-$ROS_DISTRO-realsense2-camera \
@@ -13,4 +13,5 @@ sudo apt-get install \
     ros-$ROS_DISTRO-imu-filter-madgwick \
     ros-$ROS_DISTRO-rviz-imu-plugin \
     ros-$ROS_DISTRO-hector-gazebo-plugins \
+    ros-$ROS_DISTRO-rtabmap \
     libopenvdb-dev
