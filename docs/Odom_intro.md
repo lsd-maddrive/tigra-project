@@ -40,3 +40,8 @@ http://ics.khstu.ru/media/2017/N53_02.pdf
 ```
 https://oops.math.spbu.ru/SE/diploma/2017/pi/Rabochy.pdf
 ```
+
+Гироскоп
+```
+https://habr.com/ru/post/118192/
+```
