@@ -4,6 +4,10 @@
 ```
 https://robocraft.ru/blog/technology/736.html
 ```
+-Визуальная одометрия. База.
+```
+https://robocraft.ru/blog/computervision/738.html
+```
 
 - Методы оценки положения объекта в пространстве. Журнал 2013 год. Есть сравнение методов.
 ```
