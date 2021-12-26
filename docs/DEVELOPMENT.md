@@ -157,3 +157,6 @@ roslaunch tigra_software phone_server.launch
 
 `roslaunch tigra_software start_sim_robot.launch`
 
+
+> Для запуска на других картах настройте переменную окружения `export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(rospack find tigra_maps)/models`
+
