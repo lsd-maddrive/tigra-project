@@ -4,7 +4,7 @@
 ```
 https://robocraft.ru/blog/technology/736.html
 ```
--Визуальная одометрия. База.
+- Визуальная одометрия. База.
 ```
 https://robocraft.ru/blog/computervision/738.html
 ```
@@ -18,6 +18,11 @@ https://docplayer.com/47755933-Metody-ocenki-polozheniya-obekta-v-prostranstve.h
 ```
 https://habr.com/ru/post/404757/
 ```
+- Запуск Intel RealSense d435i в rtabmap
+```
+http://wiki.ros.org/rtabmap_ros/Tutorials/HandHeldMapping
+```
+
 
 - Обзор современных методов визуальной одометрии. Статья из журнала 2019 года. Описываются задачи систем визуальной одометрии и SLAM и их основные применения; способы создания систем.
 ```
