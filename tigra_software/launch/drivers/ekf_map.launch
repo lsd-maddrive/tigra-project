@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="folder_name" default="ekf" />
 
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global">
-    <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_map.yaml"/>
+    <rosparam command="load" file="$(find tigra_software)/config/$(arg folder_name)/ekf_map.yaml"/>
     
     <remap from="/odometry/filtered" to="/odometry/global/filtered" />
   </node>
@@ -16,13 +17,13 @@
    
     <param name="magnetic_declination_radians" value="0.2"/>  
 
-  <!-- SPb parameters -->
+  <!-- SPb parameters end -->
  
   <!-- Robocross parameters -->
 
     <!-- <param name="magnetic_declination_radians" value="0.2325"/>   -->
 
-  <!-- Robocross parameters -->
+  <!-- Robocross parameters end -->
 
     <param name="yaw_offset" value="1.57079632679"/>
     <param name="publish_filtered_gps" value="true"/>
