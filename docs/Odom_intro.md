@@ -50,6 +50,12 @@ http://ics.khstu.ru/media/2017/N53_02.pdf
 https://oops.math.spbu.ru/SE/diploma/2017/pi/Rabochy.pdf
 ```
 
+- Алгоритм построения трехмерной карты окружающей среды с использованием камеры глубины.
+```
+http://www.jip.ru/2019/355-365-2019.pdf
+```
+
+
 Гироскоп
 ```
 https://habr.com/ru/post/118192/
