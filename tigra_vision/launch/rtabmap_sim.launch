@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--based on http://wiki.ros.org/rtabmap_ros/Tutorials/SetupOnYourRobot -->
+
+<launch>
+    <!--start sim-->
+    <include file="$(find tigra_software)/launch/sim/start_sim_robot_no_movebase.launch">
+        <arg name="rviz" value="false"/>
+    </include>
+
+    <!--start RTAB-->
+    <arg name="vizual" value="false"/>
+
+    <group ns="rtabmap">
+
+        <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
+            <remap from="rgb/image" to="/rs_camera/color/image_raw"/>
+            <remap from="depth/image" to="/rs_camera/depth/image_raw"/>
+            <remap from="rgb/camera_info" to="/rs_camera/color/camera_info"/>
+            <remap from="rgbd_image" to="rgbd_image"/> <!-- output -->
+
+            <!-- Should be true for not synchronized camera topics
+                 (e.g., false for kinectv2, zed, realsense, true for xtion, kinect360)-->
+            <param name="approx_sync" value="false"/>
+        </node>
+
+        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+            <param name="frame_id" type="string" value="base_link"/>
+
+
+            <param name="subscribe_depth" type="bool" value="false"/>
+            <param name="subscribe_rgbd" type="bool" value="true"/>
+
+            <remap from="odom" to="/odometry/local/filtered"/>
+
+            <remap from="rgbd_image" to="rgbd_image"/>
+
+            <param name="queue_size" type="int" value="10"/>
+
+            <!-- RTAB-Map's parameters -->
+            <param name="RGBD/AngularUpdate" type="string" value="0.01"/>
+            <param name="RGBD/LinearUpdate" type="string" value="0.01"/>
+            <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
+
+        </node>
+        <!--Vivisualization-->
+        <node if="$(arg vizual)" name="rtabmapviz" pkg="rtabmap_ros" type="rtabmapviz" output="screen">
+            <param name="frame_id" value="base_link"/>
+        </node>
+    </group>
+</launch>
