@@ -10,12 +10,12 @@ catkin build \
     tigra_maps \
     ackermann_raw_controller_plugin \
     elp_stereo_camera \
-    rtabmap_ros \
     stereo_image_proc \
     spatio_temporal_voxel_layer \
     camera_calibration \
     --cmake-args -DOpenCV_DIR="/usr/local/lib/cmake/opencv4" 
 
+    # rtabmap_ros \
     # ublox \
     # serial \
     # ti_mmwave_rospkg \
