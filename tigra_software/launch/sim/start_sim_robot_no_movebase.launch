@@ -32,6 +32,6 @@
 
     <!-- rs_camera_depth_optical_frame - required only for simulator, in real driver it publishes itself -->
     <!-- rs_camera_optical_frame - for simulator we make small rename =) -->
-    <node pkg="tf" type="static_transform_publisher" name="rs_camera_link_2_rs_camera_optical_frame" args="0 0 0 -1.57079632679 0 -1.57079632679 /rs_camera_link /rs_camera_optical_frame 1000"/>
+    <node pkg="tf" type="static_transform_publisher" name="rs_camera_link_2_rs_camera_optical_frame" args="0 0 0 -1.57079632679 0 -1.57079632679 /rs_camera_link /rs_camera_optical_frame 10"/>
 
 </launch>
