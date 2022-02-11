@@ -10,8 +10,8 @@
     </include>
 
     <!--start RTAB-->
-    <arg name="vizual" value="false"/>
-    <arg name="mapping" default="false"/>
+    <arg name="vizual" value="true"/>
+    <arg name="mapping" default="true"/>
 
     <arg name="mem" default="false" unless="$(arg mapping)"/>
     <arg name="mem" value="true" if="$(arg mapping)"/>
@@ -34,8 +34,10 @@
         </node>
 
         <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg db)">
-            <param name="frame_id" type="string" value="base_link"/>
+            <param name="frame_id" type="string" value="rs_camera_link"/>
             <param name="Mem/IncrementalMemory" type="string" value="$(arg mem)"/>
+            <!--            <param name="Mem/IncrementalMemory" type="string" value="false"/>-->
+            <!--            <param name="Mem/InitWMWithAllNodes" type="string" value="true"/>-->
 
             <param name="subscribe_depth" type="bool" value="false"/>
             <param name="subscribe_rgbd" type="bool" value="true"/>
@@ -44,17 +46,19 @@
 
             <remap from="rgbd_image" to="rgbd_image"/>
 
-            <param name="queue_size" type="int" value="10"/>
+            <param name="queue_size" type="int" value="20"/>
 
             <!-- RTAB-Map's parameters -->
             <param name="RGBD/AngularUpdate" type="string" value="0.01"/>
             <param name="RGBD/LinearUpdate" type="string" value="0.01"/>
             <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
 
+            <param name="Reg/Strategy" type="string" value="0"/>
+            <param name="RGBD/SavedLocalizationIgnored" type="bool" value="true"/>
         </node>
         <!--Vivisualization-->
         <node if="$(arg vizual)" name="rtabmapviz" pkg="rtabmap_ros" type="rtabmapviz" output="screen">
-            <param name="frame_id" value="base_link"/>
+            <param name="frame_id" value="rs_camera_link"/>
             <remap from="odom" to="/odometry/local/filtered"/>
 
         </node>
