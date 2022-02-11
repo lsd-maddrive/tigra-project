@@ -3,7 +3,7 @@
 
 <launch>
     <arg name="rviz" default="false"/>
-    
+
     <!--start sim-->
     <include file="$(find tigra_software)/launch/sim/start_sim_robot_no_movebase.launch">
         <arg name="rviz" value="$(arg rviz)"/>
@@ -11,6 +11,14 @@
 
     <!--start RTAB-->
     <arg name="vizual" value="false"/>
+    <arg name="mapping" default="false"/>
+
+    <arg name="mem" default="false" unless="$(arg mapping)"/>
+    <arg name="mem" value="true" if="$(arg mapping)"/>
+
+    <arg name="db" default="" unless="$(arg mapping)"/>
+    <arg name="db" value="--delete_db_on_start" if="$(arg mapping)"/>
+
 
     <group ns="rtabmap">
 
@@ -25,9 +33,9 @@
             <param name="approx_sync" value="false"/>
         </node>
 
-        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg db)">
             <param name="frame_id" type="string" value="base_link"/>
-
+            <param name="Mem/IncrementalMemory" type="string" value="$(arg mem)"/>
 
             <param name="subscribe_depth" type="bool" value="false"/>
             <param name="subscribe_rgbd" type="bool" value="true"/>
@@ -47,6 +55,8 @@
         <!--Vivisualization-->
         <node if="$(arg vizual)" name="rtabmapviz" pkg="rtabmap_ros" type="rtabmapviz" output="screen">
             <param name="frame_id" value="base_link"/>
+            <remap from="odom" to="/odometry/local/filtered"/>
+
         </node>
     </group>
 </launch>
