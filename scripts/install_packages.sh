@@ -14,4 +14,5 @@ sudo apt-get install \
     ros-$ROS_DISTRO-rviz-imu-plugin \
     ros-$ROS_DISTRO-hector-gazebo-plugins \
     ros-$ROS_DISTRO-rtabmap \
+    ros-$ROS_DISTRO-rtabmap-ros \
     libopenvdb-dev
