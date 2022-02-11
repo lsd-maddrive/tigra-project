@@ -19,7 +19,7 @@
     <xacro:property name="half_wheelbase" value="${wheelbase/2}" />
     <xacro:property name="track_width" value="${props['track_width']}" />
 
-    <xacro:property name="lidar_location" value="${heigth/2+0.01}" />
+    <xacro:property name="lidar_location" value="${body_heigth/2+0.01}" />
 
     <xacro:property name="gps_height" value="0.05" />
 
