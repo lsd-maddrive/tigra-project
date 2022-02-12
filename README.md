@@ -20,7 +20,7 @@
 
 - [Описание робота](https://lavish-podium-945.notion.site/Tigra-c740280f21394deb8394ce08008f9b60)
 - Большие ресурсы на [диске](https://disk.yandex.ru/d/1sRPly7asQT_Gg)
-- [Схемы системы](https://drive.google.com/file/d/1iIvuMr4xtmul_ea4DkjYoXMdhi8A7dez/view?usp=sharing)
+- [Схемы системы](docs/Schemes.drawio)
 - Firmware перенесен в [другой репо](https://github.com/lsd-maddrive/tigra-firmware). По результатам разработки сделаем объединение, если потребуется.
 
 
