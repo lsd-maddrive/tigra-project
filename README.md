@@ -20,8 +20,8 @@
 
 - [Описание робота](https://lavish-podium-945.notion.site/Tigra-c740280f21394deb8394ce08008f9b60)
 - Большие ресурсы на [диске](https://disk.yandex.ru/d/1sRPly7asQT_Gg)
-- [Схемы системы](docs/Schemes.drawio)
-- Firmware перенесен в [другой репо](https://github.com/lsd-maddrive/tigra-firmware). По результатам разработки сделаем объединение, если потребуется.
+- [Схемы системы](docs/Schemes.drawio) (для чтения установите drawio расширение в VSCode или используйте [diagrams.net](https://app.diagrams.net/))
+- Firmware перенесен в [другой репо](https://github.com/lsd-maddrive/tigra-firmware).
 
 
 ### Аппаратура
@@ -76,10 +76,14 @@
 
 ## Notes
 
+- Как включить уровень отладки
+
 ```xml
     <node pkg="rosservice" type="rosservice" name="set_log_level_1" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.rosserial_server' 'debug'" />
     <node pkg="rosservice" type="rosservice" name="set_log_level_2" args="call --wait /tigra/rosserial_server/set_logger_level 'ros.roscpp' 'debug'" />
 ```
+
+- Дополнительные экспорты для окружения
 
 ```bash
 export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.8/site-packages
