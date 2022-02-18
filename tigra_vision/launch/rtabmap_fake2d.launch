@@ -31,8 +31,7 @@
     <arg name="odom_topic" default="/odometry/local/filtered"/>
 
     <arg name="database_path" default="rtabmap.db"/>
-    <arg name="rtabmapviz" default="true"/>
-    <!--    arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
+    <arg name="rtabmapviz" default="true"/> <!--arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
     <arg name="localization" default="false"/>
     <arg if="$(arg localization)" name="args" default=""/>
     <arg unless="$(arg localization)" name="args" default="--delete_db_on_start"/>
@@ -73,12 +72,6 @@
             <param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/>
         </node>
 
-        <!--        &lt;!&ndash;Vivisualization&ndash;&gt;-->
-        <!--        <node if="$(arg vizual)" name="rtabmapviz" pkg="rtabmap_ros" type="rtabmapviz" output="screen">-->
-        <!--            <param name="frame_id" value="rs_camera_link"/>-->
-        <!--            <remap from="odom" to="/odometry/local/filtered"/>-->
-        <!--        </node>-->
-
         <!-- visualization with rtabmapviz -->
         <node if="$(arg rtabmapviz)" pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz"
               args="" output="screen">
@@ -92,7 +85,6 @@
             <remap from="rgb/image" to="$(arg rgb_topic)"/>
             <remap from="depth/image" to="$(arg depth_topic)"/>
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
-
         </node>
     </group>
 </launch>
