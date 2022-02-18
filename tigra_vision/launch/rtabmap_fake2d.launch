@@ -1,3 +1,5 @@
+<!--based on rtabmap_ros demo_turtlebot_mapping.launch-->
+
 <launch>
     <!-- Kinect cloud to laser scan -->
     <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
@@ -9,6 +11,18 @@
         <param name="scan_height" type="int" value="10"/>
     </node>
 
+    <!-- Pointcloud to laser scan-->
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_node">
+        <remap from="cloud_in" to="/rs_camera/depth/color/points"/>
+        <remap from="scan" to="/rs_scan"/>
+        <rosparam>
+            target_frame: rs_camera_link
+            min_height: 0
+            max_height: 1.0
+        </rosparam>
+    </node>
+
+
     <!-- SLAM -->
     <arg name="rgb_topic" default="/rs_camera/color/image_raw"/>
     <arg name="depth_topic" default="/rs_camera/depth/image_raw"/>
@@ -19,7 +33,7 @@
     <arg name="database_path" default="rtabmap.db"/>
     <arg name="rtabmapviz" default="true"/>
     <!--    arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
-    <arg name="localization" default="true"/>
+    <arg name="localization" default="false"/>
     <arg if="$(arg localization)" name="args" default=""/>
     <arg unless="$(arg localization)" name="args" default="--delete_db_on_start"/>
     <arg name="wait_for_transform" default="0.2"/>
@@ -27,10 +41,8 @@
     <group ns="rtabmap">
         <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
             <param name="database_path" type="string" value="$(arg database_path)"/>
-
             <param name="frame_id" type="string" value="rs_camera_link"/>
             <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
-
             <param name="subscribe_depth" type="bool" value="true"/>
             <param name="subscribe_scan" type="bool" value="true"/>
 
@@ -40,7 +52,6 @@
             <remap from="rgb/image" to="$(arg rgb_topic)"/>
             <remap from="depth/image" to="$(arg depth_topic)"/>
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
-
 
             <!-- output -->
             <remap from="grid_map" to="/map"/>
@@ -54,7 +65,7 @@
             <param name="Vis/MinInliers" type="string" value="12"/>
             <param name="Reg/Strategy" type="string" value="0"/> <!-- 0=Visual, 1=ICP, 2=Visual+ICP -->
             <param name="RGBD/SavedLocalizationIgnored" type="bool" value="true"/>
-            <param name="GridGlobal/MinSize"           type="string" value="20"/>
+            <param name="GridGlobal/MinSize" type="string" value="20"/>
 
             <!-- localization mode -->
             <param if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
