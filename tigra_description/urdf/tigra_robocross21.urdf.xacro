@@ -154,6 +154,7 @@
         <pointCloudTopicName>/rs_camera/depth/color/points</pointCloudTopicName>
         <frameName>rs_camera_optical_frame</frameName>
         <pointCloudCutoff>0.05</pointCloudCutoff>
+        <pointCloudCutoffMax>10</pointCloudCutoffMax>
         <distortionK1>0</distortionK1>
         <distortionK2>0</distortionK2>
         <distortionK3>0</distortionK3>
@@ -167,5 +168,4 @@
       </plugin>
     </sensor>
   </gazebo>
-
 </robot>
