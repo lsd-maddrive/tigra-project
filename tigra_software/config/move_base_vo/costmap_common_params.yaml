@@ -2,7 +2,7 @@
 always_send_full_costmap: true
 
 footprint: [[0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4]]
-obstacle_range: 6.0
+obstacle_range: 8.0
 raytrace_range: 7.5
 
 static_layer:
@@ -48,7 +48,7 @@ rs_st_obstacle_layer:
   mark_threshold:        0      #voxel height
   update_footprint_enabled: true
   combination_method:    1      #1=max, 0=override
-  obstacle_range:        6.0    #meters
+  obstacle_range:        8.0    #meters
   origin_z:              0.0    #meters
   publish_voxel_map:     true   # default off
   transform_tolerance:   0.2    # seconds
@@ -139,8 +139,8 @@ head_stereo_obstacle_layer:
     marking: true
     clearing: true
     expected_update_rate: 0
-    min_obstacle_height: 0.3    # default 0, meters
-    max_obstacle_height: 3.0     # default 3, meters
+    min_obstacle_height: 0.6 #0.3    # default 0, meters
+    max_obstacle_height: 2.5 #3.0     # default 3, meters
 
     observation_persistence: 0.0
 

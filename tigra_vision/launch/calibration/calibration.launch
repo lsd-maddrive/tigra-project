@@ -8,8 +8,10 @@
 
 	<include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch" >
 		<arg name="camera_info" value="false" />
-		<arg name="video_device_right" value="/dev/right_cam" />
-		<arg name="video_device_left" value="/dev/left_cam" />
+		<!--<arg name="video_device_right" value="/dev/right_cam" />
+		<arg name="video_device_left" value="/dev/left_cam" />-->
+		<arg name="video_device_right" value="/dev/video2" />
+		<arg name="video_device_left" value="/dev/video4" />
 	</include>
 
 	<node pkg="camera_calibration" type="cameracalibrator.py" name="cameracalibrator" 

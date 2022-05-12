@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <launch>
 
-	<arg name="show_images_from_cameras" default="false" />
+	<arg name="show_images_from_cameras" default="true" />
 
-	<arg name="video_device_right" default="/dev/right_cam" />
-	<arg name="video_device_left" default="/dev/left_cam" />
+	<!--<arg name="video_device_right" default="/dev/right_cam" />
+	<arg name="video_device_left" default="/dev/left_cam" />-->
+	<arg name="video_device_right" default="/dev/video2" />
+	<arg name="video_device_left" default="/dev/video0" /> 
 
 	<arg name="image_width" default="640" />
 	<arg name="image_height" default="480" />
