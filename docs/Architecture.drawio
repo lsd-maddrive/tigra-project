@@ -67,12 +67,6 @@
                         <mxPoint x="800" y="565" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="82" style="rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;fontColor=#000000;sketch=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="60" target="91" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="460" y="450" as="sourcePoint"/>
-                        <mxPoint x="520" y="500" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
                 <mxCell id="86" value="ROS Socket on Computer&lt;br&gt;&lt;br&gt;Static Address: 192.168.10.1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;labelBorderColor=none;fontColor=#000000;" parent="1" vertex="1">
                     <mxGeometry x="600" y="637.5" width="130" height="95" as="geometry"/>
                 </mxCell>
@@ -90,9 +84,6 @@
                 </mxCell>
                 <mxCell id="90" value="TF" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#000000;" parent="1" vertex="1">
                     <mxGeometry x="40" y="540" width="80" height="20" as="geometry"/>
-                </mxCell>
-                <mxCell id="91" value="/odom" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="560" y="520" width="80" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="92" value="/wheel_odom" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#cdeb8b;strokeColor=#36393d;fontColor=#000000;" parent="1" vertex="1">
                     <mxGeometry x="480" y="480" width="110" height="30" as="geometry"/>
@@ -359,6 +350,15 @@
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="830.0000000000002" y="60" as="sourcePoint"/>
                         <mxPoint x="830.0000000000002" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="172" value="map - odom" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="1202.5" y="-50" width="105" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="173" style="rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;fontColor=#000000;sketch=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="161" target="172">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1195" y="75" as="sourcePoint"/>
+                        <mxPoint x="1075" y="135" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
             </root>
