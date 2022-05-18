@@ -1,11 +1,10 @@
 # Описание процесса заряда
 
-## 1. вставить предохранители при выключенном инверторе <br />
+## 1. Вставить предохранители при выключенном инверторе <br />
 <p align=center>
 <img src="guide/fuse_far.jpg" width=900/>
 </p>
 
-## вид издалека <br />
 <p align=center>
 <img src="guide/fuse_close.jpg" width=900/>
 </p>
@@ -15,7 +14,6 @@
 <img src="guide/check_charge_far.jpg" width=900/>
 </p>
 
-## вид издалека <br />
 <p align=center>
 <img src="guide/check_charge_close.jpg" width=900/>
 </p>
