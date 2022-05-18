@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <launch> 
 	<!-- http://wiki.ros.org/camera_calibration -->
-	<arg name="chessboard_params" default="--size 8x6 --square 0.101" />
+	<arg name="chessboard_params" default="--size 9x6 --square 0.037" />
 
 	<!-- Large board: 8x6 0.101 -->
 	<!-- Good board: 8x6 0.055 -->
 
 	<include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch" >
 		<arg name="camera_info" value="false" />
-		<!--<arg name="video_device_right" value="/dev/right_cam" />
-		<arg name="video_device_left" value="/dev/left_cam" />-->
-		<arg name="video_device_right" value="/dev/video2" />
-		<arg name="video_device_left" value="/dev/video4" />
+		<!-- <arg name="video_device_right" value="/dev/right_cam" />
+		<arg name="video_device_left" value="/dev/left_cam" /> -->
+		<arg name="video_device_right" value="/dev/v4l/by-path/pci-0000:00:14.0-usb-0:5:1.0-video-index0" />
+		<arg name="video_device_left" value="/dev/v4l/by-path/pci-0000:00:14.0-usb-0:6:1.0-video-index0" />
 	</include>
 
 	<node pkg="camera_calibration" type="cameracalibrator.py" name="cameracalibrator" 

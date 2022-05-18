@@ -15,6 +15,6 @@ local_costmap:
     # - {name: laser_obstacle_layer, type: "costmap_2d::ObstacleLayer"}
     # - {name: depth_obstacle_layer, type: "costmap_2d::VoxelLayer"}
     # - {name: head_stereo_obstacle_layer, type: "costmap_2d::VoxelLayer"}
-    # - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+    - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
     - {name: rs_st_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
     - {name: back_cam_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}

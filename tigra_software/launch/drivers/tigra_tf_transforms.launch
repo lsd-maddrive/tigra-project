@@ -2,7 +2,7 @@
 
 <launch>
     <!-- BaseFootprint - frame on ground level near rear wheels axis -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_footprint_2_link" args="0 0 0.58 0 0 0 /base_footprint /base_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_footprint_2_link" args="0 0 0.25 0 0 0 /base_footprint /base_link 1000" />
     <node pkg="tf" type="static_transform_publisher" name="tf_base_footprint_2_rear_axis_link" args="0 0 0.25 0 0 0 /base_footprint /base_rear_axis_link 1000" />
     <node pkg="tf" type="static_transform_publisher" name="tf_base_footprint_2_front_axis_link" args="1.25 0 0 0 0 0 /base_rear_axis_link /base_front_axis_link 1000" />
     <!-- accum border frontal -> X_center -->

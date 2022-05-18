@@ -3,10 +3,10 @@
 
 	<arg name="show_images_from_cameras" default="true" />
 
-	<!--<arg name="video_device_right" default="/dev/right_cam" />
-	<arg name="video_device_left" default="/dev/left_cam" />-->
-	<arg name="video_device_right" default="/dev/video2" />
-	<arg name="video_device_left" default="/dev/video0" /> 
+	<arg name="video_device_right" default="/dev/v4l/by-path/pci-0000:00:14.0-usb-0:5:1.0-video-index0" />
+	<arg name="video_device_left" default="/dev/v4l/by-path/pci-0000:00:14.0-usb-0:6:1.0-video-index0" />
+	<!-- <arg name="video_device_right" default="/dev/video2" /> -->
+	<!-- <arg name="video_device_left" default="/dev/video0" />  -->
 
 	<arg name="image_width" default="640" />
 	<arg name="image_height" default="480" />
@@ -38,7 +38,7 @@
 	<arg name="camera_info" default="true" />
 	<arg name="camera_info_path" default="xiaomi_wooden_stereo" />
 
-	<arg name="stereo_params_path" default="xiaomi_wooden_stereo" />
+	<arg name="stereo_params_path" default="$(find tigra_vision)/config/head_stereo.yaml" />
 
 	<node ns="$(arg camera_name)" name="$(arg right_image_node)" pkg="usb_cam" type="usb_cam_node" output="screen" >
 		<param name="video_device" value="$(arg video_device_right)" />

@@ -1,27 +1,35 @@
 <launch>
-	<include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch" >
-		<arg name="camera_info" 		    value="true" />	
-        <!-- Set this for correct calibration info -->
-    <arg name="camera_info_path"    value="xiaomi_polygon_1207" />
-    <arg name="stereo_params_path"  value="$(find tigra_vision)/config/head_stereo.yaml" />
-		<arg name="camera_name" 		    value="head_stereo" />
-    <arg name="framerate"           value="15" />
-  </include>  
+  <include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch">
+    <arg name="camera_info" value="true" />
+    <!-- Set this for correct calibration info -->
+    <arg name="camera_info_path" value="xiaomi_wooden_stereo" />
+    <arg name="stereo_params_path" value="$(find tigra_vision)/config/head_stereo.yaml" />
+    <arg name="camera_name" value="head_stereo" />
+    <arg name="framerate" value="15" />
+  </include>
 
-  <group ns="head_stereo">
-    <node pkg="nodelet" type="nodelet" name="camera_nodelet"  args="manager"/>
+  <!-- <group ns="head_stereo">
+    <node pkg="nodelet" type="nodelet" name="camera_nodelet" args="manager" />
 
     <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync camera_nodelet">
-      <remap from="rgb/image"       to="left/image_rect_color"/>
-      <remap from="depth/image"     to="depth"/>
-      <remap from="rgb/camera_info" to="left/camera_info"/>
+      <remap from="rgb/image" to="left/image_rect_color" />
+      <remap from="depth/image" to="depth" />
+      <remap from="rgb/camera_info" to="left/camera_info" />
 
-      <param name="approx_sync"     value="false" />
+      <param name="approx_sync" value="false" />
     </node>
+
 
     <node pkg="nodelet" type="nodelet" name="disparity_2_depth" args="load rtabmap_ros/disparity_to_depth camera_nodelet">
-      <remap from="disparity"   to="disparity"/>
-      <remap from="depth"       to="depth"/>
+      <remap from="disparity" to="disparity" />
+      <remap from="depth" to="depth" />
     </node>
-  </group>
+  </group> -->
+
+
+  <node name="disparity_view" pkg="image_view" type="stereo_view" output="screen">
+    <remap from="stereo" to="head_stereo" />
+    <remap from="image" to="image_rect_color" />
+    <param name="approximate_sync" type="bool" value="true"/>
+  </node>
 </launch>
