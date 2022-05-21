@@ -1,0 +1,19 @@
+RTAB-Map: 
+При  Vis/FeatureType=6 :
+[ WARN] (2022-05-21 17:18:37.084) Features2d.cpp:561::create() BRIEF, FREAK and DAISY features cannot be used because OpenCV was not built with xfeatures2d module. GFTT/ORB is used instead.
+
+
+При включенном ekf переход в режим локализации:
+[WARN] (2022-05-21 17:24:20.727) Rtabmap.cpp:3337::process() Localization was good, but waiting for another one to be more accurate (RGBD/MaxOdomCacheSize>0)
+[ INFO] [1653143060.731807880]: rtabmap (30): Rate=1.00s, Limit=0.000s, Conversion=0.0019s, RTAB-Map=0.1399s, Maps update=0.0029s pub=0.0000s (local map=28, WM=29)
+Information Matrix for an edge is not symmetric: 30 31
+[FATAL] (2022-05-21 17:24:21.396) OptimizerG2O.cpp:899::optimize() Condition (optimizer.verifyInformationMatrices(true)) not met! [This error can be caused by (1) bad covariance matrix set in odometry messages (see requirements in g2o::OptimizableGraph::verifyInformationMatrices() function) or that (2) PCL and g2o hadn't been built both with or without "-march=native" compilation flag (if one library is built with this flag and not the other, this is causing Eigen to not work properly, resulting in segmentation faults).]
+terminate called after throwing an instance of 'UException'
+  what():  [FATAL] (2022-05-21 17:24:21.396) OptimizerG2O.cpp:899::optimize() Condition (optimizer.verifyInformationMatrices(true)) not met! [This error can be caused by (1) bad covariance matrix set in odometry messages (see requirements in g2o::OptimizableGraph::verifyInformationMatrices() function) or that (2) PCL and g2o hadn't been built both with or without "-march=native" compilation flag (if one library is built with this flag and not the other, this is causing Eigen to not work properly, resulting in segmentation faults).]
+[rtabmap/rtabmap-11] process has died [pid 181901, exit code -6, cmd /home/user/catkin_ws/devel/lib/rtabmap_ros/rtabmap --delete_db_on_start odom:=/tigra/odometry/filtered rgb/image:=/rs_camera/color/image_raw depth/image:=/rs_camera/aligned_depth_to_color/image_raw rgb/camera_info:=/rs_camera/color/camera_info __name:=rtabmap __log:=/home/user/.ros/log/8120ea0e-d911-11ec-9a2a-47c891bd5fda/rtabmap-rtabmap-11.log].
+log file: /home/user/.ros/log/8120ea0e-d911-11ec-9a2a-47c891bd5fda/rtabmap-rtabmap-11*.log
+[ WARN] [1653143062.532283158]: Costmap2DROS transform timeout. Current time: 1653143062.5322, global_pose stamp: 1653143061.4820, tolerance: 1.0000
+[ WARN] [1653143062.539011447]: Could not get robot pose, cancelling reconfiguration
+
+
+???Не удалось исключить из ekf imu или wheel_odom, т.к перестает публиковаться фрейм odom???

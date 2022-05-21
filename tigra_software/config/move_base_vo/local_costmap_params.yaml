@@ -1,12 +1,12 @@
 local_costmap:
   global_frame: odom
   robot_base_frame: base_footprint
-  update_frequency: 5.0
-  publish_frequency: 2.0
+  update_frequency: 4.0
+  publish_frequency: 3.0
   rolling_window: true
   
-  width: 20.0
-  height: 20.0
+  width: 30.0
+  height: 30.0
   resolution: 0.1
   transform_rolerance: 0.5
 
@@ -17,4 +17,4 @@ local_costmap:
     # - {name: head_stereo_obstacle_layer, type: "costmap_2d::VoxelLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
     - {name: rs_st_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
-    - {name: back_cam_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
+    # - {name: back_cam_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}

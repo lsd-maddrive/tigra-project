@@ -8,7 +8,7 @@
     <arg name="framerate" value="15" />
   </include>
 
-  <!-- <group ns="head_stereo">
+  <group ns="head_stereo">
     <node pkg="nodelet" type="nodelet" name="camera_nodelet" args="manager" />
 
     <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync camera_nodelet">
@@ -24,12 +24,12 @@
       <remap from="disparity" to="disparity" />
       <remap from="depth" to="depth" />
     </node>
-  </group> -->
+  </group>
 
 
-  <node name="disparity_view" pkg="image_view" type="stereo_view" output="screen">
+  <!-- <node name="disparity_view" pkg="image_view" type="stereo_view" output="screen">
     <remap from="stereo" to="head_stereo" />
     <remap from="image" to="image_rect_color" />
     <param name="approximate_sync" type="bool" value="true"/>
-  </node>
+  </node> -->
 </launch>

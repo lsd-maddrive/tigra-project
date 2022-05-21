@@ -13,12 +13,15 @@ static_layer:
   track_unknown_space: false
   use_maximum: true
   trinary_costmap: true
+  marking: false
+  clearing: true
+
 
   map_topic: /rtabmap/grid_map
 
 inflation_layer:
   inflation_radius: 1.5 # the bigger the better, defines where the gradient is
-  cost_scaling_factor: 10.5 # 0.5 the bigger the steeper the gradient is
+  cost_scaling_factor: 1.0 # 0.5 the bigger the steeper the gradient is
 
 depth_obstacle_layer:
   # https://github.com/SteveMacenski/spatio_temporal_voxel_layer/issues/129
@@ -29,7 +32,7 @@ depth_obstacle_layer:
     data_type: PointCloud2
     topic: /rs_camera/depth/color/points
     marking: true
-    clearing: true
+    clear: true
     expected_update_rate: 0
     min_obstacle_height: 0.3    # default 0, meters
     max_obstacle_height: 3.0     # default 3, meters

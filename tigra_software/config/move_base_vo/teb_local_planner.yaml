@@ -27,7 +27,7 @@ TebLocalPlannerROS:
 
     max_vel_theta: 0.8 # 0.43
     acc_lim_x: 2.5 # 1.6
-    acc_lim_theta: 0.7 # 0.3
+    acc_lim_theta: 0.5 # 0.3
     # Just to avoid too high turn
     min_turning_radius: 3 #2.68 # wheelbase / tan(max_steer)
     footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
@@ -46,7 +46,9 @@ TebLocalPlannerROS:
     xy_goal_tolerance: 0.7
     yaw_goal_tolerance: 0.4
     free_goal_vel: False
-    complete_global_plan: True
+    # TODO - try to make if False
+    # NOTE - it ...
+    complete_global_plan: False
 
     # Obstacles
     min_obstacle_dist: 0.2

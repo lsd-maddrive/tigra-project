@@ -66,16 +66,8 @@ Visualization Manager:
           Value: true
         base_rear_axis_link:
           Value: true
-        elp_camera_left:
-          Value: false
-        elp_camera_left_optical_frame:
-          Value: false
         elp_camera_link:
           Value: true
-        elp_camera_right:
-          Value: false
-        elp_camera_right_optical_frame:
-          Value: false
         head_stereo_left:
           Value: false
         head_stereo_left_optical_frame:
@@ -85,28 +77,6 @@ Visualization Manager:
         head_stereo_right:
           Value: false
         head_stereo_right_optical_frame:
-          Value: false
-        map:
-          Value: true
-        odom:
-          Value: true
-        rs_camera_accel_frame:
-          Value: false
-        rs_camera_accel_optical_frame:
-          Value: false
-        rs_camera_aligned_depth_to_color_frame:
-          Value: false
-        rs_camera_color_frame:
-          Value: false
-        rs_camera_color_optical_frame:
-          Value: false
-        rs_camera_depth_frame:
-          Value: false
-        rs_camera_depth_optical_frame:
-          Value: false
-        rs_camera_gyro_frame:
-          Value: false
-        rs_camera_imu_optical_frame:
           Value: false
         rs_camera_link:
           Value: true
@@ -119,45 +89,24 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          {}
-        odom:
-          base_footprint:
-            base_link:
+        base_footprint:
+          base_link:
+            {}
+          base_rear_axis_link:
+            base_front_axis_link:
+              head_stereo_link:
+                head_stereo_left:
+                  head_stereo_left_optical_frame:
+                    {}
+                head_stereo_right:
+                  head_stereo_right_optical_frame:
+                    {}
+              rs_camera_link:
+                {}
+              ti_mmwave_pcl:
+                {}
+            elp_camera_link:
               {}
-            base_rear_axis_link:
-              base_front_axis_link:
-                head_stereo_link:
-                  head_stereo_left:
-                    head_stereo_left_optical_frame:
-                      {}
-                  head_stereo_right:
-                    head_stereo_right_optical_frame:
-                      {}
-                rs_camera_link:
-                  rs_camera_accel_frame:
-                    rs_camera_accel_optical_frame:
-                      {}
-                  rs_camera_aligned_depth_to_color_frame:
-                    rs_camera_color_optical_frame:
-                      {}
-                  rs_camera_color_frame:
-                    {}
-                  rs_camera_depth_frame:
-                    rs_camera_depth_optical_frame:
-                      {}
-                  rs_camera_gyro_frame:
-                    rs_camera_imu_optical_frame:
-                      {}
-                ti_mmwave_pcl:
-                  {}
-              elp_camera_link:
-                elp_camera_left:
-                  elp_camera_left_optical_frame:
-                    {}
-                elp_camera_right:
-                  elp_camera_right_optical_frame:
-                    {}
       Update Interval: 0
       Value: true
     - Class: rviz/Camera
@@ -492,7 +441,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 155.38919067382812
+      Distance: 28.235639572143555
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -500,17 +449,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -22.311389923095703
-        Y: 76.56802368164062
-        Z: 3.0612385272979736
+        X: 3.4810426235198975
+        Y: 4.1785359382629395
+        Z: 3.1888339519500732
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5647963285446167
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 3.1632614135742188
+      Yaw: 3.1082615852355957
     Saved: ~
 Window Geometry:
   Displays:
