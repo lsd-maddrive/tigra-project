@@ -10,6 +10,7 @@ catkin build \
     tigra_maps \
     ackermann_raw_controller_plugin \
     elp_stereo_camera \
+    rtabmap \
     rtabmap_ros \
     stereo_image_proc \
     spatio_temporal_voxel_layer \
