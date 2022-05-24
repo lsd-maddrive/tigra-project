@@ -4,17 +4,17 @@
     <arg name="rviz" default="true"/>
 
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find tigra_maps)/worlds/looped_coridor_with_high_walls.world"/>
+        <arg name="world" value="$(find tigra_maps)/worlds/asphalt_ver4.world"/>
         <!--        <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>-->
-        <arg name="gui" value="false"/>
+        <arg name="gui" value="true"/>
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
         <arg name="publish_tf" value="false"/>
     </include>
 
-    <include file="$(find tigra_software)/launch/drivers/ekf_odom.launch">
-        <arg name="folder_name" value="ekf_sim"/>
-    </include>
+    <!--    <include file="$(find tigra_software)/launch/drivers/ekf_odom.launch">-->
+    <!--        <arg name="folder_name" value="ekf_sim"/>-->
+    <!--    </include>-->
     <!-- <include file="$(find tigra_software)/launch/drivers/ekf_map.launch"></include> -->
 
     <group if="$(arg rviz)">
@@ -22,10 +22,10 @@
             <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz"/>
         </include>
     </group>
-    <!--    <include file="$(find tigra_software)/launch/drivers/move_base.launch">-->
-    <!--        <arg name="folder_name" value="move_base_sim" />-->
-    <!--        <arg name="cmd_topic" value="/tigra/cmd_vel" />-->
-    <!--    </include>-->
+<!--    <include file="$(find tigra_software)/launch/drivers/move_base.launch">-->
+<!--        <arg name="folder_name" value="move_base_sim"/>-->
+<!--        <arg name="cmd_topic" value="/tigra/cmd_vel"/>-->
+<!--    </include>-->
 
     <!-- Remove after global ekf connected -->
     <!-- <node pkg="tf" type="static_transform_publisher" name="odom_2_map" args="0 0 0 0 0 0 /odom /map 1000"/> -->

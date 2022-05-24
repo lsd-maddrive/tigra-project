@@ -97,6 +97,17 @@
       <velocityDrift>0.001 0.001 0.001</velocityDrift>
       <velocityGaussianNoise>0.5 0.5 0.5</velocityGaussianNoise>
     </plugin>
+    <!-- for publish ground_truth/state-->
+     <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>ground_truth/state</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
   </gazebo>
 
   <!-- Depth sensor - emulation of Intel RealSense D435 -->
@@ -154,6 +165,7 @@
         <pointCloudTopicName>/rs_camera/depth/color/points</pointCloudTopicName>
         <frameName>rs_camera_optical_frame</frameName>
         <pointCloudCutoff>0.05</pointCloudCutoff>
+        <pointCloudCutoffMax>15</pointCloudCutoffMax>
         <distortionK1>0</distortionK1>
         <distortionK2>0</distortionK2>
         <distortionK3>0</distortionK3>
