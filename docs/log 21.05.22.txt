@@ -17,3 +17,44 @@ log file: /home/user/.ros/log/8120ea0e-d911-11ec-9a2a-47c891bd5fda/rtabmap-rtabm
 
 
 ???Не удалось исключить из ekf imu или wheel_odom, т.к перестает публиковаться фрейм odom???
+
+
+__25.05.22__
+
+При  Vis/FeatureType=6 :
+-больше не пишет ворнинг и даже мачит кадры (работает правильно)
+
+Выключен иму в лаунче рски:
+-ошибки больше нет о плохой ковариации. Работает при полном конфиге ЕКФ, но выключенном иму в лаунче рс камеры. ошибок о несиметричной матрицы нету!
+-надо разобраться с ковариацией иму. Сообщение от рски:
+
+      ---
+      header: 
+        seq: 11673
+        stamp: 
+          secs: 1653484419
+          nsecs: 800218105
+        frame_id: "rs_camera_imu_optical_frame"
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+      orientation_covariance: [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      angular_velocity: 
+        x: 0.0
+        y: -0.008726646192371845
+        z: 0.003490658476948738
+      angular_velocity_covariance: [0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01]
+      linear_acceleration: 
+        x: -0.01606712495206961
+        y: -9.414383888244629
+        z: -3.0075113426142206
+      linear_acceleration_covariance: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+
+сыпет ворнинги при получении колесной одометрии:
+-[ WARN] (2022-05-25 16:09:16.135) CoreWrapper.cpp:1023::odomUpdate() Odometry is reset (identity pose or high variance (7.219409) detected). Increment map id!
+
+Настроить обновление костмапов:
+-[ WARN] [1653484157.867350198]: Map update loop missed its desired rate of 4.0000Hz... the loop actually took 0.3213 seconds
+
