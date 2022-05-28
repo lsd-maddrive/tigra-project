@@ -9,7 +9,7 @@
 
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
-  <!-- <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" /> -->
+  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
   <!-- <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"></include> -->
   <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"> -->
   <!-- </include> -->

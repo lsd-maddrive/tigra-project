@@ -22,8 +22,8 @@ TebLocalPlannerROS:
     wheelbase: 1.25
     cmd_angle_instead_rotvel: True
 
-    max_vel_x: 1.2 # 1.0 
-    max_vel_x_backwards: 0.8
+    max_vel_x: 0.5 # 1.0 
+    max_vel_x_backwards: 0.5
 
     max_vel_theta: 0.8 # 0.43
     acc_lim_x: 2.5 # 1.6

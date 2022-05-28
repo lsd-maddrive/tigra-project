@@ -8,7 +8,7 @@ Panels:
         - /TF1/Frames1
         - /LocalVoxel1
       Splitter Ratio: 0.5
-    Tree Height: 363
+    Tree Height: 719
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -27,7 +27,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Head stereo points
+    SyncSource: RS points
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -68,16 +68,30 @@ Visualization Manager:
           Value: true
         elp_camera_link:
           Value: true
-        head_stereo_left:
-          Value: false
-        head_stereo_left_optical_frame:
-          Value: false
         head_stereo_link:
           Value: true
-        head_stereo_right:
-          Value: false
-        head_stereo_right_optical_frame:
-          Value: false
+        map:
+          Value: true
+        odom:
+          Value: true
+        rs_camera_accel_frame:
+          Value: true
+        rs_camera_accel_optical_frame:
+          Value: true
+        rs_camera_aligned_depth_to_color_frame:
+          Value: true
+        rs_camera_color_frame:
+          Value: true
+        rs_camera_color_optical_frame:
+          Value: true
+        rs_camera_depth_frame:
+          Value: true
+        rs_camera_depth_optical_frame:
+          Value: true
+        rs_camera_gyro_frame:
+          Value: true
+        rs_camera_imu_optical_frame:
+          Value: true
         rs_camera_link:
           Value: true
         ti_mmwave_pcl:
@@ -89,24 +103,34 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        base_footprint:
-          base_link:
-            {}
-          base_rear_axis_link:
-            base_front_axis_link:
-              head_stereo_link:
-                head_stereo_left:
-                  head_stereo_left_optical_frame:
-                    {}
-                head_stereo_right:
-                  head_stereo_right_optical_frame:
-                    {}
-              rs_camera_link:
+        map:
+          odom:
+            base_footprint:
+              base_link:
                 {}
-              ti_mmwave_pcl:
-                {}
-            elp_camera_link:
-              {}
+              base_rear_axis_link:
+                base_front_axis_link:
+                  head_stereo_link:
+                    {}
+                  rs_camera_link:
+                    rs_camera_accel_frame:
+                      rs_camera_accel_optical_frame:
+                        {}
+                    rs_camera_aligned_depth_to_color_frame:
+                      rs_camera_color_optical_frame:
+                        {}
+                    rs_camera_color_frame:
+                      {}
+                    rs_camera_depth_frame:
+                      rs_camera_depth_optical_frame:
+                        {}
+                    rs_camera_gyro_frame:
+                      rs_camera_imu_optical_frame:
+                        {}
+                  ti_mmwave_pcl:
+                    {}
+                elp_camera_link:
+                  {}
       Update Interval: 0
       Value: true
     - Class: rviz/Camera
@@ -417,7 +441,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_footprint
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -441,7 +465,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 28.235639572143555
+      Distance: 25.509531021118164
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

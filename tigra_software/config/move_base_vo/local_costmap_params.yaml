@@ -1,8 +1,8 @@
 local_costmap:
   global_frame: odom
   robot_base_frame: base_footprint
-  update_frequency: 4.0
-  publish_frequency: 3.0
+  update_frequency: 2.0
+  publish_frequency: 2.0
   rolling_window: true
   
   width: 30.0
@@ -11,7 +11,7 @@ local_costmap:
   transform_rolerance: 0.5
 
   plugins:
-    - {name: static_layer, type: "costmap_2d::StaticLayer"}      
+    # - {name: static_layer, type: "costmap_2d::StaticLayer"}      
     # - {name: laser_obstacle_layer, type: "costmap_2d::ObstacleLayer"}
     # - {name: depth_obstacle_layer, type: "costmap_2d::VoxelLayer"}
     # - {name: head_stereo_obstacle_layer, type: "costmap_2d::VoxelLayer"}
