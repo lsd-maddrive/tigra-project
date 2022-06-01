@@ -12,9 +12,9 @@
         <arg name="publish_tf" value="false"/>
     </include>
 
-    <!--    <include file="$(find tigra_software)/launch/drivers/ekf_odom.launch">-->
-    <!--        <arg name="folder_name" value="ekf_sim"/>-->
-    <!--    </include>-->
+    <include file="$(find tigra_software)/launch/drivers/ekf_odom.launch">
+        <arg name="folder_name" value="ekf_sim"/>
+    </include>
     <!-- <include file="$(find tigra_software)/launch/drivers/ekf_map.launch"></include> -->
 
     <group if="$(arg rviz)">

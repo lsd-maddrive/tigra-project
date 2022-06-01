@@ -28,12 +28,12 @@
     <arg name="depth_topic" default="/rs_camera/depth/image_raw"/>
     <arg name="camera_info_topic" default="/rs_camera/color/camera_info"/>
     <arg name="scan_topic" default="/rs_scan"/>
-    <!--    <arg name="odom_topic" default="/odometry/local/filtered"/>-->
+    <arg name="odom_topic" default="/odometry/local/filtered"/>
 
     <arg name="database_path" default="rtabmap_visual_strange.db"/>
     <arg name="rgbd_odometry" default="true"/>
     <arg name="rtabmapviz" default="true"/> <!--arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
-    <arg name="localization" default="true"/>
+    <arg name="localization" default="false"/>
     <arg if="$(arg localization)" name="args" default=""/>
     <arg unless="$(arg localization)" name="args" default="--delete_db_on_start"/>
     <arg name="wait_for_transform" default="0.2"/>
@@ -47,7 +47,7 @@
             <param name="subscribe_scan" type="bool" value="true"/>
 
             <!-- inputs -->
-            <!--            <remap from="odom" to="$(arg odom_topic)"/>-->
+<!--            <remap from="odom" to="$(arg odom_topic)"/>-->
             <remap from="scan" to="$(arg scan_topic)"/>
             <remap from="rgb/image" to="$(arg rgb_topic)"/>
             <remap from="depth/image" to="$(arg depth_topic)"/>
@@ -62,8 +62,8 @@
 
             <!-- RTAB-Map's parameters -->
             <param name="RGBD/ProximityBySpace" type="string" value="false"/>
-            <param name="RGBD/AngularUpdate" type="string" value="0.01"/>
-            <param name="RGBD/LinearUpdate" type="string" value="0.01"/>
+            <param name="RGBD/AngularUpdate" type="string" value="0"/>
+            <param name="RGBD/LinearUpdate" type="string" value="0"/>
             <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false"/>
             <param name="Reg/Force3DoF" type="string" value="true"/>
             <param name="Vis/MinInliers" type="string" value="20"/>
