@@ -9,7 +9,7 @@
     	<param name="debug" value="false" />
 
     	<param name="speed/frwd_limit" value="2.5" />
-    	<param name="speed/bkwrd_limit" value="-2.0" />
+    	<param name="speed/bkwrd_limit" value="-2.5" />
     	<param name="steer/limit" value="20" />
 
         <remap from="cmd_vel" to="tigra/cmd_vel" />

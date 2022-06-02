@@ -77,6 +77,7 @@ rs_st_obstacle_layer:
     topic: /rs_camera/depth/color/points
     marking: false
     clearing: true
+    filters: "voxel"
     min_z: 0.1                   #default 0, meters
     max_z: 7.0                   #default 10, meters
     vertical_fov_angle: 0.7      #default 0.7, radians
