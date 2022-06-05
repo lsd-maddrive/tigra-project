@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
-    <arg name="debug" default="false" />
-
     <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
     <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
@@ -15,8 +13,8 @@
     <!-- STEREO RTAB -->
 
     <include file="$(find tigra_vision)/launch/rtabmap_new.launch">
-        <arg name="localization" value="true" />
-        <arg name="database_path" value="$(find tigra_maps)/3d_maps/dvorik.db" />
+        <arg name="localization" value="false" />
+        <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
     </include>
 
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
