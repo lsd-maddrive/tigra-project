@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
 <launch>
   <include file="$(find tigra_vision)/launch/drivers/cameras_usb.launch">
-    <arg name="video_device_right" value="/dev/right_cam" />
-    <arg name="video_device_left" value="/dev/left_cam" />
-    <arg name="camera_info_path" value="xiaomi_205mm" />
+		<arg name="video_device_right" value="/dev/v4l/by-path/pci-0000:00:14.0-usb-0:5:1.0-video-index0" />
+		<arg name="video_device_left" value="/dev/v4l/by-path/pci-0000:00:14.0-usb-0:6:1.0-video-index0" />
+    <arg name="camera_info_path" value="xiaomi_head" />
   </include>
 
-  <include file="$(find tigra_vision)/launch/drivers/stereo_image_proc.launch"></include>
-  <include file="$(find tigra_vision)/launch/view/view_stereo_image.launch"></include>
+  <!-- <include file="$(find tigra_vision)/launch/drivers/stereo_image_proc.launch"></include> -->
+  <include file="$(find tigra_vision)/launch/view/view_stereo_image.launch">
+    <arg name="namespace" value="stereo" />
+  </include>
 
   <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="configure" />
 </launch>
