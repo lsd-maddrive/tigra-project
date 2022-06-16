@@ -1,25 +1,26 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="map_name" default="dvorik.db"/>
+  <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
   <arg name="debug" default="false" />
-  <arg name="stereo" default="false" />
   <arg name='rviz' default="false"/>
-  <arg name="old_rtab" default="false" />
-  <arg name="map_name" default="dvorik.db" />
-  <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"></include>
-  <!-- <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"></include> -->
+  <arg name='rtabmapviz' default='false'/>
 
+  <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"/>
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
   <!-- <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" /> -->
-  <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"></include>
-  <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/> -->
-  <!-- </include> -->
+  
+  <!-- Start cameras -->
+  <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/>
+  <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/>
+  <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/>
 
-  <!-- STEREO RTAB -->
-
-  <include file="$(find tigra_vision)/launch/rtabmap_new.launch">
-    <arg name="localization" default="true" />
-    <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)" />
+  <!-- SLAM -->
+  <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
+    <arg name="localization" value="$(arg localization)" />
+    <arg name="database_path" value="$(find tigra_maps)/3d_maps/$(arg map_name)" />
+    <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
   </include>
 
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">

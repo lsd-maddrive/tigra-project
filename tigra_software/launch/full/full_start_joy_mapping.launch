@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
+    <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"/>
     <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
     <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
-    <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"></include>
-    <!-- <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"></include> -->
-    <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"></include>
+    
+    <!-- Start cameras -->
+    <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/>
     <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/> -->
-    <!-- </include> -->
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/> -->
 
-    <!-- STEREO RTAB -->
-
-    <include file="$(find tigra_vision)/launch/rtabmap_new.launch">
+    <!-- SLAM-->
+    <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
         <arg name="localization" value="false" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
     </include>
