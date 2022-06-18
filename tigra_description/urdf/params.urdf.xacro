@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:property name="yaml_file" value="$(find tigra_description)/config/props.yaml" />
-    <xacro:property name="props" value="${load_yaml(yaml_file)}" />
+    <xacro:property name="props" value="${xacro.load_yaml(yaml_file)}" />
 
     <xacro:property name="body_length" value="1.85" />
     <xacro:property name="body_width" value="0.75" />

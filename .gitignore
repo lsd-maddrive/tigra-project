@@ -53,7 +53,7 @@ dkms.conf
 *.bag
 **/*.bag
 
-/.vscode
+**/.vscode
 
 venv*
 
