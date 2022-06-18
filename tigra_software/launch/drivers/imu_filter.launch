@@ -2,8 +2,10 @@
 <launch>
   <arg name="in_topic" default="imu_in" />
   <arg name="out_topic" default="imu_out" />
+  <arg name="camera" default="camera" />
 
-  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="ImuFilterNode" output="screen">
+
+  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node_$(arg camera)" output="screen">
 
     <param name="publish_tf" value="false" />
     <param name="use_mag" value="false" />
