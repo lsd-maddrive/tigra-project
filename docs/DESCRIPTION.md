@@ -46,5 +46,4 @@
 
 - [Регламент](https://www.russianrobotics.ru/competition/robocros)
 
-
 > Исходная страница: https://lavish-podium-945.notion.site/Tigra-c740280f21394deb8394ce08008f9b60
