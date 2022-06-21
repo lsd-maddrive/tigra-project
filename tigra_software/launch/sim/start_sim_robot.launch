@@ -3,7 +3,7 @@
 <launch>
     <include file="$(find tigra_description)/launch/tigra.launch">
         <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>
-        <arg name="gui" value="true"/>
+        <arg name="gui" value="false"/>
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
         <arg name="publish_tf" value="false"/>
@@ -24,7 +24,7 @@
     </include>
 
     <!-- Remove after global ekf connected -->
-<!--    <node pkg="tf" type="static_transform_publisher" name="odom_2_map" args="0 0 0 0 0 0 /odom /map 1000"/>-->
+    <node pkg="tf" type="static_transform_publisher" name="map_2_odom" args="0 0 0 0 0 0 /map /odom 1000"/>
 
     <!-- rs_camera_depth_optical_frame - required only for simulator, in real driver it publishes itself -->
     <!-- rs_camera_optical_frame - for simulator we make small rename =) -->
