@@ -22,6 +22,24 @@ odom0_config:
 odom0_differential: true
 odom0_relative: false
 
+# For visual odometry
+#odom1: /tigra/vo
+# The values are ordered as
+#     x, y, z,
+#     roll, pitch, yaw,
+#     vx, vy, vz,
+#     vroll, vpitch, vyaw,
+#     ax, ay, az
+#odom1_config:
+#  [ true,   true,   true,
+#    true,   true,   true,
+#    true,   true,   true,
+#    false,  false,  false,
+#    false,  false,  false]
+#odom1_queue_size: 5
+#odom1_differential: false
+#odom1_relative: true
+
 # Complete the imu0 configuration
 imu0: /tigra/imu
 imu0_config:
