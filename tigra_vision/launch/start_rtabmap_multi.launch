@@ -1,21 +1,31 @@
 <launch>
 
-    <!-- Multi-cameras demo with 2 Kinects -->
+    <arg name="localization" default="false" />
+    <arg name="rgb_topic" default="color/image_raw" />
+    <arg name="depth_topic" default="aligned_depth_to_color/image_raw" />
+    <arg name="camera_info_topic" default="color/camera_info" />
+    <arg name="imu_topic" default="/rs_camera/imu/filtered" />
+    <arg name="odom_topic" default="/tigra/odometry/filtered" />
+    <arg name="rgbd_camera_left_topic" default="/rs_camera_left/rgbd_image" />
+    <arg name="rgbd_camera_right_topic" default="/rs_camera_right/rgbd_image" />
+    <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
+    <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db" />
+    <arg name="rtabmapviz" default="true" />
+    <arg if="$(arg localization)" name="args" default="" />
+    <arg unless="$(arg localization)" name="args" default="--delete_db_on_start" />
+    <arg name="rtab" default="true" />
+    <arg name="rviz" default="false" />
 
-    <!-- Cameras -->
-    <!-- <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
+
+    <!-- Cameras
+    <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
         <arg name= "camera1" value='rs_camera_left'/>
         <arg name= "camera2" value='rs_camera_right'/>
     </include> -->
 
     <!-- Frames: Kinects are placed at 90 degrees, clockwise -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.2275 0.87 0.145 0 0 /base_link /rs_camera_left_link 1000" />
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.2275 0.87 -0.145 0 0 /base_link /rs_camera_right_link 1000" /> 
-
-    <!-- Choose visualization -->
-    <arg name="rviz" default="false" />
-    <arg name="rtabmapviz" default="true" />
-    <arg name="rtab" default="true"/>
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.2275 0.87 0.145 0.1 0 /base_link /rs_camera_left_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.2275 0.87 -0.145 0.1 0 /base_link /rs_camera_right_link 1000" />
 
     <!-- ODOMETRY MAIN ARGUMENTS: 
           -"strategy"        : Strategy: 0=Frame-to-Map 1=Frame-to-Frame
@@ -39,13 +49,7 @@
     <arg name="odom_info_data" default="true" />
     <arg name="wait_for_transform" default="true" />
 
-    <arg name="rgb_topic" default="color/image_raw" />
-    <arg name="depth_topic" default="aligned_depth_to_color/image_raw" />
-    <arg name="camera_info_topic" default="color/camera_info" />
 
- 
-
-    <!-- sync rgb/depth images per camera -->
     <group ns="rs_camera_left">
         <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync realsense2_camera_manager" output="screen">
             <remap from="rgb/image" to="$(arg rgb_topic)" />
@@ -60,13 +64,16 @@
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
         </node>
     </group>
+    <!-- sync rgb/depth images per camera -->
 
-    <group if = "$(arg rtab)" ns="rtabmap">
+
+    <group if="$(arg rtab)" ns="rtabmap">
 
         <!-- Odometry -->
         <node pkg="rtabmap_ros" type="rgbd_odometry" name="rgbd_odometry" output="screen">
-            <remap from="rgbd_image0" to="/rs_camera_left/rgbd_image" />
-            <remap from="rgbd_image1" to="/rs_camera_right/rgbd_image" />
+            <remap from="rgbd_image0" to="$(arg rgbd_camera_left_topic)" />
+            <remap from="rgbd_image1" to="$(arg rgbd_camera_right_topic)" />
+            <remap from="imu" to="$(arg imu_topic)" />
 
             <param name="subscribe_rgbd" type="bool" value="true" />
             <param name="frame_id" type="string" value="base_link" />
@@ -83,11 +90,14 @@
             <param name="Vis/InlierDistance" type="string" value="$(arg inlier_distance)" />
             <param name="OdomF2M/MaxSize" type="string" value="$(arg local_map)" />
             <param name="Odom/FillInfoData" type="string" value="$(arg odom_info_data)" />
+
+            <param name="Reg/Force3DoF" type="bool" value="true" />
+            <param name="Odom/ResetCountdown" type="string" value="10" />
+            <param name="publish_null_when_lost" type="bool" value="true" />
         </node>
 
         <!-- Visual SLAM (robot side) -->
-        <!-- args: "delete_db_on_start" and "udebug" -->
-        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
             <param name="subscribe_depth" type="bool" value="false" />
             <param name="subscribe_rgbd" type="bool" value="true" />
             <param name="rgbd_cameras" type="int" value="2" />
@@ -96,14 +106,38 @@
             <param name="wait_for_transform" type="bool" value="$(arg wait_for_transform)" />
             <param name="map_negative_poses_ignored" type="bool" value="false" /> <!-- refresh grid map even if we are not moving-->
             <param name="map_negative_scan_empty_ray_tracing" type="bool" value="false" /> <!-- don't fill empty space between the generated scans-->
+            <!-- inputs -->
+            <remap from="rgbd_image0" to="$(arg rgbd_camera_left_topic)" />
+            <remap from="rgbd_image1" to="$(arg rgbd_camera_right_topic)" />
 
-            <remap from="rgbd_image0" to="/rs_camera_left/rgbd_image" />
-            <remap from="rgbd_image1" to="/rs_camera_right/rgbd_image" />
-
+            <!-- RTAB-Map's parameters -->
             <param name="Grid/FromDepth" type="string" value="false" />
             <param name="Vis/EstimationType" type="string" value="0" /> <!-- should be 0 for multi-cameras -->
-            <param name="Vis/MinInliers" type="string" value="10" />
+            <param name="Vis/MinInliers" type="string" value="12" />
             <param name="Vis/InlierDistance" type="string" value="$(arg inlier_distance)" />
+            <param name="Reg/Force3DoF" type="bool" value="true" />
+
+            <param name="RGBD/ProximityBySpace" type="string" value="true" />
+            <param name="RGBD/AngularUpdate" type="string" value="0" />
+            <param name="RGBD/LinearUpdate" type="string" value="0" />
+            <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false" />
+            <param name="Reg/Strategy" type="string" value="0" /> <!-- 0=Visual, 1=ICP, 2=Visual+ICP -->
+            <param name="GridGlobal/MinSize" type="string" value="20" />
+            <param name="Kp/DetectorStrategy" type="string" value="$(arg feature)" />
+            <param name="Rtabmap/DetectionRate" type="string" value="3" />
+            <!-- Grid -->
+            <param name="Grid/3D" value="false" />
+            <param name="Grid/CellSize" value="0.1" />
+            <param name="Grid/MaxGroundHeight" type="string" value="0.3" />
+            <param name="Grid/MaxObstacleHeight" type="string" value="2" />
+            <param name="Grid/NormalsSegmentation" type="string" value="false" />
+            <param name="Grid/RangeMax" value="9.0" />
+            <param name="Grid/RangeMin" value="2.0" />
+            <param name="GridGlobal/MinSize" type="string" value="250" />
+            <!-- localization mode -->
+            <param if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false" />
+            <param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true" />
+            <param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)" />
         </node>
 
         <!-- Visualisation RTAB-Map -->
@@ -115,8 +149,8 @@
             <param name="rgbd_cameras" type="int" value="2" />
             <param name="wait_for_transform" type="bool" value="$(arg wait_for_transform)" />
 
-            <remap from="rgbd_image0" to="/rs_camera_left/rgbd_image" />
-            <remap from="rgbd_image1" to="/rs_camera_right/rgbd_image" />
+            <remap from="rgbd_image0" to="$(arg rgbd_camera_left_topic)" />
+            <remap from="rgbd_image1" to="$(arg rgbd_camera_right_topic)" />
         </node>
 
     </group>
