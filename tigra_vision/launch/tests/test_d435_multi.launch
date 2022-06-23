@@ -4,13 +4,12 @@
         <arg name= "camera2" value='rs_camera_right'/>
     </include>
 
-   
+<!--    
     <include file="$(find tigra_software)/launch/view/rviz_start.launch">
         <arg name="rvizconfig" value="$(find tigra_vision)/rviz/check_multiply_rs.rviz" />
     </include>
-
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.5 0.5 0 0 0 /base_link /rs_camera_left_link 1000" />
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.5 0.5 0 0 0 /base_link /rs_camera_right_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.2275 0.87 0.145 0.1 0 /base_link /rs_camera_left_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.2275 0.87 -0.145 0.1 0 /base_link /rs_camera_right_link 1000" /> -->
 
 
 </launch>

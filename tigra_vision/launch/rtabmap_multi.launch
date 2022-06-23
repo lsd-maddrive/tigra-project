@@ -3,14 +3,14 @@
     <!-- Multi-cameras demo with 2 Kinects -->
 
     <!-- Cameras -->
-    <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
         <arg name= "camera1" value='rs_camera_left'/>
         <arg name= "camera2" value='rs_camera_right'/>
-    </include>
+    </include> -->
 
     <!-- Frames: Kinects are placed at 90 degrees, clockwise -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.5 0.5 0 0 0 /base_link /rs_camera_left_link 1000" />
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.5 0.5 0 0 0 /base_link /rs_camera_right_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.2275 0.87 0.145 0.1 0 /base_link /rs_camera_left_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.2275 0.87 -0.145 0.1 0 /base_link /rs_camera_right_link 1000" /> 
 
     <!-- Choose visualization -->
     <arg name="rviz" default="false" />
@@ -32,9 +32,9 @@
     <arg name="strategy" default="0" />
     <arg name="feature" default="6" />
     <arg name="nn" default="3" />
-    <arg name="max_depth" default="4.0" />
-    <arg name="min_inliers" default="20" />
-    <arg name="inlier_distance" default="0.02" />
+    <arg name="max_depth" default="10.0" />
+    <arg name="min_inliers" default="12" />
+    <arg name="inlier_distance" default="0.05" />
     <arg name="local_map" default="1000" />
     <arg name="odom_info_data" default="true" />
     <arg name="wait_for_transform" default="true" />
