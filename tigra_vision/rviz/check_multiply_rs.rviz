@@ -113,7 +113,25 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        base:
+        base_link:
+          Value: true
+        rs_camera1_accel_frame:
+          Value: true
+        rs_camera1_accel_optical_frame:
+          Value: true
+        rs_camera1_aligned_depth_to_color_frame:
+          Value: true
+        rs_camera1_color_frame:
+          Value: true
+        rs_camera1_color_optical_frame:
+          Value: true
+        rs_camera1_depth_frame:
+          Value: true
+        rs_camera1_depth_optical_frame:
+          Value: true
+        rs_camera1_gyro_frame:
+          Value: true
+        rs_camera1_imu_optical_frame:
           Value: true
         rs_camera1_link:
           Value: true
@@ -144,9 +162,22 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        base:
+        base_link:
           rs_camera1_link:
-            {}
+            rs_camera1_accel_frame:
+              rs_camera1_accel_optical_frame:
+                {}
+            rs_camera1_aligned_depth_to_color_frame:
+              rs_camera1_color_optical_frame:
+                {}
+            rs_camera1_color_frame:
+              {}
+            rs_camera1_depth_frame:
+              rs_camera1_depth_optical_frame:
+                {}
+            rs_camera1_gyro_frame:
+              rs_camera1_imu_optical_frame:
+                {}
           rs_camera2_link:
             rs_camera2_accel_frame:
               rs_camera2_accel_optical_frame:
@@ -168,7 +199,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
