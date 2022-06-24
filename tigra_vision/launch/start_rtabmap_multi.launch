@@ -24,9 +24,8 @@
     </include> -->
 
     <!-- Frames: Kinects are placed at 90 degrees, clockwise -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.2275 0.87 0.145 0.1 0 /base_link /rs_camera_left_link 1000" />
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.2275 0.87 -0.145 0.1 0 /base_link /rs_camera_right_link 1000" />
-
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.2275 0.87 0.10 0.095 0 /base_link /rs_camera_left_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.2275 0.87 -0.10 0.095 0 /base_link /rs_camera_right_link 1000" />
     <!-- ODOMETRY MAIN ARGUMENTS: 
           -"strategy"        : Strategy: 0=Frame-to-Map 1=Frame-to-Frame
           -"feature"         : Feature type: 0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK
@@ -42,7 +41,7 @@
     <arg name="strategy" default="0" />
     <arg name="feature" default="6" />
     <arg name="nn" default="3" />
-    <arg name="max_depth" default="10.0" />
+    <arg name="max_depth" default="15.0" />
     <arg name="min_inliers" default="12" />
     <arg name="inlier_distance" default="0.05" />
     <arg name="local_map" default="1000" />
@@ -111,7 +110,7 @@
             <remap from="rgbd_image1" to="$(arg rgbd_camera_right_topic)" />
 
             <!-- RTAB-Map's parameters -->
-            <param name="Grid/FromDepth" type="string" value="false" />
+            <param name="Grid/Sensor" type="string" value="false" />
             <param name="Vis/EstimationType" type="string" value="0" /> <!-- should be 0 for multi-cameras -->
             <param name="Vis/MinInliers" type="string" value="12" />
             <param name="Vis/InlierDistance" type="string" value="$(arg inlier_distance)" />
@@ -124,7 +123,7 @@
             <param name="Reg/Strategy" type="string" value="0" /> <!-- 0=Visual, 1=ICP, 2=Visual+ICP -->
             <param name="GridGlobal/MinSize" type="string" value="20" />
             <param name="Kp/DetectorStrategy" type="string" value="$(arg feature)" />
-            <param name="Rtabmap/DetectionRate" type="string" value="3" />
+            <param name="Rtabmap/DetectionRate" type="string" value="1" />
             <!-- Grid -->
             <param name="Grid/3D" value="false" />
             <param name="Grid/CellSize" value="0.1" />
