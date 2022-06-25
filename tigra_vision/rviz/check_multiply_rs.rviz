@@ -65,7 +65,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -80,7 +80,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -116,9 +116,7 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
-        rs_camera_left_accel_frame:
-          Value: true
-        rs_camera_left_accel_optical_frame:
+        odom:
           Value: true
         rs_camera_left_aligned_depth_to_color_frame:
           Value: true
@@ -130,11 +128,11 @@ Visualization Manager:
           Value: true
         rs_camera_left_depth_optical_frame:
           Value: true
-        rs_camera_left_gyro_frame:
-          Value: true
-        rs_camera_left_imu_optical_frame:
-          Value: true
         rs_camera_left_link:
+          Value: true
+        rs_camera_right_accel_frame:
+          Value: true
+        rs_camera_right_accel_optical_frame:
           Value: true
         rs_camera_right_aligned_depth_to_color_frame:
           Value: true
@@ -146,6 +144,10 @@ Visualization Manager:
           Value: true
         rs_camera_right_depth_optical_frame:
           Value: true
+        rs_camera_right_gyro_frame:
+          Value: true
+        rs_camera_right_imu_optical_frame:
+          Value: true
         rs_camera_right_link:
           Value: true
       Marker Alpha: 1
@@ -155,38 +157,39 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        base_link:
-          rs_camera_left_link:
-            rs_camera_left_accel_frame:
-              rs_camera_left_accel_optical_frame:
+        odom:
+          base_link:
+            rs_camera_left_link:
+              rs_camera_left_aligned_depth_to_color_frame:
+                rs_camera_left_color_optical_frame:
+                  {}
+              rs_camera_left_color_frame:
                 {}
-            rs_camera_left_aligned_depth_to_color_frame:
-              rs_camera_left_color_optical_frame:
+              rs_camera_left_depth_frame:
+                rs_camera_left_depth_optical_frame:
+                  {}
+            rs_camera_right_link:
+              rs_camera_right_accel_frame:
+                rs_camera_right_accel_optical_frame:
+                  {}
+              rs_camera_right_aligned_depth_to_color_frame:
+                rs_camera_right_color_optical_frame:
+                  {}
+              rs_camera_right_color_frame:
                 {}
-            rs_camera_left_color_frame:
-              {}
-            rs_camera_left_depth_frame:
-              rs_camera_left_depth_optical_frame:
-                {}
-            rs_camera_left_gyro_frame:
-              rs_camera_left_imu_optical_frame:
-                {}
-          rs_camera_right_link:
-            rs_camera_right_aligned_depth_to_color_frame:
-              rs_camera_right_color_optical_frame:
-                {}
-            rs_camera_right_color_frame:
-              {}
-            rs_camera_right_depth_frame:
-              rs_camera_right_depth_optical_frame:
-                {}
+              rs_camera_right_depth_frame:
+                rs_camera_right_depth_optical_frame:
+                  {}
+              rs_camera_right_gyro_frame:
+                rs_camera_right_imu_optical_frame:
+                  {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -210,7 +213,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.571043491363525
+      Distance: 7.107893943786621
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

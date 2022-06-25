@@ -1,14 +1,15 @@
 <launch>
+    <arg name="rtabmap" default="false" />
 
     <arg name="localization" default="false" />
     <arg name="rgb_topic" default="color/image_raw" />
     <arg name="depth_topic" default="aligned_depth_to_color/image_raw" />
     <arg name="camera_info_topic" default="color/camera_info" />
     <arg name="imu_topic" default="/rs_camera/imu/filtered" />
-    <arg name="odom_topic" default="/tigra/odometry/filtered" />
+    <!-- <arg name="odom_topic" default="/tigra/odometry/filtered" /> -->
+    <arg name="odom_topic" default="/tigra/vo" />
     <arg name="rgbd_camera_left_topic" default="/rs_camera_left/rgbd_image" />
     <arg name="rgbd_camera_right_topic" default="/rs_camera_right/rgbd_image" />
-    <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db" />
     <arg name="rtabmapviz" default="true" />
     <arg if="$(arg localization)" name="args" default="" />
@@ -17,15 +18,16 @@
     <arg name="rviz" default="false" />
 
 
-    <!-- Cameras
-    <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
+    <!-- Cameras -->
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
         <arg name= "camera1" value='rs_camera_left'/>
         <arg name= "camera2" value='rs_camera_right'/>
     </include> -->
 
     <!-- Frames: Kinects are placed at 90 degrees, clockwise -->
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.2275 0.87 0.10 0.095 0 /base_link /rs_camera_left_link 1000" />
-    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.2275 0.87 -0.10 0.095 0 /base_link /rs_camera_right_link 1000" />
+    
+    <!-- <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera1" args="0 0.875 0.85 0 0 0 /base_link /rs_camera_left_link 1000" />
+    <node pkg="tf" type="static_transform_publisher" name="tf_base_2_camera2" args="0 -0.875 0.85 0 0 0 /base_link /rs_camera_right_link 1000" /> -->
     <!-- ODOMETRY MAIN ARGUMENTS: 
           -"strategy"        : Strategy: 0=Frame-to-Map 1=Frame-to-Frame
           -"feature"         : Feature type: 0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK
@@ -73,6 +75,7 @@
             <remap from="rgbd_image0" to="$(arg rgbd_camera_left_topic)" />
             <remap from="rgbd_image1" to="$(arg rgbd_camera_right_topic)" />
             <remap from="imu" to="$(arg imu_topic)" />
+            <remap from="odom" to="$(arg odom_topic)" />
 
             <param name="subscribe_rgbd" type="bool" value="true" />
             <param name="frame_id" type="string" value="base_link" />
@@ -93,10 +96,11 @@
             <param name="Reg/Force3DoF" type="bool" value="true" />
             <param name="Odom/ResetCountdown" type="string" value="10" />
             <param name="publish_null_when_lost" type="bool" value="true" />
+            <param name="publish_tf" type="bool" value="true"/>
         </node>
 
         <!-- Visual SLAM (robot side) -->
-        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
+        <node if="$(arg rtabmap)" name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
             <param name="subscribe_depth" type="bool" value="false" />
             <param name="subscribe_rgbd" type="bool" value="true" />
             <param name="rgbd_cameras" type="int" value="2" />
@@ -108,6 +112,7 @@
             <!-- inputs -->
             <remap from="rgbd_image0" to="$(arg rgbd_camera_left_topic)" />
             <remap from="rgbd_image1" to="$(arg rgbd_camera_right_topic)" />
+            <remap from="odom" to="$(arg odom_topic)" />
 
             <!-- RTAB-Map's parameters -->
             <param name="Grid/Sensor" type="string" value="false" />

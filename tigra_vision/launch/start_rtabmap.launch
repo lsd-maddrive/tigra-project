@@ -2,6 +2,8 @@
 
 
     <!-- SLAM -->
+    <arg name="rtab" default="true" />
+
     <arg name="localization" default="true" />
     <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
     <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
@@ -37,10 +39,10 @@
             <param name="Odom/ResetCountdown" type="string" value="10" />
             <param name="OdomF2M/MaxSize" type="string" value="1000" />
 
-            
+
         </node>
 
-        <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
+        <node if="$(arg rtab)" name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
             <param name="database_path" type="string" value="$(arg database_path)" />
             <param name="frame_id" type="string" value="base_footprint" />
             <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)" />
@@ -67,7 +69,7 @@
             <param name="Reg/Strategy" type="string" value="0" /> <!-- 0=Visual, 1=ICP, 2=Visual+ICP -->
             <param name="GridGlobal/MinSize" type="string" value="20" />
             <param name="Kp/DetectorStrategy" type="string" value="$(arg FeatureType)" />
-            <param name="Rtabmap/DetectionRate" type="string" value= "3"/>
+            <param name="Rtabmap/DetectionRate" type="string" value="3" />
 
             <param name="Grid/3D" value="false" />
             <param name="Grid/CellSize" value="0.1" />
