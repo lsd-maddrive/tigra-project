@@ -1,11 +1,11 @@
 <launch>
-    <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
-        <arg name= "camera2" value='rs_camera_left'/>
-        <arg name= "camera1" value='rs_camera_right'/>
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
+        <arg name= "camera1" value='rs_camera_left'/>
+        <arg name= "camera2" value='rs_camera_right'/>
     </include>
 
    
-    <!-- <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+    <include file="$(find tigra_software)/launch/view/rviz_start.launch">
         <arg name="rvizconfig" value="$(find tigra_vision)/rviz/check_multiply_rs.rviz" />
     </include> -->
 

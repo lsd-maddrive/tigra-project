@@ -3,7 +3,7 @@
   <include file="$(find elp_stereo_camera)/launch/camera_driver_elp.launch">
     <arg name="camera"              value="elp_camera" />
     <arg name="camera_info"         value="true" />
-    <arg name="calib_data_path"     value="$(find tigra_vision)/calib_info/elp_new" />
+    <arg name="calib_data_path"     value="$(find tigra_vision)/calib_info/elp_gazel" />
     <arg name="stereo_params_path"  value="$(find tigra_vision)/config/elp_stereo.yaml" />
 
     <arg name="framerate"           value="10" />

@@ -10,16 +10,16 @@ catkin build \
     tigra_maps \
     ackermann_raw_controller_plugin \
     elp_stereo_camera \
-    cv_bridge \
     rtabmap \
     rtabmap_ros \
-    stereo_image_proc \
     spatio_temporal_voxel_layer \
-    camera_calibration \
-    --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" \
-                 -D RTABMAP_SYNC_MULTI_RGBD=ON
+    ublox \
+    --cmake-args -D RTABMAP_SYNC_MULTI_RGBD=ON
 
-    # ublox \
+    # stereo_image_proc \
+    # cv_bridge \
+    # camera_calibration \
+    
     # serial \
     # ti_mmwave_rospkg \
     # viso2 \

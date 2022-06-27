@@ -93,7 +93,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -108,13 +108,15 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Class: rviz/TF
       Enabled: true
       Frame Timeout: 15
       Frames:
         All Enabled: true
         base_link:
+          Value: true
+        map:
           Value: true
         odom:
           Value: true
@@ -157,39 +159,40 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        odom:
-          base_link:
-            rs_camera_left_link:
-              rs_camera_left_aligned_depth_to_color_frame:
-                rs_camera_left_color_optical_frame:
+        map:
+          odom:
+            base_link:
+              rs_camera_left_link:
+                rs_camera_left_aligned_depth_to_color_frame:
+                  rs_camera_left_color_optical_frame:
+                    {}
+                rs_camera_left_color_frame:
                   {}
-              rs_camera_left_color_frame:
-                {}
-              rs_camera_left_depth_frame:
-                rs_camera_left_depth_optical_frame:
+                rs_camera_left_depth_frame:
+                  rs_camera_left_depth_optical_frame:
+                    {}
+              rs_camera_right_link:
+                rs_camera_right_accel_frame:
+                  rs_camera_right_accel_optical_frame:
+                    {}
+                rs_camera_right_aligned_depth_to_color_frame:
+                  rs_camera_right_color_optical_frame:
+                    {}
+                rs_camera_right_color_frame:
                   {}
-            rs_camera_right_link:
-              rs_camera_right_accel_frame:
-                rs_camera_right_accel_optical_frame:
-                  {}
-              rs_camera_right_aligned_depth_to_color_frame:
-                rs_camera_right_color_optical_frame:
-                  {}
-              rs_camera_right_color_frame:
-                {}
-              rs_camera_right_depth_frame:
-                rs_camera_right_depth_optical_frame:
-                  {}
-              rs_camera_right_gyro_frame:
-                rs_camera_right_imu_optical_frame:
-                  {}
+                rs_camera_right_depth_frame:
+                  rs_camera_right_depth_optical_frame:
+                    {}
+                rs_camera_right_gyro_frame:
+                  rs_camera_right_imu_optical_frame:
+                    {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: odom
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:

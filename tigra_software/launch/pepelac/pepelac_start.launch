@@ -5,13 +5,20 @@
     <arg name='rviz' default="false" />
     <arg name='rtabmapviz' default='false' />
 
-    <arg name="imu_topic" default="/rs_camera_left/imu/filtered" />
-    <arg name="odom_topic" default="/tigra/odometry/filtered" />
+    <arg name="imu_topic" default="/rs_camera_right/imu/filtered" />
+    <arg name="odom_topic_local" default="/tigra/odometry/filtered/local" />
+    <arg name="odom_topic_global" default="/tigra/odometry/filtered/global" />
     <arg name="gps_topic" default="/gps/fix" />
 
 
     <!-- gps -->
     <!-- <include file="$(find tigra_software)/launch/drivers/gps_driver_m8p_rover.launch"></include> -->
+
+    <!-- multiply rs. camera 1 use imu -->
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch">
+        <arg name="camera1" value='rs_camera_left' />
+        <arg name="camera2" value='rs_camera_right' />
+    </include> -->
 
     <!-- SLAM -->
     <include file="$(find tigra_vision)/launch/start_rtabmap_multi.launch">
@@ -22,28 +29,34 @@
     </include>
 
 
-    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_pepelac.yaml" />
-        <remap from="odometry/filtered" to="$(arg odom_topic)" />
+    <node pkg="robot_localization" type="ekf_localization_node" name="EKF_local" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_pepelac_odom.yaml" />
+        <remap from="odometry/filtered" to="$(arg odom_topic_local)" />
+    </node>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="EKF_global" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_pepelac_map.yaml" />
+        <remap from="odometry/filtered" to="$(arg odom_topic_global)" />
     </node>
 
 
-    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true" output="screen">
         <param name="frequency" value="30" />
-        <param name="delay" value="3.0" />
+        <param name="delay" value="0" />
         <param name="magnetic_declination_radians" value="0.2" />
 
-        <param name="yaw_offset" value="1.57079632679" />
+        <param name="yaw_offset" value="1.570796" />
         <param name="publish_filtered_gps" value="true" />
         <param name="broadcast_cartesian_transform_as_parent_frame" value="false" />
-        <param name="broadcast_utm_transform" value="false" />
+        <param name="broadcast_utm_transform" value="true" />
         <param name="use_odometry_yaw" value="false" />
         <param name="wait_for_datum" value="false" />
         <param name="zero_altitude" value="true" />
+        <!-- <param name="transform_timeout" value="0"/> -->
 
         <remap from="/imu/data" to="$(arg imu_topic)" />
         <remap from="/gps/fix" to="$(arg gps_topic)" />
-        <remap from="/odometry/filtered" to="$(arg odom_topic)" />
+        <remap from="/odometry/filtered" to="$(arg odom_topic_global)" />
 
         <remap from="/odometry/gps" to="/tigra/nav/gps" />
     </node>
