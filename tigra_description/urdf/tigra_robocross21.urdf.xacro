@@ -3,58 +3,13 @@
 
   <xacro:include filename="$(find tigra_description)/urdf/base.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/realsense.urdf.xacro" />
-
-  <!-- IMU -->
-  <link name="imu_link">
-    <visual>
-      <geometry>
-        <box size="${imu_length} 0.2 ${imu_height}" />
-      </geometry>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="${imu_length} 0.2 ${imu_height}" />
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="1e-5" />
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
-  </link>
-
-  <joint name="base_imu_joint" type="fixed">
-    <parent link="base_link" />
-    <child link="imu_link" />
-    <origin xyz="${body_length/2-imu_length/2} 0 ${body_heigth/2+imu_height/2}" rpy="0 0 0" />
-  </joint>
-
-  <gazebo reference="imu_link">
-    <material>Gazebo/Red</material>
-    <gravity>true</gravity>
-    <sensor name="imu_sensor" type="imu">
-      <always_on>true</always_on>
-      <update_rate>100</update_rate>
-      <visualize>true</visualize>
-      <topic>__default_topic__</topic>
-      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <topicName>$(arg robot_name)/imu</topicName>
-        <bodyName>imu_link</bodyName>
-        <updateRateHZ>20.0</updateRateHZ>
-        <gaussianNoise>0.0</gaussianNoise>
-        <xyzOffset>0 0 0</xyzOffset>
-        <rpyOffset>0 0 0</rpyOffset>
-        <frameName>imu_link</frameName>
-      </plugin>
-      <pose>0 0 0 0 0 0</pose>
-    </sensor>
-  </gazebo>
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/elp_stereo.urdf.xacro" />
 
   <!-- GPS -->
   <joint name="base_gps_joint" type="fixed">
     <parent link="base_link" />
     <child link="gps_link" />
-    <origin xyz="0 0 ${body_heigth/2+imu_height/2}" rpy="0 0 0" />
+    <origin xyz="0 0 ${body_heigth/2+0.1}" rpy="0 0 0" />
   </joint>
 
   <link name="gps_link">
@@ -116,4 +71,10 @@
 			base_link_name="base_link"
 			xyz="${body_length/2} 0 ${body_heigth/2+0.1}"
 			rpy="0 0 0" />
+
+  <xacro:elp_stereo
+			name="elp_stereo"
+			base_link_name="base_link"
+			xyz="-${body_length/2-wheelbase/2+0.05} 0 0"
+			rpy="0 0 ${pi}" />
 </robot>

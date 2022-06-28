@@ -18,6 +18,7 @@ catkin build \
     cv_bridge \
     stereo_image_proc \
     camera_calibration \
+    maddrive_urdf_tools \
     --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON
 
     
