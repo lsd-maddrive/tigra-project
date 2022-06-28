@@ -8,7 +8,7 @@
     <arg name="camera2" default="rs_camera2" /> <!-- Note: Replace with camera name -->
     <arg name="tf_prefix_camera1" default="$(arg camera1)" />
     <arg name="tf_prefix_camera2" default="$(arg camera2)" />
-    <arg name="initial_reset" default="false" />
+    <arg name="initial_reset" default="true" />
     <arg name="reconnect_timeout" default="6.0" />
 
     <!-- camera args -->

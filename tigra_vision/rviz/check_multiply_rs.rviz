@@ -27,7 +27,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -116,9 +116,11 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
-        map:
-          Value: true
         odom:
+          Value: true
+        rs_camera_left_accel_frame:
+          Value: true
+        rs_camera_left_accel_optical_frame:
           Value: true
         rs_camera_left_aligned_depth_to_color_frame:
           Value: true
@@ -130,11 +132,11 @@ Visualization Manager:
           Value: true
         rs_camera_left_depth_optical_frame:
           Value: true
+        rs_camera_left_gyro_frame:
+          Value: true
+        rs_camera_left_imu_optical_frame:
+          Value: true
         rs_camera_left_link:
-          Value: true
-        rs_camera_right_accel_frame:
-          Value: true
-        rs_camera_right_accel_optical_frame:
           Value: true
         rs_camera_right_aligned_depth_to_color_frame:
           Value: true
@@ -146,10 +148,6 @@ Visualization Manager:
           Value: true
         rs_camera_right_depth_optical_frame:
           Value: true
-        rs_camera_right_gyro_frame:
-          Value: true
-        rs_camera_right_imu_optical_frame:
-          Value: true
         rs_camera_right_link:
           Value: true
       Marker Alpha: 1
@@ -159,40 +157,39 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          odom:
-            base_link:
-              rs_camera_left_link:
-                rs_camera_left_aligned_depth_to_color_frame:
-                  rs_camera_left_color_optical_frame:
-                    {}
-                rs_camera_left_color_frame:
+        odom:
+          base_link:
+            rs_camera_left_link:
+              rs_camera_left_accel_frame:
+                rs_camera_left_accel_optical_frame:
                   {}
-                rs_camera_left_depth_frame:
-                  rs_camera_left_depth_optical_frame:
-                    {}
-              rs_camera_right_link:
-                rs_camera_right_accel_frame:
-                  rs_camera_right_accel_optical_frame:
-                    {}
-                rs_camera_right_aligned_depth_to_color_frame:
-                  rs_camera_right_color_optical_frame:
-                    {}
-                rs_camera_right_color_frame:
+              rs_camera_left_aligned_depth_to_color_frame:
+                rs_camera_left_color_optical_frame:
                   {}
-                rs_camera_right_depth_frame:
-                  rs_camera_right_depth_optical_frame:
-                    {}
-                rs_camera_right_gyro_frame:
-                  rs_camera_right_imu_optical_frame:
-                    {}
+              rs_camera_left_color_frame:
+                {}
+              rs_camera_left_depth_frame:
+                rs_camera_left_depth_optical_frame:
+                  {}
+              rs_camera_left_gyro_frame:
+                rs_camera_left_imu_optical_frame:
+                  {}
+            rs_camera_right_link:
+              rs_camera_right_aligned_depth_to_color_frame:
+                rs_camera_right_color_optical_frame:
+                  {}
+              rs_camera_right_color_frame:
+                {}
+              rs_camera_right_depth_frame:
+                rs_camera_right_depth_optical_frame:
+                  {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:

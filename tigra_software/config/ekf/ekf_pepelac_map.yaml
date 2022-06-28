@@ -1,7 +1,6 @@
 #Configuation for robot odometry EKF
 #
 frequency: 30
-sensor_timeout: 0.1
 
 two_d_mode: true
 publish_tf: true
@@ -37,7 +36,7 @@ odom0_queue_size: 5
 odom0_differential: false
 odom0_relative: true
 
-imu0: /rs_camera_right/imu/filtered
+imu0: /rs_camera_left/imu/filtered
 imu0_config:
   [ false,  false,  false,
     false,  false,  true,

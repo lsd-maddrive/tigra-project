@@ -1,11 +1,12 @@
 <launch>
-    <arg name="map_name" default="mapa.db" />
+    <arg name="map_name" default="mapa_gps_control.db" />
     <arg name="localization" default="false" /> <!-- set false to start mapping-->
     <arg name="debug" default="false" />
-    <arg name='rviz' default="false" />
+    <arg name='rviz' default="true" />
     <arg name='rtabmapviz' default='false' />
+    <arg name='ekf_global' default='true'/>
 
-    <arg name="imu_topic" default="/rs_camera_right/imu/filtered" />
+    <arg name="imu_topic" default="/rs_camera_left/imu/filtered" />
     <arg name="odom_topic_local" default="/tigra/odometry/filtered/local" />
     <arg name="odom_topic_global" default="/tigra/odometry/filtered/global" />
     <arg name="gps_topic" default="/gps/fix" />
@@ -26,6 +27,7 @@
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/$(arg map_name)" />
         <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+        <arg name="imu_topic" value="$(arg imu_topic)" />
     </include>
 
 
@@ -34,34 +36,39 @@
         <remap from="odometry/filtered" to="$(arg odom_topic_local)" />
     </node>
 
-    <node pkg="robot_localization" type="ekf_localization_node" name="EKF_global" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_pepelac_map.yaml" />
-        <remap from="odometry/filtered" to="$(arg odom_topic_global)" />
-    </node>
+    <group if='$(arg ekf_global)'>
+        <node pkg="robot_localization" type="ekf_localization_node" name="EKF_global" clear_params="true" output="screen">
+            <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_pepelac_map.yaml" />
+            <remap from="odometry/filtered" to="$(arg odom_topic_global)" />
+        </node>
 
 
-    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true" output="screen">
-        <param name="frequency" value="30" />
-        <param name="delay" value="0" />
-        <param name="magnetic_declination_radians" value="0.2" />
+        <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
+            <param name="frequency" value="30" />
+            <param name="delay" value="0" />
+            <param name="magnetic_declination_radians" value="0.2" />
 
-        <param name="yaw_offset" value="1.570796" />
-        <param name="publish_filtered_gps" value="true" />
-        <param name="broadcast_cartesian_transform_as_parent_frame" value="false" />
-        <param name="broadcast_utm_transform" value="true" />
-        <param name="use_odometry_yaw" value="false" />
-        <param name="wait_for_datum" value="false" />
-        <param name="zero_altitude" value="true" />
-        <!-- <param name="transform_timeout" value="0"/> -->
+            <param name="yaw_offset" value="1.570796" />
+            <param name="publish_filtered_gps" value="true" />
+            <param name="broadcast_cartesian_transform_as_parent_frame" value="false" />
+            <param name="broadcast_utm_transform" value="false" />
+            <param name="use_odometry_yaw" value="false" />
+            <param name="wait_for_datum" value="false" />
+            <param name="zero_altitude" value="true" />
 
-        <remap from="/imu/data" to="$(arg imu_topic)" />
-        <remap from="/gps/fix" to="$(arg gps_topic)" />
-        <remap from="/odometry/filtered" to="$(arg odom_topic_global)" />
 
-        <remap from="/odometry/gps" to="/tigra/nav/gps" />
-    </node>
+            <remap from="/imu/data" to="$(arg imu_topic)" />
+            <remap from="/gps/fix" to="$(arg gps_topic)" />
+            <remap from="/odometry/filtered" to="$(arg odom_topic_global)" />
 
-    <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+            <remap from="/odometry/gps" to="/tigra/nav/gps" />
+        </node>
+    </group>
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_bl_2_gps" args="0 0 0.9 0 0 0 /base_link /gps 1000" />
+
+
+    <include if='$(arg rviz)' file="$(find tigra_software)/launch/view/rviz_start.launch">
         <arg name="rvizconfig" value="$(find tigra_vision)/rviz/check_multiply_rs.rviz" />
     </include>
 
