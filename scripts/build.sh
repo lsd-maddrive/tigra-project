@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 export CMAKE_PREFIX_PATH=/usr/local/lib/cmake/:$CMAKE_PREFIX_PATH
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
 catkin build \
     tigra_msgs \
@@ -14,11 +15,11 @@ catkin build \
     rtabmap_ros \
     spatio_temporal_voxel_layer \
     ublox \
-    --cmake-args -D RTABMAP_SYNC_MULTI_RGBD=ON
+    cv_bridge \
+    stereo_image_proc \
+    camera_calibration \
+    --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON
 
-    # stereo_image_proc \
-    # cv_bridge \
-    # camera_calibration \
     
     # serial \
     # ti_mmwave_rospkg \

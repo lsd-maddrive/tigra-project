@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #####################################################################
 # Software License Agreement (BSD License)
@@ -38,7 +38,6 @@ THIS_PACKAGE = "rosserial_client"
 
 import rospkg
 
-import rosserial_client
 from rosserial_client.make_library import *
 
 # for copying files
