@@ -1,0 +1,43 @@
+# Configuration Settings for C94-M8P device
+
+debug: 1                    # Range 0-4 (0 means no debug statements will print)
+
+save:
+  mask: 3103                #  
+                            # Какие-то параметры для сохранения во внутренюю память устройства, ничего не менял 
+  device: 4                 # 
+
+frame_id: gps               # Имя фрейма
+
+rate: 1                     # Как часто получаем данные с gps
+nav_rate: 1                 # Как часто у нас идут обновления данных gps 
+                            # RTK 8 поколения дает решение с частотой 1 Гц, больше смысла ставить нет
+
+
+dynamic_model: Pedestrian   # Режим для работы с малым ускорением и скоростью 
+#dynamic_model: Automotive   # Если потребуется скорость выше, то стоит использовать этот режим
+
+fix_mode: auto              # Автоматически определяем fix режим
+
+uart1:
+  baudrate: 19200           # C94-M8P specific
+  in: 32                    # RTCM 3
+  out: 0                    # В ответ базе ничего не отправляем 
+
+gnss:
+  glonass: false            # 
+  beidou: false             # Принимаем только gps
+  gps: true                 # 
+
+
+dgnss_mode: 3               # Нужно дифференциальное решение, 3 - FIX RTK; 2 - FLOAT RTK
+
+tmode3: 0                   # Этот режим нужен только для базы, поэтому выключаем его
+
+use_adr: true 
+
+publish:
+  nav:
+    status: true
+    posllh: true            # Публикуем широту, долготу и высоту
+    posecef: true           # Декартова система координат

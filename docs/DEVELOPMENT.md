@@ -19,18 +19,20 @@
 
 ## Подготовка к работе
 
+Для работы в среде ROS требуется установить в workspace [репозиторий с общими тулами для ROS](https://github.com/lsd-maddrive/maddrive_ros_shared).
+
 ### Установка catkin_tools
 
 - Установите с помощью `sudo apt install python3-catkin-tools`
 
 или
 
-- Создайте виртуальное окружение и в него поставьте с помощью `pip install catkin-tools`
+- Создайте виртуальное окружение (`python3.8 -m venv venv38`) и в него поставьте бинарник с помощью `pip install -r requirements.dev.txt`
 
 ### Преднастройка
 
+- В пакете `maddrive_ros_shared` установите пакеты для сборки командой `./scripts/install_third_party.sh`
 - Установите требуемые пакеты командой `./scripts/install_packages.sh`
-- Установите пакеты для сборки командой `./scripts/install_third_party.sh`
 - Соберите требуемые пакеты командой `./scripts/build.sh`
 
 ### Настройка камеры RealSense
@@ -61,6 +63,7 @@ catkin build \
 
 ### Server-side для связи с МК
 
+- Настройте на компе статический адрес `192.168.10.1` (на МК установлен `192.168.10.2` с gateway в адрес компа)
 - Установите `rosserial_client` и `rosserial_server`
 - Запустите `rosserial_server` - это поднимет сервер на порту 23456
 ```bash

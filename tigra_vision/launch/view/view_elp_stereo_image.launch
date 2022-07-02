@@ -1,0 +1,10 @@
+<launch>
+  <arg name="namespace" default="elp_camera" />
+
+  <node pkg="image_view" type="stereo_view" name="stereo_view" output="screen">
+    <remap from="stereo" to="$(arg namespace)" />
+    <remap from="image" to="image_rect_color" />
+    <param name="approximate_sync" value="false" />
+  </node>
+
+</launch>

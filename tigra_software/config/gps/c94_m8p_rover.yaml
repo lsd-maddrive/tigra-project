@@ -1,0 +1,28 @@
+# Configuration Settings for C94-M8P device
+
+debug: 1                    # Range 0-4 (0 means no debug statements will print)
+
+
+
+device: /dev/ttyACM0
+frame_id: gps
+config_on_startup: false
+rate: 1                     # in Hz
+nav_rate: 1                 # [# of measurement cycles], recommended 1 Hz, may 
+                            # be either 5 Hz (Dual constellation) or 
+                            # 8 Hz (GPS only)
+uart1:
+  baudrate: 19200           # C94-M8P specific
+  in: 32                    # RTCM 3
+  out: 0                    # No UART out for rover
+
+
+inf: 
+  all: true                   # Whether to display all INF messages in console
+
+# Enable u-blox message publishers
+publish:
+  all: true
+nav:
+ relposned: true
+ heading: true

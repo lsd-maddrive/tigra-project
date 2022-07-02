@@ -22,14 +22,14 @@ TebLocalPlannerROS:
     wheelbase: 1.25
     cmd_angle_instead_rotvel: True
 
-    max_vel_x: 1.0
-    max_vel_x_backwards: 0.8
+    max_vel_x: 0.5 # 1.0 
+    max_vel_x_backwards: 0.5
 
-    max_vel_theta: 0.4 # 0.43
-    acc_lim_x: 1.6
-    acc_lim_theta: 0.3
+    max_vel_theta: 0.8 # 0.43
+    acc_lim_x: 2.5 # 1.6
+    acc_lim_theta: 0.5 # 0.3
     # Just to avoid too high turn
-    min_turning_radius: 2.68 # wheelbase / tan(max_steer)
+    min_turning_radius: 3 #2.68 # wheelbase / tan(max_steer)
     footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
         type: "polygon"
         # radius: 0.3 # for type "circular"
@@ -46,14 +46,16 @@ TebLocalPlannerROS:
     xy_goal_tolerance: 0.7
     yaw_goal_tolerance: 0.4
     free_goal_vel: False
-    complete_global_plan: True
+    # TODO - try to make if False
+    # NOTE - it ...
+    complete_global_plan: False
 
     # Obstacles
-    min_obstacle_dist: 0.5
+    min_obstacle_dist: 0.2
 
     include_costmap_obstacles: True
     costmap_obstacles_behind_robot_dist: 1.0
-    obstacle_poses_affected: 5 #15
+    obstacle_poses_affected: 15 #5
 
     # costmap_converter_plugin: ""
     # costmap_converter_spin_thread: True

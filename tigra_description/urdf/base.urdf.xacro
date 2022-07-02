@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot name="tigra" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:include filename="$(find tigra_description)/urdf/params.urdf.xacro" />
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/wheels.urdf.xacro" />
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/inertia.urdf.xacro" />
+
+	<link name="base_link">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="${body_length} ${body_width} ${body_heigth}" />
+			</geometry>
+		</visual>
+		<collision name="base_collision">
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="${body_length} ${body_width} ${body_heigth}" />
+			</geometry>
+		</collision>
+		<xacro:box_inertia width="${body_width}" length="${body_length}" height="${body_heigth}" mass="${body_mass}">
+			<origin xyz="0 0 0" rpy="0 0 0" />
+		</xacro:box_inertia>
+	</link>
+
+	<!-- BASE FOOTPRINT-->
+	<link name="base_footprint" />
+	<gazebo reference="base_footprint" />
+
+	<joint name="base_footprint_2_link" type="fixed">
+		<parent link="base_footprint" />
+		<child link="base_link" />
+		<origin xyz="0 0 ${wheel_radius+wheel_shift_z}" rpy="0 0 0" />
+	</joint>
+
+	<xacro:steer_wheel name="front_right_wheel" base_name="base_link" xyz="${wheelbase/2} -${track_width/2} -${wheel_shift_z}" steer_limit="${wheel_turn_limit}" />
+	<xacro:steer_wheel name="front_left_wheel" base_name="base_link" xyz="${wheelbase/2} ${track_width/2} -${wheel_shift_z}" steer_limit="${wheel_turn_limit}" />
+	<xacro:speed_wheel name="rear_right_wheel" base_name="base_link" xyz="-${wheelbase/2} -${track_width/2} -${wheel_shift_z}" />
+	<xacro:speed_wheel name="rear_left_wheel" base_name="base_link" xyz="-${wheelbase/2} ${track_width/2} -${wheel_shift_z}" />
+
+    <gazebo>
+        <plugin name="tigra_interface_plugin" filename="libackermann_raw_controller_plugin.so">
+            <!-- <maxSteerRad>${mid_wheel_turn_limit}</maxSteerRad> -->
+            <wheelbase>${wheelbase}</wheelbase>
+            <!-- <wheelRadius>${wheel_radius}</wheelRadius> -->
+            <trackWidth>${track_width}</trackWidth>
+            <!-- <odomFrame>${odom_frame}</odomFrame> -->
+            <!-- <pubTf>$(arg pub_tf)</pubTf> -->
+            <robotName>$(arg robot_name)</robotName>
+        </plugin>
+    </gazebo>
+</robot>

@@ -2,7 +2,7 @@
 always_send_full_costmap: true
 
 footprint: [[0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4]]
-obstacle_range: 6.0
+obstacle_range: 8.0
 raytrace_range: 7.5
 
 static_layer:
@@ -13,12 +13,15 @@ static_layer:
   track_unknown_space: false
   use_maximum: true
   trinary_costmap: true
+  marking: false
+  clearing: true
+
 
   map_topic: /rtabmap/grid_map
 
 inflation_layer:
   inflation_radius: 1.5 # the bigger the better, defines where the gradient is
-  cost_scaling_factor: 10.5 # 0.5 the bigger the steeper the gradient is
+  cost_scaling_factor: 1.0 # 0.5 the bigger the steeper the gradient is
 
 depth_obstacle_layer:
   # https://github.com/SteveMacenski/spatio_temporal_voxel_layer/issues/129
@@ -29,7 +32,7 @@ depth_obstacle_layer:
     data_type: PointCloud2
     topic: /rs_camera/depth/color/points
     marking: true
-    clearing: true
+    clear: true
     expected_update_rate: 0
     min_obstacle_height: 0.3    # default 0, meters
     max_obstacle_height: 3.0     # default 3, meters
@@ -48,7 +51,7 @@ rs_st_obstacle_layer:
   mark_threshold:        0      #voxel height
   update_footprint_enabled: true
   combination_method:    1      #1=max, 0=override
-  obstacle_range:        6.0    #meters
+  obstacle_range:        8.0    #meters
   origin_z:              0.0    #meters
   publish_voxel_map:     true   # default off
   transform_tolerance:   0.2    # seconds
@@ -74,6 +77,7 @@ rs_st_obstacle_layer:
     topic: /rs_camera/depth/color/points
     marking: false
     clearing: true
+    filters: "voxel"
     min_z: 0.1                   #default 0, meters
     max_z: 7.0                   #default 10, meters
     vertical_fov_angle: 0.7      #default 0.7, radians
@@ -139,8 +143,8 @@ head_stereo_obstacle_layer:
     marking: true
     clearing: true
     expected_update_rate: 0
-    min_obstacle_height: 0.3    # default 0, meters
-    max_obstacle_height: 3.0     # default 3, meters
+    min_obstacle_height: 0.6 #0.3    # default 0, meters
+    max_obstacle_height: 2.5 #3.0     # default 3, meters
 
     observation_persistence: 0.0
 

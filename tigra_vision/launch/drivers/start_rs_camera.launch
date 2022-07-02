@@ -1,15 +1,27 @@
 <?xml version="1.0"?>
 <launch>
   <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
-    <arg name="camera"            value="rs_camera" />
-    <arg name="align_depth"       value="true"/>
-    <arg name="linear_accel_cov"  value="1.0"/>
-    <arg name="depth_fps"         value="30"/>
-    <arg name="color_fps"         value="30"/>
+    <arg name="camera" value="rs_camera" />
+    <arg name="align_depth" value="true" />
+    <arg name="linear_accel_cov" value="0.01" />
+    <arg name="unite_imu_method" value="copy" />
+    <arg name="depth_fps" value="30" />
+    <arg name="color_fps" value="30" />
+    <arg name="enable_gyro" value="true" />
+    <arg name="enable_accel" value="true" />
   </include>
 
-  <include file="$(find tigra_software)/launch/drivers/imu_filter.launch" >
-    <arg name="in_topic"          value="rs_camera/imu" />
-    <arg name="out_topic"         value="rs_camera/imu/filtered" />
+  <!-- <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="camera" value="rs_camera"/>
+    <arg name="enable_gyro" value="true" />
+    <arg name="enable_accel" value="true" />
+    <arg name="unite_imu_method" value="copy" />
+  </include> -->
+
+  <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+    <arg name="in_topic" value="rs_camera/imu" />
+    <arg name="out_topic" value="rs_camera/imu/filtered" />
   </include>
+
+
 </launch>
