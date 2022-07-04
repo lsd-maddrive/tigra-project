@@ -7,6 +7,7 @@
     <arg name="camera_info_topic" default="color/camera_info" />
     <arg name="imu_topic" default="/rs_camera_left/imu/filtered" />
     <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
+    <arg name="gps_topic" default="/gps/fix"/>
     <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
     <arg name="rgbd_camera_left_topic" default="/rs_camera_left/rgbd_image" />
     <arg name="rgbd_camera_right_topic" default="/rs_camera_right/rgbd_image" />
@@ -104,7 +105,7 @@
             <remap from="rgbd_image1" to="$(arg rgbd_camera_right_topic)" />
             <remap from="odom" to="$(arg odom_topic)" />
             <remap from="imu" to="$(arg imu_topic)"/>
-            <remap from="gps/fix" to="/gps/fix" />
+            <remap from="gps/fix" to="$(arg gps_topic)" />
 
             <!-- set odom covariance -->
             <param name="odom_frame_id" value="odom" />

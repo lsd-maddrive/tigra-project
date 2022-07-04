@@ -1,6 +1,6 @@
 #Configuation for robot odometry EKF
 #
-frequency: 30
+frequency: 20
 sensor_timeout: 0.1
 
 two_d_mode: true

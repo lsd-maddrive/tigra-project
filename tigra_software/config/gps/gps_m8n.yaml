@@ -1,8 +1,8 @@
 debug: 1
 tmode3: 0
 
-rate: 5                     # Measurement rate in Hz
-nav_rate: 5                 # in number of measurement cycles
+rate: 1                     # Measurement rate in Hz
+nav_rate: 1                 # in number of measurement cycles
 
 dgnss_mode: 3
 dr_limit: 1

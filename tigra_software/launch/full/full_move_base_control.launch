@@ -1,20 +1,21 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="map_name" default="dvorik.db"/>
-  <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
+  <arg name="map_name" default="new_map.db"/>
+  <arg name="localization" default="false" /> <!-- set false to start mapping with move_base-->
   <arg name="debug" default="false" />
-  <arg name='rviz' default="false"/>
-  <arg name='rtabmapviz' default='false'/>
+  <arg name='rviz' default="true"/>
+  <arg name='rtabmapviz' default='true'/>
 
   <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"/>
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
+  <include file="$(find tigra_software)/launch/drivers/gps_driver_m8n.launch"/>
   <!-- <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" /> -->
   
   <!-- Start cameras -->
-  <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/>
-  <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/>
-  <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/>
+  <!-- <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/> -->
+  <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/>
+  <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/> -->
 
   <!-- SLAM -->
   <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
@@ -25,7 +26,7 @@
 
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
     <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
-    <remap from="odometry/filtered" to="tigra/odometry/filtered" />
+    <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
   </node>
 
   <include file="$(find tigra_software)/launch/drivers/move_base.launch">

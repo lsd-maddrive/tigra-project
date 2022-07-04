@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
+    <include file="$(find tigra_software)/launch/full/full_start_joy_control.launch"/>
     <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"/>
-    <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
-    <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
-    <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
+    <include file="$(find tigra_software)/launch/drivers/gps_driver_m8n.launch"/>
+
     
     <!-- Start cameras -->
-    <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/>
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/> -->
     <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/> -->
     <!-- <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/> -->
 
@@ -15,11 +15,12 @@
     <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
         <arg name="localization" value="false" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
+        <arg name="rtabmapviz" value="true"/>
     </include>
 
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
-        <remap from="odometry/filtered" to="tigra/odometry/filtered" />
+        <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
     </node>
 
     <node pkg="tigra_software" type="steering_filter" name="steering_filter" output="screen">
@@ -30,7 +31,7 @@
         <remap from="cmd_vel" to="tigra/cmd_vel" />
     </node>
 
-    <node if="$(arg debug)" pkg="rqt_plot" type="rqt_plot" name="steering_plot" output="screen" args="/tigra/cmd_vel_raw/angular/z /tigra/cmd_vel/angular/z" />
+    <!-- <node if="$(arg debug)" pkg="rqt_plot" type="rqt_plot" name="steering_plot" output="screen" args="/tigra/cmd_vel_raw/angular/z /tigra/cmd_vel/angular/z" /> -->
 
     <include file="$(find tigra_software)/launch/view/rviz_start.launch">
         <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_move_base.rviz" />

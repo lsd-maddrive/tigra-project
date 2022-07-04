@@ -10,9 +10,10 @@
     <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
     <arg name="imu_topic" default="/rs_camera/imu/filtered" />
     <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
+    <arg name="gps_topic" default="/ublox/fix"/>
     <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
     <arg name="FeatureType" default="6" />
-    <arg name="database_path" default="$(find tigra_maps)/3d_maps/dvorik.db" />
+    <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db" />
     <arg name="rtabmapviz" default="true" /> <!--arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
     <arg if="$(arg localization)" name="args" default="" />
     <arg unless="$(arg localization)" name="args" default="--delete_db_on_start" />
@@ -53,7 +54,8 @@
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-            <!-- <remap from="imu" to="$(arg imu_topic)" /> -->
+            <remap from="imu" to="$(arg imu_topic)" />
+            <remap from="gps/fix" to="$(arg gps_topic)" />
             <!-- set odom covariance -->
             <param name="odom_frame_id" value="odom" />
             <param name="odom_tf_linear_variance" value="0.1" />
@@ -95,6 +97,7 @@
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            <remap from="gps/fix" to="$(arg gps_topic)" />
             <!-- <remap from="imu" to="$(arg imu_topic)" /> -->
         </node>
     </group>

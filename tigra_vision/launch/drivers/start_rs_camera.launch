@@ -9,14 +9,8 @@
     <arg name="color_fps" value="30" />
     <arg name="enable_gyro" value="true" />
     <arg name="enable_accel" value="true" />
+    <arg name="initial_reset" default="true" />
   </include>
-
-  <!-- <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-    <arg name="camera" value="rs_camera"/>
-    <arg name="enable_gyro" value="true" />
-    <arg name="enable_accel" value="true" />
-    <arg name="unite_imu_method" value="copy" />
-  </include> -->
 
   <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
     <arg name="in_topic" value="rs_camera/imu" />
