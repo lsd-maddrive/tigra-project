@@ -21,3 +21,6 @@ GlobalPlanner:                                # Also see: http://wiki.ros.org/gl
   publish_potential: false                      # Publish Potential Costmap (this is not like the navfn pointcloud2 potential), default true
   
   # orientation_mode: 2
+
+planner_frequency: 0.5
+planner_patience: 5.0

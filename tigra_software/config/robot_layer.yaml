@@ -1,5 +1,5 @@
 odometry:
-  cov_diag: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+  cov_diag: [0.01, 0.01, 0.01, 0.01, 0.01, 0.3]
   frame_id: wheel_odom
   base_frame_id: base_footprint
 

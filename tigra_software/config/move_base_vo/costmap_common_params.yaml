@@ -2,8 +2,8 @@
 always_send_full_costmap: true
 
 footprint: [[0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4]]
-obstacle_range: 8.0
-raytrace_range: 7.5
+obstacle_range: 10.0
+raytrace_range: 8.5
 
 static_layer:
   unknown_cost_value: -1
@@ -16,12 +16,11 @@ static_layer:
   marking: false
   clearing: true
 
-
   map_topic: /rtabmap/grid_map
 
 inflation_layer:
   inflation_radius: 1.5 # the bigger the better, defines where the gradient is
-  cost_scaling_factor: 1.0 # 0.5 the bigger the steeper the gradient is
+  cost_scaling_factor: 1.5 # 0.5 the bigger the steeper the gradient is
 
 depth_obstacle_layer:
   # https://github.com/SteveMacenski/spatio_temporal_voxel_layer/issues/129
@@ -34,16 +33,16 @@ depth_obstacle_layer:
     marking: true
     clear: true
     expected_update_rate: 0
-    min_obstacle_height: 0.3    # default 0, meters
+    min_obstacle_height: 0.6    # default 0, meters
     max_obstacle_height: 3.0     # default 3, meters
 
     observation_persistence: 0.0
 
 rs_st_obstacle_layer:
   enabled:               true
-  voxel_decay:           1     #seconds if linear, e^n if exponential
+  voxel_decay:           2     #seconds if linear, e^n if exponential
   decay_model:           0      #0=linear, 1=exponential, -1=persistent
-  voxel_size:            0.05   #meters
+  voxel_size:            0.1   #meters
   track_unknown_space:   true   #default space is unknown
   observation_persistence: 0.0  #seconds
   max_obstacle_height:   2.0    #meters
@@ -64,7 +63,7 @@ rs_st_obstacle_layer:
     marking: true
     clearing: false
     min_obstacle_height: 0.3     #default 0, meters
-    max_obstacle_height: 2.0     #defaule 3, meters
+    max_obstacle_height: 1.5     #defaule 3, meters
     expected_update_rate: 0.0    #default 0, if not updating at this rate at least, remove from buffer
     observation_persistence: 0.0 #default 0, use all measurements taken during now-value, 0=latest 
     inf_is_valid: false          #default false, for laser scans

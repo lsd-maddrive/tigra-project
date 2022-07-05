@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="debug" default="false" />
   <arg name='rviz' default="false"/>
-  <arg name='rtabmapviz' default='false'/>
-  <arg name="map_name" default="dvorik.db" />
+  <arg name='rtabmapviz' default='true'/>
+  <arg name="map_name" default="202207052136.db" />
 
   <include file="$(find tigra_software)/launch/full/full_move_base_control.launch">
     <arg name="localization" value="true" />
-    <arg name="database_path" value="$(find tigra_maps)/3d_maps/$(arg map_name)" />
+    <arg name="map_name" value="$(arg map_name)"/>
     <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
-  </include>
+  </include>  
 
 </launch>
