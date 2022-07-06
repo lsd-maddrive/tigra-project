@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
+    <arg name="serial_no" value="135122079630" />
+    <arg name="camera" value="rs_camera" />
+    <arg name="enable_gyro" value="false" />
+    <arg name="enable_accel" value="false" />
+    <arg name="initial_reset" value="true" />
+    <arg name="filters" value="" />
+    <arg name="enable_infra1" value="true" />
+    <arg name="enable_infra2" value="true" />
+    <arg name="enable_depth" value="false" />
+  </include>
+
+</launch>

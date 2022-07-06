@@ -100,7 +100,7 @@
     <arg name="stereo_module/gain/1"     default="16"/>
     <arg name="stereo_module/exposure/2" default="1"/>
     <arg name="stereo_module/gain/2"     default="16"/>
-  
+
     <arg name="filters"                  default="pointcloud"/>
     <arg name="clip_distance"            default="-1"/>
     <arg name="linear_accel_cov"         default="0.01"/>
@@ -109,8 +109,6 @@
     <arg name="wait_for_device_timeout"  default= "-1.0"/>
     <arg name="unite_imu_method"         default="none"/> <!-- Options are: [none, copy, linear_interpolation] -->
     
-  
-  
     <node unless="$(arg external_manager)" pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" output="$(arg output)" required="$(arg required)" respawn="$(arg respawn)"/>
     <node pkg="nodelet" type="nodelet" name="realsense2_camera" args="load realsense2_camera/RealSenseNodeFactory $(arg manager)" required="$(arg required)" respawn="$(arg respawn)">
       <param name="serial_no"                type="str"  value="$(arg serial_no)"/>

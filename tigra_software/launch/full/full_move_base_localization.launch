@@ -2,7 +2,7 @@
 <launch>
   <arg name='rviz' default="false"/>
   <arg name='rtabmapviz' default='true'/>
-  <arg name="map_name" default="202207052136.db" />
+  <arg name="map_name" default="202207061422.db" />
 
   <include file="$(find tigra_software)/launch/full/full_move_base_control.launch">
     <arg name="localization" value="true" />

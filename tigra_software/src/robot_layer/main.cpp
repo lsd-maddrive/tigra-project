@@ -37,7 +37,17 @@ public:
     {
         sub_ = nh.subscribe("state", 100, &OdometryConverter::callback, this);
 
-        pub_.reset(new realtime<arg name="nn" default="3" />           (0)  (0)  (0)  (0)  (0)  (static_cast<double>(cov_diag[5]));
+        pub_.reset(new realtime_tools::RealtimePublisher<nav_msgs::Odometry>(nh, "odom", 100));
+        pub_->msg_.header.frame_id = odom_frame_id;
+        pub_->msg_.child_frame_id = base_frame_id;
+        pub_->msg_.pose.pose.position.z = 0;
+        pub_->msg_.pose.covariance = boost::assign::list_of
+                                          (static_cast<double>(cov_diag[0])) (0)  (0)  (0)  (0)  (0)
+                                          (0)  (static_cast<double>(cov_diag[1])) (0)  (0)  (0)  (0)
+                                          (0)  (0)  (static_cast<double>(cov_diag[2])) (0)  (0)  (0)
+                                          (0)  (0)  (0)  (static_cast<double>(cov_diag[3])) (0)  (0)
+                                          (0)  (0)  (0)  (0)  (static_cast<double>(cov_diag[4])) (0)
+                                          (0)  (0)  (0)  (0)  (0)  (static_cast<double>(cov_diag[5]));
         pub_->msg_.twist.twist.linear.x = 0;
         pub_->msg_.twist.twist.linear.y = 0;
         pub_->msg_.twist.twist.linear.z = 0;

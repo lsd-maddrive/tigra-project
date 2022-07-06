@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export CMAKE_PREFIX_PATH=/usr/local/lib/cmake/:$CMAKE_PREFIX_PATH
-export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
 catkin build \
     tigra_msgs \
@@ -20,7 +20,6 @@ catkin build \
     camera_calibration \
     maddrive_urdf_tools \
     --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON
-
     
     # serial \
     # ti_mmwave_rospkg \
