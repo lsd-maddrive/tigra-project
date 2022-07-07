@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import actionlib
@@ -137,13 +137,14 @@ class GoalsSender:
 
 
 GOALS_LIST = [
+    GoalDescription(x=55, y=0, angle=0, pose_tol=2, angle_tol=None),
     # GoalDescription(x=0, y=0, angle=-25, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=60, y=-5, angle=-25, pose_tol=2, angle_tol=None),
-    GoalDescription(x=90, y=-25, angle=-35, pose_tol=2, angle_tol=None),
-    GoalDescription(x=105, y=-48, angle=-45, pose_tol=2, angle_tol=None),
-    GoalDescription(x=90, y=-25, angle=145, pose_tol=2, angle_tol=None),
-    GoalDescription(x=60, y=-5, angle=155, pose_tol=2, angle_tol=None),
-    GoalDescription(x=0, y=5, angle=-180, pose_tol=1, angle_tol=10),
+    # GoalDescription(x=60, y=-5, angle=-25, pose_tol=2, angle_tol=None),
+    # GoalDescription(x=90, y=-25, angle=-35, pose_tol=2, angle_tol=None),
+    # GoalDescription(x=105, y=-48, angle=-45, pose_tol=2, angle_tol=None),
+    # GoalDescription(x=90, y=-25, angle=145, pose_tol=2, angle_tol=None),
+    # GoalDescription(x=60, y=-5, angle=155, pose_tol=2, angle_tol=None),
+    # GoalDescription(x=0, y=5, angle=-180, pose_tol=1, angle_tol=10),
 ]
 
 if __name__ == '__main__':
@@ -160,4 +161,5 @@ if __name__ == '__main__':
         sender.reset()
         print(f'Interrupted: {e}')
 
+    print('Done!')
 

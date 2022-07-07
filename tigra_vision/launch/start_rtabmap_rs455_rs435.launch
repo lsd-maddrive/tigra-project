@@ -1,14 +1,19 @@
 <launch>
-    <!-- SLAM -->
-    <arg name="rtab" default="true" />
 
+    <arg name="rtab" default="true" />
     <arg name="localization" default="true" />
-    <arg name="rgb_topic" default="/rs_camera_rear/color/image_raw" />
-    <arg name="depth_topic" default="/rs_camera_rear/aligned_depth_to_color/image_raw" />
-    <arg name="camera_info_topic" default="/rs_camera_rear/color/camera_info" />
-    <arg name="imu_topic" default="/rs_camera_rear/imu/filtered" />
+    <!-- slam inputs -->
+    <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
+    <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
+    <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
+    <arg name="imu_topic" default="/rs_camera/imu/filtered" />
     <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
-    <arg name="gps_topic" default="/gps/fix"/>
+    <arg name="gps_topic" default="/gps/fix" />
+    <!-- VO inputs -->
+    <arg name="rgb_topic_vo" default="/rs_camera_rear/color/image_raw" />
+    <arg name="depth_topic_vo" default="/rs_camera_rear/aligned_depth_to_color/image_raw" />
+    <arg name="camera_info_topic_vo" default="/rs_camera_rear/color/camera_info" />
+
     <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
     <arg name="FeatureType" default="6" />
     <arg name="nn" default="3" />
@@ -33,9 +38,9 @@
 
             <remap from="odom" to="/tigra/vo" />
             <remap from="imu" to="$(arg imu_topic)" />
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            <remap from="rgb/image" to="$(arg rgb_topic_vo)" />
+            <remap from="depth/image" to="$(arg depth_topic_vo)" />
+            <remap from="rgb/camera_info" to="$(arg camera_info_topic_vo)" />
 
             <param name="Odom/FillInfoData" type="string" value="true" />
             <param name="Odom/ResetCountdown" type="string" value="1" />

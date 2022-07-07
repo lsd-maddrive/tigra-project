@@ -1,15 +1,88 @@
 <?xml version="1.0"?>
 <launch>
-  <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
-    <arg name="serial_no" value="135122079630" />
-    <arg name="camera" value="rs_camera" />
-    <arg name="enable_gyro" value="false" />
-    <arg name="enable_accel" value="false" />
-    <arg name="initial_reset" value="true" />
-    <arg name="filters" value="" />
-    <arg name="enable_infra1" value="true" />
-    <arg name="enable_infra2" value="true" />
-    <arg name="enable_depth" value="false" />
+  <arg name="rgb_topic" default="color/image_raw" />
+  <arg name="depth_topic" default="aligned_depth_to_color/image_raw" />
+  <arg name="camera_info_topic" default="color/camera_info" />
+  <!-- RS455 serial number -->
+  <!-- <arg name="serial_no_camera1" default="135122251612" />  -->
+  <arg name="serial_no_camera1" default="134222076919" /> <!-- RS435i front serial number -->
+  <arg name="serial_no_camera2" default="135122079630" /> <!-- RS435i right serial number -->
+  <arg name="camera1" default="rs_camera" /> <!-- Note: Replace with camera name -->
+  <arg name="camera2" default="rs_camera_rear" /> <!-- Note: Replace with camera name -->
+  <arg name="tf_prefix_camera1" default="$(arg camera1)" />
+  <arg name="tf_prefix_camera2" default="$(arg camera2)" />
+  <arg name="initial_reset" default="true" />
+  <arg name="reconnect_timeout" default="6.0" />
+
+  <!-- camera args -->
+  <arg name="align_depth" default="true" />
+  <arg name="linear_accel_cov" default="0.01" />
+  <arg name="unite_imu_method" default="copy" />
+  <arg name="depth_fps" default="30" />
+  <arg name="color_fps" default="30" />
+  <arg name="enable_gyro" default="true" />
+  <arg name="enable_accel" default="true" />
+
+  <group ns="$(arg camera1)">
+    <include file="$(find tigra_vision)/launch/drivers/driver_multiple_realsense.launch">
+      <arg name="serial_no" value="$(arg serial_no_camera1)" />
+      <arg name="tf_prefix" value="$(arg tf_prefix_camera1)" />
+      <arg name="initial_reset" value="$(arg initial_reset)" />
+      <arg name="reconnect_timeout" value="$(arg reconnect_timeout)" />
+
+      <arg name="align_depth" value="$(arg align_depth)" />
+      <arg name="linear_accel_cov" value="$(arg linear_accel_cov)" />
+      <arg name="unite_imu_method" value="$(arg unite_imu_method)" />
+      <arg name="depth_fps" value="$(arg depth_fps)" />
+      <arg name="color_fps" value="$(arg color_fps)" />
+      <arg name="enable_gyro" value="$(arg enable_gyro)" />
+      <arg name="enable_accel" value="$(arg enable_accel)" />
+      <arg name="enable_infra1" value="false" />
+      <arg name="enable_infra2" value="false" />
+      <arg name="enable_sync"   value="true"/>
+    </include>
+
+    <!-- <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+      <arg name="align_depth"   value="$(arg align_depth)"/>
+      <arg name="unite_imu_method" value="$(arg unite_imu_method)"/> 
+      <arg name="enable_gyro"   value="true"/>
+      <arg name="enable_accel"  value="true"/>
+      <arg name="enable_infra1" value="true"/>
+      <arg name="enable_infra2" value="true"/>
+      <arg name="gyro_fps"      value="200"/>
+      <arg name="accel_fps"     value="250"/>
+      <arg name="enable_sync"   value="true"/>
+   </include> -->
+
+  </group>
+
+  <group ns="$(arg camera2)">
+    <include file="$(find tigra_vision)/launch/drivers/driver_multiple_realsense.launch">
+      <arg name="serial_no" value="$(arg serial_no_camera2)" />
+      <arg name="tf_prefix" value="$(arg tf_prefix_camera2)" />
+      <arg name="initial_reset" value="$(arg initial_reset)" />
+      <arg name="reconnect_timeout" value="$(arg reconnect_timeout)" />
+
+      <arg name="align_depth" value="$(arg align_depth)" />
+      <arg name="linear_accel_cov" value="$(arg linear_accel_cov)" />
+      <arg name="unite_imu_method" value="$(arg unite_imu_method)" />
+      <arg name="depth_fps" value="$(arg depth_fps)" />
+      <arg name="color_fps" value="$(arg color_fps)" />
+      <arg name="enable_gyro" value="false" />
+      <arg name="enable_accel" value="false" />
+      <arg name="enable_infra1" value="false" />
+      <arg name="enable_infra2" value="false" />
+    </include>
+  </group>
+
+  <!-- Disable emitter -->
+  <rosparam param="/$(arg camera1)/stereo_module/emitter_enabled">2</rosparam>
+  <rosparam param="/$(arg camera2)/stereo_module/emitter_enabled">2</rosparam>
+
+  <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+    <arg name="in_topic" value="$(arg camera1)/imu" />
+    <arg name="out_topic" value="$(arg camera1)/imu/filtered" />
+    <arg name="camera" value="$(arg camera1)" />
   </include>
 
 </launch>

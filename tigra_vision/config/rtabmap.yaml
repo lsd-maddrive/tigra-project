@@ -1,0 +1,17 @@
+Optimizer/GravitySigma: 0.3
+Reg/Force3DoF: True
+Optimizer/Slam2D: True
+# Odom/FilteringStrategy: 2   # ParticleFilter
+Kp/DetectorStrategy: 6
+
+Grid/3D: false
+Grid/CellSize: 0.15
+Grid/RangeMax: 7
+Grid/RangeMin: 1
+
+Grid/MaxObstacleHeight: 2
+# TODO decrease it
+Grid/MaxGroundHeight: 0.3
+
+Rtabmap/DetectionRate: 4
+RGBD/ProximityBySpace: True

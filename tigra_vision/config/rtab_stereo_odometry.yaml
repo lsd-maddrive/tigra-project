@@ -1,0 +1,9 @@
+Vis/FeatureType: 6
+Vis/MaxDepth: 8
+Vis/InlierDistance: 0.05
+Vis/CorNNType: 3
+Odom/ResetCountdown: 1
+
+Reg/Force3DoF: True
+
+OdomF2M/MaxSize: 1000

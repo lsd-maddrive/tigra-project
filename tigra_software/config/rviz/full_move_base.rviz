@@ -27,7 +27,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: RS points
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -59,45 +59,71 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_footprint:
-          Value: true
+          Value: false
         base_front_axis_link:
-          Value: true
+          Value: false
         base_link:
           Value: true
         base_rear_axis_link:
-          Value: true
+          Value: false
         gps:
-          Value: true
+          Value: false
         head_stereo_link:
-          Value: true
+          Value: false
         map:
           Value: true
         odom:
           Value: true
         rs_camera_accel_frame:
-          Value: true
+          Value: false
         rs_camera_accel_optical_frame:
-          Value: true
+          Value: false
         rs_camera_aligned_depth_to_color_frame:
-          Value: true
+          Value: false
         rs_camera_color_frame:
-          Value: true
+          Value: false
         rs_camera_color_optical_frame:
-          Value: true
+          Value: false
         rs_camera_depth_frame:
-          Value: true
+          Value: false
         rs_camera_depth_optical_frame:
-          Value: true
+          Value: false
         rs_camera_gyro_frame:
-          Value: true
+          Value: false
         rs_camera_imu_optical_frame:
-          Value: true
+          Value: false
+        rs_camera_infra1_frame:
+          Value: false
+        rs_camera_infra1_optical_frame:
+          Value: false
+        rs_camera_infra2_frame:
+          Value: false
+        rs_camera_infra2_optical_frame:
+          Value: false
         rs_camera_link:
           Value: true
+        rs_camera_rear_aligned_depth_to_color_frame:
+          Value: false
+        rs_camera_rear_color_frame:
+          Value: false
+        rs_camera_rear_color_optical_frame:
+          Value: false
+        rs_camera_rear_depth_frame:
+          Value: false
+        rs_camera_rear_depth_optical_frame:
+          Value: false
+        rs_camera_rear_infra1_frame:
+          Value: false
+        rs_camera_rear_infra1_optical_frame:
+          Value: false
+        rs_camera_rear_infra2_frame:
+          Value: false
+        rs_camera_rear_infra2_optical_frame:
+          Value: false
         rs_camera_rear_link:
           Value: true
         ti_mmwave_pcl:
-          Value: true
+          Value: false
       Marker Alpha: 1
       Marker Scale: 5
       Name: TF
@@ -129,8 +155,27 @@ Visualization Manager:
                     rs_camera_gyro_frame:
                       rs_camera_imu_optical_frame:
                         {}
+                    rs_camera_infra1_frame:
+                      rs_camera_infra1_optical_frame:
+                        {}
+                    rs_camera_infra2_frame:
+                      rs_camera_infra2_optical_frame:
+                        {}
                   rs_camera_rear_link:
-                    {}
+                    rs_camera_rear_aligned_depth_to_color_frame:
+                      rs_camera_rear_color_optical_frame:
+                        {}
+                    rs_camera_rear_color_frame:
+                      {}
+                    rs_camera_rear_depth_frame:
+                      rs_camera_rear_depth_optical_frame:
+                        {}
+                    rs_camera_rear_infra1_frame:
+                      rs_camera_rear_infra1_optical_frame:
+                        {}
+                    rs_camera_rear_infra2_frame:
+                      rs_camera_rear_infra2_optical_frame:
+                        {}
                   ti_mmwave_pcl:
                     {}
                 gps:
@@ -471,7 +516,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 28.07260513305664
+      Distance: 30.1726016998291
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -479,17 +524,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.06157153844833374
-        Y: 0.2567707300186157
-        Z: 15.176265716552734
+        X: -0.12212735414505005
+        Y: -0.3312905728816986
+        Z: 2.03352689743042
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.4447965621948242
+      Pitch: 0.6497973799705505
       Target Frame: <Fixed Frame>
-      Yaw: 3.223264455795288
+      Yaw: 2.7882564067840576
     Saved: ~
 Window Geometry:
   Displays:

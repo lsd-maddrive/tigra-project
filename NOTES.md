@@ -8,3 +8,6 @@ https://github.com/introlab/rtabmap_ros/blob/master/launch/tests/test_d435i_vio.
 
 https://github.com/introlab/rtabmap_ros/issues/565
 
+Запустить 2 файла: 
+roslaunch tigra_software full_move_base_control.launch 
+rosrun tigra_software control_link.py
