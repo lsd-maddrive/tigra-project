@@ -4,9 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /TF1
         - /TF1/Frames1
-        - /TF1/Frames1/rs_camera_link1
       Splitter Ratio: 0.5
     Tree Height: 455
   - Class: rviz/Selection
@@ -532,7 +530,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 165.1311492919922
+      Distance: 136.38343811035156
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -540,15 +538,15 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 40.78334045410156
-        Y: -17.03145980834961
-        Z: 9.156190872192383
+        X: 48.39741134643555
+        Y: -25.094850540161133
+        Z: 9.202275276184082
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.5647963285446167
       Target Frame: <Fixed Frame>
       Yaw: 3.1332626342773438
     Saved: ~
