@@ -16,7 +16,7 @@ static_layer:
   marking: false
   clearing: true
 
-  map_topic: /rtabmap/grid_map
+  map_topic: /map
 
 inflation_layer:
   inflation_radius: 2.0 # the bigger the better, defines where the gradient is

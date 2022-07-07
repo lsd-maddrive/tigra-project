@@ -18,6 +18,9 @@
   <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/>
   <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/> -->
 
+  <!-- NOTE - Used for RTABmap-MoveBase connection -->
+  <remap from="/rtabmap/grid_map" to="/map"/>
+
   <!-- SLAM -->
   <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
     <arg name="localization" value="$(arg localization)" />

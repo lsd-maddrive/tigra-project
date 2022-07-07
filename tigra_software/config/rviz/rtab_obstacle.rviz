@@ -4,7 +4,9 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /TF1
         - /TF1/Frames1
+        - /TF1/Frames1/rs_camera_link1
       Splitter Ratio: 0.5
     Tree Height: 455
   - Class: rviz/Selection
@@ -57,55 +59,55 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_footprint:
-          Value: true
+          Value: false
         base_front_axis_link:
-          Value: true
+          Value: false
         base_link:
           Value: true
         base_rear_axis_link:
-          Value: true
+          Value: false
         gps:
           Value: true
         head_stereo_link:
-          Value: true
+          Value: false
         map:
           Value: true
         odom:
           Value: true
         rs_camera_accel_frame:
-          Value: true
+          Value: false
         rs_camera_accel_optical_frame:
-          Value: true
+          Value: false
         rs_camera_aligned_depth_to_color_frame:
-          Value: true
+          Value: false
         rs_camera_color_frame:
-          Value: true
+          Value: false
         rs_camera_color_optical_frame:
-          Value: true
+          Value: false
         rs_camera_depth_frame:
-          Value: true
+          Value: false
         rs_camera_depth_optical_frame:
-          Value: true
+          Value: false
         rs_camera_gyro_frame:
-          Value: true
+          Value: false
         rs_camera_imu_optical_frame:
-          Value: true
+          Value: false
         rs_camera_link:
           Value: true
         rs_camera_rear_aligned_depth_to_color_frame:
-          Value: true
+          Value: false
         rs_camera_rear_color_frame:
-          Value: true
+          Value: false
         rs_camera_rear_color_optical_frame:
-          Value: true
+          Value: false
         rs_camera_rear_depth_frame:
-          Value: true
+          Value: false
         rs_camera_rear_depth_optical_frame:
-          Value: true
+          Value: false
         rs_camera_rear_link:
           Value: true
         ti_mmwave_pcl:
-          Value: true
+          Value: false
       Marker Alpha: 1
       Marker Scale: 5
       Name: TF
@@ -163,13 +165,13 @@ Visualization Manager:
       Unreliable: false
       Value: false
       Visibility:
-        "": true
         ELP Camera: true
         ELP points: true
         Global costmap: true
         Global path: true
         Grid: true
         Head stereo points: true
+        Image: true
         Local costmap: true
         Local path: true
         LocalVoxel: true
@@ -196,12 +198,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Global costmap
       Topic: /move_base/global_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Alpha: 1
       Axes Length: 1
       Axes Radius: 0.10000000149011612
@@ -406,13 +408,13 @@ Visualization Manager:
       Unreliable: false
       Value: false
       Visibility:
-        "": true
         ELP points: true
         Global costmap: true
         Global path: true
         Grid: true
         Head stereo camera: true
         Head stereo points: true
+        Image: true
         Local costmap: true
         Local path: true
         LocalVoxel: true
@@ -530,7 +532,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 119.5942153930664
+      Distance: 165.1311492919922
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -538,17 +540,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 5.008740425109863
-        Y: -1.8972272872924805
-        Z: 3.82658052444458
+        X: 40.78334045410156
+        Y: -17.03145980834961
+        Z: 9.156190872192383
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0147968530654907
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 3.108261823654175
+      Yaw: 3.1332626342773438
     Saved: ~
 Window Geometry:
   Displays:

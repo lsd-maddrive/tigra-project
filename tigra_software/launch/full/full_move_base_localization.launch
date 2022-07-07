@@ -4,6 +4,8 @@
   <arg name='rtabmapviz' default='true'/>
   <arg name="map_name" default="202207071339.db" />
 
+  <!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find tigra_maps)/2d_maps/202207071339.yaml" /> -->
+
   <include file="$(find tigra_software)/launch/full/full_move_base_control.launch">
     <arg name="localization" value="true" />
     <arg name="map_name" value="$(arg map_name)"/>
