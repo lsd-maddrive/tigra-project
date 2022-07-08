@@ -1,5 +1,5 @@
 TebLocalPlannerROS:
-    odom_topic: /tigra/odometry/filtered
+    odom_topic: /tigra/odometry/filtered/local
     map_frame: map
 
     # Trajectory
@@ -18,11 +18,11 @@ TebLocalPlannerROS:
     publish_feedback: False
 
     # Robot
-         
+            
     wheelbase: 1.25
     cmd_angle_instead_rotvel: True
 
-    max_vel_x: 0.7 # 1.0 
+    max_vel_x: 0.8 # 1.0 
     max_vel_x_backwards: 0.6
 
     max_vel_theta: 0.43 # 0.43 default 25 degres turning radius
@@ -43,8 +43,15 @@ TebLocalPlannerROS:
 
     # GoalTolerance
 
-    xy_goal_tolerance: 2
+    xy_goal_tolerance: 3
     yaw_goal_tolerance: 1.05 # ~ 60 deg
+
+    # For parking
+    # TODO - make other file for parking task
+
+    # xy_goal_tolerance: 0.1
+    # yaw_goal_tolerance: 0.05 # ~ 60 deg
+
     free_goal_vel: False
     # TODO - try to make if False
     # NOTE - it ...
@@ -78,7 +85,7 @@ TebLocalPlannerROS:
     weight_acc_lim_x: 1
     weight_acc_lim_theta: 1
     weight_kinematics_nh: 1000
-    weight_kinematics_forward_drive: 1000
+    weight_kinematics_forward_drive: 1
     weight_kinematics_turning_radius: 10 #1
     weight_optimaltime: 3
     weight_obstacle: 100

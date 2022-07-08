@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <launch>
   <arg name='rviz' default="false"/>
-  <arg name='rtabmapviz' default='true'/>
-  <arg name="map_name" default="202207071339.db" />
+  <arg name='rtabmapviz' default='false'/>
+  <arg name="map_prefix" default="202207080814" />
+  <!-- <arg name="map_prefix" default="202207071339" /> -->
+  <arg name="map_name" default="$(arg map_prefix).db" />
+  
+  <rosparam param="route_filepath" ns="robot" subst_value="True">$(find tigra_software)/config/routes/route_$(arg map_prefix).yaml</rosparam>
 
   <!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find tigra_maps)/2d_maps/202207071339.yaml" /> -->
 
@@ -10,6 +14,5 @@
     <arg name="localization" value="true" />
     <arg name="map_name" value="$(arg map_name)"/>
     <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
-  </include>  
-
+  </include>
 </launch>

@@ -1,3 +1,4 @@
+dist_tol: 4
 points:
   - n: 1
     position:

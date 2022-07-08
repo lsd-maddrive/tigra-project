@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import yaml
 import rospy
 import actionlib
 from geometry_msgs.msg import Twist
@@ -136,24 +137,36 @@ class GoalsSender:
             self.current_goal = None
 
 
-GOALS_LIST = [
-    # GoalDescription(x=55, y=0, angle=0, pose_tol=2, angle_tol=None),
-
-    GoalDescription(x=47.968, y=-2.47, angle=-12.7, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=79.3, y=-18.49, angle=-30.5476, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=104.65, y=-44.93, angle=-63.43, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=108.32, y=-44.986, angle=28.2, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=93.078, y=-16.88, angle=131.84, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=76.245, y=-0.38, angle=144.09, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=50.4, y=6.861, angle=177.2, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=-2.8, y=2.74, angle=-178.6, pose_tol=2, angle_tol=None),     # Debug target
-]
-
 if __name__ == '__main__':
     rospy.init_node('control_link')
     print('Ready, go')
 
-    sender = GoalsSender(goals=GOALS_LIST)
+    # Obtain goals from route file
+    config_fpath = rospy.get_param("robot/route_filepath")
+    with open(config_fpath) as f:
+        route_data = yaml.safe_load(f)
+        route_points = route_data["points"]
+
+    dist_tol = route_data["dist_tol"]
+    goals = []
+    for p in route_points:
+        pos = p["position"]
+        quat = p["orientation"]
+        quat = tuple(quat.values())
+
+        euler = euler_from_quaternion(quat)
+        goal_desc = GoalDescription(
+            x=pos["x"],
+            y=pos["y"],
+            angle=np.rad2deg(euler[2]),
+            pose_tol=dist_tol,
+            angle_tol=None
+        )
+
+        goals.append(goal_desc)
+        print(f"Added goal to list: {goal_desc}")
+
+    sender = GoalsSender(goals=goals)
     try:
         while not rospy.is_shutdown():
             sender.step()

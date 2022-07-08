@@ -5,15 +5,15 @@ footprint: [[0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4]]
 obstacle_range: 6.0
 raytrace_range: 7.5
 
-#static_layer:
-#  unknown_cost_value: -1
-#  lethal_cost_threshold: 100
-#  first_map_only: false
-#  subscribe_to_updates: false
-#  track_unknown_space: false
-#  use_maximum: true
-#  trinary_costmap: true
-#  map_topic: /rtabmap/grid_map
+static_layer:
+ unknown_cost_value: -1
+ lethal_cost_threshold: 100
+ first_map_only: false
+ subscribe_to_updates: false
+ track_unknown_space: false
+ use_maximum: true
+ trinary_costmap: true
+ map_topic: /rtabmap/grid_map
 
 inflation_layer:
   inflation_radius: 1.5 # the bigger the better, defines where the gradient is

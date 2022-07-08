@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="bag_record" pkg="rosbag" type="record" 
+    args="record -o $(find tigra_software)/bags/robocross
+      /rs_camera/depth/color/points
+      /rs_camera_rear/depth/color/points
+    " />
+
+</launch>
+<!-- 
+/rosout 
+/tf
+/tf_static
+/tigra/cmd_vel
+/tigra/wheel_odom
+/tigra/vo
+/tigra/odometry/filtered
+/tigra/odometry/filtered/local
+/move_base/TebLocalPlannerROS/local_plan
+/move_base/GlobalPlanner/plan
+/gps/fix
+/gps/fix_velocity
+/rs_camera/depth/color/points
+/rs_camera_rear/depth/color/points -->

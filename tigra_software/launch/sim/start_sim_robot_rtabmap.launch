@@ -4,12 +4,13 @@
     <arg name="map_name" default="map.db"/>
     <arg name="localization" default="false"/> <!-- set false to start mapping with move_base-->
     <arg name="debug" default="false"/>
-    <arg name='rviz' default="false"/>
+    <arg name='rviz' default="true"/>
     <arg name='rtabmapviz' default='true'/>
 
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>
-        <arg name="gui" value="false"/>
+        <!-- <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/> -->
+        <arg name="world" value=""/>
+        <arg name="gui" value="true"/>
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
         <arg name="publish_tf" value="false"/>
