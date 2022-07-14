@@ -13,7 +13,7 @@ local_costmap:
 
 
   plugins:
-    - {name: static_layer, type: "costmap_2d::StaticLayer"}      
+    # - {name: static_layer, type: "costmap_2d::StaticLayer"}      
     # - {name: laser_obstacle_layer, type: "costmap_2d::ObstacleLayer"}
     # - {name: depth_obstacle_layer, type: "costmap_2d::VoxelLayer"}
     # - {name: head_stereo_obstacle_layer, type: "costmap_2d::VoxelLayer"}

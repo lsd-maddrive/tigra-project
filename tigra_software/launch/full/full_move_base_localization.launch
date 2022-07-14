@@ -3,7 +3,6 @@
   <arg name='rviz' default="false"/>
   <arg name='rtabmapviz' default='false'/>
   <arg name="map_prefix" default="202207080814" />
-  <!-- <arg name="map_prefix" default="202207071339" /> -->
   <arg name="map_name" default="$(arg map_prefix).db" />
   
   <rosparam param="route_filepath" ns="robot" subst_value="True">$(find tigra_software)/config/routes/route_$(arg map_prefix).yaml</rosparam>

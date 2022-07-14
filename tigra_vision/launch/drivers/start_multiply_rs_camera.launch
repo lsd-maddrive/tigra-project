@@ -5,8 +5,8 @@
     <arg name="rgb_topic" default="color/image_raw" />
     <arg name="depth_topic" default="aligned_depth_to_color/image_raw" />
     <arg name="camera_info_topic" default="color/camera_info" />
-    <!-- RS455 serial number -->
-    <arg name="serial_no_camera2" default="135122251612" /> 
+    <arg name='sync_rgbd' default='true'/>
+    <arg name="serial_no_camera2" default="135122251612" /> <!-- RS455 serial number -->
     <arg name="serial_no_camera1" default="134222076919" /> <!-- RS435i serial number -->
     <!-- <arg name="serial_no_camera2" default="135122079630" /> RS435i actual serial number -->
     <arg name="camera1" default="rs_camera" /> <!-- Note: Replace with camera name -->
@@ -26,7 +26,7 @@
     <arg name="enable_accel" default="true" />
 
     <group ns="$(arg camera1)">
-        <include file="$(find tigra_vision)/launch/drivers/driver_multiple_realsense.launch">
+        <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
             <arg name="serial_no" value="$(arg serial_no_camera1)" />
             <arg name="tf_prefix" value="$(arg tf_prefix_camera1)" />
             <arg name="initial_reset" value="$(arg initial_reset)" />
@@ -43,7 +43,7 @@
     </group>
 
     <group ns="$(arg camera2)">
-        <include file="$(find tigra_vision)/launch/drivers/driver_multiple_realsense.launch">
+        <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
             <arg name="serial_no" value="$(arg serial_no_camera2)" />
             <arg name="tf_prefix" value="$(arg tf_prefix_camera2)" />
             <arg name="initial_reset" value="$(arg initial_reset)" />
@@ -70,20 +70,21 @@
         <arg name="camera" value="$(arg camera2)" />
     </include> -->
 
-
-    <group ns="rs_camera">
-        <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync realsense2_camera_manager" output="screen">
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-        </node>
-    </group>
-    <group ns="rs_camera_rear">
-        <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync realsense2_camera_manager" output="screen">
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-        </node>
-    </group>
     <!-- sync rgb/depth images per camera -->
+    <group if='$(arg sync_rgbd)'>
+        <group ns="rs_camera">
+            <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync realsense2_camera_manager" output="screen">
+                <remap from="rgb/image" to="$(arg rgb_topic)" />
+                <remap from="depth/image" to="$(arg depth_topic)" />
+                <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            </node>
+        </group>
+        <group ns="rs_camera_rear">
+            <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_ros/rgbd_sync realsense2_camera_manager" output="screen">
+                <remap from="rgb/image" to="$(arg rgb_topic)" />
+                <remap from="depth/image" to="$(arg depth_topic)" />
+                <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            </node>
+        </group>
+    </group>
 </launch>

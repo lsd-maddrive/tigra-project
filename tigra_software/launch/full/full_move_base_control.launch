@@ -7,16 +7,13 @@
   <arg name='rtabmapviz' default='false'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
 
-  <!-- <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"//> -->
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
-  <!-- <include file="$(find tigra_software)/launch/drivers/gps_driver_m8n.launch"/> -->
   <!-- <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" /> -->
   
-  <!-- Start cameras -->
-  <!-- <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/> -->
-  <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/>
-  <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/> -->
+  <!-- Start hardware -->
+  <include file="$(find tigra_software)/launch/drivers/start_hardware.launch"/>
+
 
   <!-- SLAM -->
   <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
