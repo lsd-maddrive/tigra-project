@@ -2,7 +2,8 @@
 
 - [Габариты робота (все в см)](#габариты-робота-все-в-см)
 - [***Примерный*** расчет масс](#примерный-расчет-масс)
-- [Схемы проекта](#схемы-проекта)
+- [Схемы системы (для чтения установите drawio расширение в VSCode или используйте [diagrams.net](https://app.diagrams.net/))](#схемы-системы-для-чтения-установите-drawio-расширение-в-vscode-или-используйте-diagramsnet)
+  - [Аппаратура](#аппаратура)
 - [Доки по Робокросс 2021](#доки-по-робокросс-2021)
 
 <p align=center>
@@ -40,7 +41,17 @@
     - Пускай колеса весят порядка 20 кг в модели
 - Вес тушки получается порядка 420 кг
 
-## [Схемы проекта](Schemes.drawio)
+## [Схемы системы](docs/schemes) (для чтения установите drawio расширение в VSCode или используйте [diagrams.net](https://app.diagrams.net/))
+
+### Аппаратура
+
+- Камеры
+    - [Xiaomi IMILAB](https://market.yandex.ru/product--veb-kamera-xiaomi-imilab-chernyi/668572011?cpa=1&sku=100956420730)
+    - [Microsoft Lifecam HD-3000](https://www.microsoft.com/ru-ru/accessories/products/webcams/lifecam-hd-3000)
+    - [GPS Ublox M8N](https://www.u-blox.com/en/product/neo-m8-series)
+        - https://microem.ru/produkti/besprovodnie-tehnologii/glonass-gps-moduli/glonass-gps-modul-neo-m8/
+    - [Cтереокамеры ELP](http://www.elpcctv.com/elp-720p-cmos-ov9712-sensor-mjpeg-yuy2-dual-lens-stereo-usb-camera-module-with-uvc-for-robot-vision-p-135.html)
+
 
 ## Доки по Робокросс 2021
 
