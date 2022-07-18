@@ -43,7 +43,7 @@ TebLocalPlannerROS:
 
     # GoalTolerance
 
-    xy_goal_tolerance: 3
+    xy_goal_tolerance: 0.5
     yaw_goal_tolerance: 1.05 # ~ 60 deg
 
     # For parking

@@ -9,7 +9,7 @@
     <include file="$(find tigra_description)/launch/tigra.launch">
         <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>
         <!-- <arg name="world" value="" /> -->
-        <arg name="gui" value="true" />
+        <arg name="gui" value="false" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
         <arg name="publish_tf" value="false" />
