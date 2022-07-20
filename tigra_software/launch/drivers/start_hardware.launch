@@ -1,0 +1,14 @@
+<launch>
+    <include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch" />
+
+    <!-- RTK -->
+    <include file="$(find tigra_software)/launch/drivers/ublox_device_m8p.launch" />
+
+    <!-- Cameras -->
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch" /> -->
+    <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch" />
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch" /> -->
+    <!-- <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch" /> -->
+
+
+</launch>

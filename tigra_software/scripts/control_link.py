@@ -1,5 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+import yaml
 import rospy
 import actionlib
 from geometry_msgs.msg import Twist
@@ -136,21 +137,36 @@ class GoalsSender:
             self.current_goal = None
 
 
-GOALS_LIST = [
-    # GoalDescription(x=0, y=0, angle=-25, pose_tol=2, angle_tol=None),     # Debug target
-    GoalDescription(x=60, y=-5, angle=-25, pose_tol=2, angle_tol=None),
-    GoalDescription(x=90, y=-25, angle=-35, pose_tol=2, angle_tol=None),
-    GoalDescription(x=105, y=-48, angle=-45, pose_tol=2, angle_tol=None),
-    GoalDescription(x=90, y=-25, angle=145, pose_tol=2, angle_tol=None),
-    GoalDescription(x=60, y=-5, angle=155, pose_tol=2, angle_tol=None),
-    GoalDescription(x=0, y=5, angle=-180, pose_tol=1, angle_tol=10),
-]
-
 if __name__ == '__main__':
     rospy.init_node('control_link')
     print('Ready, go')
 
-    sender = GoalsSender(goals=GOALS_LIST)
+    # Obtain goals from route file
+    config_fpath = rospy.get_param("robot/route_filepath")
+    with open(config_fpath) as f:
+        route_data = yaml.safe_load(f)
+        route_points = route_data["points"]
+
+    dist_tol = route_data["dist_tol"]
+    goals = []
+    for p in route_points:
+        pos = p["position"]
+        quat = p["orientation"]
+        quat = tuple(quat.values())
+
+        euler = euler_from_quaternion(quat)
+        goal_desc = GoalDescription(
+            x=pos["x"],
+            y=pos["y"],
+            angle=np.rad2deg(euler[2]),
+            pose_tol=dist_tol,
+            angle_tol=None
+        )
+
+        goals.append(goal_desc)
+        print(f"Added goal to list: {goal_desc}")
+
+    sender = GoalsSender(goals=goals)
     try:
         while not rospy.is_shutdown():
             sender.step()
@@ -160,4 +176,5 @@ if __name__ == '__main__':
         sender.reset()
         print(f'Interrupted: {e}')
 
+    print('Done!')
 

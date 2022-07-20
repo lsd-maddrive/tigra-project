@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
+    <arg name="map_name" default="new_map.db" />
+    <arg name="localization" default="false" /> <!-- set false to start mapping with move_base-->
+    <arg name='rviz' default="true" />
+    <arg name='rtabmapviz' default='false' />
+
     <include file="$(find tigra_description)/launch/tigra.launch">
         <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>
-        <arg name="gui" value="false"/>
+        <!-- <arg name="world" value="" /> -->
+        <arg name="gui" value="false" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
-        <arg name="publish_tf" value="false"/>
-    </include>
-
-    <include file="$(find tigra_software)/launch/drivers/ekf_odom.launch">
-        <arg name="folder_name" value="ekf_sim"/>
-    </include>
-    <!-- <include file="$(find tigra_software)/launch/drivers/ekf_map.launch"></include> -->
-
-    <include file="$(find tigra_software)/launch/view/rviz_start.launch">
-        <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz"/>
+        <arg name="publish_tf" value="false" />
     </include>
 
     <include file="$(find tigra_software)/launch/drivers/move_base.launch">
-        <arg name="folder_name" value="move_base_sim"/>
-        <arg name="cmd_topic" value="/tigra/cmd_vel"/>
+        <arg name="folder_name" value="move_base_vo" />
+        <arg name="cmd_topic" value="tigra/cmd_vel" />
     </include>
 
-    <!-- Remove after global ekf connected -->
-    <node pkg="tf" type="static_transform_publisher" name="map_2_odom" args="0 0 0 0 0 0 /map /odom 1000"/>
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_sim_odom.yaml" />
+        <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
+    </node>
 
-    <!-- rs_camera_depth_optical_frame - required only for simulator, in real driver it publishes itself -->
-    <!-- rs_camera_optical_frame - for simulator we make small rename =) -->
-    <node pkg="tf" type="static_transform_publisher" name="rs_camera_link_2_rs_camera_optical_frame"
-          args="0 0 0 -1.57079632679 0 -1.57079632679 /rs_camera_link /rs_camera_optical_frame 1000"/>
-    <node pkg="tf" type="static_transform_publisher" name="rs_camera_link_2_camera_depth_frame"
-          args="0 0 0 0 0 0 /rs_camera_link /camera_depth_frame 100"/>
+    <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
+        <!-- <param name="Rtabmap/DetectionRate" type="string" value="1" /> -->
+        <arg name="localization" value="$(arg localization)" />
+        <arg name="database_path" value="$(find tigra_maps)/3d_maps/$(arg map_name)" />
+        <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+    </include>
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="tf_map_2_odom" args="0 0 0 0 0 0 /map /odom 1000" /> -->
+
+
+    <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+        <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz" />
+    </include>
 </launch>

@@ -1,0 +1,10 @@
+correlation_window_size: 35
+disparity_range: 64
+min_disparity: 0
+prefilter_cap: 31
+prefilter_size: 9
+speckle_range: 6
+speckle_size: 1000
+stereo_algorithm: 0
+texture_threshold: 10
+uniqueness_ratio: 15.0

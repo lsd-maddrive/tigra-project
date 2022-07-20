@@ -1,16 +1,19 @@
 <launch>
-    <!-- SLAM -->
-    <arg name="slam" default="true" />
-    <arg name="rgbd_odom" default="false" />
 
-
-    <arg name="localization" default="false" />
+    <arg name="rtab" default="true" />
+    <arg name="localization" default="true" />
+    <!-- slam inputs -->
     <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
     <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
     <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
     <arg name="imu_topic" default="/rs_camera/imu/filtered" />
     <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
-    <arg name="gps_topic" default="/gps/fix"/>
+    <arg name="gps_topic" default="/gps/fix" />
+    <!-- VO inputs -->
+    <arg name="rgb_topic_vo" default="/rs_camera_rear/color/image_raw" />
+    <arg name="depth_topic_vo" default="/rs_camera_rear/aligned_depth_to_color/image_raw" />
+    <arg name="camera_info_topic_vo" default="/rs_camera_rear/color/camera_info" />
+
     <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
     <arg name="FeatureType" default="6" />
     <arg name="nn" default="3" />
@@ -21,7 +24,7 @@
     <arg name="wait_for_transform" default="0.2" />
 
     <group ns="rtabmap">
-        <node if="$(arg rgbd_odom)" pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odometry" output="log">
+        <node pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odometry" output="log">
             <param name="frame_id" type="string" value="base_footprint" />
             <param name="publish_null_when_lost" type="bool" value="true" />
             <param name="guess_frame_id" type="string" value="" />
@@ -32,25 +35,23 @@
             <param name="Vis/FeatureType" type="string" value="$(arg FeatureType)" />
             <param name="Vis/CorNNType" type="string" value="$(arg nn)" />
             <param name="Vis/MaxDepth" type="string" value="8" />
-                        
+
             <remap from="odom" to="/tigra/vo" />
             <remap from="imu" to="$(arg imu_topic)" />
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            <remap from="rgb/image" to="$(arg rgb_topic_vo)" />
+            <remap from="depth/image" to="$(arg depth_topic_vo)" />
+            <remap from="rgb/camera_info" to="$(arg camera_info_topic_vo)" />
 
             <param name="Odom/FillInfoData" type="string" value="true" />
             <param name="Odom/ResetCountdown" type="string" value="1" />
             <param name="OdomF2M/MaxSize" type="string" value="1000" />
         </node>
 
-        <node if="$(arg slam)" name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
+        <node if="$(arg rtab)" name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
             <param name="database_path" type="string" value="$(arg database_path)" />
             <param name="frame_id" type="string" value="base_footprint" />
             <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)" />
             <param name="subscribe_depth" type="bool" value="true" />
-
-            <remap from="initialpose" to="/initialpose" />
 
             <!-- inputs -->
             <remap from="odom" to="$(arg odom_topic)" />
@@ -69,8 +70,6 @@
             <param name="RGBD/AngularUpdate" type="string" value="0.01" />
             <param name="RGBD/LinearUpdate" type="string" value="0.01" />
             <param name="RGBD/OptimizeFromGraphEnd" type="string" value="false" />
-            <!-- Start localization from -->
-            <param name="RGBD/StartAtOrigin" type="bool" value="$(arg localization)" />
             <param name="Reg/Force3DoF" type="string" value="true" />
 
             <param name="Vis/MinInliers" type="string" value="12" />
@@ -78,14 +77,14 @@
             <param name="Reg/Strategy" type="string" value="0" /> <!-- 0=Visual, 1=ICP, 2=Visual+ICP -->
             <param name="GridGlobal/MinSize" type="string" value="20" />
             <param name="Kp/DetectorStrategy" type="string" value="$(arg FeatureType)" />
-            <param name="Rtabmap/DetectionRate" type="string" value="1" />
+            <param name="Rtabmap/DetectionRate" type="string" value="4" />
 
             <param name="Grid/3D" value="false" />
             <param name="Grid/CellSize" value="0.15" />
             <param name="Grid/MaxGroundHeight" type="string" value="0.3" />
-            <param name="Grid/MaxObstacleHeight" type="string" value="1.5" />
+            <param name="Grid/MaxObstacleHeight" type="string" value="2" />
             <param name="Grid/NormalsSegmentation" type="string" value="false" />
-            <param name="Grid/RangeMax" value="9.0" />
+            <param name="Grid/RangeMax" value="8.0" />
             <param name="Grid/RangeMin" value="1.0" />
             <param name="GridGlobal/MinSize" type="string" value="250" />
 
@@ -105,7 +104,7 @@
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
             <remap from="gps/fix" to="$(arg gps_topic)" />
-            <remap from="imu" to="$(arg imu_topic)" />
+            <!-- <remap from="imu" to="$(arg imu_topic)" /> -->
         </node>
     </group>
 </launch>
