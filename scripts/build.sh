@@ -19,7 +19,9 @@ catkin build \
     stereo_image_proc \
     camera_calibration \
     maddrive_urdf_tools \
-    --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON
+    lslidar_c16 \
+    -j8 \
+    --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON -DCATKIN_ENABLE_TESTING=False -DCMAKE_BUILD_TYPE=Release
     
     # serial \
     # ti_mmwave_rospkg \

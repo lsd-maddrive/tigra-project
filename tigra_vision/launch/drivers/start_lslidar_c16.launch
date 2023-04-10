@@ -1,0 +1,31 @@
+<launch>
+
+  <node pkg="lslidar_c16_driver" type="lslidar_c16_driver_node" name="lslidar_c16_driver_node" output="screen">
+    <param name="frame_id" value="lslidar_link"/>
+    <param name="device_ip" value="192.168.1.200"/>  <!--192.168.1.200: your PC ip must be manually set to 192.168.1.102-->
+    <param name="device_port" value="2368"/>
+  </node>
+
+  <node pkg="lslidar_c16_decoder" type="lslidar_c16_decoder_node" name="lslidar_c16_decoder_node" output="screen">
+    <param name="child_frame_id" value="lslidar_link"/>
+    <param name="point_num" value="2000"/>
+    <param name="channel_num" value="8"/>
+    <param name="angle_disable_min" value="0"/>
+    <param name="angle_disable_max" value="0"/>
+    <param name="min_range" value="0.15"/>
+    <param name="max_range" value="150.0"/>
+    <param name="frequency" value="10.0"/>
+    <param name="publish_point_cloud" value="true"/>
+    <param name="publish_channels" value="true"/>
+    <param name="use_gps_ts" value="false"/>
+
+    <!--topic remapping for the greater scheme of things (David Portugal) -->
+    <remap from="scan"         to="lslidar_scan"/>
+    <remap from="scan_channel" to="lslidar_scan_channel"/>
+    <remap from="layer_num"    to="lslidar_layer_num"/>
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="tf_bl_2_lidar" args="5.0 5.0 0 0 0 0 /base_link /lslidar_link 1000" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_vision)/rviz/check_c16_lidar.rviz" output="screen"/>
+
+</launch>
