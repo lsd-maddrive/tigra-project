@@ -33,10 +33,24 @@
 		<origin xyz="0 0 ${wheel_radius+wheel_shift_z}" rpy="0 0 0" />
 	</joint>
 
-	<xacro:steer_wheel name="front_right_wheel" base_name="base_link" xyz="${wheelbase/2} -${track_width/2} -${wheel_shift_z}" steer_limit="${wheel_turn_limit}" />
-	<xacro:steer_wheel name="front_left_wheel" base_name="base_link" xyz="${wheelbase/2} ${track_width/2} -${wheel_shift_z}" steer_limit="${wheel_turn_limit}" />
-	<xacro:speed_wheel name="rear_right_wheel" base_name="base_link" xyz="-${wheelbase/2} -${track_width/2} -${wheel_shift_z}" />
-	<xacro:speed_wheel name="rear_left_wheel" base_name="base_link" xyz="-${wheelbase/2} ${track_width/2} -${wheel_shift_z}" />
+	<xacro:steer_wheel
+		prefix="front_right"
+		parent="base_link"
+		steer_origin_xyz="${wheelbase/2} -${track_width/2} -${wheel_shift_z}"
+		steer_limit="${wheel_turn_limit}" />
+	<xacro:steer_wheel
+		prefix="front_left"
+		parent="base_link"
+		steer_origin_xyz="${wheelbase/2} ${track_width/2} -${wheel_shift_z}"
+		steer_limit="${wheel_turn_limit}" />
+	<xacro:speed_wheel
+		prefix="rear_right"
+		parent="base_link"
+		origin_xyz="-${wheelbase/2} -${track_width/2} -${wheel_shift_z}" />
+	<xacro:speed_wheel
+		prefix="rear_left"
+		parent="base_link"
+		origin_xyz="-${wheelbase/2} ${track_width/2} -${wheel_shift_z}" />
 
     <gazebo>
         <plugin name="tigra_interface_plugin" filename="libackermann_raw_controller_plugin.so">
@@ -50,3 +64,4 @@
         </plugin>
     </gazebo>
 </robot>
+
