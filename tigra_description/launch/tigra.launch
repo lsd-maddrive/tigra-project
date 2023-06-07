@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
+
   <!-- overwriting these args -->
   <arg name="debug" default="false" />
   <arg name="gui" default="true" />
@@ -27,6 +28,10 @@
     <arg name="paused" value="$(arg pause)" />
   </include>
 
+  <!-- Publish static TFs (fixed joints) -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-</launch>
 
+  <!-- Publish dynamic TFs (non-fixed joints) -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+</launch>
