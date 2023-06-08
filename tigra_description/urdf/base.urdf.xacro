@@ -26,7 +26,7 @@
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0" />
 			<geometry>
-				<box size="${body_length} ${body_width} ${body_heigth}" />
+				<mesh filename="package://tigra_description/meshes/quadro.dae" />
 			</geometry>
 		</visual>
 		<collision name="base_collision">
