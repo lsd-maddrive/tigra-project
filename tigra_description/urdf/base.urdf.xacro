@@ -4,6 +4,23 @@
 	<xacro:include filename="$(find tigra_description)/urdf/params.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/wheels.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/inertia.urdf.xacro" />
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/common.urdf.xacro" />
+
+	<!-- BASE FOOTPRINT-->
+	<link name="base_footprint">
+		<xacro:null_visual/>
+		<xacro:null_collision/>
+		<xacro:null_inertia/>
+	</link>
+	<gazebo reference="base_footprint" />
+
+	<!-- BASE LINK-->
+
+	<joint name="base_footprint_2_base_link" type="fixed">
+		<parent link="base_footprint" />
+		<child link="base_link" />
+		<origin xyz="0 0 ${wheel_radius+wheel_shift_z}" rpy="0 0 0" />
+	</joint>
 
 	<link name="base_link">
 		<visual>
@@ -23,15 +40,7 @@
 		</xacro:box_inertia>
 	</link>
 
-	<!-- BASE FOOTPRINT-->
-	<link name="base_footprint" />
-	<gazebo reference="base_footprint" />
-
-	<joint name="base_footprint_2_link" type="fixed">
-		<parent link="base_footprint" />
-		<child link="base_link" />
-		<origin xyz="0 0 ${wheel_radius+wheel_shift_z}" rpy="0 0 0" />
-	</joint>
+	<!-- WHEELS-->
 
 	<xacro:steer_wheel
 		prefix="front_right"
@@ -64,4 +73,3 @@
         </plugin>
     </gazebo>
 </robot>
-
