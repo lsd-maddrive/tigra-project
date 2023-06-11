@@ -7,14 +7,14 @@ catkin build \
     tigra-project \
     tigra_vision \
     ackermann_raw_controller_plugin \
-    elp_stereo_camera \
+    ublox \
     rtabmap \
     rtabmap_ros \
     spatio_temporal_voxel_layer \
-    ublox \
-    cv_bridge \
-    stereo_image_proc \
     camera_calibration \
+    elp_stereo_camera \
+    stereo_image_proc \
+    cv_bridge \
     maddrive_urdf_tools \
     --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON
     
