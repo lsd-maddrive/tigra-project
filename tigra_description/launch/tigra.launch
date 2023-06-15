@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <!-- overwriting these args -->
+
+  <arg name="rviz" default="false" />
   <arg name="debug" default="false" />
   <arg name="gui" default="true" />
   <arg name="pause" default="false" />
@@ -8,12 +9,21 @@
   <arg name="world" default="" />
   <arg name="use_sim_time" default="true"/>
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra_robocross21.urdf.xacro' robot_name:=tigra" />
   <arg name="x" default="0" />
   <arg name="y" default="0" />
   <arg name="z" default="0.6" />
 
-  <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model tigra -x $(arg x) -y $(arg y) -z $(arg z)" />
+  <param name="robot_description"
+    command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra_robocross21.urdf.xacro'
+    robot_name:=tigra" />
+
+  <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-x $(arg x)
+              -y $(arg y)
+              -z $(arg z)
+              -urdf
+              -model tigra
+              -param robot_description" />
 
   <!-- include gazebo_ros launcher -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -24,5 +34,13 @@
     <arg name="paused" value="$(arg pause)" />
   </include>
 
+  <!-- Publish static TFs (fixed joints) -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- Publish dynamic TFs (non-fixed joints) -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+  <!-- rviz-->
+  <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_description)/rviz/overview.rviz" />
+
 </launch>

@@ -6,9 +6,9 @@
     <arg name='rviz' default="true" />
     <arg name='rtabmapviz' default='false' />
 
+    <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
         <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>
-        <!-- <arg name="world" value="" /> -->
         <arg name="gui" value="false" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
@@ -32,10 +32,6 @@
         <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
     </include>
 
-    <!-- <node pkg="tf" type="static_transform_publisher" name="tf_map_2_odom" args="0 0 0 0 0 0 /map /odom 1000" /> -->
-
-
-    <include file="$(find tigra_software)/launch/view/rviz_start.launch">
-        <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz" />
-    </include>
+    <!-- rviz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/common_sim.rviz"/>
 </launch>

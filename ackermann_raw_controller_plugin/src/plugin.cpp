@@ -32,11 +32,11 @@ namespace gazebo
         }
 
         // Gazebo initialization
-        steer_fl_joint_ = model->GetJoint("front_left_wheel_steer_joint");
-        steer_fr_joint_ = model->GetJoint("front_right_wheel_steer_joint");
+        steer_fl_joint_ = model->GetJoint("front_left_steer_joint");
+        steer_fr_joint_ = model->GetJoint("front_right_steer_joint");
 
-        wheel_rl_joint_ = model->GetJoint("rear_left_wheel_speed_joint");
-        wheel_rr_joint_ = model->GetJoint("rear_right_wheel_speed_joint");
+        wheel_rl_joint_ = model->GetJoint("rear_left_wheel_joint");
+        wheel_rr_joint_ = model->GetJoint("rear_right_wheel_joint");
 
         assert(steer_fl_joint_);
         assert(steer_fr_joint_);
@@ -194,3 +194,4 @@ namespace gazebo
     {
     }
 } // namespace gazebo
+

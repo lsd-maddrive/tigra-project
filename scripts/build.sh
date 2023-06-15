@@ -4,20 +4,17 @@ export CMAKE_PREFIX_PATH=/usr/local/lib/cmake/:$CMAKE_PREFIX_PATH
 # export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
 catkin build \
-    tigra_msgs \
-    tigra_description \
-    tigra_software \
+    tigra-project \
     tigra_vision \
-    tigra_maps \
     ackermann_raw_controller_plugin \
-    elp_stereo_camera \
+    ublox \
     rtabmap \
     rtabmap_ros \
     spatio_temporal_voxel_layer \
-    ublox \
-    cv_bridge \
-    stereo_image_proc \
     camera_calibration \
+    elp_stereo_camera \
+    stereo_image_proc \
+    cv_bridge \
     maddrive_urdf_tools \
     lslidar_c16 \
     lslidar_driver \
