@@ -8,11 +8,11 @@
     <node pkg="tigra_software" type="joy_ctrl.py" name="joy_ctrl" output="screen" >
     	<param name="debug" value="false" />
 
-    	<param name="speed/frwd_limit" value="1" />
+    	<param name="speed/frwd_limit" value="15" />
     	<param name="speed/bkwrd_limit" value="-0.6" />
     	<param name="steer/limit" value="25" />
 
-        <remap from="cmd_vel" to="tigra/cmd_vel" />
+        <remap from="cmd_vel" to="/catvehicle/cmd_vel" />
     </node>
 
 </launch>
