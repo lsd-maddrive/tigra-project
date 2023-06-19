@@ -8,7 +8,7 @@
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>
+        <arg name="world" value="$(find tigra_maps)/worlds/room_with_pillars_asphalt.world"/>
         <arg name="gui" value="false" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
@@ -20,6 +20,7 @@
         <arg name="cmd_topic" value="tigra/cmd_vel" />
     </include>
 
+    <!-- odometry filter-->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_sim_odom.yaml" />
         <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
@@ -30,6 +31,12 @@
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/$(arg map_name)" />
         <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+    </include>
+
+    <!-- joy teleop-->
+    <include file="$(find four_ws_robot_teleop)/launch/joy_teleop.launch">
+        <arg name="joy_dev" value="/dev/input/js0"/>
+        <arg name="joy_teleop_sub" value="/tigra/cmd_vel"/>
     </include>
 
     <!-- rviz -->

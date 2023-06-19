@@ -1,9 +1,8 @@
 #Configuation for robot odometry EKF
-#
 frequency: 20
 
 two_d_mode: true
-publish_tf: true
+publish_tf: true # world_frame -> base_link_frame
 
 # Complete the frames section
 map_frame: map              # Defaults to "map" if unspecified
