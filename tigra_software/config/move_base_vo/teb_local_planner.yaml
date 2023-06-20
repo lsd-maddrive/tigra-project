@@ -1,5 +1,5 @@
 TebLocalPlannerROS:
-    odom_topic: /tigra/odometry/filtered/local
+    odom_topic: /tigra/odometry/filtered
     map_frame: map
 
     # Trajectory

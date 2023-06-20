@@ -7,7 +7,7 @@
     <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
     <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
     <arg name="imu_topic" default="/rs_camera/imu/filtered" />
-    <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
+    <arg name="odom_topic" default="/tigra/odometry/filtered" />
     <arg name="gps_topic" default="/gps/fix"/>
     <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
     <arg name="FeatureType" default="6" />

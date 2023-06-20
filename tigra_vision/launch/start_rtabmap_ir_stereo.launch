@@ -69,7 +69,7 @@
         <!-- <arg name="clear_params" value="true" /> -->
         <arg name="database_path" value="$(arg database_path)" />
         <arg name="odom_topic" value="/tigra/vo" />
-        <arg name="in_odom_topic" value="/tigra/odometry/filtered/local" />
+        <arg name="in_odom_topic" value="/tigra/odometry/filtered" />
         <!-- <arg name="in_odom_topic" value="/tigra/vo" /> -->
         <arg name="vo_frame_id" value="odom"/>
         <arg name="odom_frame_id" value="odom" />
