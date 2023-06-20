@@ -5,7 +5,6 @@ export CMAKE_PREFIX_PATH=/usr/local/lib/cmake/:$CMAKE_PREFIX_PATH
 
 catkin build \
     tigra-project \
-    tigra_vision \
     ackermann_raw_controller_plugin \
     ublox \
     rtabmap \

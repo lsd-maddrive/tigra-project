@@ -13,7 +13,7 @@
     <run_depend>tigra_maps</run_depend>
     <run_depend>tigra_msgs</run_depend>
     <run_depend>tigra_software</run_depend>
-
+    <run_depend>tigra_vision</run_depend>
     <export>
         <metapackage/>
     </export>
