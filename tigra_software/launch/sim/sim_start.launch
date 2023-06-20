@@ -23,7 +23,7 @@
     <!-- odometry filter-->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_sim_odom.yaml" />
-        <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
+        <remap from="odometry/filtered" to="tigra/odometry/filtered" />
     </node>
 
     <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
