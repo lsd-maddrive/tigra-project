@@ -1,0 +1,22 @@
+<launch>
+ <arg name="record_all" default="false" />
+  <arg name="hardware" default="true"/>
+  <arg name="record_path" default="/media/alakey/Data2/bags"/>
+
+
+  <group if="$(arg hardware)">
+    <!-- <include file="$(find taiga_software)/launch/drivers/tf_transforms.launch"/> -->
+    <include file="$(find tigra_vision)/launch/drivers/start_lslidar_c16.launch">
+      <arg name="min_range" value="1.0" />  
+    </include>
+
+    <include file="$(find taiga_vision)/launch/drivers/start_rs_camera.launch"/>
+  </group>
+
+  <node if="$(arg record_all)" pkg="rosbag" type="record" name="rosbag_recorder"
+       args="record -o $(arg record_path) /rs_camera/aligned_depth_to_color/camera_info  /rs_camera/aligned_depth_to_color/image_raw /rs_camera/color/camera_info /rs_camera/color/image_raw /rs_camera/imu /rs_camera/imu_info /tf_static
+       /lslidar_point_cloud /tf
+       /ublox/fix /ublox/fix_velocity /ublox/navclock /ublox/navposecef /ublox/navpvt /ublox/navsat /ublox/navstatus"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/full_view_rs_lidar.rviz" output="screen"/>
+</launch>
