@@ -14,6 +14,7 @@ sudo apt-get install \
     ros-$ROS_DISTRO-rviz-imu-plugin \
     ros-$ROS_DISTRO-hector-gazebo-plugins \
     ros-$ROS_DISTRO-octomap-msgs \
-    libopenvdb-dev
+    libopenvdb-dev \
+    libpcap-dev
 
 #    "ros-$ROS_DISTRO-rtabmap=0.20.18-3*" \

@@ -3,19 +3,17 @@
 
 <launch>
 <!-- TF pepelac high is 0.8-->
-<node pkg="tf" type="static_transform_publisher" name="tf_bl_2_lidar" args="0.0 0.0 0.870 1.57 0.0 0.0 /base_link /laser_link 100" />
-<node pkg="tf" type="static_transform_publisher" name="tf_bl_2_cam" args="0.0 0.0 1.0 0.0 0.0 0.0 /base_link /rs_camera_link 100" />
 
-    <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
-    <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
-    <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
-    <arg name="imu_topic" default="/rs_camera/imu/filtered" />
 
-  <arg name="rgbd_odom" default="true" />
-  <arg name="localization" default="false"/>
+
+  <arg name="localization" default="true"/>
   <arg name="rtabmapviz"   default="true"/>
-  <arg name="rtabmap"      default="true"/>
+  <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db"/>
   
+
+  <arg name="rtabmap"      default="true"/>
+  <arg name="rgbd_odom" default="true" />
+
   <arg name="camera"       default="true"/>
   <arg name="lidar3d"      default="true"/>
   <arg name="lidar3d_ray_tracing" default="true"/>
@@ -25,6 +23,12 @@
   
   <arg     if="$(arg lidar3d)" name="cell_size" default="0.3"/>
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
+
+  <!-- INPUTS -->
+  <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
+  <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
+  <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
+  <arg name="imu_topic" default="/rs_camera/imu/filtered" />
   
   
   <arg if="$(arg lidar3d)" name="lidar_args" default="
@@ -55,7 +59,7 @@
   <!--- Run rtabmap -->
 
   <group ns="rtabmap">
-        <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="screen">
+        <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
             <!-- input -->
             <!-- <remap from="odom" to="/tigra/vo" /> -->
             <remap from="imu" to="$(arg imu_topic)" />
@@ -63,7 +67,7 @@
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
 
-            <param name="frame_id"        type="string" value="base_link"/>
+            <param name="frame_id"        type="string" value="base_footprint"/>
             <param name="odom_frame_id"   type="string" value="odom"/>
             <param name="publish_tf" type="bool" value="true" />
             <param name="wait_for_transform_duration" type="double" value="0.2" />
@@ -85,16 +89,17 @@
             <param name="GFTT/QualityLevel"  type="string" value="0.00001"/>
         </node>
     </group>
-  <remap from="/rtabmap/grid_map" to="/map"/>
+  <!-- <remap from="/rtabmap/grid_map" to="/map"/> -->
   <include if="$(arg rtabmap)" file="$(find rtabmap_ros)/launch/rtabmap.launch">
     <arg     if="$(arg localization)" name="args" value="--Reg/Force3DoF $(arg slam2d) $(arg lidar_args)" />
     <arg unless="$(arg localization)" name="args" value="--Reg/Force3DoF $(arg slam2d) $(arg lidar_args) -d" /> <!-- create new map -->
+    <arg name="database_path"           value="$(arg database_path)"/>
     <arg name="localization"    value="$(arg localization)" />
     <arg name="visual_odometry" value="false" />
     <arg name="approx_sync"     value="$(eval camera or not icp_odometry)" />
     <arg name="imu_topic"       value="/imu/data" />
     <!-- <arg unless="$(arg icp_odometry)" name="odom_topic" value="/odometry/filtered" /> -->
-    <arg name="frame_id"        value="base_link" />
+    <arg name="frame_id"        value="base_footprint" />
     <arg name="rtabmapviz"      value="$(arg rtabmapviz)" />
     <arg name="gps_topic"       value="/navsat/fix"/>
     

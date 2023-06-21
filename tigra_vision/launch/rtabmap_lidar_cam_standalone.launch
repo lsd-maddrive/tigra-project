@@ -4,7 +4,7 @@
     <arg name="rgbd_odom" default="true" />
 
 
-    <arg name="localization" default="false" />
+    <arg name="localization" default="true" />
     <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
     <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
     <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
