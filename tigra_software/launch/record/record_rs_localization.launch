@@ -15,7 +15,7 @@
 /tigra/wheel_odom
 /tigra/vo
 /tigra/odometry/filtered
-/tigra/odometry/filtered
+/tigra/odometry/filtered/local
 /move_base/TebLocalPlannerROS/local_plan
 /move_base/GlobalPlanner/plan
 /gps/fix

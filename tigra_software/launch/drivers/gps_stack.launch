@@ -7,7 +7,7 @@
     <arg name='ekf_global' default='true'/>
 
     <arg name="imu_topic" default="/rs_camera_left/imu/filtered" />
-    <arg name="odom_topic_local" default="/tigra/odometry/filtered" />
+    <arg name="odom_topic_local" default="/tigra/odometry/filtered/local" />
     <arg name="odom_topic_global" default="/tigra/odometry/filtered/global" />
     <arg name="gps_topic" default="/gps/fix" />
 
