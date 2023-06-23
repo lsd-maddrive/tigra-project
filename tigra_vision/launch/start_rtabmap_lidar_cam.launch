@@ -52,8 +52,11 @@
       --Icp/PointToPlaneRadius 0 
       --Icp/PointToPlaneNormalK 10 
       --Icp/MaxTranslation 1
-      --Vis/MinInliers 12
-      --RGBD/OptimizeMaxError 0"/>
+
+      --Vis/MinInliers 10
+      --RGBD/OptimizeMaxError 0
+      --RGBD/ProximityPathMaxNeighbors 1
+      --Grid/Sensor 0"/>
 
 
   <!--- Run rtabmap -->

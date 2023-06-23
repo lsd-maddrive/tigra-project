@@ -12,7 +12,7 @@ TebLocalPlannerROS:
  max_samples: 500
  global_plan_overwrite_orientation: True
  allow_init_with_backwards_motion: True
- max_global_plan_lookahead_dist: -1
+ max_global_plan_lookahead_dist: 15
  global_plan_viapoint_sep: 0.2
  global_plan_prune_distance: 1
  exact_arc_length: False
@@ -22,14 +22,14 @@ TebLocalPlannerROS:
  # Robot
          
  max_vel_x: 0.8
- max_vel_x_backwards: 0.6
+ max_vel_x_backwards: 0.8
  max_vel_y: 0.0
  max_vel_theta: 0.3 # the angular velocity is also bounded by min_turning_radius in case of a carlike robot (r = v / omega)
  acc_lim_x: 0.2
  acc_lim_theta: 0.1
 
  # ********************** Carlike robot parameters ********************
- min_turning_radius: 3.05        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually - wheelbase / sin(max_steer) + tin_wire/2)
+ min_turning_radius: 4.05        #  real 3.05; Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually - wheelbase / sin(max_steer) + tin_wire/2)
  wheelbase: 1.25                # Wheelbase of our robot
  cmd_angle_instead_rotvel: True # stage simulator takes the angle instead of the rotvel as input (twist message)
  # ********************************************************************
@@ -43,7 +43,7 @@ TebLocalPlannerROS:
         # front_radius: 0.2 # for type "two_circles"
         # rear_offset: 0.2 # for type "two_circles"
         # rear_radius: 0.2 # for type "two_circles"
-        vertices: [ [0.8, 0.4], [-0.2, 0.4], [-0.2, -0.4], [0.8, -0.4] ] # for type "polygon"
+        vertices: [ [1.7, 0.6], [-0.5, 0.6], [-0.5, -0.6], [1.7, -0.6] ] # for type "polygon"
 
  # GoalTolerance
     
@@ -54,8 +54,8 @@ TebLocalPlannerROS:
     
  # Obstacles
     
- min_obstacle_dist: 0.27 # This value must also include our robot's expansion, since footprint_model is set to "line".
- inflation_dist: 0.6
+ min_obstacle_dist: 0.40 # This value must also include our robot's expansion, since footprint_model is set to "line".
+ inflation_dist: 2.0
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.0
  obstacle_poses_affected: 15
@@ -78,10 +78,10 @@ TebLocalPlannerROS:
  weight_max_vel_x: 2
  weight_max_vel_theta: 1
  weight_acc_lim_x: 1
- weight_acc_lim_theta: 1
+ weight_acc_lim_theta: 10
  weight_kinematics_nh: 1000
  weight_kinematics_forward_drive: 1
- weight_kinematics_turning_radius: 1
+ weight_kinematics_turning_radius: 10
  weight_optimaltime: 50 # must be > 0
  weight_shortest_path: 0
  weight_obstacle: 100
