@@ -4,7 +4,7 @@
     <arg name="map_name" default="new_map.db" />
     <arg name="localization" default="false" /> <!-- set false to start mapping with move_base-->
     <arg name='rviz' default="true" />
-    <arg name='rtabmapviz' default='false' />
+    <arg name='rtabmapviz' default='true' />
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
