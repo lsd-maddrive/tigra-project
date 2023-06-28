@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+    <name>tigra-project</name>
+    <version>0.0.0</version>
+    <description>
+        The tigra-project metapackage that installs tigra_software and related packages.
+    </description>
+    <maintainer email="nlobazev@gmail.com">Nikita Lobazev</maintainer>
+    <license>BSD</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <run_depend>tigra_description</run_depend>
+    <run_depend>tigra_maps</run_depend>
+    <run_depend>tigra_msgs</run_depend>
+    <run_depend>tigra_software</run_depend>
+    <run_depend>tigra_vision</run_depend>
+    <export>
+        <metapackage/>
+    </export>
+</package>

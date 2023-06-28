@@ -1,80 +1,26 @@
 <?xml version="1.0"?>
 <robot name="tigra" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find tigra_description)/urdf/base.urdf.xacro" />
+	<xacro:include filename="$(find tigra_description)/urdf/base.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/realsense.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/elp_stereo.urdf.xacro" />
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/gps.urdf.xacro" />
 
-  <!-- GPS -->
-  <joint name="base_gps_joint" type="fixed">
-    <parent link="base_link" />
-    <child link="gps_link" />
-    <origin xyz="0 0 ${body_heigth/2+0.1}" rpy="0 0 0" />
-  </joint>
-
-  <link name="gps_link">
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <box size="0.2 0.2 ${gps_height}" />
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <box size="0.2 0.2 ${gps_height}" />
-      </geometry>
-    </visual>
-    <inertial>
-      <mass value="1e-5" />
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
-  </link>
-
-  <gazebo reference="gps_link">
-    <material>Gazebo/Orange</material>
-  </gazebo>
-
-  <gazebo>
-    <plugin name="gazebo_ros_gps" filename="libhector_gazebo_ros_gps.so">
-      <updateRate>4.0</updateRate>
-      <bodyName>gps_link</bodyName>
-      <frameId>gps_link</frameId>
-      <topicName>/gps/fix</topicName>
-      <velocityTopicName>/gps/fix_velocity</velocityTopicName>
-      <referenceLatitude>-30.06022459407145675</referenceLatitude>
-      <referenceLongitude>-51.173913575780311191</referenceLongitude>
-      <referenceHeading>90</referenceHeading>
-      <referenceAltitude>10</referenceAltitude>
-      <offset>0 0 0</offset>
-      <drift>0.001 0.001 0.001</drift>
-      <gaussianNoise>0.05 0.05 0.05</gaussianNoise>
-      <velocityDrift>0.001 0.001 0.001</velocityDrift>
-      <velocityGaussianNoise>0.5 0.5 0.5</velocityGaussianNoise>
-    </plugin>
-    
-    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>50.0</updateRate>
-      <bodyName>base_link</bodyName>
-      <topicName>ground_truth/state</topicName>
-      <gaussianNoise>0.01</gaussianNoise>
-      <frameName>world</frameName>
-      <xyzOffsets>0 0 0</xyzOffsets>
-      <rpyOffsets>0 0 0</rpyOffsets>
-    </plugin>
-  </gazebo>
+  	<xacro:gps
+		parent="base_link"
+		origin_xyz="0 0 ${body_heigth/2+0.1}"
+		origin_rpy="0 0 0" />
 
 	<xacro:realsense_435
-			name="rs_camera"
-			base_link_name="base_link"
-			xyz="${body_length/2} 0 ${body_heigth/2+0.1}"
-			rpy="0 0 0" />
+		name="rs_camera"
+		parent="base_link"
+		xyz="${body_length/2} 0 ${body_heigth/2+0.1}"
+		rpy="0 0 0" />
 
-  <xacro:elp_stereo
-			name="elp_stereo"
-			base_link_name="base_link"
-			xyz="-${body_length/2-wheelbase/2+0.05} 0 0"
-			rpy="0 0 ${pi}" />
+  	<xacro:elp_stereo
+		name="elp_stereo"
+		parent="base_link"
+		xyz="-${body_length/2-wheelbase/2+0.05} 0 0"
+		rpy="0 0 ${pi}" />
+
 </robot>

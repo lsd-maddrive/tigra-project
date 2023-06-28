@@ -21,8 +21,6 @@
 
     <xacro:property name="lidar_location" value="${body_heigth/2+0.01}" />
 
-    <xacro:property name="gps_height" value="0.05" />
-
     <xacro:property name="odom_frame" value="odom_wheel" />
 
     <xacro:arg name="pub_tf" default="true" />

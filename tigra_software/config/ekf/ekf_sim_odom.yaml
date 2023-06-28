@@ -1,9 +1,8 @@
 #Configuation for robot odometry EKF
-#
 frequency: 20
 
 two_d_mode: true
-publish_tf: true
+publish_tf: true # odom -> base_footprint
 
 # Complete the frames section
 map_frame: map              # Defaults to "map" if unspecified
@@ -11,7 +10,7 @@ odom_frame: odom            # Defaults to "odom" if unspecified
 base_link_frame: base_footprint  # Defaults to "base_link" if unspecified
 world_frame: odom           # NB - set to odom for local
 
-# Complete the odom0 configuration
+# Wheel odometry
 odom0: /tigra/wheel_odom
 odom0_config: 
  [true, true, false,
@@ -40,8 +39,8 @@ odom0_relative: false
 #odom1_differential: false
 #odom1_relative: true
 
-# Complete the imu0 configuration
-imu0: /tigra/imu
+# IMU in RealSense
+imu0: /rs_camera/imu
 imu0_config:
    [false, false, false,
    false,  false,  true,

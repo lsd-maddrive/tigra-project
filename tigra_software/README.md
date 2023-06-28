@@ -30,3 +30,10 @@ roslaunch tigra_software tigra_gps.launch
 ```bash
 roslaunch tigra_software ekg_odom_test.launch
 ```
+
+## Notes
+Экспорт для окружения для работы симулятора:
+
+```bash
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(rospack find tigra_maps)/models
+```
