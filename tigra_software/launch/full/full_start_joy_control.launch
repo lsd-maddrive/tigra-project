@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
-    <arg name="uc_connect" default="true" />
-
-    <group if="$(arg uc_connect)">
-        <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
-        <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
-    </group>
+    <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
+    <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
     <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
 
-    <node pkg="tigra_software" type="steering_filter" name="steering_filter" output="screen">
+
+    <node pkg="tigra_software" type="steering_filter" name="steering_filter" ns="tigra" output="screen">
         <!-- <param name="steering_alpha" value="0.3"/> -->
         <!-- NB - Disabled filter -->
         <param name="steering_alpha" value="1.0" />
-        <remap from="cmd_vel_raw" to="tigra/cmd_vel_raw" />
-        <remap from="cmd_vel" to="tigra/cmd_vel" />
+        <remap from="cmd_vel_raw" to="cmd_vel_raw" />
+        <remap from="cmd_vel" to="cmd_vel" />
     </node>
 
 </launch>
