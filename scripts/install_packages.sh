@@ -15,7 +15,8 @@ sudo apt-get install \
     ros-$ROS_DISTRO-gazebo-plugins \
     ros-$ROS_DISTRO-octomap-msgs \
     ros-$ROS_DISTRO-ddynamic-reconfigure \
-    libopenvdb-dev
+    libopenvdb-dev \
+    libpcap-dev
 
 #requirements for RS-ros
 sudo apt purge ros-$ROS_DISTRO-realsense2-camera
