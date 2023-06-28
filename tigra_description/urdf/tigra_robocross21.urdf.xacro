@@ -1,26 +1,26 @@
 <?xml version="1.0"?>
 <robot name="tigra" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find tigra_description)/urdf/base.urdf.xacro" />
+	<xacro:include filename="$(find tigra_description)/urdf/base.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/realsense.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/elp_stereo.urdf.xacro" />
-  <xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/gps.urdf.xacro" />
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/gps.urdf.xacro" />
 
-  <xacro:gps
-			parent="base_link"
-			origin_xyz="0 0 ${body_heigth/2+0.1}"
-			origin_rpy="0 0 0" />
+  	<xacro:gps
+		parent="base_link"
+		origin_xyz="0 0 ${body_heigth/2+0.1}"
+		origin_rpy="0 0 0" />
 
 	<xacro:realsense_435
-			name="rs_camera"
-			parent="base_link"
-			xyz="${body_length/2} 0 ${body_heigth/2+0.1}"
-			rpy="0 0 0" />
+		name="rs_camera"
+		parent="base_link"
+		xyz="${body_length/2} 0 ${body_heigth/2+0.1}"
+		rpy="0 0 0" />
 
-  <xacro:elp_stereo
-			name="elp_stereo"
-			parent="base_link"
-			xyz="-${body_length/2-wheelbase/2+0.05} 0 0"
-			rpy="0 0 ${pi}" />
+  	<xacro:elp_stereo
+		name="elp_stereo"
+		parent="base_link"
+		xyz="-${body_length/2-wheelbase/2+0.05} 0 0"
+		rpy="0 0 ${pi}" />
 
 </robot>
