@@ -24,11 +24,13 @@
         </include>
     </group>
 
+    <!-- robot_localization -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
         <remap from="odometry/filtered" to="/tigra/odometry/filtered/local" />
     </node>
 
+    <!-- rviz -->
     <include file="$(find tigra_software)/launch/view/rviz_start.launch">
         <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_move_base.rviz" />
     </include>

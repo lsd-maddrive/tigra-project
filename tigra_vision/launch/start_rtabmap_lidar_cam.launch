@@ -1,15 +1,9 @@
-         <!-- 5) 3DoF mapping with 3D LiDAR and RGB-D camera
-            $ roslaunch rtabmap_ros demo_husky.launch lidar3d:=true slam2d:=true camera:=true -->
-
 <launch>
 <!-- TF pepelac high is 0.8-->
-
-
 
   <arg name="localization" default="true"/>
   <arg name="rtabmapviz"   default="true"/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db"/>
-  
 
   <arg name="rtabmap"      default="true"/>
   <arg name="rgbd_odom" default="true" />
@@ -21,7 +15,7 @@
   <arg name="depth_from_lidar" default="false"/>
   
   
-  <arg     if="$(arg lidar3d)" name="cell_size" default="0.3"/>
+  <arg if="$(arg lidar3d)" name="cell_size" default="0.3"/>
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
   <!-- INPUTS -->
@@ -29,8 +23,8 @@
   <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
   <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
   <arg name="imu_topic" default="/rs_camera/imu/filtered" />
-  
-  
+  <!-- <arg name="odom_topic" default="tigra/vo" /> -->
+  <arg name="odom_topic" default="tigra/odometry/filtered/local" />
   <arg if="$(arg lidar3d)" name="lidar_args" default="
       --Reg/Strategy 1 
       --RGBD/NeighborLinkRefining true 
@@ -58,9 +52,7 @@
       --RGBD/ProximityPathMaxNeighbors 1
       --Grid/Sensor 0"/>
 
-
   <!--- Run rtabmap -->
-
   <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
             <!-- input -->
@@ -69,21 +61,17 @@
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            <remap from="odom" to="$(arg odom_topic)" />
 
             <param name="frame_id"        type="string" value="base_footprint"/>
             <param name="odom_frame_id"   type="string" value="odom"/>
             <param name="publish_tf" type="bool" value="true" />
             <param name="wait_for_transform_duration" type="double" value="0.2" />
 
-
-
             <param name="Reg/Force3DoF" type="bool" value="true" />
             <param name="Odom/ResetCountdown" type="string" value="1" />
 
-
-            <param name="Odom/Strategy"      type="string" value="0"/> <!-- 0=Frame-to-Map, 1=Frame=to=Frame -->
-            <param name="Vis/EstimationType" type="string" value="1"/> <!-- 0=3D->3D 1=3D->2D (PnP) -->
-            <param name="Vis/MaxDepth"       type="string" value="0"/>
+            <param name="Odom/Strategy"      type="string" value="$(arg odom_topic)"/>
             <param name="Odom/GuessMotion" type="string" value="true"/>
             <param name="Vis/MinInliers"     type="string" value="10"/>
             <param name="OdomF2M/MaxSize"    type="string" value="1000"/>
@@ -106,7 +94,6 @@
     <arg name="rtabmapviz"      value="$(arg rtabmapviz)" />
     <arg name="gps_topic"       value="/navsat/fix"/>
     
-    
     <!-- 3D LiDAR -->
     <arg name="subscribe_scan_cloud"  value="$(arg lidar3d)" />
     <arg     if="$(arg lidar3d)" name="scan_cloud_topic" value="/lslidar_point_cloud" />
@@ -120,6 +107,7 @@
     <arg name="camera_info_topic" value="/rs_camera/color/camera_info" />
     <arg name="depth_topic"       value="/rs_camera/aligned_depth_to_color/image_raw" />
     <arg name="approx_rgbd_sync"  value="false" />
+    <arg name="odom_topic"        value="$(arg odom_topic)" />
     
   </include>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+
   <arg name='control_method' default="joy" doc="[joy, move_base]"/>
   <arg name="map_name" default="new_map.db"/>
   <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
@@ -31,7 +32,7 @@
     <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
   </group>
   <group if="$(eval control_method == 'move_base')">
-    <!-- move_base -->
+    <!-- move_base control -->
     <include file="$(find tigra_software)/launch/drivers/move_base.launch">
       <arg name="folder_name" value="move_base_vo" />
       <arg name="cmd_topic" value="tigra/cmd_vel_raw" />
@@ -48,8 +49,10 @@
 
   <node if="$(arg debug)" pkg="rqt_plot" type="rqt_plot" name="steering_plot" output="screen" args="/tigra/cmd_vel_raw/angular/z /tigra/cmd_vel/angular/z" />
 
+  <!-- rviz -->
   <include if="$(arg rviz)" file="$(find tigra_software)/launch/view/rviz_start.launch">
     <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_move_base.rviz" />
     <!-- <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/rtab_obstacle.rviz" /> -->
   </include>
+
 </launch>

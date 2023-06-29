@@ -18,8 +18,10 @@
 
     <!-- camera args -->
     <arg name="align_depth" default="true" />
-    <arg name="linear_accel_cov" default="0.01" />
-    <arg name="unite_imu_method" default="copy" />
+    <!-- imu calib https://www.programmersought.com/article/29581858144/ -->
+    <arg name="linear_accel_cov" default="2.8946e-2" />
+    <arg name="angular_velocity_cov" default="3.02472e-3" />
+    <arg name="unite_imu_method" default="linear_interpolation" />
     <arg name="depth_fps" default="30" />
     <arg name="color_fps" default="30" />
     <arg name="enable_gyro" default="true" />
@@ -34,6 +36,8 @@
 
             <arg name="align_depth" value="$(arg align_depth)" />
             <arg name="linear_accel_cov" value="$(arg linear_accel_cov)" />
+            <arg name="angular_velocity_cov" value="$(arg angular_velocity_cov)" />
+
             <arg name="unite_imu_method" value="$(arg unite_imu_method)" />
             <arg name="depth_fps" value="$(arg depth_fps)" />
             <arg name="color_fps" value="$(arg color_fps)" />

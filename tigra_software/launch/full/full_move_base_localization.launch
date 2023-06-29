@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+
+  <arg name='control_method' default="joy" doc="[joy, move_base]"/>
   <arg name='rviz' default="true"/>
   <arg name='rtabmapviz' default='true'/>
   <arg name="map_prefix" default="20230621_leti" />
@@ -14,4 +16,5 @@
     <arg name="map_name" value="$(arg map_name)"/>
     <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
   </include>
+
 </launch>
