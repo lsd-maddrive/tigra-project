@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- realsense2_camera/launch/rs_multiple_devices.launch -->
-
 <launch>
+
     <arg name="rgb_topic" default="color/image_raw" />
     <arg name="depth_topic" default="aligned_depth_to_color/image_raw" />
     <arg name="camera_info_topic" default="color/camera_info" />
@@ -91,4 +91,5 @@
             </node>
         </group>
     </group>
+
 </launch>

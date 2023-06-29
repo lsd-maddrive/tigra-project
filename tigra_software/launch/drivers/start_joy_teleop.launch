@@ -10,7 +10,7 @@
 
     	<param name="speed/frwd_limit" value="1" />
     	<param name="speed/bkwrd_limit" value="-0.6" />
-    	<param name="steer/limit" value="25" />
+    	<param name="steer/limit" value="35" />
 
         <remap from="cmd_vel" to="tigra/cmd_vel_raw" />
     </node>

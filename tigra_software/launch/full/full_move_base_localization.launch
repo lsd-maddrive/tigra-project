@@ -13,6 +13,7 @@
 
   <include file="$(find tigra_software)/launch/full/full_move_base_control.launch">
     <arg name="localization" value="true" />
+    <arg name="control_method" value="$(arg control_method)" />
     <arg name="map_name" value="$(arg map_name)"/>
     <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
   </include>
