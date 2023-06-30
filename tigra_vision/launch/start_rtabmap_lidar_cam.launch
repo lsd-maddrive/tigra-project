@@ -1,16 +1,10 @@
-         <!-- 5) 3DoF mapping with 3D LiDAR and RGB-D camera
-            $ roslaunch rtabmap_ros demo_husky.launch lidar3d:=true slam2d:=true camera:=true -->
-
+<!-- 5) 3DoF mapping with 3D LiDAR and RGB-D camera + stabilized frame
+      $ roslaunch rtabmap_ros demo_husky.launch lidar3d:=true slam2d:=true camera:=true -->
 <launch>
-<!-- TF pepelac high is 0.8-->
-
-
-
   <arg name="localization" default="true"/>
   <arg name="rtabmapviz"   default="true"/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db"/>
   
-
   <arg name="rtabmap"      default="true"/>
   <arg name="rgbd_odom" default="true" />
 
@@ -19,8 +13,7 @@
   <arg name="lidar3d_ray_tracing" default="true"/>
   <arg name="slam2d"       default="true"/>
   <arg name="depth_from_lidar" default="false"/>
-  
-  
+    
   <arg     if="$(arg lidar3d)" name="cell_size" default="0.3"/>
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
@@ -28,8 +21,9 @@
   <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
   <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
   <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
-  <arg name="imu_topic" default="/rs_camera/imu/filtered" />
-  
+  <arg name="imu_topic"       default="/rs_camera/imu"/>
+  <arg name="frame_id"        default="base_footprint"/>  
+ 
   
   <arg if="$(arg lidar3d)" name="lidar_args" default="
       --Reg/Strategy 1 
@@ -58,24 +52,39 @@
       --RGBD/ProximityPathMaxNeighbors 1
       --Grid/Sensor 0"/>
 
-
+  <!-- IMU orientation estimation and publish tf accordingly to os_sensor frame -->
+  <node pkg="nodelet" type="nodelet" name="imu_nodelet_manager" args="manager">
+    <remap from="imu/data_raw" to="$(arg imu_topic)"/>
+    <remap from="imu/data" to="$(arg imu_topic)/filtered"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="imu_filter" args="load imu_filter_madgwick/ImuFilterNodelet imu_nodelet_manager">
+    <param name="use_mag" value="false"/>
+    <param name="world_frame" value="enu"/>
+    <param name="publish_tf" value="false"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="imu_to_tf" args="load rtabmap_util/imu_to_tf imu_nodelet_manager">
+    <remap from="imu/data" to="$(arg imu_topic)/filtered"/>
+    <param name="fixed_frame_id" value="$(arg frame_id)_stabilized"/>
+    <param name="base_frame_id" value="$(arg frame_id)"/>
+  </node>
+    
   <!--- Run rtabmap -->
 
   <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
             <!-- input -->
             <!-- <remap from="odom" to="/tigra/vo" /> -->
-            <remap from="imu" to="$(arg imu_topic)" />
+            <remap from="imu" to="$(arg imu_topic)/filtered" />
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
 
-            <param name="frame_id"        type="string" value="base_footprint"/>
+            <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/>
+            <param name="frame_id"        type="string" value="$(arg frame_id)"/>
             <param name="odom_frame_id"   type="string" value="odom"/>
+            
             <param name="publish_tf" type="bool" value="true" />
             <param name="wait_for_transform_duration" type="double" value="0.2" />
-
-
 
             <param name="Reg/Force3DoF" type="bool" value="true" />
             <param name="Odom/ResetCountdown" type="string" value="1" />
@@ -100,7 +109,7 @@
     <arg name="localization"    value="$(arg localization)" />
     <arg name="visual_odometry" value="false" />
     <arg name="approx_sync"     value="$(eval camera or not icp_odometry)" />
-    <arg name="imu_topic"       value="/imu/data" />
+    <arg name="imu_topic"       value="$(arg imu_topic)/filtered" />
     <!-- <arg unless="$(arg icp_odometry)" name="odom_topic" value="/odometry/filtered" /> -->
     <arg name="frame_id"        value="base_footprint" />
     <arg name="rtabmapviz"      value="$(arg rtabmapviz)" />
