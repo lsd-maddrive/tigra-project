@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 from geometry_msgs.msg import Twist
@@ -63,6 +63,7 @@ def joy_cb(msg):
 
     angular_pos.set_relative(msg.axes[0])
     linear_vel.set_relative(msg.axes[3])
+    update_command_state()
 
 
 class TwoDirectionVelocity:
@@ -85,6 +86,17 @@ class TwoDirectionVelocity:
 
     def get_velocity(self):
         return self._velocity
+
+
+def update_command_state():
+    global command_state, cmd_pub, has_control_commands
+
+    command_state.linear.x = linear_vel.get_velocity()
+    command_state.angular.z = angular_pos.get_velocity()
+
+    if has_control_commands or (command_state.linear.x != 0) or (command_state.angular.z != 0):
+        cmd_pub.publish(command_state)
+        has_control_commands = (command_state.linear.x != 0) or (command_state.angular.z != 0)
 
 
 if __name__ == "__main__":
@@ -114,9 +126,8 @@ if __name__ == "__main__":
     rospy.loginfo("Ready, go!")
     rate = rospy.Rate(5)
 
+    has_control_commands = False
+
     while not rospy.is_shutdown():
-        command_state.linear.x = linear_vel.get_velocity()
-        command_state.angular.z = angular_pos.get_velocity()
-        
-        cmd_pub.publish(command_state)
+        update_command_state()
         rate.sleep()
