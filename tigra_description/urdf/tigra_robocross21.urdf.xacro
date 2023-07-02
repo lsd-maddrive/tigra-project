@@ -6,7 +6,7 @@
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/elp_stereo.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/gps.urdf.xacro" />
 
-  	<xacro:gps
+	<xacro:gps
 		parent="base_link"
 		origin_xyz="0 0 ${body_heigth/2+0.1}"
 		origin_rpy="0 0 0" />
@@ -17,7 +17,7 @@
 		xyz="${body_length/2} 0 ${body_heigth/2+0.1}"
 		rpy="0 0 0" />
 
-  	<xacro:elp_stereo
+	<xacro:elp_stereo
 		name="elp_stereo"
 		parent="base_link"
 		xyz="-${body_length/2-wheelbase/2+0.05} 0 0"

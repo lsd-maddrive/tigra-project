@@ -4,8 +4,10 @@
     <arg name='control_method' default="move_base" doc="[joy, move_base]"/>
     <arg name="map_name" default="new_map.db" />
     <arg name="localization" default="false" />
+    <arg name="debug" default="true"/>
     <arg name='rviz' default="true" />
     <arg name='rtabmapviz' default='true' />
+    <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
@@ -16,19 +18,18 @@
         <arg name="publish_tf" value="false" />
     </include>
 
-    <!-- odometry filter-->
+    <!-- rtabmap-->
+    <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
+        <arg name="localization" value="$(arg localization)" />
+        <arg name="database_path" value="$(arg database_path)" />
+        <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+    </include>
+
+    <!-- robot_localization-->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
         <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
     </node>
-
-    <!-- rtabmap-->
-    <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
-        <!-- <param name="Rtabmap/DetectionRate" type="string" value="1" /> -->
-        <arg name="localization" value="$(arg localization)" />
-        <arg name="database_path" value="$(find tigra_maps)/3d_maps/$(arg map_name)" />
-        <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
-    </include>
 
     <!-- joy teleop-->
     <group if="$(eval control_method == 'joy')">
@@ -49,11 +50,8 @@
         <remap from="cmd_vel" to="cmd_vel" />
     </node>
 
-    <!-- rviz -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/common_sim.rviz"/>
-
     <!-- debug instruments -->
-    <!-- <group ns="debug">
+    <group if="$(arg debug)">
         <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
             args="
                 /tigra/wheel_odom/pose/pose/position/x
@@ -70,6 +68,11 @@
         <node name="rqt_runtime_monitor" pkg="rqt_runtime_monitor" type="rqt_runtime_monitor"/>
         <node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree"/>
         <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph"/>
-    </group> -->
+    </group>
+
+    <!-- rviz -->
+    <include if="$(arg rviz)" file="$(find tigra_software)/launch/view/rviz_start.launch">
+        <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz" />
+    </include>
 
 </launch>

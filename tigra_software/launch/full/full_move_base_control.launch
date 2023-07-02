@@ -14,7 +14,7 @@
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
   <include file="$(find tigra_software)/launch/drivers/start_hardware.launch"/>
 
-  <!-- SLAM -->
+  <!-- rtabmap -->
   <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
     <arg name="localization" value="$(arg localization)" />
     <arg name="database_path" value="$(arg database_path)" />
