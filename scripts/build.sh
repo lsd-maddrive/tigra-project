@@ -15,6 +15,7 @@ catkin build \
     stereo_image_proc \
     cv_bridge \
     maddrive_urdf_tools \
+    maddrive_teleop \
     -j$(($(nproc)-2)) \
     --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON -DCATKIN_ENABLE_TESTING=False -DCMAKE_BUILD_TYPE=Release
     
