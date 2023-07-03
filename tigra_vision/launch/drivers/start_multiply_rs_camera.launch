@@ -63,11 +63,11 @@
         </include>
     </group>
 
-    <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+    <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
         <arg name="in_topic" value="$(arg camera1)/imu" />
         <arg name="out_topic" value="$(arg camera1)/imu/filtered" />
         <arg name="camera" value="$(arg camera1)" />
-    </include>
+    </include> -->
     <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
         <arg name="in_topic" value="$(arg camera2)/imu" />
         <arg name="out_topic" value="$(arg camera2)/imu/filtered" />

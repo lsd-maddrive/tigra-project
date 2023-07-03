@@ -1,92 +1,170 @@
 #!/usr/bin/env python3
 
 import rospy
+import actionlib
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
-from std_msgs.msg import Int8, UInt8
+from std_msgs.msg import Int32MultiArray
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from time import sleep
+
 import numpy as np
+import time
 
 
-# 0 - Blue
-# 1 - Green
-# 2 - Red
-# 3 - Yellow
-# 4 - LU
-# 5 - RU
-# 6 - LB
-# 7 - RB
-# 10 - Left stick
-# 11 - Right stick
 
-button_names = [
-    "Blue",
-    "Green",
-    "Red",
-    "Yellow",
-    "Left upper",
-    "Right upper",
-    "Left bottom",
-    "Right bottom",
-    "_",
-    "_",
-    "Left stick",
-    "Right stick",
-]
-
-axes_names = [
-    "Lstick horz",
-    "Lstick vert",
-    "Rstick horz",
-    "Rstick vert",
-    "Btns horz",
-    "Btns vert",
-]
+# BUTTONS_NUM={   "A":0,
+#                 "B":1,
+#                 "X":2,
+#                 "Y":3,
+#                 "LB":4,
+#                 "RB":5,
+#                 "BACK":6,
+#                 "START":7,
+#                 "LIVE":8,
+#                 "LS":9,
+#                 "RS":10}
 
 
-def show_clicked(msg):
-    print("Buttons:")
-    for i in range(len(msg.buttons)):
-        if msg.buttons[i] != 0:
-            print("\t" + button_names[i])
+class Controller():
+    def __init__(self) -> None:
+        self.axis=self.TwoDirectionVelocity
+        self.buttons_status=self.ButtonsStatus
+        self.command_state = Twist()
+        self.buttons_msg= Int32MultiArray()
 
-    print("Axes:")
-    for i in range(len(msg.axes)):
-        print("\t%s: %.2f" % (axes_names[i], msg.axes[i]))
+        rospy.init_node("control_link")
+        rospy.Subscriber("joy", Joy, self.joy_cb, queue_size=5)
+        self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+        rospy.loginfo("Wating for move_base server.....")       
+        print('aboba')
+        self.cmd_pub = rospy.Publisher("cmd_vel", Twist, queue_size=5)
+        self.btn_pub = rospy.Publisher("button_pressed", Int32MultiArray, queue_size=5)
+        self.rate = 5
+       
+        self.debug_enabled = rospy.get_param("~debug", False)
+        if self.debug_enabled:
+            rospy.loginfo("Debug enabled")
+        forward_speed_limit_mps = rospy.get_param("~speed/frwd_limit", 1)
+        backward_speed_limit_mps = rospy.get_param("~speed/bkwrd_limit", -1)
+        steer_limit_deg = rospy.get_param("~steer/limit", 25)
+        steer_limit_rad = np.deg2rad(steer_limit_deg)
+
+        self.linear_vel = self.axis(
+            min_value=backward_speed_limit_mps, max_value=forward_speed_limit_mps
+        )
+        self.angular_pos = self.axis(
+            min_value=-steer_limit_rad, max_value=steer_limit_rad
+        )
+        self.buttons = self.buttons_status()
+        rospy.loginfo("Ready, go!")
 
 
-def joy_cb(msg):
+    def joy_cb(self, msg):
 
-    if debug_enabled:
-        show_clicked(msg)
+        if self.debug_enabled:
+            self.show_clicked(msg)
 
-    angular_pos.set_relative(msg.axes[0])
-    linear_vel.set_relative(msg.axes[3])
-    update_command_state()
+        ## last message timestamp
+        # self.linear_vel.last_stamp=msg.header.stamp.secs
+        self.linear_vel.last_stamp=time.time()
+
+        self.angular_pos.set_relative(msg.axes[0])
+        self.linear_vel.set_relative(msg.axes[4])
+        self.buttons.set_buttons(msg.buttons)
 
 
-class TwoDirectionVelocity:
-    def __init__(self, min_value, max_value, zero_point=0):
-        assert min_value < zero_point < max_value
+    def spin(self):
+        r = rospy.Rate(self.rate)
+        while not rospy.is_shutdown():
+            self.update()
+            r.sleep()
+    
+    def button_handler(self,button_arr):
+        if button_arr[1] == 1:
+            self.client.cancel_goal()
+            self.client.cancel_all_goals() # Try both
+            rospy.loginfo("Goal cancelled")
 
-        self._low_ratio = zero_point - min_value
-        self._high_ratio = max_value - zero_point
 
-        self._zero_point = zero_point
-        self._velocity = 0
+    def update(self):
+       
+        # TODO Communication loss protection
+        # delta =time.time() - self.linear_vel.last_stamp
+        # print(f'delta is {delta}')
+        # if time.time() - self.linear_vel.last_stamp > 5:
+        #     self.command_state.linear.x = 0
+        #     # print('CONNECTION LOST!!')
+        # else:
+        #     self.command_state.linear.x = self.linear_vel.get_velocity()
+            
+        self.command_state.linear.x = self.linear_vel.get_velocity()
+        self.command_state.angular.z = self.angular_pos.get_velocity()
+        self.buttons_msg.data=self.buttons.get_buttons()
+        self.button_handler(self.buttons_msg.data)
 
-    def set_relative(self, ratio):
-        ratio = np.clip(ratio, -1, 1)
+        # if self.buttons_msg.data[1] == 1:
+        #     self.client.cancel_goal()
+        #     self.client.cancel_all_goals() # Try both
+        #     rospy.loginfo("Goal cancelled")
 
-        if ratio < 0:
-            self._velocity = self._zero_point + ratio * self._low_ratio
-        else:
-            self._velocity = self._zero_point + ratio * self._high_ratio
+        self.cmd_pub.publish(self.command_state)
+        self.btn_pub.publish(self.buttons_msg)
 
-    def get_velocity(self):
-        return self._velocity
 
+    def show_clicked(self,msg):
+        button_names = ["A","B","X","Y",
+                    "LB","RB","BACK","START",
+                    "LIVE","LS","RS",
+        ]
+        axes_names = ["Lstick horz","Lstick vert",
+                    "LT","Rstick horz",
+                    "Rstick vert","RT","?","?",
+        ]      
+        print("Buttons:")
+        for i in range(len(msg.buttons)):
+            if msg.buttons[i] != 0:
+                print("\t" + button_names[i])
+
+        print("Axes:")
+        for i in range(len(msg.axes)):
+            print("\t%s: %.2f" % (axes_names[i], msg.axes[i]))
+
+        # print(f'timestamp diif is {int(time.time()) - self.linear_vel.last_stamp}')
+        
+    # def GoalHandler
+
+    class TwoDirectionVelocity:
+        def __init__(self, min_value, max_value, zero_point=0):
+            assert min_value < zero_point < max_value
+
+            self._low_ratio = zero_point - min_value
+            self._high_ratio = max_value - zero_point
+
+            self._zero_point = zero_point
+            self._velocity = 0
+            self.last_stamp = 0
+
+        def set_relative(self, ratio):
+            ratio = np.clip(ratio, -1, 1)
+
+            if ratio < 0:
+                self._velocity = self._zero_point + ratio * self._low_ratio
+            else:
+                self._velocity = self._zero_point + ratio * self._high_ratio
+
+        def get_velocity(self):
+            return self._velocity
+        
+    class ButtonsStatus:
+        def __init__(self) -> None:
+            self._pressed_buttons=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        def set_buttons(self,msg):
+            self._pressed_buttons=msg
+            
+        def get_buttons(self):
+            return self._pressed_buttons
+        
 
 def update_command_state():
     global command_state, cmd_pub, has_control_commands
@@ -100,34 +178,8 @@ def update_command_state():
 
 
 if __name__ == "__main__":
-    rospy.init_node("control_link")
-
-    debug_enabled = rospy.get_param("~debug", False)
-    if debug_enabled:
-        rospy.loginfo("Debug enabled")
-
-    command_state = Twist()
-
-    rospy.Subscriber("joy", Joy, joy_cb, queue_size=5)
-    cmd_pub = rospy.Publisher("cmd_vel", Twist, queue_size=5)
-
-    forward_speed_limit_mps = rospy.get_param("~speed/frwd_limit", 1)
-    backward_speed_limit_mps = rospy.get_param("~speed/bkwrd_limit", -1)
-    steer_limit_deg = rospy.get_param("~steer/limit", 25)
-    steer_limit_rad = np.deg2rad(steer_limit_deg)
-
-    linear_vel = TwoDirectionVelocity(
-        min_value=backward_speed_limit_mps, max_value=forward_speed_limit_mps
-    )
-    angular_pos = TwoDirectionVelocity(
-        min_value=-steer_limit_rad, max_value=steer_limit_rad
-    )
-
-    rospy.loginfo("Ready, go!")
-    rate = rospy.Rate(5)
-
-    has_control_commands = False
-
-    while not rospy.is_shutdown():
-        update_command_state()
-        rate.sleep()
+    try:
+        controller=Controller()
+        controller.spin()
+    except rospy.ROSInterruptException:
+        print('Exception catched!')
