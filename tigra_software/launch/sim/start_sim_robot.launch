@@ -16,7 +16,7 @@
     </include>
 
     <include file="$(find tigra_software)/launch/drivers/move_base.launch">
-        <arg name="folder_name" value="move_base_vo" />
+        <arg name="folder_name" value="move_base_sim" />
         <arg name="cmd_topic" value="tigra/cmd_vel" />
     </include>
 
