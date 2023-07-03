@@ -4,8 +4,7 @@ import yaml
 import rospy
 import actionlib
 from geometry_msgs.msg import Twist
-from std_msgs.msg import Int8, UInt8, String
-
+from std_msgs.msg import Int8, UInt8
 from actionlib_msgs.msg import GoalStatus
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
@@ -15,11 +14,6 @@ import time
 import numpy as np
 
 MAP_FRAME_ID = 'map'
-
-class StatusPublisher:
-    def __init__(self):
-        self.status=""
-        self.statusPub = rospy.Publisher('control_link_status', String, queue_size=10)
 
 
 class GoalDescription:
@@ -83,9 +77,6 @@ class GoalsSender:
     def _next_goal(self):
         self.current_goal_idx += 1
         if self.current_goal_idx >= len(self._goals):
-            status_publisher.status=rospy.get_param('~route_file_name')
-            status_publisher.statusPub.publish(status_publisher.status)
-            print('im pub')
             raise ValueError('Goals completed')
 
         self.current_goal = self._goals[self.current_goal_idx]
@@ -124,8 +115,6 @@ class GoalsSender:
         if state in [GoalStatus.PREEMPTED, GoalStatus.SUCCEEDED]:
             self._is_completed = True
             self.current_goal = None
-
-            # print('Im done with %s' % point)
         elif state == GoalStatus.ABORTED:
             # Reset
             rospy.loginfo(f'Reset current target: {self.current_goal}')
@@ -139,25 +128,21 @@ class GoalsSender:
         x = fb.base_position.pose.position.x
         y = fb.base_position.pose.position.y
         q = fb.base_position.pose.orientation
-        if self.current_goal is not None:
-            if self.current_goal.eval_tolerance_quat(x, y, q):
-                # Goal reached but only by local tolerance
-                self.client.cancel_goal()
 
-                self._is_completed = True
-                self.current_goal = None
+        if self.current_goal.eval_tolerance_quat(x, y, q):
+            # Goal reached but only by local tolerance
+            self.client.cancel_goal()
+
+            self._is_completed = True
+            self.current_goal = None
 
 
 if __name__ == '__main__':
     rospy.init_node('control_link')
     print('Ready, go')
-    ### publisher status ###
-    status_publisher=StatusPublisher()
-
 
     # Obtain goals from route file
-    filepath=rospy.get_param('~route_file_name')
-    config_fpath = rospy.get_param("robot/"+str(filepath))
+    config_fpath = rospy.get_param("robot/route_filepath")
     with open(config_fpath) as f:
         route_data = yaml.safe_load(f)
         route_points = route_data["points"]
@@ -182,13 +167,9 @@ if __name__ == '__main__':
         print(f"Added goal to list: {goal_desc}")
 
     sender = GoalsSender(goals=goals)
-    time.sleep(3)
-
     try:
         while not rospy.is_shutdown():
             sender.step()
-            # status_publisher.status=1
-            # status_publisher.statusPub.publish(status_publisher.status)
             time.sleep(1)
 
     except Exception as e:
@@ -196,3 +177,4 @@ if __name__ == '__main__':
         print(f'Interrupted: {e}')
 
     print('Done!')
+

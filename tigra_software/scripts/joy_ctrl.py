@@ -131,7 +131,6 @@ class Controller():
 
         # print(f'timestamp diif is {int(time.time()) - self.linear_vel.last_stamp}')
         
-    # def GoalHandler
 
     class TwoDirectionVelocity:
         def __init__(self, min_value, max_value, zero_point=0):
