@@ -2,19 +2,18 @@ global_costmap:
   global_frame: map
   robot_base_frame: base_footprint
   
-  update_frequency: 2.0
-  publish_frequency: 2.0
+  update_frequency: 1.0
+  publish_frequency: 0.5
 
   transform_tolerance: 1.0
-  width: 30.0
-  height: 30.0
-  # static_map: true
-  # origin_x: -4.0
-  # origin_y: -4.0
+  width: 50.0
+  height: 50.0
+ 
 
   plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
-    # - {name: laser_obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+    - {name: lidar_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
+
     # - {name: depth_obstacle_layer, type: "costmap_2d::VoxelLayer"}
-    - {name: rs_st_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
+    # - {name: rs_st_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}

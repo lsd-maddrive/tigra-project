@@ -8,8 +8,10 @@
 
   <arg name="cmd_topic" default="cmd_vel" />
 
-  <arg name="footprint" default="[ [1.6, 0.5], [-0.4, 0.5], [-0.4, -0.5], [1.6, -0.5] ]" />
+  <!-- <arg name="footprint" default="[ [1.6, 0.5], [-0.4, 0.5], [-0.4, -0.5], [1.6, -0.5] ]" /> real size -->
+  <arg name="footprint" default="[ [1.7, 0.6], [-0.5, 0.6], [-0.5, -0.6], [1.7, -0.6] ]" /> <!-- extended size -->
 
+<!-- asd -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 
     <rosparam file="$(find tigra_software)/config/$(arg folder_name)/costmap_common_params.yaml" command="load" ns="global_costmap" />
@@ -33,6 +35,7 @@
 
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <param name="clearing_rotation_allowed" value="false" /> 
 
     <remap from="cmd_vel" to="$(arg cmd_topic)" />
   </node>
