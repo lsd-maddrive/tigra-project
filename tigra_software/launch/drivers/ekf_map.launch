@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="folder_name" default="ekf" />
+  <arg name="config_folder_name" default="ekf" />
 
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global">
-    <rosparam command="load" file="$(find tigra_software)/config/$(arg folder_name)/ekf_map.yaml"/>
+    <rosparam command="load" file="$(find tigra_software)/config/$(arg config_folder_name)/ekf_map.yaml"/>
     
     <remap from="/odometry/filtered" to="/odometry/global/filtered" />
   </node>

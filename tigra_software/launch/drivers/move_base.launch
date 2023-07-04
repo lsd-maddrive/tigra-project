@@ -5,7 +5,7 @@
   <arg name="base_frame" default="base_footprint" />
   <arg name="global_frame" default="map" />
 
-  <arg name="folder_name" default="move_base" />
+  <arg name="config_folder_name" default="move_base" />
 
   <arg name="cmd_topic" default="cmd_vel" />
 
@@ -15,14 +15,14 @@
 <!-- asd -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/move_base_params.yaml" command="load" />
+    <rosparam file="$(find tigra_software)/config/$(arg config_folder_name)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find tigra_software)/config/$(arg config_folder_name)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find tigra_software)/config/$(arg config_folder_name)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find tigra_software)/config/$(arg config_folder_name)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find tigra_software)/config/$(arg config_folder_name)/move_base_params.yaml" command="load" />
 
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/global_planner_params.yaml" command="load" />
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/teb_local_planner.yaml" command="load" />
+    <rosparam file="$(find tigra_software)/config/$(arg config_folder_name)/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find tigra_software)/config/$(arg config_folder_name)/teb_local_planner.yaml" command="load" />
 
     <!-- Explicit params setting -->
     <rosparam param="TebLocalPlannerROS/footprint_model/vertices" subst_value="True">$(arg footprint)</rosparam>

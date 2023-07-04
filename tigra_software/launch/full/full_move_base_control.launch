@@ -32,7 +32,7 @@
   </include>
   <!-- move_base -->
   <include file="$(find tigra_software)/launch/drivers/move_base.launch">
-    <arg name="folder_name" value="move_base_vo" />
+    <arg name="config_folder_name" value="move_base_vo" />
     <arg name="cmd_topic" value="nav_vel" />
   </include>
   <!-- twist_mux -->
