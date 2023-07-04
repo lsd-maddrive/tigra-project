@@ -3,7 +3,7 @@
     <arg name="localization" default="false" /> <!-- set false to start mapping-->
     <arg name="debug" default="false" />
     <arg name='rviz' default="true" />
-    <arg name='rtabmapviz' default='false' />
+    <arg name='rtabmap_viz' default='false' />
     <arg name='ekf_global' default='true'/>
 
     <arg name="imu_topic" default="/rs_camera_left/imu/filtered" />
@@ -26,7 +26,7 @@
         <arg name="rtabmap" value="false" />
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/$(arg map_name)" />
-        <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+        <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
         <arg name="imu_topic" value="$(arg imu_topic)" />
     </include>
 

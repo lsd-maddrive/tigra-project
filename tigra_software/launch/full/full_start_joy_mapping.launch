@@ -10,7 +10,7 @@
         <include file="$(find tigra_vision)/launch/start_rtabmap_rs455_rs435.launch">
             <arg name="localization" value="false" />
             <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
-            <arg name="rtabmapviz" value="true"/>
+            <arg name="rtabmap_viz" value="true"/>
         </include>
     </group>
     <group if="$(eval use_rs455_rs435 == 'false')">
@@ -20,7 +20,7 @@
         <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
             <arg name="localization" value="false" />
             <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
-            <arg name="rtabmapviz" value="true"/>
+            <arg name="rtabmap_viz" value="true"/>
         </include>
     </group>
 

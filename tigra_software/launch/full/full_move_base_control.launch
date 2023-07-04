@@ -5,7 +5,7 @@
   <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
   <arg name="debug" default="false"/> <!-- rqt_plot -->
   <arg name='rviz' default="true"/>
-  <arg name='rtabmapviz' default='false'/>
+  <arg name='rtabmap_viz' default='false'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
 
   <!-- Start hardware -->
@@ -17,7 +17,7 @@
   <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
     <arg name="localization" value="$(arg localization)" />
     <arg name="database_path" value="$(arg database_path)" />
-    <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
+    <arg name="rtabmap_viz" value="$(arg rtabmap_viz)"/> 
   </include>
 
   <!-- robot_localization -->

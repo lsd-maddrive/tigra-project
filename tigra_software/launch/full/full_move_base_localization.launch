@@ -3,7 +3,7 @@
 
   <arg name='control_method' default="joy" doc="[joy, move_base]"/>
   <arg name='rviz' default="true"/>
-  <arg name='rtabmapviz' default='true'/>
+  <arg name='rtabmap_viz' default='true'/>
   <arg name="map_prefix" default="20230621_leti" />
   <arg name="map_name" default="$(arg map_prefix).db" />
   
@@ -15,7 +15,7 @@
     <arg name="localization" value="true" />
     <arg name="control_method" value="$(arg control_method)" />
     <arg name="map_name" value="$(arg map_name)"/>
-    <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
+    <arg name="rtabmap_viz" value="$(arg rtabmap_viz)"/> 
   </include>
 
 </launch>

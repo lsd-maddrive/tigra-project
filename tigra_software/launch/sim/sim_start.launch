@@ -5,7 +5,7 @@
     <arg name="localization" default="false" />
     <arg name="debug" default="true"/>
     <arg name='rviz' default="true" />
-    <arg name='rtabmapviz' default='true' />
+    <arg name='rtabmap_viz' default='true' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
 
     <!-- simulation with robot -->
@@ -21,7 +21,7 @@
     <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(arg database_path)" />
-        <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+        <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
     </include>
 
     <!-- robot_localization-->

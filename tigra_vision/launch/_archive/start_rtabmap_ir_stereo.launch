@@ -1,5 +1,5 @@
 <launch>
-    <arg name="rtabmapviz" default="false" /> <!--arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
+    <arg name="rtabmap_viz" default="false" /> <!--arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
     <arg name="rviz" default="false" />
     <arg name="depth_mode" default="false" />
     <arg name="odom_strategy" default="9" /> <!-- default VINS - TODO -->
@@ -47,7 +47,7 @@
         <arg name="approx_sync" value="false" />
         <arg name="frame_id" value="$(arg frame_id)" />
         <arg name="imu_topic" value="$(arg imu_topic)" />
-        <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+        <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
         <arg name="rviz" value="$(arg rviz)" />
     </include>
 
@@ -64,7 +64,7 @@
         <arg name="imu_topic" value="$(arg imu_topic)" />
         <arg name="gps_topic" value="$(arg gps_topic)" />
         <arg name="wait_imu_to_init" value="false" />
-        <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+        <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
         <arg name="rviz" value="$(arg rviz)" />
         <!-- <arg name="clear_params" value="true" /> -->
         <arg name="database_path" value="$(arg database_path)" />

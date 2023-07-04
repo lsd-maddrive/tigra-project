@@ -2,7 +2,7 @@
 <!-- TF pepelac high is 0.8-->
 
   <arg name="localization" default="true"/>
-  <arg name="rtabmapviz"   default="true"/>
+  <arg name="rtabmap_viz"   default="true"/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db"/>
 
   <arg name="rtabmap"      default="true"/>
@@ -109,7 +109,7 @@
     <arg name="imu_topic"       value="$(arg imu_topic)/filtered" />
     <!-- <arg unless="$(arg icp_odometry)" name="odom_topic" value="/odometry/filtered" /> -->
     <arg name="frame_id"        value="base_footprint" />
-    <arg name="rtabmapviz"      value="$(arg rtabmapviz)" />
+    <arg name="rtabmap_viz"      value="$(arg rtabmap_viz)" />
     <arg name="gps_topic"       value="/navsat/fix"/>
     
     <!-- 3D LiDAR -->
