@@ -13,7 +13,6 @@ catkin build \
     cv_bridge \
     stereo_image_proc \
     camera_calibration \
-    spatio_temporal_voxel_layer \
     maddrive_urdf_tools \
     maddrive_teleop \
     realsense2_camera \
