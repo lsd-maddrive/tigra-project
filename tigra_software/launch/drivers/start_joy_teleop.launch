@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <launch>
+
+    <arg name="cmd_topic" default="cmd_vel" />
+
     <node pkg="joy" type="joy_node" name="joystick" output="screen" >
         <param name="dev" value="/dev/input/js0" />
     </node>
@@ -12,7 +15,7 @@
     	<param name="speed/bkwrd_limit" value="-0.6" />
     	<param name="steer/limit" value="25" />
 
-        <remap from="cmd_vel" to="/tigra/cmd_vel" />
+        <remap from="cmd_vel" to="$(arg cmd_topic)" />
     </node>
 
 </launch>

@@ -175,7 +175,7 @@ if __name__ == '__main__':
             y=pos["y"],
             angle=np.rad2deg(euler[2]),
             pose_tol=dist_tol,
-            angle_tol=None
+            angle_tol=0.15 # TODO obtain from yaml
         )
 
         goals.append(goal_desc)
