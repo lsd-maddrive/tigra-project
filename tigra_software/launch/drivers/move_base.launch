@@ -9,7 +9,8 @@
   <arg name="cmd_topic" default="cmd_vel" />
 
   <!-- <arg name="footprint" default="[ [1.6, 0.5], [-0.4, 0.5], [-0.4, -0.5], [1.6, -0.5] ]" /> real size -->
-  <arg name="footprint" default="[ [1.7, 0.6], [-0.5, 0.6], [-0.5, -0.6], [1.7, -0.6] ]" /> <!-- extended size -->
+  <!-- extended size -->
+  <!-- <arg name="footprint" default="[ [1.7, 0.6], [-0.5, 0.6], [-0.5, -0.6], [1.7, -0.6] ]" />   -->
 
 <!-- asd -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
@@ -24,9 +25,9 @@
     <rosparam file="$(find tigra_software)/config/$(arg folder_name)/teb_local_planner.yaml" command="load" />
 
     <!-- Explicit params setting -->
-    <rosparam param="TebLocalPlannerROS/footprint_model/vertices" subst_value="True">$(arg footprint)</rosparam>
-    <rosparam param="global_costmap/footprint" subst_value="True">$(arg footprint)</rosparam>
-    <rosparam param="local_costmap/footprint" subst_value="True">$(arg footprint)</rosparam>
+   <!-- <rosparam param="TebLocalPlannerROS/footprint_model/vertices" subst_value="True">$(arg footprint)</rosparam> -->
+    <!-- <rosparam param="global_costmap/footprint" subst_value="True">$(arg footprint)</rosparam> -->
+    <!-- <rosparam param="local_costmap/footprint" subst_value="True">$(arg footprint)</rosparam> -->
 
     <param name="global_costmap/global_frame" value="$(arg global_frame)" />
     <param name="global_costmap/robot_base_frame" value="$(arg base_frame)" />

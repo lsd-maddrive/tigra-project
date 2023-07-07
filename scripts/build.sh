@@ -13,14 +13,14 @@ catkin build \
     elp_stereo_camera \
     rtabmap \
     rtabmap_ros \
-    spatio_temporal_voxel_layer \
     ublox \
     cv_bridge \
     stereo_image_proc \
     camera_calibration \
     maddrive_urdf_tools \
-    lslidar_c16 \
     lslidar_driver \
+    realsense2_camera \
+    realsense2_description \
     -j$(($(nproc)-2)) \
     --cmake-args -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" -D RTABMAP_SYNC_MULTI_RGBD=ON -DCATKIN_ENABLE_TESTING=False -DCMAKE_BUILD_TYPE=Release
     
