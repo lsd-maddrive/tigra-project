@@ -27,7 +27,7 @@
   </node>
 
   <!-- joy teleop-->
-  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch">
+  <include file="$(find maddrive_teleop)/launch/drivers/start_joy_teleop.launch">
     <arg name="cmd_topic" value="joy_vel" />
   </include>
   <!-- move_base -->

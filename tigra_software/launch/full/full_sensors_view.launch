@@ -6,7 +6,7 @@
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
   <!-- joy_teleop -->
-  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
+  <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch" />
 
   <!-- tf -->
 	<include file="$(find tigra_software)/launch/drivers/tf_transforms.launch"/>

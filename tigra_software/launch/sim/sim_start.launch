@@ -3,7 +3,7 @@
 
     <arg name="map_name" default="new_map.db" />
     <arg name="localization" default="false" />
-    <arg name="debug" default="true"/>
+    <arg name="debug" default="false"/>
     <arg name='rviz' default="true" />
     <arg name='rtabmap_viz' default='true' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
@@ -45,16 +45,18 @@
         <remap from="cmd_vel_out" to="tigra/cmd_vel_raw"/>
     </node>
     <!-- cmd_vel filter -->
-    <node pkg="tigra_software" type="steering_filter" name="steering_filter" ns="tigra" output="screen">
+    <node pkg="maddrive_teleop" type="steering_filter" name="steering_filter" ns="tigra" output="screen">
         <param name="steering_alpha" value="1.0" />
         <remap from="cmd_vel_raw" to="cmd_vel_raw" />
         <remap from="cmd_vel" to="cmd_vel" />
     </node>
 
     <!-- debug instruments -->
-    <!-- <group if="$(arg debug)">
+    <group if="$(arg debug)">
         <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
             args="
+                /tigra/cmd_vel_raw/angular/z
+                /tigra/cmd_vel/angular/z
                 /tigra/wheel_odom/pose/pose/position/x
                 /tigra/wheel_odom/pose/pose/position/y
                 /tigra/wheel_odom/pose/pose/orientation/z
@@ -69,7 +71,7 @@
         <node name="rqt_runtime_monitor" pkg="rqt_runtime_monitor" type="rqt_runtime_monitor"/>
         <node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree"/>
         <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph"/>
-    </group> -->
+    </group>
 
     <!-- rviz -->
     <include if="$(arg rviz)" file="$(find tigra_software)/launch/view/rviz_start.launch">

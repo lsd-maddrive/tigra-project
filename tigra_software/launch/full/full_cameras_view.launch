@@ -3,7 +3,7 @@
 
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
-  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
+  <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch" />
 	<include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"/>
   <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/>
   <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/>
