@@ -10,7 +10,7 @@
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find tigra_maps)/worlds/room_with_pillars_asphalt.world"/>
+        <arg name="world" value="$(find maddrive_worlds)/worlds/room_with_pillars_asphalt.world"/>
         <arg name="gui" value="false" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
