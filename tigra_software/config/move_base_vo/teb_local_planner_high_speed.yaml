@@ -21,8 +21,8 @@ TebLocalPlannerROS:
     
  # Robot
          
- max_vel_x: 1.6 # default 0.8
- max_vel_x_backwards: 1.3 # default 0.8
+ max_vel_x: 1.1 # default 0.8
+ max_vel_x_backwards: 0.8 # default 0.8
  max_vel_y: 0.0
  max_vel_theta: 0.4 # the angular velocity is also bounded by min_turning_radius in case of a carlike robot (r = v / omega)
  acc_lim_x: 0.2
@@ -47,15 +47,15 @@ TebLocalPlannerROS:
 
  # GoalTolerance
     
- xy_goal_tolerance: 3
+ xy_goal_tolerance: 5.0
  yaw_goal_tolerance: 1.0
  free_goal_vel: False
  complete_global_plan: True
     
  # Obstacles
     
- min_obstacle_dist: 1.0 # This value must also include our robot's expansion, since footprint_model is set to "line".
- inflation_dist: 3.0
+ min_obstacle_dist: 1.5 # This value must also include our robot's expansion, since footprint_model is set to "line".
+ inflation_dist: 2.5
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.0
  obstacle_poses_affected: 15

@@ -5,6 +5,8 @@
   <arg name="global_frame" default="map" />
 
   <arg name="folder_name" default="move_base" />
+  <arg name="teb_config" default="teb_local_planner" />
+
 
   <arg name="cmd_topic" default="cmd_vel" />
 
@@ -22,7 +24,7 @@
     <rosparam file="$(find tigra_software)/config/$(arg folder_name)/move_base_params.yaml" command="load" />
 
     <rosparam file="$(find tigra_software)/config/$(arg folder_name)/global_planner_params.yaml" command="load" />
-    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/teb_local_planner.yaml" command="load" />
+    <rosparam file="$(find tigra_software)/config/$(arg folder_name)/$(arg teb_config).yaml" command="load" />
 
     <!-- Explicit params setting -->
    <!-- <rosparam param="TebLocalPlannerROS/footprint_model/vertices" subst_value="True">$(arg footprint)</rosparam> -->

@@ -1,5 +1,5 @@
 <launch>
-  <arg name="passthrough_filter" default="false" />
+  <arg name="passthrough_filter" default="true" />
   <arg name="rviz" default="false" />
   <arg name="min_range" default="0.15" />
 
@@ -41,7 +41,7 @@
     <param name="use_gps_ts" value="$(arg use_gps_ts)"/>
     <param name="read_once" value="false"/>
     <param name="min_range" value="$(arg min_range)"/>
-    <param name="max_range" value="150.0"/>
+    <param name="max_range" value="75.0"/> <!-- default 150 -->
     <param name="horizontal_angle_resolution" value="0.18"/>
     <param name="frame_id" value="laser_link"/>
     <param name="distance_unit" value="0.25"/>

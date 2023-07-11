@@ -14,7 +14,7 @@
   <arg name="slam2d"       default="true"/>
   <arg name="depth_from_lidar" default="false"/>
     
-  <arg     if="$(arg lidar3d)" name="cell_size" default="0.3"/>
+  <arg     if="$(arg lidar3d)" name="cell_size" default="0.2"/> <!--default 0.3-->
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
   <!-- INPUTS -->
@@ -41,7 +41,7 @@
       --Grid/RangeMax 20 
       --Grid/RayTracing $(arg lidar3d_ray_tracing) 
       --Grid/CellSize $(arg cell_size) 
-      --Grid/MaxGroundHeight 0.3
+      --Grid/MaxGroundHeight 0.1
       --Grid/MaxObstacleHeight 1.5
       --Icp/PointToPlaneRadius 0 
       --Icp/PointToPlaneNormalK 10 

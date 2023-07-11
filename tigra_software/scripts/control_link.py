@@ -175,7 +175,7 @@ if __name__ == '__main__':
             y=pos["y"],
             angle=np.rad2deg(euler[2]),
             pose_tol=dist_tol,
-            angle_tol=0.15 # TODO obtain from yaml
+            angle_tol=1.05 # TODO obtain from yaml
         )
 
         goals.append(goal_desc)
@@ -189,7 +189,7 @@ if __name__ == '__main__':
             sender.step()
             # status_publisher.status=1
             # status_publisher.statusPub.publish(status_publisher.status)
-            time.sleep(1)
+            time.sleep(0.1)
 
     except Exception as e:
         sender.reset()

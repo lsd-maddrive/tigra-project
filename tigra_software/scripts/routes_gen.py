@@ -15,9 +15,10 @@ class RouteGenerator:
         rospy.init_node('routes_generator', anonymous=True)
         rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.callback)
         self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction) # to cancel goals
+        self.dist_tol = 10
 
         rospy.loginfo('Ok, lets go!')
-        self.result_route='dist_tol: 1\npoints:\n'
+        self.result_route=f'dist_tol: {self.dist_tol}\npoints:\n'
 
         rospack = rospkg.RosPack()
         path_to_cfg_folder = f"{rospack.get_path('tigra_software')}/config/routes/new_route.yaml"

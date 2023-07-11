@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="map_name" default="new_map.db"/>
+  <!-- <arg name="map_name" default="new_map_robocross.db"/> -->
+  <arg name="map_name" default="robocross_11_07_23_with_start.db"/>
+
   <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
   <arg name="debug" default="false" />
   <arg name='rviz' default="true"/>
-  <arg name='rtabmapviz' default='false'/>
+  <arg name='rtabmapviz' default='true'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
 
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
@@ -30,6 +32,8 @@
   <include file="$(find tigra_software)/launch/drivers/move_base.launch">
     <arg name="folder_name" value="move_base_vo" />
     <arg name="cmd_topic" value="nav_vel" />
+    <arg name="teb_config" value="teb_local_planner_high_speed" />
+
   </include>
   <!-- joy_teleop -->
   <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch">

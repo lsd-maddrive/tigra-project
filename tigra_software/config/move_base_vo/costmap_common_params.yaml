@@ -87,29 +87,29 @@ lidar_obstacle_layer:
         observation_sources:      rgbd1_mark rgbd1_clear
         rgbd1_mark:
           data_type: PointCloud2
-          topic: /lslidar_point_cloud
+          topic: /lslidar_point_cloud/filtered
           marking: true
           clearing: false
           obstacle_range: 15.0          # meters
-          min_obstacle_height: 1.0   # default 0, meters
-          max_obstacle_height: 2.0     # default 3, meters
+          min_obstacle_height: 0.7   # default 0, meters
+          max_obstacle_height: 1.5     # default 3, meters
           expected_update_rate: 0.0    # default 0, if not updating at this rate at least, remove from buffer
           observation_persistence: 0.0 # default 0, use all measurements taken during now-value, 0=latest
           inf_is_valid: false          # default false, for laser scans
-          filter: "voxel"        # default passthrough, apply "voxel", "passthrough", or no filter to sensor data, recommend on     voxel_min_points: 0          # default 0, minimum points per voxel for voxel filter
+          filter: "passthrough"        # default passthrough, apply "voxel", "passthrough", or no filter to sensor data, recommend on     voxel_min_points: 0          # default 0, minimum points per voxel for voxel filter
           voxel_min_points: 5  
           clear_after_reading: true    # default false, clear the buffer after the layer gets readings from it
         rgbd1_clear:
           enabled: true                #default true, can be toggled on/off with associated service call
           data_type: PointCloud2
-          topic: /lslidar_point_cloud
+          topic: /lslidar_point_cloud/filtered
           marking: false
           clearing: true
           max_z: 8.0                  # default 0, meters
-          min_z: 1.0                  # default 10, meters
+          min_z: 0.0                  # default 10, meters
           vertical_fov_angle: 0.523   # default 0.7, radians. For 3D lidars it's the symmetric FOV about the planar axis.
           vertical_fov_padding: 0.05    # 3D Lidar only. Default 0, in meters 
-          horizontal_fov_angle: 6.29  # 3D lidar scanners like the VLP16 have 360 deg horizontal FOV.
+          horizontal_fov_angle: 3.15  # 3D lidar scanners like the VLP16 have 360 deg horizontal FOV.
           decay_acceleration: 5.0     # default 0, 1/s^2. 
           model_type: 1               # default 0, model type for frustum. 0=depth camera, 1=3d lidar like VLP16 or similar
 
