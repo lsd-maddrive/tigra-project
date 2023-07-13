@@ -23,7 +23,8 @@
     <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
   </include>
 
-  <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+  <!-- <node pkg="robot_localizatio
+if __name__ == '__main__':n" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
     <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
     <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
   </node> -->
@@ -43,9 +44,12 @@
     <rosparam command="load" file="$(find tigra_software)/config/twist_mux/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="tigra/cmd_vel_raw"/>
   </node>
+  <!-- Trafic Light -->
+  <node pkg="tigra_software" type="sign_nums_subs.py" name="sign_nums_subs" output="screen"/>
+
 
   <node pkg="tigra_software" type="steering_filter" name="steering_filter" output="screen">
-    <!-- <param name="steering_alpha" value="0.3"/> -->
+    <!-- <param name="steering_alpha" value="0.5"/> -->
     <!-- NB - Disabled filter -->
     <param name="steering_alpha" value="1.0" />
     <remap from="cmd_vel_raw" to="tigra/cmd_vel_raw" />

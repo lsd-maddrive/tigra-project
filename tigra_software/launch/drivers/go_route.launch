@@ -1,6 +1,8 @@
 <launch>
-    <arg name='point' value='new_route'/>
-    <arg name='route_filepath' value='route_filepath_$(arg point)'/>
+    <!-- <arg name='point' value='new_route_throug_back_11_07'/> -->
+    <arg name='point' default='new_route_throug_back_11_07'/>
+
+    <arg name='route_filepath' default='route_filepath_$(arg point)'/>
 
     <rosparam param="$(arg route_filepath)" ns="robot" subst_value="True">$(find tigra_software)/config/routes/$(arg point).yaml</rosparam>
     <node name="control_link_$(arg point)" pkg="tigra_software" type="control_link.py" output='screen'>

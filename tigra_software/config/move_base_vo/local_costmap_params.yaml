@@ -8,9 +8,9 @@ local_costmap:
   static_map: false #added!
   rolling_window: true
   
-  width: 35.0
-  height: 35.0
-  resolution: 0.15
+  width: 40.0
+  height: 40.0
+  resolution: 0.2
   transform_rolerance: 0.5
 
 

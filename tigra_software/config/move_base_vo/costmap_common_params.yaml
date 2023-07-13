@@ -90,7 +90,7 @@ lidar_obstacle_layer:
           topic: /lslidar_point_cloud/filtered
           marking: true
           clearing: false
-          obstacle_range: 15.0          # meters
+          obstacle_range: 20.0          # meters
           min_obstacle_height: 0.7   # default 0, meters
           max_obstacle_height: 1.5     # default 3, meters
           expected_update_rate: 0.0    # default 0, if not updating at this rate at least, remove from buffer
@@ -107,7 +107,7 @@ lidar_obstacle_layer:
           clearing: true
           max_z: 8.0                  # default 0, meters
           min_z: 0.0                  # default 10, meters
-          vertical_fov_angle: 0.523   # default 0.7, radians. For 3D lidars it's the symmetric FOV about the planar axis.
+          vertical_fov_angle: 0.523   # default 0.7, radians. For 3D lidars it's the symmetric FOV abo ut the planar axis.
           vertical_fov_padding: 0.05    # 3D Lidar only. Default 0, in meters 
           horizontal_fov_angle: 3.15  # 3D lidar scanners like the VLP16 have 360 deg horizontal FOV.
           decay_acceleration: 5.0     # default 0, 1/s^2. 
