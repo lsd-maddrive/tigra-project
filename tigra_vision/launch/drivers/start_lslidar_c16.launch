@@ -62,8 +62,8 @@
       <remap from="~output" to="/lslidar_point_cloud/filtered" />
       <rosparam>
         filter_field_name: y
-        filter_limit_min: -0.5
-        filter_limit_max: 20.0
+        filter_limit_min: -0.2
+        filter_limit_max: 75.0
         filter_limit_negative: True
       </rosparam>
     </node>

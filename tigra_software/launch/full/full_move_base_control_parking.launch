@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find tigra_software)/launch/full/full_move_base_control.launch">
+    <arg name="nav_config" value="teb_local_planner_parking" />
+  </include>
+</launch>

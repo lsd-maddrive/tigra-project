@@ -12,8 +12,8 @@ global_costmap:
 
   plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
-    - {name: lidar_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
-
+    - {name: lidar_obstacle_layer_close, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
+    - {name: lidar_obstacle_layer_far, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
     # - {name: depth_obstacle_layer, type: "costmap_2d::VoxelLayer"}
     # - {name: rs_st_obstacle_layer, type: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}

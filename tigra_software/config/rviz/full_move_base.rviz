@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /visual_odom1/Shape1
+        - /lslidar points1
       Splitter Ratio: 0.5
     Tree Height: 787
   - Class: rviz/Selection
@@ -404,9 +405,9 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.009999999776482582
+      Size (m): 0.10999999940395355
       Style: Flat Squares
-      Topic: /lslidar_point_cloud
+      Topic: /lslidar_point_cloud/filtered
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -451,7 +452,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_footprint
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -475,7 +476,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 29.5753173828125
+      Distance: 54.26346206665039
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -483,17 +484,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.7808610200881958
-        Y: 0.038354456424713135
-        Z: 0.05698776617646217
+        X: 0.26027771830558777
+        Y: -61.05447006225586
+        Z: 1.390657901763916
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.5597963333129883
       Target Frame: <Fixed Frame>
-      Yaw: 2.905398368835449
+      Yaw: 1.4554169178009033
     Saved: ~
 Window Geometry:
   Displays:
