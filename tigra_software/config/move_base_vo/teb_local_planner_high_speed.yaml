@@ -12,8 +12,8 @@ TebLocalPlannerROS:
  max_samples: 500
  global_plan_overwrite_orientation: True
  allow_init_with_backwards_motion: True
- max_global_plan_lookahead_dist: 10
- global_plan_viapoint_sep: 0.1
+ max_global_plan_lookahead_dist: 20
+ global_plan_viapoint_sep: 0.2
  global_plan_prune_distance: 1
  exact_arc_length: False
  feasibility_check_no_poses: 15
@@ -76,9 +76,9 @@ TebLocalPlannerROS:
  penalty_epsilon: 0.1
  obstacle_cost_exponent: 4
  weight_max_vel_x: 2
- weight_max_vel_theta: 1
+ weight_max_vel_theta: 2
  weight_acc_lim_x: 1
- weight_acc_lim_theta: 10
+ weight_acc_lim_theta: 5
  weight_kinematics_nh: 1000
  weight_kinematics_forward_drive: 1
  weight_kinematics_turning_radius: 10

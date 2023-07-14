@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="map_name" default="new_map_robocross_off_road1.db"/>
-  <!-- <arg name="map_name" default="robocross_11_07_23_with_start.db"/> -->
+  <!-- <arg name="map_name" default="new_map_robocross_off_road1.db"/> -->
+  <arg name="map_name" default="robocross_11_07_23_with_start.db"/>
   
 
   <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
@@ -55,7 +55,7 @@ if __name__ == '__main__':n" type="ekf_localization_node" name="ekf_localization
   <node pkg="tigra_software" type="steering_filter" name="steering_filter" output="screen">
     <!-- <param name="steering_alpha" value="0.5"/> -->
     <!-- NB - Disabled filter -->
-    <param name="steering_alpha" value="0.5" />
+    <param name="steering_alpha" value="0.9" />
     <remap from="cmd_vel_raw" to="tigra/cmd_vel_raw" />
     <remap from="cmd_vel" to="tigra/cmd_vel" />
   </node>

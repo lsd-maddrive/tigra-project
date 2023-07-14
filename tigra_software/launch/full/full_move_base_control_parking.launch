@@ -2,5 +2,7 @@
 <launch>
   <include file="$(find tigra_software)/launch/full/full_move_base_control.launch">
     <arg name="nav_config" value="teb_local_planner_parking" />
+    <arg name="map_name" default="parking_map.db"/>
+     <arg name="localization" default="false" /> <!-- set false to start mapping with move_base-->
   </include>
 </launch>

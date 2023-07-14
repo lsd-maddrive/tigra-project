@@ -10,7 +10,7 @@ controller_patience: 5.0 #5
 planner_frequency: 1.0
 planner_patience: 5.0 #5
 
-oscillation_timeout: 20.0
+oscillation_timeout: 150.0
 oscillation_distance: 0.2
 
 #We plan to integrate recovery behaviors for turtlebot but currently those belong to gopher and still have to be adapted.
