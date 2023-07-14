@@ -22,13 +22,13 @@ def sign_detection_node():
     output_pub = rospy.Publisher('detectTrafficLightsCmd', Bool, queue_size=10)
     time.sleep(1)
     init_time = time.time()
-    timeout = 120
+    timeout = 30
     output_pub.publish(True)
     rospy.loginfo('trafic light is ready!')
-    rospy.spin()
+    # rospy.spin()
     while not rospy.is_shutdown():
         if time.time() - init_time > timeout:
-            # rospy.loginfo('timeout!')
+            rospy.loginfo('timeout!')
             output_pub.publish(False)
 
 if __name__ == '__main__':

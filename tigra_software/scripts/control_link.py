@@ -175,14 +175,14 @@ if __name__ == '__main__':
             y=pos["y"],
             angle=np.rad2deg(euler[2]),
             pose_tol=dist_tol,
-            angle_tol=1.05 # TODO obtain from yaml
+            angle_tol=0.2 # TODO obtain from yaml
         )
 
         goals.append(goal_desc)
         print(f"Added goal to list: {goal_desc}")
 
     sender = GoalsSender(goals=goals)
-    time.sleep(3)
+    time.sleep(2)
 
     try:
         while not rospy.is_shutdown():
