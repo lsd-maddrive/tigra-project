@@ -12,14 +12,13 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(gazebo REQUIRED)
-link_directories(${GAZEBO_LIBRARY_DIRS})
 
 set(CAR_INTERFACE_PLUGIN ackermann_raw_controller_plugin)
 
 include_directories(
-    ${catkin_INCLUDE_DIRS} 
+    include
+    ${catkin_INCLUDE_DIRS}
     ${GAZEBO_INCLUDE_DIRS}
-    src
 )
 
 catkin_package(
