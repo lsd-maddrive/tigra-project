@@ -13,6 +13,7 @@ fi
 
 catkin build \
     tigra-project \
+    maddrive_ros_shared \
     ackermann_raw_controller_plugin \
     elp_stereo_camera \
     rtabmap \
@@ -21,7 +22,6 @@ catkin build \
     cv_bridge \
     stereo_image_proc \
     camera_calibration \
-    maddrive_ros_shared \
     lslidar_driver \
     realsense2_camera \
     realsense2_description \

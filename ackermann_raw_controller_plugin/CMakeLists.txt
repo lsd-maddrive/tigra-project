@@ -3,17 +3,26 @@ project(ackermann_raw_controller_plugin)
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
-    rospy
-    std_msgs
-    sensor_msgs
-    tigra_msgs
-    message_generation
     gazebo_ros
+    gazebo_plugins
+    tigra_msgs
 )
-
 find_package(gazebo REQUIRED)
+find_package(Threads REQUIRED)
+find_package(Boost 1.7 REQUIRED COMPONENTS
+    system
+)
+if(Boost_FOUND)
+    message("Boost found")
+else()
+    message(FATAL_ERROR "Cannot find Boost")
+endif()
 
 set(CAR_INTERFACE_PLUGIN ackermann_raw_controller_plugin)
+
+catkin_package(
+    DEPENDS roscpp gazebo_ros gazebo_plugins
+)
 
 include_directories(
     include
@@ -21,20 +30,15 @@ include_directories(
     ${GAZEBO_INCLUDE_DIRS}
 )
 
-catkin_package(
-    DEPENDS
-    roscpp
-    gazebo_ros
-    LIBRARIES
-    CATKIN_DEPENDS message_runtime
+add_library(
+    ${CAR_INTERFACE_PLUGIN} src/plugin.cpp
 )
 
-add_library(${CAR_INTERFACE_PLUGIN}
-    src/plugin.cpp
-)
-
-target_link_libraries(${CAR_INTERFACE_PLUGIN}
+target_link_libraries(
+    ${CAR_INTERFACE_PLUGIN}
     ${catkin_LIBRARIES}
     ${GAZEBO_LIBRARIES}
+    ${Boost_LIBRARIES}
+    Threads::Threads
 )
 
