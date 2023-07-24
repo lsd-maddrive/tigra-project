@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 project(tigra_msgs)
 
-find_package(catkin REQUIRED COMPONENTS
-  message_generation
+find_package(catkin REQUIRED
+  COMPONENTS
   std_msgs
+  message_generation
 )
 
 # Generate messages in the 'msg' folder
@@ -21,6 +22,5 @@ catkin_package(
 )
 
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
 )

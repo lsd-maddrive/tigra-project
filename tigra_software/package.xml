@@ -10,6 +10,10 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
-  <build_depend>tigra_msgs</build_depend>
+  <depend>tf</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>tigra_msgs</depend>
+  <depend>realtime_tools</depend>
 
 </package>

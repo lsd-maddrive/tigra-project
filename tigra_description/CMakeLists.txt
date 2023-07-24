@@ -8,7 +8,6 @@ find_package(gazebo REQUIRED)
 catkin_package()
 
 include_directories(
-  include
   ${catkin_INCLUDE_DIRS}
-  ${GAZEBO_INCLUDE_DIRS}
+  ${gazebo_INCLUDE_DIRS}
 )

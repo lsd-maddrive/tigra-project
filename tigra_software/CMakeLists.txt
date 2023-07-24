@@ -1,24 +1,46 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(tigra_software)
 
-find_package(Threads REQUIRED)
-find_package(Boost 1.7 REQUIRED COMPONENTS
-  system
+find_package(catkin REQUIRED
+  COMPONENTS
+    roscpp
+    rospy
+    tf
+    nav_msgs
+    geometry_msgs
+    tigra_msgs
+    realtime_tools
 )
-if(Boost_FOUND)
-  message("Boost found")
+
+find_package(Threads REQUIRED)
+if(Threads_FOUND)
+  message("<<< Threads found >>>")
 else()
-  message(FATAL_ERROR "Cannot find Boost")
+  message(FATAL_ERROR "<<< Cannot find Thread >>>s")
 endif()
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  tigra_msgs
-  realtime_tools
+find_package(Boost 1.7 REQUIRED
+  COMPONENTS
+    system
 )
+if(Boost_FOUND)
+  message("<<< Boost found >>>")
+else()
+  message(FATAL_ERROR "<<< Cannot find Boost >>>")
+endif()
 
-catkin_package()
+catkin_package(
+  INCLUDE_DIRS
+    include
+  CATKIN_DEPENDS
+    roscpp
+    rospy
+    tf
+    nav_msgs
+    geometry_msgs
+    tigra_msgs
+    realtime_tools
+)
 
 include_directories(
   include
