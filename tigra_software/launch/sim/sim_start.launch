@@ -2,16 +2,17 @@
 <launch>
 
     <arg name="map_name" default="new_map.db" />
-    <arg name="localization" default="false" />
+    <arg name="localization" default="false" /> <!-- set false to start mapping-->
     <arg name="debug" default="false"/>
     <arg name='rviz' default="true" />
     <arg name='rtabmap_viz' default='true' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
+    <arg name="gz_gui" default="false" />
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
         <arg name="world" value="$(find maddrive_worlds)/worlds/room_with_pillars_asphalt.world"/>
-        <arg name="gui" value="false" />
+        <arg name="gui" value="$(arg gz_gui)" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
         <arg name="publish_tf" value="false" />
@@ -74,8 +75,6 @@
     </group>
 
     <!-- rviz -->
-    <include if="$(arg rviz)" file="$(find tigra_software)/launch/view/rviz_start.launch">
-        <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/common_sim.rviz" />
-    </include>
+    <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/common_sim.rviz" />
 
 </launch>

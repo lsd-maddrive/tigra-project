@@ -7,6 +7,7 @@
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/common.urdf.xacro" />
 
 	<!-- BASE FOOTPRINT-->
+
 	<link name="base_footprint">
 		<xacro:null_visual/>
 		<xacro:null_collision/>
@@ -14,12 +15,12 @@
 	</link>
 	<gazebo reference="base_footprint" />
 
-	<!-- BASE LINK-->
+	<!-- BASE LINK -->
 
 	<joint name="base_footprint_2_base_link" type="fixed">
 		<parent link="base_footprint" />
 		<child link="base_link" />
-		<origin xyz="0 0 ${wheel_radius+wheel_shift_z}" rpy="0 0 0" />
+		<origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" />
 	</joint>
 
 	<link name="base_link">
@@ -30,36 +31,68 @@
 			</geometry>
 		</visual>
 		<collision name="base_collision">
-			<origin xyz="0 0 0" rpy="0 0 0" />
+			<origin xyz="${body_length/2-rear_wheel_2_rear_bumper} 0 ${body_heigth/2}" rpy="0 0 0" />
 			<geometry>
 				<box size="${body_length} ${body_width} ${body_heigth}" />
 			</geometry>
 		</collision>
-		<xacro:box_inertia width="${body_width}" length="${body_length}" height="${body_heigth}" mass="${body_mass}">
-			<origin xyz="0 0 0" rpy="0 0 0" />
+		<xacro:box_inertia
+			width="${body_width}"
+			length="${body_length}"
+			height="${body_heigth}"
+			mass="${body_mass}">
+			<origin xyz="${body_length/2-rear_wheel_2_rear_bumper} 0 ${body_heigth/2}" rpy="0 0 0" />
 		</xacro:box_inertia>
 	</link>
 
-	<!-- WHEELS-->
+	<!-- REAR AXIS LINK -->
+
+	<joint name="base_footprint_2_rear_axis_link" type="fixed">
+		<parent link="base_link" />
+		<child link="rear_axis_link" />
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+
+	<link name="rear_axis_link">
+		<xacro:null_visual/>
+		<xacro:null_collision/>
+		<xacro:null_inertia/>
+	</link>
+
+	<!-- FRONT AXIS LINK -->
+
+	<joint name="rear_axis_link_2_front_axis_link" type="fixed">
+		<parent link="rear_axis_link" />
+		<child link="front_axis_link" />
+		<origin xyz="${wheelbase} 0 0" rpy="0 0 0" />
+	</joint>
+
+	<link name="front_axis_link">
+		<xacro:null_visual/>
+		<xacro:null_collision/>
+		<xacro:null_inertia/>
+	</link>
+
+	<!-- WHEELS -->
 
 	<xacro:steer_wheel
 		prefix="front_right"
-		parent="base_link"
-		steer_origin_xyz="${wheelbase/2} -${track_width/2} -${wheel_shift_z}"
+		parent="front_axis_link"
+		steer_origin_xyz="0 -${track_width/2} 0"
 		steer_limit="${wheel_turn_limit}" />
 	<xacro:steer_wheel
 		prefix="front_left"
-		parent="base_link"
-		steer_origin_xyz="${wheelbase/2} ${track_width/2} -${wheel_shift_z}"
+		parent="front_axis_link"
+		steer_origin_xyz="0 ${track_width/2} 0"
 		steer_limit="${wheel_turn_limit}" />
 	<xacro:speed_wheel
 		prefix="rear_right"
-		parent="base_link"
-		origin_xyz="-${wheelbase/2} -${track_width/2} -${wheel_shift_z}" />
+		parent="rear_axis_link"
+		origin_xyz="0 -${track_width/2} 0" />
 	<xacro:speed_wheel
 		prefix="rear_left"
-		parent="base_link"
-		origin_xyz="-${wheelbase/2} ${track_width/2} -${wheel_shift_z}" />
+		parent="rear_axis_link"
+		origin_xyz="0 ${track_width/2} 0" />
 
     <gazebo>
         <plugin name="tigra_interface_plugin" filename="libackermann_raw_controller_plugin.so">

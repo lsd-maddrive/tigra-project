@@ -52,7 +52,6 @@
   <!-- rviz -->
   <include if="$(arg rviz)" file="$(find tigra_software)/launch/view/rviz_start.launch">
     <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_move_base.rviz" />
-    <!-- <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/rtab_obstacle.rviz" /> -->
   </include>
 
 </launch>
