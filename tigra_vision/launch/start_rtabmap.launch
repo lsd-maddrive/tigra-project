@@ -3,10 +3,10 @@
     <arg name="slam" default="true" />
     <arg name="rgbd_odom" default="true" />
     <arg name="localization" default="false" />
-    <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
-    <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
-    <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
-    <arg name="imu_topic" default="/rs_camera/imu/filtered" />
+    <arg name="rgb_topic" default="/front_rs_d455_camera/color/image_raw" />
+    <arg name="depth_topic" default="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
+    <arg name="camera_info_topic" default="/front_rs_d455_camera/color/camera_info" />
+    <arg name="imu_topic" default="/front_rs_d455_camera/imu" />
     <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
     <arg name="gps_topic" default="/gps/fix"/>
     <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
@@ -34,10 +34,10 @@
             <param name="Vis/MaxDepth" type="string" value="8" />
                         
             <remap from="odom" to="/tigra/vo" />
-            <remap from="imu" to="$(arg imu_topic)" />
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            <remap from="imu" to="$(arg imu_topic)" />
 
             <param name="Odom/FillInfoData" type="string" value="true" />
             <param name="Odom/ResetCountdown" type="string" value="1" />
@@ -104,8 +104,8 @@
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-            <remap from="gps/fix" to="$(arg gps_topic)" />
             <remap from="imu" to="$(arg imu_topic)" />
+            <remap from="gps/fix" to="$(arg gps_topic)" />
         </node>
     </group>
 </launch>

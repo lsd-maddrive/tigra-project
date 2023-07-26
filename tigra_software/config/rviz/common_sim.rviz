@@ -67,6 +67,8 @@ Visualization Manager:
           Value: false
         front_axis_link:
           Value: false
+        front_c16_lidar_link:
+          Value: true
         front_left_steer_link:
           Value: false
         front_left_wheel_link:
@@ -75,12 +77,12 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        front_rs455_camera_imu_link:
-          Value: false
-        front_rs455_camera_link:
-          Value: false
-        front_rs455_camera_optical_frame:
-          Value: false
+        front_rs_d455_camera_imu_link:
+          Value: true
+        front_rs_d455_camera_link:
+          Value: true
+        front_rs_d455_camera_optical_frame:
+          Value: true
         map:
           Value: true
         odom:
@@ -91,12 +93,12 @@ Visualization Manager:
           Value: false
         rear_right_wheel_link:
           Value: false
-        rear_rs435_camera_imu_link:
-          Value: false
-        rear_rs435_camera_link:
-          Value: false
-        rear_rs435_camera_optical_frame:
-          Value: false
+        rear_rs_d435i_camera_imu_link:
+          Value: true
+        rear_rs_d435i_camera_link:
+          Value: true
+        rear_rs_d435i_camera_optical_frame:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -110,25 +112,27 @@ Visualization Manager:
               base_link:
                 rear_axis_link:
                   front_axis_link:
+                    front_c16_lidar_link:
+                      {}
                     front_left_steer_link:
                       front_left_wheel_link:
                         {}
                     front_right_steer_link:
                       front_right_wheel_link:
                         {}
-                    front_rs455_camera_link:
-                      front_rs455_camera_imu_link:
+                    front_rs_d455_camera_link:
+                      front_rs_d455_camera_imu_link:
                         {}
-                      front_rs455_camera_optical_frame:
+                      front_rs_d455_camera_optical_frame:
                         {}
                   rear_left_wheel_link:
                     {}
                   rear_right_wheel_link:
                     {}
-                  rear_rs435_camera_link:
-                    rear_rs435_camera_imu_link:
+                  rear_rs_d435i_camera_link:
+                    rear_rs_d435i_camera_imu_link:
                       {}
-                    rear_rs435_camera_optical_frame:
+                    rear_rs_d435i_camera_optical_frame:
                       {}
       Update Interval: 0
       Value: true
@@ -258,7 +262,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.10000000149011612
       Style: Flat Squares
-      Topic: /front_rs455_camera/depth/color/points
+      Topic: /front_rs_d455_camera/depth/color/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -266,7 +270,7 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /front_rs455_camera/color/image_raw
+      Image Topic: /front_rs_d455_camera/color/image_raw
       Name: front_rs455_Camera
       Overlay Alpha: 0.5
       Queue Size: 2
@@ -317,7 +321,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.10000000149011612
       Style: Flat Squares
-      Topic: /rear_rs435_camera/depth/color/points
+      Topic: /rear_rs_d435i_camera/depth/color/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -325,7 +329,7 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /rear_rs435_camera/color/image_raw
+      Image Topic: /rear_rs_d435i_camera/color/image_raw
       Name: rear_rs435_Camera
       Overlay Alpha: 0.5
       Queue Size: 2
@@ -404,6 +408,11 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        front_c16_lidar_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         front_left_steer_link:
           Alpha: 1
           Show Axes: false
@@ -422,17 +431,16 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        front_rs455_camera_imu_link:
+        front_rs_d455_camera_imu_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        front_rs455_camera_link:
+        front_rs_d455_camera_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        front_rs455_camera_optical_frame:
+        front_rs_d455_camera_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -450,17 +458,16 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        rear_rs435_camera_imu_link:
+        rear_rs_d435i_camera_imu_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rear_rs435_camera_link:
+        rear_rs_d435i_camera_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        rear_rs435_camera_optical_frame:
+        rear_rs_d435i_camera_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
