@@ -1,12 +1,15 @@
 <?xml version="1.0"?>
 <launch>
 
-  <arg name="map_name" default="new_map.db"/>
+  <arg name="map_name" default="robocross_11_07_23_with_start.db"/>
+
   <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
   <arg name="debug" default="false"/> <!-- rqt_plot -->
   <arg name='rviz' default="true"/>
-  <arg name='rtabmap_viz' default='false'/>
+  <arg name='rtabmap_viz' default='true'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
+  <arg name="nav_config" default="teb_local_planner_high_speed" />
+
 
   <!-- Start hardware -->
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
@@ -34,15 +37,19 @@
   <include file="$(find tigra_software)/launch/drivers/move_base.launch">
     <arg name="config_folder_name" value="move_base_vo" />
     <arg name="cmd_topic" value="nav_vel" />
+    <arg name="teb_config" value="$(arg nav_config)" />
   </include>
   <!-- twist_mux -->
   <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
     <rosparam command="load" file="$(find tigra_software)/config/twist_mux/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="tigra/cmd_vel_raw"/>
   </node>
+  <!-- Trafic Light -->
+  <!-- <node pkg="tigra_software" type="sign_nums_subs.py" name="sign_nums_subs" output="screen"/> -->
+
   <!-- cmd_vel filter -->
   <node pkg="tigra_software" type="steering_filter" name="steering_filter" ns="tigra" output="screen">
-    <param name="steering_alpha" value="1.0" />
+    <param name="steering_alpha" value="0.9" />
     <remap from="cmd_vel_raw" to="cmd_vel_raw" />
     <remap from="cmd_vel" to="cmd_vel" />
   </node>

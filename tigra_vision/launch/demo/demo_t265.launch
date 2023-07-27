@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find tigra_vision)/launch/demo/start_t265.launch"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_camera)/rviz/t265.rviz" required="true" />
+</launch>

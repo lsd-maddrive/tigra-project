@@ -9,3 +9,10 @@ topics:
     topic: joy_vel
     timeout: 0.5
     priority: 100
+
+locks:
+-
+  name    : pause
+  topic   : detectTrafficLightsCmd
+  timeout : 0.0
+  priority: 110

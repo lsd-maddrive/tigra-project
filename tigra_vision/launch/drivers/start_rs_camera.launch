@@ -3,7 +3,7 @@
   <group ns="rs_camera">
     <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
       <arg name="tf_prefix" value="rs_camera" />
-      <arg name="align_depth" value="true" />
+      <arg name="align_depth" value="true" /> 
       <arg name="linear_accel_cov" value="0.01" />
       <arg name="unite_imu_method" value="copy" />
       <arg name="depth_fps" value="30" />
