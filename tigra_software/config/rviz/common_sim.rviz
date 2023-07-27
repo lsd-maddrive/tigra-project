@@ -64,9 +64,9 @@ Visualization Manager:
         base_footprint:
           Value: true
         base_link:
-          Value: false
+          Value: true
         front_axis_link:
-          Value: false
+          Value: true
         front_c16_lidar_link:
           Value: true
         front_left_steer_link:
@@ -78,27 +78,27 @@ Visualization Manager:
         front_right_wheel_link:
           Value: false
         front_rs_d455_camera_imu_link:
-          Value: true
+          Value: false
         front_rs_d455_camera_link:
           Value: true
         front_rs_d455_camera_optical_frame:
-          Value: true
+          Value: false
         map:
           Value: true
         odom:
           Value: true
         rear_axis_link:
-          Value: false
+          Value: true
         rear_left_wheel_link:
           Value: false
         rear_right_wheel_link:
           Value: false
         rear_rs_d435i_camera_imu_link:
-          Value: true
+          Value: false
         rear_rs_d435i_camera_link:
           Value: true
         rear_rs_d435i_camera_optical_frame:
-          Value: true
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -440,6 +440,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         front_rs_d455_camera_optical_frame:
           Alpha: 1
           Show Axes: false
@@ -467,6 +468,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         rear_rs_d435i_camera_optical_frame:
           Alpha: 1
           Show Axes: false
