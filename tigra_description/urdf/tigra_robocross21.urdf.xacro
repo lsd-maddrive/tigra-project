@@ -5,7 +5,7 @@
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/realsense.urdf.xacro" />
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/sector_lidar.urdf.xacro" />
 	<!-- <xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/elp_stereo.urdf.xacro" /> -->
-	<!-- <xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/gps.urdf.xacro" /> -->
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/gps.urdf.xacro" />
 
 	<xacro:sector_lidar
 		prefix="front"
@@ -28,10 +28,11 @@
 		origin_xyz="-0.19 0.0 0.61"
 		origin_rpy="3.14159265 -0.01 3.14159265" />
 
-	<!-- <xacro:gps
-		parent="base_link"
-		origin_xyz="0 0 ${body_heigth/2+0.1}"
-		origin_rpy="0 0 0" /> -->
+	<xacro:gps_sensor
+		prefix="front"
+		parent="base_footprint"
+		origin_xyz="0.0 0.0 ${body_heigth/2+0.1}"
+		origin_rpy="0.0 0.0 0.0" />
 
 	<!-- <xacro:elp_stereo
 		name="elp_stereo"
