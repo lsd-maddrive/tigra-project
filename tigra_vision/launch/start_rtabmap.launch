@@ -1,19 +1,23 @@
 <launch>
-    <!-- SLAM -->
+
+    <arg name="localization" default="false" />
+    <arg name="rtabmap_viz" default="false" /> <!--arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
+    <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db" />
+
     <arg name="slam" default="true" />
     <arg name="rgbd_odom" default="true" />
-    <arg name="localization" default="false" />
-    <arg name="rgb_topic" default="/front_rs_d455_camera/color/image_raw" />
-    <arg name="depth_topic" default="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
-    <arg name="camera_info_topic" default="/front_rs_d455_camera/color/camera_info" />
-    <arg name="imu_topic" default="/front_rs_d455_camera/imu" />
+    
+    <arg name="camera_name" default="front_rs_d455_camera" />
+    <arg name="rgb_topic" default="/$(arg camera_name)/color/image_raw" />
+    <arg name="depth_topic" default="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
+    <arg name="camera_info_topic" default="/$(arg camera_name)/color/camera_info" />
+    <arg name="imu_topic" default="/$(arg camera_name)/imu"/>
     <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
     <arg name="gps_topic" default="/gps/fix"/>
     <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
     <arg name="FeatureType" default="6" />
     <arg name="nn" default="3" />
-    <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db" />
-    <arg name="rtabmap_viz" default="false" /> <!--arg for gui: -d $(find rtabmap_ros)/launch/config/rgbd_gui.ini"-->
+
     <arg if="$(arg localization)" name="args" default="" />
     <arg unless="$(arg localization)" name="args" default="--delete_db_on_start" />
     <arg name="wait_for_transform" default="0.2" />
@@ -21,27 +25,32 @@
     <!-- rdbd odometry -->
     <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
-            <param name="frame_id" type="string" value="base_footprint" />
-            <param name="publish_null_when_lost" type="bool" value="true" />
-            <param name="publish_tf" type="bool" value="false" />
+
+            <!-- input -->
+            <remap from="imu" to="$(arg imu_topic)" />
+            <remap from="rgb/image" to="$(arg rgb_topic)" />
+            <remap from="depth/image" to="$(arg depth_topic)" />
+            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            <remap from="odom" to="/tigra/vo" />
+
             <param name="guess_frame_id" type="string" value="" />
-            <param name="Reg/Force3DoF" type="bool" value="true" />
+            <param name="frame_id" type="string" value="base_footprint" />
+
+            <param name="publish_tf" type="bool" value="false" />
             <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)" />
+            <param name="publish_null_when_lost" type="bool" value="true" />
+
+            <param name="Reg/Force3DoF" type="bool" value="true" />
+            <param name="Odom/ResetCountdown" type="string" value="1" />
 
             <param name="Vis/InlierDistance" type="string" value="0.05" />
             <param name="Vis/FeatureType" type="string" value="$(arg FeatureType)" />
             <param name="Vis/CorNNType" type="string" value="$(arg nn)" />
             <param name="Vis/MaxDepth" type="string" value="8" />
-                        
-            <remap from="odom" to="/tigra/vo" />
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-            <remap from="imu" to="$(arg imu_topic)" />
 
             <param name="Odom/FillInfoData" type="string" value="true" />
-            <param name="Odom/ResetCountdown" type="string" value="1" />
             <param name="OdomF2M/MaxSize" type="string" value="1000" />
+
         </node>
 
         <node if="$(arg slam)" name="rtabmap" pkg="rtabmap_slam" type="rtabmap" output="screen" args="$(arg args)">

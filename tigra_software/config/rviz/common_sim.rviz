@@ -67,12 +67,12 @@ Visualization Manager:
           Value: true
         front_axis_link:
           Value: true
-        front_c16_lidar_link:
-          Value: true
         front_left_steer_link:
           Value: false
         front_left_wheel_link:
           Value: false
+        front_lslidar_c16_lidar_link:
+          Value: true
         front_right_steer_link:
           Value: false
         front_right_wheel_link:
@@ -112,11 +112,11 @@ Visualization Manager:
               base_link:
                 rear_axis_link:
                   front_axis_link:
-                    front_c16_lidar_link:
-                      {}
                     front_left_steer_link:
                       front_left_wheel_link:
                         {}
+                    front_lslidar_c16_lidar_link:
+                      {}
                     front_right_steer_link:
                       front_right_wheel_link:
                         {}
@@ -380,7 +380,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.05000000074505806
       Style: Points
-      Topic: /front_c16_lidar_points
+      Topic: /front_lslidar_c16_lidar_point_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -408,16 +408,16 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        front_c16_lidar_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         front_left_steer_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
         front_left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_lslidar_c16_lidar_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false

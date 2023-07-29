@@ -6,13 +6,12 @@
     <arg name="depth_topic" default="aligned_depth_to_color/image_raw" />
     <arg name="camera_info_topic" default="color/camera_info" />
     <arg name='sync_rgbd' default='true'/>
-    <arg name="serial_no_camera1" default="135122251612" /> <!-- RS455 serial number -->
-    <arg name="serial_no_camera2" default="135122079630" /> <!--rear RS435i serial number -->
-    <!-- <arg name="serial_no_camera2" default="135122079630" /> RS435i actual serial number -->
-    <arg name="camera1" default="rs_camera" /> <!-- Note: Replace with camera name -->
-    <arg name="camera2" default="rs_camera_rear" /> <!-- Note: Replace with camera name -->
-    <arg name="tf_prefix_camera1" default="$(arg camera1)" />
-    <arg name="tf_prefix_camera2" default="$(arg camera2)" />
+    <arg name="serial_no_camera1" default="135122251612" /> <!-- front RS D455 serial number -->
+    <arg name="serial_no_camera2" default="135122079630" /> <!--rear RS D435i serial number -->
+    <arg name="name_camera1" default="front_rs_d455_camera" /> <!-- Note: Replace with camera name -->
+    <arg name="name_camera2" default="rear_rs_d435i_camera" /> <!-- Note: Replace with camera name -->
+    <arg name="tf_prefix_camera1" default="$(arg name_camera1)" />
+    <arg name="tf_prefix_camera2" default="$(arg name_camera2)" />
     <arg name="initial_reset" default="false" />
     <arg name="reconnect_timeout" default="7.0" />
 
@@ -27,7 +26,7 @@
     <arg name="enable_gyro" default="true" />
     <arg name="enable_accel" default="true" />
 
-    <group ns="$(arg camera1)">
+    <group ns="$(arg name_camera1)">
         <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
             <arg name="serial_no" value="$(arg serial_no_camera1)" />
             <arg name="tf_prefix" value="$(arg tf_prefix_camera1)" />
@@ -46,7 +45,7 @@
         </include>
     </group>
 
-    <group ns="$(arg camera2)">
+    <group ns="$(arg name_camera2)">
         <include file="$(find tigra_vision)/launch/drivers/driver_realsense.launch">
             <arg name="serial_no" value="$(arg serial_no_camera2)" />
             <arg name="tf_prefix" value="$(arg tf_prefix_camera2)" />
@@ -64,26 +63,26 @@
     </group>
 
     <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
-        <arg name="in_topic" value="$(arg camera1)/imu" />
-        <arg name="out_topic" value="$(arg camera1)/imu/filtered" />
-        <arg name="camera" value="$(arg camera1)" />
+        <arg name="in_topic" value="$(arg name_camera1)/imu" />
+        <arg name="out_topic" value="$(arg name_camera1)/imu/filtered" />
+        <arg name="camera" value="$(arg name_camera1)" />
     </include> -->
     <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
-        <arg name="in_topic" value="$(arg camera2)/imu" />
-        <arg name="out_topic" value="$(arg camera2)/imu/filtered" />
-        <arg name="camera" value="$(arg camera2)" />
+        <arg name="in_topic" value="$(arg name_camera2)/imu" />
+        <arg name="out_topic" value="$(arg name_camera2)/imu/filtered" />
+        <arg name="camera" value="$(arg name_camera2)" />
     </include> -->
 
     <!-- sync rgb/depth images per camera -->
     <group if='$(arg sync_rgbd)'>
-        <group ns="$(arg camera1)">
+        <group ns="$(arg name_camera1)">
             <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_sync/rgbd_sync realsense2_camera_manager" output="screen">
                 <remap from="rgb/image" to="$(arg rgb_topic)" />
                 <remap from="depth/image" to="$(arg depth_topic)" />
                 <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
             </node>
         </group>
-        <group ns="$(arg camera2)">
+        <group ns="$(arg name_camera2)">
             <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="load rtabmap_sync/rgbd_sync realsense2_camera_manager" output="screen">
                 <remap from="rgb/image" to="$(arg rgb_topic)" />
                 <remap from="depth/image" to="$(arg depth_topic)" />

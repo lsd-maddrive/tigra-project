@@ -18,13 +18,14 @@
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
   <!-- INPUTS -->
-  <arg name="rgb_topic" default="/rs_camera/color/image_raw" />
-  <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
-  <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
-  <arg name="imu_topic"       default="/rs_camera/imu"/>
-  <arg name="frame_id"        default="base_footprint"/>  
- 
-  
+  <arg name="lidar_name" default="front_lslidar_c16_lidar_point_cloud" />
+  <arg name="camera_name" default="front_rs_d455_camera" />
+  <arg name="rgb_topic" default="/$(arg camera_name)/color/image_raw" />
+  <arg name="depth_topic" default="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
+  <arg name="camera_info_topic" default="/$(arg camera_name)/color/camera_info" />
+  <arg name="imu_topic"       default="/$(arg camera_name)/imu"/>
+  <arg name="frame_id"        default="base_footprint"/> 
+
   <arg if="$(arg lidar3d)" name="lidar_args" default="
       --Reg/Strategy 1 
       --RGBD/NeighborLinkRefining true 
@@ -71,8 +72,8 @@
   <!--- Run rtabmap -->
   <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
+
             <!-- input -->
-            <!-- <remap from="odom" to="/tigra/vo" /> -->
             <remap from="imu" to="$(arg imu_topic)/filtered" />
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
@@ -96,6 +97,7 @@
             <param name="GFTT/MinDistance"   type="string" value="10"/>
             <param name="GFTT/QualityLevel"  type="string" value="0.00001"/>
             <param name="GFTT/QualityLevel"  type="string" value="0.00001"/>
+
         </node>
     </group>
   <!-- <remap from="/rtabmap/grid_map" to="/map"/> -->
@@ -114,16 +116,16 @@
     
     <!-- 3D LiDAR -->
     <arg name="subscribe_scan_cloud"  value="$(arg lidar3d)" />
-    <arg     if="$(arg lidar3d)" name="scan_cloud_topic" value="/lslidar_point_cloud" />
-    <arg unless="$(arg lidar3d)" name="scan_cloud_topic" value="/scan_cloud_not_used" />
+    <arg     if="$(arg lidar3d)" name="scan_cloud_topic" value="/$(arg lidar_name)" />
+    <arg unless="$(arg lidar3d)" name="scan_cloud_topic" value="/lidar_point_cloud_not_used" />
     
     <!-- If camera is used -->
     <arg name="depth"             value="$(eval camera and not depth_from_lidar)" />
     <arg name="subscribe_rgb"     value="$(eval camera)" />
     <arg name="rgbd_sync"         value="$(eval camera and not depth_from_lidar)" />
-    <arg name="rgb_topic"         value="/rs_camera/color/image_raw" />
-    <arg name="camera_info_topic" value="/rs_camera/color/camera_info" />
-    <arg name="depth_topic"       value="/rs_camera/aligned_depth_to_color/image_raw" />
+    <arg name="rgb_topic"         value="/$(arg camera_name)/color/image_raw" />
+    <arg name="camera_info_topic" value="/$(arg camera_name)/color/camera_info" />
+    <arg name="depth_topic"       value="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
     <arg name="approx_rgbd_sync"  value="false" />
     <arg name="odom_topic"        value="$(arg odom_topic)" />
     
