@@ -18,7 +18,7 @@
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
   <!-- INPUTS -->
-  <arg name="lidar_name" default="front_lslidar_c16_lidar_point_cloud" />
+  <arg name="lidar_name" default="front_lslidar_c16_lidar" />
   <arg name="camera_name" default="front_rs_d455_camera" />
   <arg name="rgb_topic" default="/$(arg camera_name)/color/image_raw" />
   <arg name="depth_topic" default="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
@@ -78,7 +78,6 @@
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-            <remap from="odom" to="$(arg odom_topic)" />
 
             <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/>
             <param name="frame_id"        type="string" value="$(arg frame_id)"/>
@@ -90,7 +89,9 @@
             <param name="Reg/Force3DoF" type="bool" value="true" />
             <param name="Odom/ResetCountdown" type="string" value="1" />
 
-            <param name="Odom/Strategy"      type="string" value="$(arg odom_topic)"/>
+            <param name="Odom/Strategy"      type="string" value="0"/> <!-- 0=Frame-to-Map, 1=Frame=to=Frame -->
+            <param name="Vis/EstimationType" type="string" value="1"/> <!-- 0=3D->3D 1=3D->2D (PnP) -->
+            <param name="Vis/MaxDepth"       type="string" value="0"/>
             <param name="Odom/GuessMotion" type="string" value="true"/>
             <param name="Vis/MinInliers"     type="string" value="10"/>
             <param name="OdomF2M/MaxSize"    type="string" value="1000"/>
@@ -116,7 +117,7 @@
     
     <!-- 3D LiDAR -->
     <arg name="subscribe_scan_cloud"  value="$(arg lidar3d)" />
-    <arg     if="$(arg lidar3d)" name="scan_cloud_topic" value="/$(arg lidar_name)" />
+    <arg     if="$(arg lidar3d)" name="scan_cloud_topic" value="/$(arg lidar_name)_point_cloud" />
     <arg unless="$(arg lidar3d)" name="scan_cloud_topic" value="/lidar_point_cloud_not_used" />
     
     <!-- If camera is used -->
@@ -127,7 +128,6 @@
     <arg name="camera_info_topic" value="/$(arg camera_name)/color/camera_info" />
     <arg name="depth_topic"       value="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
     <arg name="approx_rgbd_sync"  value="false" />
-    <arg name="odom_topic"        value="$(arg odom_topic)" />
     
   </include>
 
