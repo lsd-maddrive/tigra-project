@@ -27,6 +27,7 @@ catkin build \
     realsense2_description \
     image_geometry \
     hector_gazebo \
+    point_cloud_converter \
     -j$(($(nproc)-2)) \
     --cmake-args \
     -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" \
