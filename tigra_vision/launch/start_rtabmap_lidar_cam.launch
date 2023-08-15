@@ -13,13 +13,15 @@
   <arg name="lidar3d_ray_tracing" default="true"/>
   <arg name="slam2d"       default="true"/>
   <arg name="depth_from_lidar" default="false"/>
-    
+
   <arg     if="$(arg lidar3d)" name="cell_size" default="0.2"/> <!--default 0.3-->
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
-  <!-- INPUTS -->
+  <!-- sensor names -->
   <arg name="lidar_name" default="front_lslidar_c16_lidar" />
   <arg name="camera_name" default="front_rs_d455_camera" />
+
+  <!-- INPUTS -->
   <arg name="rgb_topic" default="/$(arg camera_name)/color/image_raw" />
   <arg name="depth_topic" default="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
   <arg name="camera_info_topic" default="/$(arg camera_name)/color/camera_info" />
@@ -69,11 +71,11 @@
     <param name="base_frame_id" value="$(arg frame_id)"/>
   </node>
     
-  <!--- Run rtabmap -->
+  <!--- rgbd odom -->
   <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
 
-            <!-- input -->
+            <!-- http://wiki.ros.org/rtabmap_odom -->
             <remap from="imu" to="$(arg imu_topic)/filtered" />
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
@@ -130,8 +132,5 @@
     <arg name="approx_rgbd_sync"  value="false" />
     
   </include>
-
-  <!--- Run Move Base -->
-  <!-- <include if="$(arg navigation)" file="$(find husky_navigation)/launch/move_base.launch" /> -->
 
 </launch>
