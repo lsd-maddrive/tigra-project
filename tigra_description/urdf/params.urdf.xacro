@@ -24,6 +24,4 @@
     <xacro:property name="wheel_mass" value="20" />
     <xacro:property name="wheel_turn_limit" value="${pi/4}" />
 
-    <xacro:property name="wheel_shift_z" value="0.35" /> <!-- расстояние по оси Z между передней осью и осью вращения колеса -->
-
 </robot>
