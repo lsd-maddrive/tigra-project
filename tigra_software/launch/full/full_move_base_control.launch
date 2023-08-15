@@ -2,14 +2,12 @@
 <launch>
 
   <arg name="map_name" default="robocross_11_07_23_with_start.db"/>
-
-  <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
-  <arg name="debug" default="false"/> <!-- rqt_plot -->
+  <arg name="localization" default="true" doc="[false - slam]"/>
+  <arg name="debug" default="false" doc="[true - rqt_plot]"/>
   <arg name='rviz' default="true"/>
   <arg name='rtabmap_viz' default='true'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
   <arg name="nav_config" default="teb_local_planner_high_speed" />
-
 
   <!-- Start hardware -->
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
@@ -30,7 +28,7 @@
   </node>
 
   <!-- joy teleop-->
-  <include file="$(find maddrive_teleop)/launch/drivers/start_joy_teleop.launch">
+  <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch">
     <arg name="cmd_topic" value="joy_vel" />
   </include>
   <!-- move_base -->
