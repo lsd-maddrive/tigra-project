@@ -7,6 +7,7 @@
     <arg name='rviz' default="true" />
     <arg name='rtabmap_viz' default='true' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
+    <arg name="nav_config" default="teb_local_planner_high_speed" />
     <arg name="gz_gui" default="false" />
 
     <!-- simulation with robot -->
@@ -14,12 +15,10 @@
         <arg name="world" value="$(find maddrive_worlds)/worlds/room_with_pillars_asphalt.world"/>
         <arg name="gui" value="$(arg gz_gui)" />
     </include>
-    <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
-        <arg name="publish_tf" value="false" />
-    </include>
+    <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
     <!-- rtabmap-->
-    <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
+    <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(arg database_path)" />
         <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
@@ -28,6 +27,7 @@
     <!-- robot_localization-->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
+        <param name="publish_tf" value="false" />
         <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
     </node>
 
@@ -37,17 +37,20 @@
     </include>
     <!-- move_base -->
     <include file="$(find tigra_software)/launch/drivers/move_base.launch">
-        <arg name="config_folder_name" value="move_base_sim" />
+        <arg name="config_folder_name" value="move_base_vo" />
         <arg name="cmd_topic" value="nav_vel" />
+        <arg name="teb_config" value="$(arg nav_config)" />
     </include>
     <!-- twist_mux -->
     <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/twist_mux/twist_mux.yaml" />
         <remap from="cmd_vel_out" to="tigra/cmd_vel_raw"/>
     </node>
+    <!-- Traffic Light -->
+    <!-- <node pkg="tigra_software" type="sign_nums_subs.py" name="sign_nums_subs" output="screen"/> -->
     <!-- cmd_vel filter -->
     <node pkg="maddrive_teleop" type="steering_filter" name="steering_filter" ns="tigra" output="screen">
-        <param name="steering_alpha" value="1.0" />
+        <param name="steering_alpha" value="0.9" />
         <remap from="cmd_vel_raw" to="cmd_vel_raw" />
         <remap from="cmd_vel" to="cmd_vel" />
     </node>
@@ -64,14 +67,10 @@
                 /tigra/odometry/filtered/local/pose/pose/position/x
                 /tigra/odometry/filtered/local/pose/pose/position/y
                 /tigra/odometry/filtered/local/pose/pose/orientation/z
-                /rs_camera/imu/orientation/z
-                /rs_camera/imu/angular_velocity/z
-                /rs_camera/imu/linear_acceleration/x
-                /rs_camera/imu/linear_acceleration/y"/>
-        <node name="rqt_console" pkg="rqt_console" type="rqt_console"/>
-        <node name="rqt_runtime_monitor" pkg="rqt_runtime_monitor" type="rqt_runtime_monitor"/>
-        <node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree"/>
-        <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph"/>
+                /front_rs_d455_camera/imu/orientation/z
+                /front_rs_d455_camera/imu/angular_velocity/z
+                /front_rs_d455_camera/imu/linear_acceleration/x
+                /front_rs_d455_camera/imu/linear_acceleration/y"/>
     </group>
 
     <!-- rviz -->

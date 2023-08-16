@@ -4,13 +4,10 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /TF1/Frames1
         - /wheel_odom1/Shape1
         - /visual_odom1/Shape1
-        - /fused_odom1/Shape1
-        - /fused_odom1/Covariance1/Position1
       Splitter Ratio: 0.45890411734580994
-    Tree Height: 377
+    Tree Height: 367
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -28,7 +25,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: rear_rs435_PointCloud2
+    SyncSource: rear_rs_435_PointCloud2
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -63,16 +60,20 @@ Visualization Manager:
         All Enabled: false
         base_footprint:
           Value: true
+        base_footprint_stabilized:
+          Value: true
         base_link:
           Value: true
         front_axis_link:
-          Value: true
+          Value: false
+        front_gps_sensor_link:
+          Value: false
         front_left_steer_link:
           Value: false
         front_left_wheel_link:
           Value: false
         front_lslidar_c16_lidar_link:
-          Value: true
+          Value: false
         front_right_steer_link:
           Value: false
         front_right_wheel_link:
@@ -80,7 +81,7 @@ Visualization Manager:
         front_rs_d455_camera_imu_link:
           Value: false
         front_rs_d455_camera_link:
-          Value: true
+          Value: false
         front_rs_d455_camera_optical_frame:
           Value: false
         map:
@@ -88,7 +89,7 @@ Visualization Manager:
         odom:
           Value: true
         rear_axis_link:
-          Value: true
+          Value: false
         rear_left_wheel_link:
           Value: false
         rear_right_wheel_link:
@@ -96,7 +97,7 @@ Visualization Manager:
         rear_rs_d435i_camera_imu_link:
           Value: false
         rear_rs_d435i_camera_link:
-          Value: true
+          Value: false
         rear_rs_d435i_camera_optical_frame:
           Value: false
       Marker Alpha: 1
@@ -108,32 +109,35 @@ Visualization Manager:
       Tree:
         map:
           odom:
-            base_footprint:
-              base_link:
-                rear_axis_link:
-                  front_axis_link:
-                    front_left_steer_link:
-                      front_left_wheel_link:
+            base_footprint_stabilized:
+              base_footprint:
+                base_link:
+                  rear_axis_link:
+                    front_axis_link:
+                      front_left_steer_link:
+                        front_left_wheel_link:
+                          {}
+                      front_lslidar_c16_lidar_link:
                         {}
-                    front_lslidar_c16_lidar_link:
+                      front_right_steer_link:
+                        front_right_wheel_link:
+                          {}
+                      front_rs_d455_camera_link:
+                        front_rs_d455_camera_imu_link:
+                          {}
+                        front_rs_d455_camera_optical_frame:
+                          {}
+                    rear_left_wheel_link:
                       {}
-                    front_right_steer_link:
-                      front_right_wheel_link:
-                        {}
-                    front_rs_d455_camera_link:
-                      front_rs_d455_camera_imu_link:
-                        {}
-                      front_rs_d455_camera_optical_frame:
-                        {}
-                  rear_left_wheel_link:
-                    {}
-                  rear_right_wheel_link:
-                    {}
-                  rear_rs_d435i_camera_link:
-                    rear_rs_d435i_camera_imu_link:
+                    rear_right_wheel_link:
                       {}
-                    rear_rs_d435i_camera_optical_frame:
-                      {}
+                    rear_rs_d435i_camera_link:
+                      rear_rs_d435i_camera_imu_link:
+                        {}
+                      rear_rs_d435i_camera_optical_frame:
+                        {}
+                front_gps_sensor_link:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 0.699999988079071
@@ -255,7 +259,7 @@ Visualization Manager:
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
-      Name: front_rs455_PointCloud2
+      Name: front_rs_455_PointCloud2
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
@@ -271,7 +275,7 @@ Visualization Manager:
       Enabled: true
       Image Rendering: background and overlay
       Image Topic: /front_rs_d455_camera/color/image_raw
-      Name: front_rs455_Camera
+      Name: front_rs_455_Camera
       Overlay Alpha: 0.5
       Queue Size: 2
       Transport Hint: raw
@@ -284,20 +288,31 @@ Visualization Manager:
         TF: true
         Value: true
         footprint: true
-        front_rs455_Imu: true
-        front_rs455_PointCloud2: true
+        front_rs_455_Imu: true
+        front_rs_455_PointCloud2: true
         fused_odom: true
         global_costmap: true
         global_plan: true
         local_costmap: true
         local_plan: true
-        lslidar_c16_PointCloud: true
+        lslidar_c16_PointCloud2: true
         move_base_goal: true
-        rear_rs435_Camera: true
-        rear_rs435_PointCloud2: true
+        rear_rs_435_Camera: true
+        rear_rs_435_PointCloud2: true
+        rear_rs_435i_Imu: true
         visual_odom: true
         wheel_odom: true
       Zoom Factor: 1
+    - Alpha: 0.5
+      Class: rviz_plugin_tutorials/Imu
+      Color: 204; 51; 204
+      Enabled: true
+      History Length: 1
+      Name: front_rs_455_Imu
+      Queue Size: 10
+      Topic: /front_rs_d455_camera/imu
+      Unreliable: false
+      Value: true
     - Alpha: 0.5
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -314,7 +329,7 @@ Visualization Manager:
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
-      Name: rear_rs435_PointCloud2
+      Name: rear_rs_435_PointCloud2
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
@@ -330,7 +345,7 @@ Visualization Manager:
       Enabled: true
       Image Rendering: background and overlay
       Image Topic: /rear_rs_d435i_camera/color/image_raw
-      Name: rear_rs435_Camera
+      Name: rear_rs_435_Camera
       Overlay Alpha: 0.5
       Queue Size: 2
       Transport Hint: raw
@@ -343,47 +358,95 @@ Visualization Manager:
         TF: true
         Value: true
         footprint: true
-        front_rs455_Camera: true
-        front_rs455_Imu: true
-        front_rs455_PointCloud2: true
+        front_rs_455_Camera: true
+        front_rs_455_Imu: true
+        front_rs_455_PointCloud2: true
         fused_odom: true
         global_costmap: true
         global_plan: true
         local_costmap: true
         local_plan: true
-        lslidar_c16_PointCloud: true
+        lslidar_c16_PointCloud2: true
         move_base_goal: true
-        rear_rs435_PointCloud2: true
+        rear_rs_435_PointCloud2: true
+        rear_rs_435i_Imu: true
         visual_odom: true
         wheel_odom: true
       Zoom Factor: 1
     - Alpha: 0.5
-      Autocompute Intensity Bounds: true
+      Class: rviz_plugin_tutorials/Imu
+      Color: 204; 51; 204
+      Enabled: true
+      History Length: 1
+      Name: rear_rs_435i_Imu
+      Queue Size: 10
+      Topic: /rear_rs_d435i_camera/imu
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: false
       Autocompute Value Bounds:
-        Max Value: 150.96286010742188
-        Min Value: -0.1050366759300232
+        Max Value: 10
+        Min Value: -10
         Value: true
       Axis: Z
-      Channel Name: x
-      Class: rviz/PointCloud
+      Channel Name: z
+      Class: rviz/PointCloud2
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
+      Max Intensity: 5
       Min Color: 0; 0; 0
-      Name: lslidar_c16_PointCloud
+      Min Intensity: 0
+      Name: lslidar_c16_PointCloud2
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.05000000074505806
-      Style: Points
+      Style: Spheres
       Topic: /front_lslidar_c16_lidar_point_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
+      Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: false
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 0.5
+          Value: true
+        Value: false
+      Enabled: true
+      Keep: 5
+      Name: fused_odom
+      Position Tolerance: 0.10000000149011612
+      Queue Size: 10
+      Shape:
+        Alpha: 0.5
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 0; 255; 255
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic: /tigra/odometry/filtered/local
+      Unreliable: false
       Value: true
     - Alpha: 0.30000001192092896
       Class: rviz/RobotModel
@@ -399,6 +462,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         base_link:
           Alpha: 1
           Show Axes: false
@@ -408,10 +472,17 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
+        front_gps_sensor_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         front_left_steer_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         front_left_wheel_link:
           Alpha: 1
           Show Axes: false
@@ -426,6 +497,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         front_right_wheel_link:
           Alpha: 1
           Show Axes: false
@@ -449,6 +521,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         rear_left_wheel_link:
           Alpha: 1
           Show Axes: false
@@ -549,51 +622,6 @@ Visualization Manager:
       Topic: /tigra/vo
       Unreliable: false
       Value: true
-    - Alpha: 0.5
-      Class: rviz_plugin_tutorials/Imu
-      Color: 204; 51; 204
-      Enabled: true
-      History Length: 1
-      Name: front_rs455_Imu
-      Queue Size: 10
-      Topic: /front_rs455_camera/imu
-      Unreliable: false
-      Value: true
-    - Angle Tolerance: 0.10000000149011612
-      Class: rviz/Odometry
-      Covariance:
-        Orientation:
-          Alpha: 0.5
-          Color: 255; 255; 127
-          Color Style: Unique
-          Frame: Local
-          Offset: 1
-          Scale: 1
-          Value: false
-        Position:
-          Alpha: 0.30000001192092896
-          Color: 204; 51; 204
-          Scale: 0.5
-          Value: true
-        Value: false
-      Enabled: true
-      Keep: 5
-      Name: fused_odom
-      Position Tolerance: 0.10000000149011612
-      Queue Size: 10
-      Shape:
-        Alpha: 0.5
-        Axes Length: 1
-        Axes Radius: 0.10000000149011612
-        Color: 0; 255; 255
-        Head Length: 0.30000001192092896
-        Head Radius: 0.10000000149011612
-        Shaft Length: 1
-        Shaft Radius: 0.05000000074505806
-        Value: Arrow
-      Topic: /tigra/odometry/filtered/local
-      Unreliable: false
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -622,33 +650,33 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 20.997699737548828
+      Distance: 20.489131927490234
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
-      Field of View: 0.7853981852531433
+      Field of View: 1
       Focal Point:
-        X: 4.783391952514648
-        Y: 0.3025158643722534
-        Z: 0
+        X: 0.24274492263793945
+        Y: 0.07649365067481995
+        Z: 4.135337803745642e-06
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.36479800939559937
+      Pitch: 1
       Target Frame: <Fixed Frame>
-      Yaw: 3.1285643577575684
+      Yaw: 0
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1016
+  Height: 1013
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000024a00000348fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000022b000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000002400660072006f006e0074005f00720073003400350035005f00430061006d006500720061010000026e000000790000001600fffffffb000000220072006500610072005f00720073003400330035005f00430061006d00650072006101000002ed000000980000001600ffffff000000010000011000000348fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d00000348000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000050fc0100000002fb0000000800540069006d0065010000000000000780000003bc00fffffffb0000000800540069006d006501000000000000045000000000000000000000041a0000034800000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000024a00000345fc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000221000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000002600660072006f006e0074005f00720073005f003400350035005f00430061006d00650072006101000002640000011e0000001600ffffff000000010000016500000345fc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d00000257000000a400fffffffb000000240072006500610072005f00720073005f003400330035005f00430061006d006500720061010000029a000000e80000001600fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000050fc0100000002fb0000000800540069006d0065010000000000000780000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000003c50000034500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -659,8 +687,8 @@ Window Geometry:
     collapsed: false
   Width: 1920
   X: 0
-  Y: 27
-  front_rs455_Camera:
+  Y: 30
+  front_rs_455_Camera:
     collapsed: false
-  rear_rs435_Camera:
+  rear_rs_435_Camera:
     collapsed: false
