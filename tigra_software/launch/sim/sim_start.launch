@@ -4,6 +4,7 @@
     <arg name="map_name" default="new_map.db" />
     <arg name="localization" default="false" /> <!-- set false to start mapping-->
     <arg name="debug" default="false"/>
+    <arg name="fused_odom_debug" default="true"/>
     <arg name='rviz' default="true" />
     <arg name='rtabmap_viz' default='true' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
@@ -18,7 +19,7 @@
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
     <!-- rtabmap-->
-    <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
+    <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(arg database_path)" />
         <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
@@ -26,9 +27,9 @@
 
     <!-- robot_localization-->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
+        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_local.yaml" />
         <param name="publish_tf" value="false" />
-        <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
+        <remap from="odometry/filtered" to="odometry/filtered/local" />
     </node>
 
     <!-- joy teleop-->
@@ -36,11 +37,11 @@
         <arg name="cmd_topic" value="joy_vel" />
     </include>
     <!-- move_base -->
-    <include file="$(find tigra_software)/launch/drivers/move_base.launch">
+    <!-- <include file="$(find tigra_software)/launch/drivers/move_base.launch">
         <arg name="config_folder_name" value="move_base_vo" />
         <arg name="cmd_topic" value="nav_vel" />
         <arg name="teb_config" value="$(arg nav_config)" />
-    </include>
+    </include> -->
     <!-- twist_mux -->
     <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/twist_mux/twist_mux.yaml" />
@@ -71,6 +72,19 @@
                 /front_rs_d455_camera/imu/angular_velocity/z
                 /front_rs_d455_camera/imu/linear_acceleration/x
                 /front_rs_d455_camera/imu/linear_acceleration/y"/>
+    </group>
+
+    <!-- fused_odom_debug -->
+    <group if="$(arg fused_odom_debug)">
+        <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
+            args="
+                /odometry/filtered/local/pose/covariance[0]
+                /odometry/filtered/local/pose/covariance[7]
+                /odometry/filtered/local/pose/covariance[35]
+                /odometry/filtered/local/twist/covariance[0]
+                /odometry/filtered/local/twist/covariance[7]
+                /odometry/filtered/local/twist/covariance[35]
+                "/>
     </group>
 
     <!-- rviz -->

@@ -95,6 +95,7 @@
 		origin_xyz="0 ${track_width/2} 0" />
 
     <gazebo>
+
         <plugin name="tigra_interface_plugin" filename="libackermann_raw_controller_plugin.so">
             <!-- <maxSteerRad>${mid_wheel_turn_limit}</maxSteerRad> -->
             <wheelbase>${wheelbase}</wheelbase>
@@ -104,5 +105,17 @@
             <!-- <pubTf>$(arg pub_tf)</pubTf> -->
             <robotName>$(arg robot_name)</robotName>
         </plugin>
+
+		<plugin name="gazebo_ros_p3d" filename="libgazebo_ros_p3d.so">
+			<robotNamespace>/</robotNamespace>
+			<bodyName>base_footprint</bodyName>
+			<topicName>ground_truth/state</topicName>
+			<frameName>map</frameName>
+			<xyzOffsets>0 0 0</xyzOffsets>
+			<rpyOffsets>0 0 0</rpyOffsets>
+			<gaussianNoise>0.01</gaussianNoise>
+			<updateRate>10</updateRate>
+		</plugin>
+
     </gazebo>
 </robot>
