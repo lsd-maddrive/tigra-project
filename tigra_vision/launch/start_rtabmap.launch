@@ -6,15 +6,19 @@
 
     <arg name="slam" default="true" />
     <arg name="rgbd_odom" default="true" />
-    
+
+    <!-- sensor names -->
     <arg name="camera_name" default="front_rs_d455_camera" />
-    <arg name="rgb_topic" default="/$(arg camera_name)/color/image_raw" />
-    <arg name="depth_topic" default="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
-    <arg name="camera_info_topic" default="/$(arg camera_name)/color/camera_info" />
-    <arg name="imu_topic" default="/$(arg camera_name)/imu"/>
-    <arg name="odom_topic" default="/tigra/odometry/filtered/local" />
-    <arg name="gps_topic" default="/gps/fix"/>
-    <!-- <arg name="odom_topic" default="/tigra/vo" /> -->
+    <arg name="gps_name" default="front_gps_sensor"/>
+
+    <!-- INPUTS -->
+    <arg name="rgb_topic" default="$(arg camera_name)/color/image_raw" />
+    <arg name="depth_topic" default="$(arg camera_name)/aligned_depth_to_color/image_raw" />
+    <arg name="camera_info_topic" default="$(arg camera_name)/color/camera_info" />
+    <arg name="imu_topic" default="$(arg camera_name)/imu"/>
+
+    <arg name="odom_topic" default="odom" />
+
     <arg name="FeatureType" default="6" />
     <arg name="nn" default="3" />
 
@@ -22,20 +26,21 @@
     <arg unless="$(arg localization)" name="args" default="--delete_db_on_start" />
     <arg name="wait_for_transform" default="0.2" />
 
-    <!-- rdbd odometry -->
     <group ns="rtabmap">
+        <!-- rdbd odometry -->
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
 
-            <!-- input -->
-            <remap from="imu" to="$(arg imu_topic)" />
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-            <remap from="odom" to="/tigra/vo" />
+            <!-- inputs -->
+            <remap from="imu" to="/$(arg imu_topic)" />
+            <remap from="rgb/image" to="/$(arg rgb_topic)" />
+            <remap from="depth/image" to="/$(arg depth_topic)" />
+            <remap from="rgb/camera_info" to="/$(arg camera_info_topic)" />
+            <!-- outputs -->
+            <remap from="odom" to="odom" />
 
             <param name="guess_frame_id" type="string" value="" />
             <param name="frame_id" type="string" value="base_footprint" />
-
+            <param name="odom_frame_id" type="string" value="odom"/>
             <param name="publish_tf" type="bool" value="false" />
             <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)" />
             <param name="publish_null_when_lost" type="bool" value="true" />
@@ -54,22 +59,22 @@
         </node>
 
         <node if="$(arg slam)" name="rtabmap" pkg="rtabmap_slam" type="rtabmap" output="screen" args="$(arg args)">
+            <!-- http://wiki.ros.org/rtabmap_slam -->
             <param name="database_path" type="string" value="$(arg database_path)" />
             <param name="frame_id" type="string" value="base_footprint" />
             <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)" />
             <param name="subscribe_depth" type="bool" value="true" />
 
-            <remap from="initialpose" to="/initialpose" />
-
             <!-- inputs -->
-            <remap from="odom" to="$(arg odom_topic)" />
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-            <remap from="imu" to="$(arg imu_topic)" />
-            <remap from="gps/fix" to="$(arg gps_topic)" />
+            <remap from="initialpose" to="/initialpose" />
+            <remap from="odom" to="/odometry/filtered/local" />
+            <remap from="rgb/image" to="/$(arg rgb_topic)" />
+            <remap from="rgb/camera_info" to="/$(arg camera_info_topic)" />
+            <remap from="depth/image" to="/$(arg depth_topic)" />
+            <remap from="imu" to="/$(arg imu_topic)" />
+            <remap from="gps/fix" to="/$(arg gps_name)/fix" />
             <!-- set odom covariance -->
-            <param name="odom_frame_id" value="odom" />
+            <param name="odom_frame_id" value="" />
             <param name="odom_tf_linear_variance" value="0.1" />
             <param name="odom_tf_angular_variance" value="0.05" />
 
@@ -106,15 +111,15 @@
 
         <!-- visualization with rtabmap_viz -->
         <node if="$(arg rtabmap_viz)" pkg="rtabmap_viz" type="rtabmap_viz" name="rtabmap_viz" args="" output="screen">
+            <!-- http://wiki.ros.org/rtabmap_viz -->
             <param name="frame_id" value="base_footprint" />
             <param name="subscribe_depth" type="bool" value="true" />
             <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)" />
-            <remap from="odom" to="$(arg odom_topic)" />
-            <remap from="rgb/image" to="$(arg rgb_topic)" />
-            <remap from="depth/image" to="$(arg depth_topic)" />
-            <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
-            <remap from="imu" to="$(arg imu_topic)" />
-            <remap from="gps/fix" to="$(arg gps_topic)" />
+            <!-- inputs -->
+            <remap from="odom" to="odom" />
+            <remap from="rgb/image" to="/$(arg rgb_topic)" />
+            <remap from="rgb/camera_info" to="/$(arg camera_info_topic)" />
+            <remap from="depth/image" to="/$(arg depth_topic)" />
         </node>
     </group>
 </launch>

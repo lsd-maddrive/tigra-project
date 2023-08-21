@@ -26,15 +26,19 @@
     </include>
 
     <!-- robot_localization-->
-    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_local.yaml" />
-        <param name="publish_tf" value="false" />
+        <param name="publish_tf" value="true" />
         <remap from="odometry/filtered" to="odometry/filtered/local" />
+        <remap from="diagnostics" to="ekf_local_diagnostics"/>
     </node>
 
     <!-- joy teleop-->
     <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch">
         <arg name="cmd_topic" value="joy_vel" />
+        <arg name="speed/frwd_limit" value="1.5"/>
+        <arg name="speed/bkwrd_limit" value="-1.2"/>
+        <arg name="steer/limit" value="45"/>
     </include>
     <!-- move_base -->
     <!-- <include file="$(find tigra_software)/launch/drivers/move_base.launch">
@@ -45,15 +49,16 @@
     <!-- twist_mux -->
     <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/twist_mux/twist_mux.yaml" />
-        <remap from="cmd_vel_out" to="tigra/cmd_vel_raw"/>
+        <remap from="cmd_vel_out" to="cmd_vel_raw"/>
+        <remap from="diagnostics" to="twist_mux_diagnostics"/>
     </node>
     <!-- Traffic Light -->
     <!-- <node pkg="tigra_software" type="sign_nums_subs.py" name="sign_nums_subs" output="screen"/> -->
     <!-- cmd_vel filter -->
-    <node pkg="maddrive_teleop" type="steering_filter" name="steering_filter" ns="tigra" output="screen">
+    <node pkg="maddrive_teleop" type="steering_filter" name="steering_filter" output="screen">
         <param name="steering_alpha" value="0.9" />
         <remap from="cmd_vel_raw" to="cmd_vel_raw" />
-        <remap from="cmd_vel" to="cmd_vel" />
+        <remap from="cmd_vel" to="tigra/cmd_vel" />
     </node>
 
     <!-- debug instruments -->
