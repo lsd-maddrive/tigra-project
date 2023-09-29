@@ -1,28 +1,55 @@
 # Configuration Settings for C94-M8P device
 
-debug: 1                    # Range 0-4 (0 means no debug statements will print)
+device: /dev/ttyACM0 # имя файла устройста (dmesg)
+raw_data: false
 
+save:
+    mask: 3103
+    device: 4
 
-
-device: /dev/ttyACM0
-frame_id: gps
-config_on_startup: false
-rate: 1                     # in Hz
-nav_rate: 1                 # [# of measurement cycles], recommended 1 Hz, may 
-                            # be either 5 Hz (Dual constellation) or 
-                            # 8 Hz (GPS only)
 uart1:
-  baudrate: 19200           # C94-M8P specific
-  in: 32                    # RTCM 3
-  out: 0                    # No UART out for rover
+    baudrate: 9600
+    in: 32
+    out: 0
 
+# debug: 1
 
-inf: 
-  all: true                   # Whether to display all INF messages in console
+frame_id: gps # имя tf фрейма
+rate: 1 # частота получаемых в топик GPS данных
+nav_rate: 1 # частота формирования GPS данных в плате
+enable_ppp: false
+config_on_startup: false
 
-# Enable u-blox message publishers
+dynamic_model: pedestrian   # Режим для работы с малым ускорением и скоростью 
+# dynamic_model: automotive   # Если потребуется скорость выше, то стоит использовать этот режим
+fix_mode: 3d
+
+# конфигурация созвездий
+gnss:
+    gps: true
+    glonass: true
+    beidou: false
+    qzss: false
+    imes: false
+
+# nmea сообщения не используем
+nmea:
+    set: false
+
+save_on_shutdown: false
+clear_bbr: false
+
+dgnss_mode: 3 # 3 - FIX RTK; 2 - FLOAT RTK
+tmode3: 0 # режим для базы
+
+inf:
+    all: false
+    debug: false
+    error: false
+    notice: false
+    test: false
+    warning: false
+
+# Enable u-blox message topics
 publish:
-  all: true
-nav:
- relposned: true
- heading: true
+    all: true
