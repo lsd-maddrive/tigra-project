@@ -28,6 +28,11 @@ catkin build \
     image_geometry \
     hector_gazebo \
     point_cloud_converter \
+    ublox \
+    rtcm_msgs \
+    nmea_msgs \
+    ntrip_client \
+    mavros \
     -j$(($(nproc)-2)) \
     --cmake-args \
     -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" \
