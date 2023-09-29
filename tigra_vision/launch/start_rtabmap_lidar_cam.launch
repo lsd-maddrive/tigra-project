@@ -7,6 +7,10 @@
   
   <arg name="rtabmap"      default="true"/>
   <arg name="rgbd_odom" default="true" />
+  <arg name="rgbd_icp" default="false" />
+  <arg name="icp_odometry" default="false" />
+
+
 
   <arg name="camera"       default="true"/>
   <arg name="lidar3d"      default="true"/>
@@ -14,7 +18,7 @@
   <arg name="slam2d"       default="true"/>
   <arg name="depth_from_lidar" default="false"/>
     
-  <arg     if="$(arg lidar3d)" name="cell_size" default="0.2"/> <!--default 0.3-->
+  <arg     if="$(arg lidar3d)" name="cell_size" default="0.5"/> <!--default 0.3-->
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
   <!-- INPUTS -->
@@ -22,6 +26,9 @@
   <arg name="depth_topic" default="/rs_camera/aligned_depth_to_color/image_raw" />
   <arg name="camera_info_topic" default="/rs_camera/color/camera_info" />
   <arg name="imu_topic"       default="/rs_camera/imu"/>
+  <!-- <arg name="odom_topic"       default="/tigra/odometry/filtered/local"/> -->
+  <arg name="odom_topic"       default="/tigra/vo"/>
+  
   <arg name="frame_id"        default="base_footprint"/>  
  
   
@@ -46,7 +53,7 @@
       --Icp/PointToPlaneRadius 0 
       --Icp/PointToPlaneNormalK 10 
       --Icp/MaxTranslation 1
-
+      --Rtabmap/DetectionRate 4
       --Vis/MinInliers 10
       --RGBD/OptimizeMaxError 0
       --RGBD/ProximityPathMaxNeighbors 1
@@ -62,24 +69,24 @@
     <param name="world_frame" value="enu"/>
     <param name="publish_tf" value="false"/>
   </node>
-  <node pkg="nodelet" type="nodelet" name="imu_to_tf" args="load rtabmap_util/imu_to_tf imu_nodelet_manager">
+  <!-- <node pkg="nodelet" type="nodelet" name="imu_to_tf" args="load rtabmap_util/imu_to_tf imu_nodelet_manager">
     <remap from="imu/data" to="$(arg imu_topic)/filtered"/>
     <param name="fixed_frame_id" value="$(arg frame_id)_stabilized"/>
     <param name="base_frame_id" value="$(arg frame_id)"/>
-  </node>
+  </node> -->
     
   <!--- Run rtabmap -->
 
   <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
             <!-- input -->
-            <!-- <remap from="odom" to="/tigra/vo" /> -->
-            <remap from="imu" to="$(arg imu_topic)/filtered" />
+            <remap from="odom" to="/tigra/vo" />
+            <!-- <remap from="imu" to="$(arg imu_topic)/filtered" /> -->
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
 
-            <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/>
+            <!-- <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/> -->
             <param name="frame_id"        type="string" value="$(arg frame_id)"/>
             <param name="odom_frame_id"   type="string" value="odom"/>
             
@@ -92,14 +99,47 @@
 
             <param name="Odom/Strategy"      type="string" value="0"/> <!-- 0=Frame-to-Map, 1=Frame=to=Frame -->
             <param name="Vis/EstimationType" type="string" value="1"/> <!-- 0=3D->3D 1=3D->2D (PnP) -->
-            <param name="Vis/MaxDepth"       type="string" value="0"/>
+            <param name="Vis/MaxDepth"       type="string" value="10"/>
             <param name="Odom/GuessMotion" type="string" value="true"/>
             <param name="Vis/MinInliers"     type="string" value="10"/>
             <param name="OdomF2M/MaxSize"    type="string" value="1000"/>
             <param name="GFTT/MinDistance"   type="string" value="10"/>
             <param name="GFTT/QualityLevel"  type="string" value="0.00001"/>
-            <param name="GFTT/QualityLevel"  type="string" value="0.00001"/>
         </node>
+
+
+        <node if="$(arg rgbd_icp)" pkg="rtabmap_odom" type="rgbdicp_odometry" name="rgbdicp_odometry" output="screen">
+          <remap from="scan_cloud"        to="/lslidar_point_cloud"/>
+          <remap from="rgb/image" to="$(arg rgb_topic)" />
+          <remap from="depth/image" to="$(arg depth_topic)" />
+          <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+          <remap from="odom" to="/tigra/vo" />
+
+  
+          <param name="frame_id"        type="string" value="$(arg frame_id)"/>
+
+          <param name="scan_normal_k"   type="int" value="10"/>
+          <param name="subscribe_scan_cloud" type="bool" value="true"/>
+  
+          <param name="Icp/PointToPlane"  type="string" value="true"/>
+          <param name="Icp/VoxelSize"     type="string" value="0.3"/>
+          <param name="Icp/PM"            type="string" value="true"/>
+          <param name="Icp/PMOutlierRatio" type="string" value="0.65"/>
+        </node>
+        <!-- <node unless="$(arg rgbd)" pkg="nodelet" type="nodelet" name="icp_odometry" args="load rtabmap_odom/icp_odometry camera_nodelet_manager" output="screen">
+          <remap from="scan_cloud"      to="/voxel_cloud"/>
+  
+          <param name="frame_id"        type="string" value="camera_link"/>
+          <param name="scan_normal_k"   type="int" value="10"/>
+  
+          <param name="Icp/PointToPlane"  type="string" value="true"/>
+          <param name="Icp/VoxelSize"     type="string" value="0"/>
+          <param name="Icp/PM"            type="string" value="$(arg pm)"/>
+          <param name="Icp/PMOutlierRatio" type="string" value="0.65"/>
+          <param name="Odom/GuessMotion"  type="string" value="true"/>
+          <param name="Odom/ResetCountdown"  type="string" value="1"/>
+        </node> -->
+
     </group>
   <!-- <remap from="/rtabmap/grid_map" to="/map"/> -->
   <include if="$(arg rtabmap)" file="$(find rtabmap_ros)/launch/rtabmap.launch">
@@ -125,10 +165,18 @@
     <arg name="depth"             value="$(eval camera and not depth_from_lidar)" />
     <arg name="subscribe_rgb"     value="$(eval camera)" />
     <arg name="rgbd_sync"         value="$(eval camera and not depth_from_lidar)" />
+    <!-- <arg name="odom_topic"        value="$(arg odom_topic)"/>        -->
     <arg name="rgb_topic"         value="/rs_camera/color/image_raw" />
     <arg name="camera_info_topic" value="/rs_camera/color/camera_info" />
     <arg name="depth_topic"       value="/rs_camera/aligned_depth_to_color/image_raw" />
     <arg name="approx_rgbd_sync"  value="false" />
+
+    <!-- If icp_odometry is used -->
+    <arg if="$(arg icp_odometry)" name="icp_odometry" value="true" />
+    <arg if="$(arg icp_odometry)" name="odom_guess_frame_id" value="odom" />
+    <arg if="$(arg icp_odometry)" name="vo_frame_id" value="icp_odom" />
+    <arg unless="$(arg slam2d)"   name="wait_imu_to_init" value="true" />
+    <arg if="$(arg lidar3d)"      name="odom_args" value="--Icp/CorrespondenceRatio 0.01"/>
     
   </include>
 

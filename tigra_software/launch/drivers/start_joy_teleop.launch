@@ -5,6 +5,7 @@
 
     <node pkg="joy" type="joy_node" name="joystick" output="screen" >
         <param name="dev" value="/dev/input/js0" />
+        <param name="coalesce_interval" value="0.05"/>
     </node>
 
     <!-- <rosparam  file="$(find tigra_software)/config/joy_teleop.yaml" command="load" ns="teleop" /> -->

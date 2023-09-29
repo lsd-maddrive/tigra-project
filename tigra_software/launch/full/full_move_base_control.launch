@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <launch>
   <!-- <arg name="map_name" default="new_map_robocross_off_road1.db"/> -->
-  <arg name="map_name" default="robocross_11_07_23_with_start.db"/>
+  <arg name="map_name" default="new_map.db"/>
   
 
   <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
   <arg name="debug" default="false" />
-  <arg name='rviz' default="true"/>
+  <arg name='rviz' default="false"/>
   <arg name='rtabmapviz' default='true'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
   <arg name="nav_config" default="teb_local_planner_high_speed" />
@@ -16,7 +16,7 @@
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
   <!-- Start hardware -->
-  <include file="$(find tigra_software)/launch/drivers/start_hardware.launch"/>
+  <!-- <include file="$(find tigra_software)/launch/drivers/start_hardware.launch"/> -->
 
 
   <!-- SLAM -->
@@ -26,11 +26,10 @@
     <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
   </include>
 
-  <!-- <node pkg="robot_localizatio
-if __name__ == '__main__':n" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
     <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
     <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
-  </node> -->
+  </node>
 
   <!-- move_base -->
   <include file="$(find tigra_software)/launch/drivers/move_base.launch">

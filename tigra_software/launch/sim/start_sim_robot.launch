@@ -2,12 +2,12 @@
 
 <launch>
     <arg name="map_name" default="new_map.db" />
-    <arg name="localization" default="false" /> <!-- set false to start mapping with move_base-->
+    <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
     <arg name='rviz' default="true" />
-    <arg name='rtabmapviz' default='false' />
+    <arg name='rtabmapviz' default='true' />
 
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find tigra_maps)/worlds/lab.world"/>
+        <arg name="world" value="$(find tigra_maps)/worlds/room_with_pillars_asphalt.world"/>
         <!-- <arg name="world" value="" /> -->
         <arg name="gui" value="false" />
     </include>
@@ -20,10 +20,13 @@
         <arg name="cmd_topic" value="tigra/cmd_vel" />
     </include>
 
-    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+    <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_sim_odom.yaml" />
         <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
-    </node>
+    </node> -->
+
+    <include file="$(find tigra_software)/launch/drivers/dual_ekf_navsat_example.launch">
+    </include>
 
     <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
         <!-- <param name="Rtabmap/DetectionRate" type="string" value="1" /> -->
@@ -32,6 +35,11 @@
         <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
     </include>
 
+    <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+        <arg name="in_topic" value="/rs_camera/imu" />
+        <arg name="out_topic" value="/rs_camera/imu/filtered" />
+        <arg name="camera" value="rs_camera" />
+    </include>
     <!-- <node pkg="tf" type="static_transform_publisher" name="tf_map_2_odom" args="0 0 0 0 0 0 /map /odom 1000" /> -->
 
 
