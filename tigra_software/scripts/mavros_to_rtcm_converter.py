@@ -18,9 +18,9 @@ if __name__ == '__main__':
     rospy.init_node('mavros_to_rtcm_converter')
 
     # Создание подписчика на тему с mavros_msgs/RTCM
-    mavros_sub = rospy.Subscriber('/ntrip_client/rtcm', RTCM, mavros_to_rtcm_callback)
+    mavros_sub = rospy.Subscriber('ntrip_client/rtcm', RTCM, mavros_to_rtcm_callback)
 
     # Создание издателя на тему с rtcm_msgs/Message
-    rtcm_pub = rospy.Publisher('/rtcm', RTCMMessage, queue_size=10)
+    rtcm_pub = rospy.Publisher('rtcm', RTCMMessage, queue_size=10)
 
     rospy.spin()  # Запуск бесконечного цикла для обработки сообщений

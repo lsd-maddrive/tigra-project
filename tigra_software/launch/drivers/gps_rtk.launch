@@ -34,6 +34,8 @@
 
     <node pkg="tigra_software" type="mavros_to_rtcm_converter.py" name="mavros_to_rtcm_converter"
         output="screen">
+        <remap from="ntrip_client/rtcm" to="ntrip_client/rtcm"/>
+        <remap from="rtcm" to="rtcm"/>
     </node>
 
 </launch>

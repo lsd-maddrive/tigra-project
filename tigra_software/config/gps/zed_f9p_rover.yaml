@@ -1,0 +1,55 @@
+# Configuration Settings for C94-M8P device
+
+device: /dev/ttyACM0 # имя файла устройста (dmesg)
+raw_data: false
+
+save:
+    mask: 3103
+    device: 4
+
+uart1:
+    baudrate: 9600
+    in: 32
+    out: 0
+
+# debug: 1
+
+frame_id: gps # имя tf фрейма
+rate: 1 # частота получаемых в топик GPS данных
+nav_rate: 1 # частота формирования GPS данных в плате
+enable_ppp: false
+config_on_startup: false
+
+dynamic_model: pedestrian   # Режим для работы с малым ускорением и скоростью 
+# dynamic_model: automotive   # Если потребуется скорость выше, то стоит использовать этот режим
+fix_mode: 3d
+
+# конфигурация созвездий
+gnss:
+    gps: true
+    glonass: true
+    beidou: false
+    qzss: false
+    imes: false
+
+# nmea сообщения не используем
+nmea:
+    set: false
+
+save_on_shutdown: false
+clear_bbr: false
+
+dgnss_mode: 3 # 3 - FIX RTK; 2 - FLOAT RTK
+tmode3: 0 # режим для базы
+
+inf:
+    all: false
+    debug: false
+    error: false
+    notice: false
+    test: false
+    warning: false
+
+# Enable u-blox message topics
+publish:
+    all: true
