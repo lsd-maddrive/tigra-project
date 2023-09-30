@@ -6,7 +6,7 @@
         output="screen" clear_params="true" respawn="true" respawn_delay="30">
         <rosparam command="load" file="$(find tigra_software)/config/gps/c94_m8p_rover.yaml" />
         <param name="device" value="/dev/ttyACM0"/>
-        <remap from="rtcm" to="rtcm"/>
+        <remap from="rtcm" to="ntrip_client/rtcm"/>
     </node>
 
     <!-- ntrip client -->
@@ -23,19 +23,13 @@
         <arg name="key" value="false" />
         <arg name="ca_cert" value="false" />
         <arg name="debug" value="true" />
-        <arg name="rtcm_message_package" value="mavros_msgs" />
+        <arg name="rtcm_message_package" value="rtcm_msgs" />
     </include>
 
     <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
         args="
         --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/gps_coords.xml
         --multiplot-run-all">
-    </node>
-
-    <node pkg="tigra_software" type="mavros_to_rtcm_converter.py" name="mavros_to_rtcm_converter"
-        output="screen">
-        <remap from="ntrip_client/rtcm" to="ntrip_client/rtcm"/>
-        <remap from="rtcm" to="rtcm"/>
     </node>
 
 </launch>
