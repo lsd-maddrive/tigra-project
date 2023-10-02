@@ -1,14 +1,20 @@
 # Configuration Settings for C94-M8P device
+# https://github.com/KumarRobotics/ublox
+# https://github.com/KumarRobotics/ublox/blob/master/ublox_gps/config/c94_m8p_rover.yaml
 
 device: /dev/ttyACM0 # имя файла устройста (dmesg)
 raw_data: false
 
-save:
+# load: # загрузка конфига в NVRAM
+#     mask: 3103
+#     device: 4 # Save to EEPROM
+
+save: # сохранение конфига в NVRAM
     mask: 3103
-    device: 4
+    device: 4 # Save to EEPROM
 
 uart1:
-    baudrate: 9600
+    baudrate: 19200
     in: 32
     out: 0
 
@@ -20,36 +26,95 @@ nav_rate: 1 # частота формирования GPS данных в пла
 enable_ppp: false
 config_on_startup: false
 
-dynamic_model: pedestrian   # Режим для работы с малым ускорением и скоростью 
-# dynamic_model: automotive   # Если потребуется скорость выше, то стоит использовать этот режим
-fix_mode: 3d
+dynamic_model: automotive
+fix_mode: auto
 
 # конфигурация созвездий
 gnss:
     gps: true
     glonass: true
     beidou: false
+    galileo: false
     qzss: false
+    qzss_sig_cfg: false
     imes: false
 
-# nmea сообщения не используем
 nmea:
-    set: false
+    set: true
+    version: 65
+    num_sv: 8
+    sv_numbering: 1
+    compat: true
+    consider: true
+    limit82: true
+    high_prec: false
+    filter:
+        pos: true
+        msk_pos: true
+        time: true
+        date: true
+        sbas: true
+        gps_only: true
+        track: true
+    gnssToFilter:
+        gps: true
+        sbas: true
+        qzss: true
+        glonass: false
+        beidou: true
+    main_talker_id: 1
+    gsv_talker_id: 1
+    bds_talker_id: [0,0]
 
-save_on_shutdown: false
+save_on_shutdown: true
 clear_bbr: false
 
-dgnss_mode: 3 # 3 - FIX RTK; 2 - FLOAT RTK
+dgnss_mode: 3 # 2 - FLOAT RTK; 3 - FIX RTK
 tmode3: 0 # режим для базы
 
+# сообщения в консоль
 inf:
-    all: false
-    debug: false
-    error: false
-    notice: false
-    test: false
-    warning: false
+    debug: true
+    error: true
+    notice: true
+    test: true
+    warning: true
 
 # Enable u-blox message topics
 publish:
-    all: true
+    aid:
+        alm: true
+        eph: true
+        hui: true
+    rxm:
+        alm: true
+        eph: true
+        raw: true
+        rtcm: true
+        sfrb: true
+    mon:
+        hw: true
+    nav:
+        att: true
+        clock: true
+        posecef: true
+        posllh: true
+        pvt: true
+        relposned: true
+        heading: true
+        sat: true
+        sol: true
+        status: true
+        svin: true
+        svinfo: true
+        velned: true
+    esf:
+        alg: true
+        ins: true
+        meas: true
+        raw: true
+        status: true
+    hnr:
+        pvt: true
+    tim:
+        tm2: true
