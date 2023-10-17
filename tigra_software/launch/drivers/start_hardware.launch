@@ -7,12 +7,15 @@
     <!-- Cameras -->
     <!-- <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch" /> -->
     <include file="$(find tigra_vision)/launch/drivers/start_lslidar_c16.launch">
-        <arg name="min_range" value="1.8" />  
+        <arg name="min_range" value="1.0" />  
       </include>
       
     <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch" />
     <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch" /> -->
     <!-- <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch" /> -->
+
+    <include file="$(find tigra_software)/launch/drivers/gps/gps_rtk.launch" />
+
 
 
 </launch>

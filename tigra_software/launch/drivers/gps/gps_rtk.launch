@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- ublox driver -->
+    <node pkg="ublox_gps" type="ublox_gps" name="zed_f9p"
+        output="screen" clear_params="true" respawn="true" respawn_delay="30">
+        <rosparam command="load" file="$(find tigra_software)/config/gps/zed_f9p_rover.yaml" />
+        <param name="device" value="/dev/ttyACM0"/>
+        <remap from="rtcm" to="ntrip_client/rtcm"/>
+    </node>
+
+    <!-- ntrip client -->
+    <include file="$(find ntrip_client)/launch/ntrip_client.launch">
+        <arg name="host" value="ntrip.eftgroup.ru"/>
+        <arg name="port" value="7050" />
+        <arg name="mountpoint" value="DMTR3_2" />
+        <arg name="authenticate" value="true" />
+        <arg name="username" value="msc2985" />
+        <arg name="password" value="m5yi0dya" />
+        <arg name="ntrip_version" value="" />
+        <arg name="ssl" value="false" />
+        <arg name="cert" value="false" />
+        <arg name="key" value="false" />
+        <arg name="ca_cert" value="false" />
+        <arg name="debug" value="true" />
+        <arg name="rtcm_message_package" value="rtcm_msgs" />
+    </include>
+
+    <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
+        args="
+        --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/gps_coords.xml
+        --multiplot-run-all">
+    </node>
+
+</launch>

@@ -50,6 +50,7 @@
       --Vis/MinInliers 10
       --RGBD/OptimizeMaxError 0
       --RGBD/ProximityPathMaxNeighbors 1
+      --Optimizer/PriorsIgnored false
       --Grid/Sensor 0"/>
 
   <!-- IMU orientation estimation and publish tf accordingly to os_sensor frame -->
@@ -78,6 +79,7 @@
             <remap from="rgb/image" to="$(arg rgb_topic)" />
             <remap from="depth/image" to="$(arg depth_topic)" />
             <remap from="rgb/camera_info" to="$(arg camera_info_topic)" />
+            
 
             <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/>
             <param name="frame_id"        type="string" value="$(arg frame_id)"/>
@@ -113,7 +115,6 @@
     <!-- <arg unless="$(arg icp_odometry)" name="odom_topic" value="/odometry/filtered" /> -->
     <arg name="frame_id"        value="base_footprint" />
     <arg name="rtabmapviz"      value="$(arg rtabmapviz)" />
-    <arg name="gps_topic"       value="/navsat/fix"/>
     
     
     <!-- 3D LiDAR -->
@@ -128,6 +129,7 @@
     <arg name="rgb_topic"         value="/rs_camera/color/image_raw" />
     <arg name="camera_info_topic" value="/rs_camera/color/camera_info" />
     <arg name="depth_topic"       value="/rs_camera/aligned_depth_to_color/image_raw" />
+    <arg name="gps_topic"         value="/zed_f9p/fix" />         <!-- gps async subscription -->
     <arg name="approx_rgbd_sync"  value="false" />
     
   </include>

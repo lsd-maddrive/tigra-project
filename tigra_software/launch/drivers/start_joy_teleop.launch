@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="cmd_topic" default="cmd_vel" />
+    <arg name="cmd_topic" default="/tigra/cmd_vel_raw" />
 
     <node pkg="joy" type="joy_node" name="joystick" output="screen" >
         <param name="dev" value="/dev/input/js0" />
@@ -12,8 +12,8 @@
     	<param name="debug" value="false" />
 
      	<param name="speed/frwd_limit" value="1.2" />
-    	<param name="speed/bkwrd_limit" value="-0.8" />
-    	<param name="steer/limit" value="35" />
+    	<param name="speed/bkwrd_limit" value="-1.2" />
+    	<param name="steer/limit" value="25" />
 
         <remap from="cmd_vel" to="$(arg cmd_topic)" />
     </node>

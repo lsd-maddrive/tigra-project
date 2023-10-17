@@ -69,6 +69,36 @@
     </node>
   </group>
 
+  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan" output="screen">
+
+    <remap from="cloud_in" to="/lslidar_point_cloud/filtered"/>
+    <remap from="scan" to="/lslidar_safe_scan"/>
+    <rosparam>
+        transform_tolerance: 0.01
+        min_height: 0.0
+        max_height: 2.0
+
+        angle_min: -3.1415 # -M_PI/2
+        angle_max: 3.1415 # M_PI/2
+        angle_increment: 0.0087 # M_PI/360.0
+        scan_time: 0.3333
+        range_min: 0.1
+        range_max: 15.0
+        use_inf: true
+        inf_epsilon: 1.0
+
+        # Concurrency level, affects number of pointclouds queued for processing and number of threads used
+        # 0 : Detect number of cores
+        # 1 : Single threaded
+        # 2->inf : Parallelism level
+        concurrency_level: 1
+    </rosparam>
+
+</node>
+
+<!-- <node pkg="tigra_software" type="safety_scanner.py" name="safety_scanner" output="screen"/> -->
+
+
   <group if="$(arg rviz)">
    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find lslidar_driver)/rviz_cfg/lslidar.rviz"/>
    <node pkg="tf" type="static_transform_publisher" name="laser_link_to_world" args="0 0 1 0 0 0 world laser_link 100"/>
