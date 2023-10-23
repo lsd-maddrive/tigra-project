@@ -7,7 +7,7 @@
     <!-- Cameras -->
     <!-- <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch" /> -->
     <include file="$(find tigra_vision)/launch/drivers/start_lslidar_c16.launch">
-        <arg name="min_range" value="1.0" />  
+        <arg name="min_range" value="1.8" />  
       </include>
       
     <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch" />

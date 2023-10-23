@@ -9,7 +9,7 @@
   <arg name='rviz' default="true"/>
   <arg name='rtabmapviz' default='false'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
-  <arg name="nav_config" default="teb_local_planner_high_speed" />
+  <arg name="nav_config" default="teb_local_planner" />
 
 
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />

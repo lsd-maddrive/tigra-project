@@ -163,12 +163,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: costmap
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Local costmap
       Topic: /move_base/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
@@ -449,7 +449,9 @@ Visualization Manager:
       Marker Topic: /move_base/TebLocalPlannerROS/teb_markers
       Name: Marker
       Namespaces:
-        {}
+        PointObstacles: true
+        RobotFootprintModel: true
+        ViaPoints: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -508,7 +510,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 24.1640567779541
+      Distance: 59.70299530029297
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -516,17 +518,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -3.939100980758667
-        Y: 2.9317197799682617
-        Z: 2.7555971145629883
+        X: -12.302618980407715
+        Y: -45.50664138793945
+        Z: 2.799243450164795
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4453980028629303
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 0.7003976106643677
+      Yaw: 1.4003971815109253
     Saved: ~
 Window Geometry:
   Displays:

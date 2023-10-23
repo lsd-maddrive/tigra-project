@@ -50,7 +50,7 @@
       --Vis/MinInliers 10
       --RGBD/OptimizeMaxError 0
       --RGBD/ProximityPathMaxNeighbors 1
-      --Optimizer/PriorsIgnored false
+      --Optimizer/PriorsIgnored true
       --Grid/Sensor 0"/>
 
   <!-- IMU orientation estimation and publish tf accordingly to os_sensor frame -->
