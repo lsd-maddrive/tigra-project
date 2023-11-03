@@ -6,6 +6,7 @@
     <arg name="debug" default="false"/>
     <arg name="fused_odom_debug" default="true"/>
     <arg name='rviz' default="true" />
+    <arg name='foxglove' default="true" />
     <arg name='rtabmap_viz' default='true' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
     <arg name="nav_config" default="teb_local_planner_high_speed" />
@@ -19,7 +20,7 @@
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
     <!-- rtabmap-->
-    <include file="$(find tigra_vision)/launch/start_rtabmap.launch">
+    <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(arg database_path)" />
         <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
@@ -28,7 +29,7 @@
     <!-- robot_localization-->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_local.yaml" />
-        <param name="publish_tf" value="true" />
+        <param name="publish_tf" value="false" />
         <remap from="odometry/filtered" to="odometry/filtered/local" />
         <remap from="diagnostics" to="ekf_local_diagnostics"/>
     </node>
@@ -92,7 +93,14 @@
                 "/>
     </group>
 
-    <!-- rviz -->
-    <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/common_sim.rviz" />
+    <!-- data visualization -->
+    <group if="$(arg rviz)">
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/common_sim.rviz" />
+    </group>
+    <group if="$(arg foxglove)">
+        <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
+            <arg name="port" value="8765" />
+        </include>
+    </group>
 
 </launch>

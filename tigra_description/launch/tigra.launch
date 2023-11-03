@@ -10,18 +10,24 @@
   <arg name="world" default="" />
   <arg name="use_sim_time" default="true"/>
 
-  <arg name="x" default="0" />
-  <arg name="y" default="0" />
-  <arg name="z" default="0.6" />
+  <arg name="robot_pose_x" default="0.0"/>
+  <arg name="robot_pose_y" default="0.0"/>
+  <arg name="robot_pose_z" default="0.1"/>
+  <arg name="robot_pose_R" default="0.0"/>
+  <arg name="robot_pose_P" default="0.0"/>
+  <arg name="robot_pose_Y" default="0.0"/>
 
   <param name="robot_description"
     command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra_robocross21.urdf.xacro'
     robot_name:=tigra" />
 
   <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-        args="-x $(arg x)
-              -y $(arg y)
-              -z $(arg z)
+        args="-x $(arg robot_pose_x)
+              -y $(arg robot_pose_y)
+              -z $(arg robot_pose_z)
+              -R $(arg robot_pose_R)
+              -P $(arg robot_pose_P)
+              -Y $(arg robot_pose_Y)
               -urdf
               -model tigra
               -param robot_description" />

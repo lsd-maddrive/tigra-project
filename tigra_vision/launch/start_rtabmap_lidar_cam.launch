@@ -60,22 +60,19 @@
       --Grid/Sensor 0"/>
 
   <!-- IMU orientation estimation and publish tf accordingly to os_sensor frame -->
-  <node pkg="nodelet" type="nodelet" name="imu_nodelet_manager" args="manager">
+  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
+    <param name="world_frame" value="enu"/>
+    <param name="use_mag" value="false"/>
+    <param name="publish_tf" value="false"/>
     <remap from="imu/data_raw" to="/$(arg imu_topic)"/>
     <remap from="imu/data" to="/$(arg imu_topic)/filtered"/>
   </node>
-  <node pkg="nodelet" type="nodelet" name="imu_filter" args="load imu_filter_madgwick/ImuFilterNodelet imu_nodelet_manager">
-    <!-- http://wiki.ros.org/imu_filter_madgwick -->
-    <param name="use_mag" value="false"/>
-    <param name="world_frame" value="enu"/>
-    <param name="publish_tf" value="false"/>
-  </node>
-  <node pkg="nodelet" type="nodelet" name="imu_to_tf" args="load rtabmap_util/imu_to_tf imu_nodelet_manager">
-    <remap from="imu/data" to="/$(arg imu_topic)/filtered"/>
+  <node pkg="rtabmap_util" type="imu_to_tf" name="imu_to_tf" output="screen">
     <param name="fixed_frame_id" value="$(arg frame_id)_stabilized"/>
     <param name="base_frame_id" value="$(arg frame_id)"/>
+    <remap from="imu/data" to="/$(arg imu_topic)/filtered"/>
   </node>
-    
+
   <!--- rgbd odometry -->
   <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
