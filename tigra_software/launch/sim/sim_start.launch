@@ -7,6 +7,8 @@
     <arg name="fused_odom_debug" default="true"/>
     <arg name='rviz' default="true" />
     <arg name='foxglove' default="true" />
+    <arg name="odom_fusion_debug" default="true"/>
+    <arg name="odom_instance" default="local" doc="[local, global]"/>
     <arg name='rtabmap_viz' default='true' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
     <arg name="nav_config" default="teb_local_planner_high_speed" />
@@ -62,37 +64,6 @@
         <remap from="cmd_vel" to="tigra/cmd_vel" />
     </node>
 
-    <!-- debug instruments -->
-    <group if="$(arg debug)">
-        <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-            args="
-                /tigra/cmd_vel_raw/angular/z
-                /tigra/cmd_vel/angular/z
-                /tigra/wheel_odom/pose/pose/position/x
-                /tigra/wheel_odom/pose/pose/position/y
-                /tigra/wheel_odom/pose/pose/orientation/z
-                /tigra/odometry/filtered/local/pose/pose/position/x
-                /tigra/odometry/filtered/local/pose/pose/position/y
-                /tigra/odometry/filtered/local/pose/pose/orientation/z
-                /front_rs_d455_camera/imu/orientation/z
-                /front_rs_d455_camera/imu/angular_velocity/z
-                /front_rs_d455_camera/imu/linear_acceleration/x
-                /front_rs_d455_camera/imu/linear_acceleration/y"/>
-    </group>
-
-    <!-- fused_odom_debug -->
-    <group if="$(arg fused_odom_debug)">
-        <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-            args="
-                /odometry/filtered/local/pose/covariance[0]
-                /odometry/filtered/local/pose/covariance[7]
-                /odometry/filtered/local/pose/covariance[35]
-                /odometry/filtered/local/twist/covariance[0]
-                /odometry/filtered/local/twist/covariance[7]
-                /odometry/filtered/local/twist/covariance[35]
-                "/>
-    </group>
-
     <!-- data visualization -->
     <group if="$(arg rviz)">
         <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/common_sim.rviz" />
@@ -100,6 +71,11 @@
     <group if="$(arg foxglove)">
         <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
             <arg name="port" value="8765" />
+        </include>
+    </group>
+    <group if="$(arg odom_fusion_debug)">
+        <include file="$(find tigra_software)/launch/debug/ekf_debug.launch">
+            <arg name="odom_instance" value="$(arg odom_instance)" />
         </include>
     </group>
 
