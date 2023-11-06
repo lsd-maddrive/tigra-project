@@ -9,6 +9,7 @@
     <license>BSD</license>
 
     <buildtool_depend>catkin</buildtool_depend>
+    <run_depend>ackermann_raw_controller_plugin</run_depend>
     <run_depend>tigra_description</run_depend>
     <run_depend>tigra_maps</run_depend>
     <run_depend>tigra_msgs</run_depend>

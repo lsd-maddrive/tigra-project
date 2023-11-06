@@ -14,7 +14,6 @@ fi
 catkin build \
     tigra-project \
     maddrive_ros_shared \
-    ackermann_raw_controller_plugin \
     elp_stereo_camera \
     rtabmap \
     rtabmap_ros \
