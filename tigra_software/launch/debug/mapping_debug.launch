@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="rosbag_mode" default="play" doc="[play, record]"/>
+
+    <group if="$(eval arg('rosbag_mode') == 'play')">
+        <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
+            args="
+                --quiet
+                --clock
+                --hz=100
+                --topics
+                    /tf_static
+                    /bottom_lslidar_c16_lidar_point_cloud
+                    /front_rs_d435i_camera/rgbd_image
+                    /tigra/wheel_odom
+                    /rear_rs_d435i_camera/imu
+                    /top_gps_sensor/fix
+                --bags $(find kitty_software)/bags/my_bag.bag"/>
+
+        <!-- mapping -->
+        <include file="$(find kitty_software)/launch/drivers/slam_gmapping.launch">
+            <arg name="scan_input_topic" value="bottom_ydlidar_scan/filtered"/>
+        </include>
+
+        <!-- rgbd odometry -->
+        <include file="$(find kitty_vision)/launch/drivers/rgbd_odom.launch">
+            <arg name="camera_name" value="front_rs_d435i_camera"/>
+            <arg name="publish_tf" value="true"/>
+        </include>
+
+    </group>
+
+    <group if="$(eval arg('rosbag_mode') == 'record')">
+        <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
+            args="
+                /tf_static
+                /bottom_ydlidar_scan/filtered
+                /front_rs_d435i_camera/rgbd_image
+                --output-name $(find kitty_software)/bags/my_bag.bag"/>
+    </group>
+
+    /tf_static для записи неподвижный преобразований
+    /bottom_lslidar_c16_lidar_point_cloud для восстановления "map" -> "odom"
+    /front_rs_d455_camera/rgbd_image для восстановления "odom" -> "base_footprint_stabilized"
+    
+
+
+</launch>

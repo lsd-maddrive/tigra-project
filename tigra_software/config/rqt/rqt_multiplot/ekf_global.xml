@@ -35,7 +35,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/bottom_gps_sensor/fix</topic>
+                                    <topic>/top_gps_sensor/fix</topic>
                                     <type>sensor_msgs/NavSatFix</type>
                                 </x_axis>
                                 <y_axis>
@@ -48,7 +48,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/bottom_gps_sensor/fix</topic>
+                                    <topic>/top_gps_sensor/fix</topic>
                                     <type>sensor_msgs/NavSatFix</type>
                                 </y_axis>
                             </axes>
@@ -72,7 +72,7 @@
                                 <type>0</type>
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>/bottom_gps_sensor/fix</title>
+                            <title>/top_gps_sensor/fix</title>
                         </curve_0>
                         <curve_1>
                             <axes>
