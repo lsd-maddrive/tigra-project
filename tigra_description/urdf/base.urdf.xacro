@@ -78,21 +78,25 @@
 	<xacro:steer_wheel
 		prefix="front_right"
 		parent="front_axis_link"
-		steer_origin_xyz="0 -${track_width/2} 0"
-		steer_limit="${wheel_turn_limit}" />
+		suspension_origin_xyz="0 -${track_width/2} 0"
+		suspension_height="${suspension_height}"
+		steer_limit="${steer_limit}" />
 	<xacro:steer_wheel
 		prefix="front_left"
 		parent="front_axis_link"
-		steer_origin_xyz="0 ${track_width/2} 0"
-		steer_limit="${wheel_turn_limit}" />
+		suspension_origin_xyz="0 ${track_width/2} 0"
+		suspension_height="${suspension_height}"
+		steer_limit="${steer_limit}" />
 	<xacro:speed_wheel
 		prefix="rear_right"
 		parent="rear_axis_link"
-		origin_xyz="0 -${track_width/2} 0" />
+		suspension_origin_xyz="0 -${track_width/2} 0"
+		suspension_height="${suspension_height}" />
 	<xacro:speed_wheel
 		prefix="rear_left"
 		parent="rear_axis_link"
-		origin_xyz="0 ${track_width/2} 0" />
+		suspension_origin_xyz="0 ${track_width/2} 0"
+		suspension_height="${suspension_height}" />
 
     <gazebo>
 

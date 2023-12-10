@@ -9,7 +9,7 @@
     <arg name='foxglove' default="true" />
     <arg name="odom_fusion_debug" default="true"/>
     <arg name="odom_instance" default="local" doc="[local, global]"/>
-    <arg name='rtabmap_viz' default='true' />
+    <arg name='rtabmap_viz' default='false' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
     <arg name="nav_config" default="teb_local_planner_high_speed" />
     <arg name="gz_gui" default="false" />
@@ -21,26 +21,60 @@
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
-    <!-- rtabmap-->
+    <!-- rdbd_odometry and slam -->
     <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(arg database_path)" />
         <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
     </include>
 
+    <!-- imu_filter -->
+    <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+        <arg name="imu/data_raw" value="rear_rs_d435i_camera/imu"/>
+        <arg name="imu/data_filtered" value="rear_rs_d435i_camera/imu/filtered"/>
+    </include>
+    <!-- base_footprint_stabilized -->
+    <node pkg="rtabmap_util" type="imu_to_tf" name="rtabmap_imu_to_tf" output="screen">
+        <param name="fixed_frame_id" value="base_footprint_stabilized"/>
+        <param name="base_frame_id" value="base_footprint"/>
+        <remap from="imu/data" to="rear_rs_d435i_camera/imu/filtered"/>
+    </node>
+
     <!-- robot_localization-->
+    <!-- ekf_local -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_local.yaml" />
+        <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_local.yaml" />
         <param name="publish_tf" value="false" />
         <remap from="odometry/filtered" to="odometry/filtered/local" />
         <remap from="diagnostics" to="ekf_local_diagnostics"/>
+    </node>
+    <!-- ekf_global -->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_global_node" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_global.yaml" />
+        <param name="publish_tf" value="false" />
+        <!-- inputs -->
+        <remap from="set_pose" to="ekf_global/set_pose"/>
+        <!-- outputs -->
+        <remap from="odometry/filtered" to="odometry/filtered/global"/>
+        <remap from="diagnostics" to="ekf_global_diagnostics"/>
+    </node>
+    <!-- navsat_transform -->
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/robot_localization/navsat_transform.yaml" />
+        <!-- inputs -->
+        <remap from="odometry/filtered" to="odometry/filtered/global"/>
+        <remap from="gps/fix" to="top_ublox_gps_sensor/fix"/>
+        <remap from="imu/data" to="rear_rs_d435i_camera/imu"/>
+        <!-- outputs -->
+        <remap from="odometry/gps" to="odometry/gps"/>
+        <remap from="gps/filtered" to="gps/filtered"/>
     </node>
 
     <!-- joy teleop-->
     <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch">
         <arg name="cmd_topic" value="joy_vel" />
-        <arg name="speed/frwd_limit" value="1.5"/>
-        <arg name="speed/bkwrd_limit" value="-1.2"/>
+        <arg name="speed/frwd_limit" value="4"/>
+        <arg name="speed/bkwrd_limit" value="-3"/>
         <arg name="steer/limit" value="45"/>
     </include>
     <!-- move_base -->
@@ -57,9 +91,10 @@
     </node>
     <!-- Traffic Light -->
     <!-- <node pkg="tigra_software" type="sign_nums_subs.py" name="sign_nums_subs" output="screen"/> -->
-    <!-- cmd_vel filter -->
-    <node pkg="maddrive_teleop" type="steering_filter" name="steering_filter" output="screen">
-        <param name="steering_alpha" value="0.9" />
+    <!-- cmd_vel_filter -->
+    <node pkg="maddrive_teleop" type="cmd_vel_filter" name="cmd_vel_filter" output="screen">
+        <param name="steering_alpha" value="0.7" />
+        <param name="linear_alpha" value="0.7" />
         <remap from="cmd_vel_raw" to="cmd_vel_raw" />
         <remap from="cmd_vel" to="tigra/cmd_vel" />
     </node>

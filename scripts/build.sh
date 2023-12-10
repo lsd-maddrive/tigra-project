@@ -14,7 +14,6 @@ fi
 catkin build \
     tigra-project \
     maddrive_ros_shared \
-    elp_stereo_camera \
     rtabmap \
     rtabmap_ros \
     ublox \

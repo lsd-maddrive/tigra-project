@@ -2,52 +2,46 @@
 <launch>
 
     <!-- main body -->
-    <node pkg="tf" type="static_transform_publisher"
+    <node pkg="tf2_ros" type="static_transform_publisher"
         name="base_footprint_2_base_link"
         args="
             0.0 0.0 0.25
             0.0 0.0 0.0
-            /base_footprint /base_link
-            100" />
-    <node pkg="tf" type="static_transform_publisher"
+            /base_footprint /base_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
         name="base_footprint_2_rear_axis_link"
         args="
             0.0 0.0 0.25
             0.0 0.0 0.0
-            /base_footprint /rear_axis_link
-            100" />
-    <node pkg="tf" type="static_transform_publisher"
+            /base_footprint /rear_axis_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
         name="rear_axis_link_2_front_axis_link"
         args="
             1.25 0.0 0.0
             0.0 0.0 0.0
-            /rear_axis_link /front_axis_link
-            100" />
+            /rear_axis_link /front_axis_link" />
 
     <!-- sensors -->
     <!-- 3d-lidar -->
-    <node pkg="tf" type="static_transform_publisher"
+    <node pkg="tf2_ros" type="static_transform_publisher"
         name="front_axis_link_2_front_c16_lidar_link"
         args="
             0.07 0.0 0.715
             0.0 0.0 0.04
-            /front_axis_link /front_c16_lidar_link
-            100" />
+            /front_axis_link /front_c16_lidar_link" />
     <!-- front rs camera -->
-    <node pkg="tf" type="static_transform_publisher"
+    <node pkg="tf2_ros" type="static_transform_publisher"
         name="front_axis_link_2_front_rs_d455_camera_link"
         args="
             -0.19 0.0 1.35
             0.0 0.15 -0.02
-            /front_axis_link /front_rs_d455_camera_link
-            100" />
+            /front_axis_link /front_rs_d455_camera_link" />
     <!-- rear rs camera -->
-    <node pkg="tf" type="static_transform_publisher"
+    <node pkg="tf2_ros" type="static_transform_publisher"
         name="rear_axis_link_2_rear_rs_d435i_camera_link"
             args="
             -0.19 0.0 0.61
             3.14159265 -0.01 3.14159265
-            /rear_axis_link /rear_rs_d435i_camera_link
-            100" />
+            /rear_axis_link /rear_rs_d435i_camera_link" />
 
 </launch>

@@ -28,10 +28,10 @@
 		origin_xyz="-0.19 0.0 0.61"
 		origin_rpy="3.14159265 -0.01 3.14159265" />
 
-	<xacro:gps_sensor
-		prefix="front"
-		parent="base_footprint"
-		origin_xyz="0.0 0.0 ${body_heigth/2+0.1}"
+	<xacro:ublox_gps_sensor
+		prefix="top"
+		parent="base_link"
+		origin_xyz="0.0 0.0 ${body_heigth+0.1}"
 		origin_rpy="0.0 0.0 0.0" />
 
 	<!-- <xacro:elp_stereo

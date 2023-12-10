@@ -20,7 +20,7 @@
   <!-- sensor names -->
   <arg name="lidar_name" default="front_lslidar_c16_lidar" />
   <arg name="camera_name" default="front_rs_d455_camera" />
-  <arg name="gps_name" default="front_gps_sensor"/>
+  <arg name="gps_name" default="top_ublox_gps_sensor"/>
 
   <!-- INPUTS -->
   <arg name="rgb_topic" default="$(arg camera_name)/color/image_raw" />
@@ -59,29 +59,17 @@
       --RGBD/ProximityPathMaxNeighbors 1
       --Grid/Sensor 0"/>
 
-  <!-- IMU orientation estimation and publish tf accordingly to os_sensor frame -->
-  <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
-    <param name="world_frame" value="enu"/>
-    <param name="use_mag" value="false"/>
-    <param name="publish_tf" value="false"/>
-    <remap from="imu/data_raw" to="/$(arg imu_topic)"/>
-    <remap from="imu/data" to="/$(arg imu_topic)/filtered"/>
-  </node>
-  <node pkg="rtabmap_util" type="imu_to_tf" name="imu_to_tf" output="screen">
-    <param name="fixed_frame_id" value="$(arg frame_id)_stabilized"/>
-    <param name="base_frame_id" value="$(arg frame_id)"/>
-    <remap from="imu/data" to="/$(arg imu_topic)/filtered"/>
-  </node>
-
   <!--- rgbd odometry -->
   <group ns="rtabmap">
         <node if="$(arg rgbd_odom)" pkg="rtabmap_odom" type="rgbd_odometry" name="visual_odometry" output="log">
             <!-- http://wiki.ros.org/rtabmap_odom -->
-            <!-- inputs -->
-            <remap from="imu" to="/$(arg imu_topic)/filtered" />
+            <param name="subscribe_rgbd" type="bool" value="true" />
+            <!-- if subscribe_rgbd=false -->
             <remap from="rgb/image" to="/$(arg rgb_topic)" />
             <remap from="rgb/camera_info" to="/$(arg camera_info_topic)" />
             <remap from="depth/image" to="/$(arg depth_topic)" />
+            <!-- if subscribe_rgbd=true -->
+            <remap from="rgbd_image" to="/rtabmap/rgbd_image" />
             <!-- outputs -->
             <remap from="odom" to="$(arg odom_topic)" />
 

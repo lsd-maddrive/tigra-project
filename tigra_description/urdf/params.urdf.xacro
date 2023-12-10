@@ -6,13 +6,11 @@
     <xacro:property name="yaml_file" value="$(find tigra_description)/config/props.yaml" />
     <xacro:property name="props" value="${xacro.load_yaml(yaml_file)}" />
 
-    <xacro:property name="front_wheel_2_front_bumper" value="0.3" />
-    <xacro:property name="rear_wheel_2_rear_bumper" value="0.3" />
-
+    <!-- основные габариты -->
     <xacro:property name="wheelbase" value="${props['wheelbase']}" />
     <xacro:property name="track_width" value="${props['track_width']}" />
-
-    <!-- основные габариты -->
+    <xacro:property name="front_wheel_2_front_bumper" value="0.3" />
+    <xacro:property name="rear_wheel_2_rear_bumper" value="0.3" />
     <xacro:property name="body_length" value="${front_wheel_2_front_bumper+wheelbase+rear_wheel_2_rear_bumper}" />
     <xacro:property name="body_width" value="0.75" />
     <xacro:property name="body_heigth" value="0.6" />
@@ -22,6 +20,9 @@
     <xacro:property name="wheel_width" value="0.25" />
     <xacro:property name="wheel_radius" value="${props['wheel_radius']}" />
     <xacro:property name="wheel_mass" value="20" />
-    <xacro:property name="wheel_turn_limit" value="${pi/4}" />
+
+    <!-- характеристики подвески -->
+    <xacro:property name="steer_limit" value="${pi/4}" />
+    <xacro:property name="suspension_height" value="0.0" />
 
 </robot>
