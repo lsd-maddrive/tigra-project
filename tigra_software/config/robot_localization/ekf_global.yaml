@@ -8,8 +8,8 @@ two_d_mode: true
 
 map_frame: map
 odom_frame: odom
-base_link_frame: base_footprint_stabilized
-base_link_frame_output: base_footprint_stabilized
+base_link_frame: base_footprint
+base_link_frame_output: base_footprint
 world_frame: map # "map_frame" if use GPS; "odom_frame" if not use GPS
 
 publish_tf: false # "world_frame" -> "base_link_frame"
@@ -27,7 +27,7 @@ initial_state: [0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0]
 
 # rgbd odometry
-odom0: /rtabmap/odom
+odom0: /rtabmap/visual_odometry
 odom0_config:  [false, false, false,
                 false, false, true,
                 false, true, false,
@@ -39,7 +39,7 @@ odom0_relative: false
 odom0_nodelay: false
 
 # Wheel odometry (20 Hz)
-odom1: /rtabmap/visual_odometry
+odom1:  /tigra/wheel_odom
 odom1_config:  [false, false, false,
                 false, false, false,
                 true, false, false,
@@ -96,21 +96,21 @@ debug: false
 debug_out_file: ekf_global.txt
 
 # Q - ковариационная матрица шума процесса - дисперсия переменных состояния
-process_noise_covariance:  [0.0025,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                            0, 0.0025,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+process_noise_covariance:  [0.0025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0.0025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                            0, 0, 0, 0, 0, 0.004, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                            0, 0, 0, 0, 0, 0, 0.01,0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0.05,0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0.01,0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, 0,
-                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01,0, 0,
-                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01,0,
-                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01]
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # dynamic_process_noise_covariance: true
 
@@ -121,17 +121,17 @@ initial_estimate_covariance: [0.004, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                              0, 0, 0, 0, 0, 0.006, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                              0, 0, 0, 0, 0, 0, 0.015, 0, 0, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0.015, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0.015, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.006, 0, 0, 0,
-                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.015, 0, 0,
-                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.015, 0,
-                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.015]
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.006, 0, 0,
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 reset_on_time_jump: false
-predict_to_current_time: false
+predict_to_current_time: true
 disabled_at_startup: false

@@ -19,14 +19,14 @@
 		model="d455"
 		parent="front_axis_link"
 		origin_xyz="-0.19 0.0 1.35"
-		origin_rpy="0.0 0.00 0.00" />
+		origin_rpy="0.0 0.0 0.0" />
 
 	<xacro:rs_camera
 		prefix="rear"
 		model="d435i"
 		parent="rear_axis_link"
 		origin_xyz="-0.19 0.0 0.61"
-		origin_rpy="3.14159265 -0.01 3.14159265" />
+		origin_rpy="3.14159265 0.22 3.14159265" />
 
 	<xacro:ublox_gps_sensor
 		prefix="top"

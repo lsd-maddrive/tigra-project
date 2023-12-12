@@ -29,20 +29,20 @@
     </include>
 
     <!-- imu_filter -->
-    <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+    <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
         <arg name="imu/data_raw" value="rear_rs_d435i_camera/imu"/>
         <arg name="imu/data_filtered" value="rear_rs_d435i_camera/imu/filtered"/>
-    </include>
+    </include> -->
     <!-- base_footprint_stabilized -->
-    <node pkg="rtabmap_util" type="imu_to_tf" name="rtabmap_imu_to_tf" output="screen">
+    <!-- <node pkg="rtabmap_util" type="imu_to_tf" name="rtabmap_imu_to_tf" output="screen">
         <param name="fixed_frame_id" value="base_footprint_stabilized"/>
         <param name="base_frame_id" value="base_footprint"/>
         <remap from="imu/data" to="rear_rs_d435i_camera/imu/filtered"/>
-    </node>
+    </node> -->
 
     <!-- robot_localization-->
     <!-- ekf_local -->
-    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local" clear_params="true" output="screen">
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local_node" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_local.yaml" />
         <param name="publish_tf" value="false" />
         <remap from="odometry/filtered" to="odometry/filtered/local" />

@@ -30,7 +30,7 @@
 
   <arg name="frame_id"        default="base_footprint"/> 
 
-  <arg name="odom_topic" default="odom" />
+  <arg name="odom_topic" default="/rtabmap/visual_odometry" />
 
   <arg if="$(arg lidar3d)" name="lidar_args" default="
       --Reg/Strategy 1 
@@ -73,7 +73,7 @@
             <!-- outputs -->
             <remap from="odom" to="$(arg odom_topic)" />
 
-            <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/>
+            <!-- <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/> -->
             <param name="frame_id"        type="string" value="$(arg frame_id)"/>
             <param name="odom_frame_id"   type="string" value="odom"/>
             
@@ -105,7 +105,7 @@
     <arg name="visual_odometry" value="false" />
     <arg name="approx_sync"     value="$(eval camera or not icp_odometry)" />
     <!-- <arg name="imu_topic"       value="/$(arg imu_topic)/filtered" /> -->
-    <!-- <arg unless="$(arg icp_odometry)" name="odom_topic" value="/odometry/filtered" /> -->
+    <arg name="odom_topic" value="$(arg odom_topic)" />
     <arg name="frame_id"        value="base_footprint" />
     <arg name="rtabmap_viz"      value="$(arg rtabmap_viz)" />
     <arg name="gps_topic"       value="/$(arg gps_name)/fix"/>

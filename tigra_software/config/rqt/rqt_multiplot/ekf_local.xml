@@ -64,7 +64,7 @@
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
                                 <pen_style>1</pen_style>
-                                <pen_width>2</pen_width>
+                                <pen_width>4</pen_width>
                                 <render_antialias>false</render_antialias>
                                 <steps_invert>false</steps_invert>
                                 <sticks_baseline>0</sticks_baseline>
@@ -114,8 +114,8 @@
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>2</pen_width>
+                                <pen_style>3</pen_style>
+                                <pen_width>4</pen_width>
                                 <render_antialias>false</render_antialias>
                                 <steps_invert>false</steps_invert>
                                 <sticks_baseline>0</sticks_baseline>
@@ -137,7 +137,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/rtabmap/odom</topic>
+                                    <topic>/rtabmap/visual_odometry</topic>
                                     <type>nav_msgs/Odometry</type>
                                 </x_axis>
                                 <y_axis>
@@ -150,12 +150,12 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/rtabmap/odom</topic>
+                                    <topic>/rtabmap/visual_odometry</topic>
                                     <type>nav_msgs/Odometry</type>
                                 </y_axis>
                             </axes>
                             <color>
-                                <custom_color>#204a87</custom_color>
+                                <custom_color>#0000ff</custom_color>
                                 <type>1</type>
                             </color>
                             <data>
@@ -174,8 +174,110 @@
                                 <type>0</type>
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>/rtabmap/odom</title>
+                            <title>/rtabmap/visual_odometry</title>
                         </curve_2>
+                        <curve_3>
+                            <axes>
+                                <x_axis>
+                                    <field>pose/pose/position/x</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/tigra/wheel_odom</topic>
+                                    <type>nav_msgs/Odometry</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>pose/pose/position/y</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/tigra/wheel_odom</topic>
+                                    <type>nav_msgs/Odometry</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>1000</circular_buffer_capacity>
+                                <time_frame_length>10</time_frame_length>
+                                <type>0</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>2</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>/tigra/wheel_odom</title>
+                        </curve_3>
+                        <curve_4>
+                            <axes>
+                                <x_axis>
+                                    <field>pose/pose/position/x</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/odometry/filtered/global</topic>
+                                    <type>nav_msgs/Odometry</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>pose/pose/position/y</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/odometry/filtered/global</topic>
+                                    <type>nav_msgs/Odometry</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>1000</circular_buffer_capacity>
+                                <time_frame_length>10</time_frame_length>
+                                <type>0</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>/odometry/filtered/global</title>
+                        </curve_4>
                     </curves>
                     <legend>
                         <visible>true</visible>

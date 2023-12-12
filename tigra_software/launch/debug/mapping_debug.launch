@@ -2,6 +2,8 @@
 <launch>
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
+    <arg name="odom_fusion_debug" default="true"/>
+    <arg name="odom_instance" default="local" doc="[local, global]"/>
 
     <group if="$(eval arg('rosbag_mode') == 'play')">
         <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
@@ -10,40 +12,60 @@
                 --clock
                 --hz=100
                 --topics
+                    /tf
                     /tf_static
-                    /bottom_lslidar_c16_lidar_point_cloud
-                    /front_rs_d435i_camera/rgbd_image
+                    /ground_truth/state
+                    /rtabmap/visual_odometry
                     /tigra/wheel_odom
                     /rear_rs_d435i_camera/imu
-                    /top_gps_sensor/fix
-                --bags $(find kitty_software)/bags/my_bag.bag"/>
-
-        <!-- mapping -->
-        <include file="$(find kitty_software)/launch/drivers/slam_gmapping.launch">
-            <arg name="scan_input_topic" value="bottom_ydlidar_scan/filtered"/>
-        </include>
-
-        <!-- rgbd odometry -->
-        <include file="$(find kitty_vision)/launch/drivers/rgbd_odom.launch">
-            <arg name="camera_name" value="front_rs_d435i_camera"/>
-            <arg name="publish_tf" value="true"/>
-        </include>
-
+                    /top_ublox_gps_sensor/fix
+                --bags $(find tigra_software)/bags/odom_fusing.bag"/>
+        <!-- ekf_local -->
+        <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local_node" clear_params="true" output="screen">
+            <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_local.yaml" />
+            <param name="publish_tf" value="false" />
+            <remap from="odometry/filtered" to="odometry/filtered/local" />
+            <remap from="diagnostics" to="ekf_local_diagnostics"/>
+        </node>
+        <!-- ekf_global -->
+        <node pkg="robot_localization" type="ekf_localization_node" name="ekf_global_node" output="screen">
+            <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_global.yaml" />
+            <param name="publish_tf" value="false" />
+            <!-- inputs -->
+            <remap from="set_pose" to="ekf_global/set_pose"/>
+            <!-- outputs -->
+            <remap from="odometry/filtered" to="odometry/filtered/global"/>
+            <remap from="diagnostics" to="ekf_global_diagnostics"/>
+        </node>
+        <!-- navsat_transform -->
+        <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" output="screen">
+            <rosparam command="load" file="$(find tigra_software)/config/robot_localization/navsat_transform.yaml" />
+            <!-- inputs -->
+            <remap from="odometry/filtered" to="odometry/filtered/global"/>
+            <remap from="gps/fix" to="top_ublox_gps_sensor/fix"/>
+            <remap from="imu/data" to="rear_rs_d435i_camera/imu"/>
+            <!-- outputs -->
+            <remap from="odometry/gps" to="odometry/gps"/>
+            <remap from="gps/filtered" to="gps/filtered"/>
+        </node>
+        <group if="$(arg odom_fusion_debug)">
+            <include file="$(find tigra_software)/launch/debug/ekf_debug.launch">
+                <arg name="odom_instance" value="$(arg odom_instance)" />
+            </include>
+        </group>
     </group>
 
     <group if="$(eval arg('rosbag_mode') == 'record')">
         <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
             args="
+                /tf
                 /tf_static
-                /bottom_ydlidar_scan/filtered
-                /front_rs_d435i_camera/rgbd_image
-                --output-name $(find kitty_software)/bags/my_bag.bag"/>
+                /ground_truth/state
+                /rtabmap/visual_odometry
+                /tigra/wheel_odom
+                /rear_rs_d435i_camera/imu
+                /top_ublox_gps_sensor/fix
+                --output-name $(find tigra_software)/bags/odom_fusing_fix_0.05.bag"/>
     </group>
-
-    /tf_static для записи неподвижный преобразований
-    /bottom_lslidar_c16_lidar_point_cloud для восстановления "map" -> "odom"
-    /front_rs_d455_camera/rgbd_image для восстановления "odom" -> "base_footprint_stabilized"
-    
-
 
 </launch>
