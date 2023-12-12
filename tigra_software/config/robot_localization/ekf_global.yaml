@@ -39,7 +39,7 @@ odom0_relative: false
 odom0_nodelay: false
 
 # Wheel odometry (20 Hz)
-odom1:  /tigra/wheel_odom
+odom1: /tigra/wheel_odom
 odom1_config:  [false, false, false,
                 false, false, false,
                 true, false, false,

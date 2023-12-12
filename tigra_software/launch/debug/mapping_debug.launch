@@ -2,6 +2,7 @@
 <launch>
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
+    <arg name="rosbag_filename" default="odom_fusing_ETU_with_holes_in_asphalt_0.05_m_1_hz"/>
     <arg name="odom_fusion_debug" default="true"/>
     <arg name="odom_instance" default="local" doc="[local, global]"/>
 
@@ -19,7 +20,7 @@
                     /tigra/wheel_odom
                     /rear_rs_d435i_camera/imu
                     /top_ublox_gps_sensor/fix
-                --bags $(find tigra_software)/bags/odom_fusing.bag"/>
+                --bags $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
         <!-- ekf_local -->
         <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local_node" clear_params="true" output="screen">
             <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_local.yaml" />
@@ -65,7 +66,7 @@
                 /tigra/wheel_odom
                 /rear_rs_d435i_camera/imu
                 /top_ublox_gps_sensor/fix
-                --output-name $(find tigra_software)/bags/odom_fusing_fix_0.05.bag"/>
+                --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
     </group>
 
 </launch>
