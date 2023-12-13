@@ -2,16 +2,15 @@
 <launch>
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
-    <arg name="rosbag_filename" default="odom_fusing_ETU_with_holes_in_asphalt_0.05_m_1_hz"/>
-    <arg name="odom_fusion_debug" default="true"/>
+    <arg name="rosbag_filename" default="odom_fusing_ETU_with_holes_in_asphalt_with_a_little_stop_on_start_0.05_m_1_hz"/>
     <arg name="odom_instance" default="local" doc="[local, global]"/>
 
     <group if="$(eval arg('rosbag_mode') == 'play')">
+        <!-- playing rosbag -->
         <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
             args="
                 --quiet
                 --clock
-                --hz=100
                 --topics
                     /tf
                     /tf_static
@@ -19,6 +18,7 @@
                     /rtabmap/visual_odometry
                     /tigra/wheel_odom
                     /rear_rs_d435i_camera/imu
+                    /front_rs_d455_camera/color/image_raw/compressed
                     /top_ublox_gps_sensor/fix
                 --bags $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
         <!-- ekf_local -->
@@ -49,14 +49,44 @@
             <remap from="odometry/gps" to="odometry/gps"/>
             <remap from="gps/filtered" to="gps/filtered"/>
         </node>
-        <group if="$(arg odom_fusion_debug)">
-            <include file="$(find tigra_software)/launch/debug/ekf_debug.launch">
-                <arg name="odom_instance" value="$(arg odom_instance)" />
-            </include>
+        <!-- plotting graphs -->
+        <group if="$(eval odom_instance == 'local')">
+            <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
+                args="
+                    /odometry/filtered/local/pose/covariance[0]
+                    /odometry/filtered/local/pose/covariance[7]
+                    /odometry/filtered/local/pose/covariance[35]
+                    /odometry/filtered/local/twist/covariance[0]
+                    /odometry/filtered/local/twist/covariance[7]
+                    /odometry/filtered/local/twist/covariance[35]
+                    "/>
+            <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
+                args="
+                    --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_local.xml
+                    --multiplot-run-all
+                    "/>
+        </group>
+        <group if="$(eval odom_instance == 'global')">
+            <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
+                args="
+                    /odometry/filtered/global/pose/covariance[0]
+                    /odometry/filtered/global/pose/covariance[7]
+                    /odometry/filtered/global/pose/covariance[35]
+                    /odometry/filtered/global/twist/covariance[0]
+                    /odometry/filtered/global/twist/covariance[7]
+                    /odometry/filtered/global/twist/covariance[35]
+                    "/>
+            <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
+                args="
+                    --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_global.xml
+                    --multiplot-run-all
+                    "/>
         </group>
     </group>
 
+    <!-- recording rosbag -->
     <group if="$(eval arg('rosbag_mode') == 'record')">
+        <!-- <arg name="use_sim_time" default="true"/> -->
         <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
             args="
                 /tf
@@ -65,6 +95,7 @@
                 /rtabmap/visual_odometry
                 /tigra/wheel_odom
                 /rear_rs_d435i_camera/imu
+                /front_rs_d455_camera/color/image_raw/compressed
                 /top_ublox_gps_sensor/fix
                 --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
     </group>

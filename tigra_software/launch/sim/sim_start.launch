@@ -7,8 +7,6 @@
     <arg name="fused_odom_debug" default="true"/>
     <arg name='rviz' default="true" />
     <arg name='foxglove' default="true" />
-    <arg name="odom_fusion_debug" default="true"/>
-    <arg name="odom_instance" default="local" doc="[local, global]"/>
     <arg name='rtabmap_viz' default='false' />
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
     <arg name="nav_config" default="teb_local_planner_high_speed" />
@@ -106,11 +104,6 @@
     <group if="$(arg foxglove)">
         <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
             <arg name="port" value="8765" />
-        </include>
-    </group>
-    <group if="$(arg odom_fusion_debug)">
-        <include file="$(find tigra_software)/launch/debug/ekf_debug.launch">
-            <arg name="odom_instance" value="$(arg odom_instance)" />
         </include>
     </group>
 
