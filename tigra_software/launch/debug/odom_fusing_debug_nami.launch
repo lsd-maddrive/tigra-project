@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="odom_instance" default="local" doc="[local, global]"/>
+
+    <!-- playing rosbag -->
+    <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
+        args="
+            --clock
+            --topics
+                /rs_camera/color/image_raw
+                /rs_camera/aligned_depth_to_color/image_raw
+                /rs_camera/color/camera_info
+                /rs_camera/imu
+                /lslidar_point_cloud
+                /zed_f9p/fix
+            --bags
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои документы/rosbags_nami/rosbag_nami_1.bag
+            "/>
+    <!-- rdbd_odometry and slam -->
+    <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam_nami.launch">
+        <arg name="localization" value="false" />
+        <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
+        <arg name="rtabmap_viz" value="false" />
+    </include>
+    <!-- ekf_local -->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local_node" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_local_nami.yaml" />
+        <param name="publish_tf" value="false" />
+        <remap from="odometry/filtered" to="odometry/filtered/local" />
+        <remap from="diagnostics" to="ekf_local_diagnostics"/>
+    </node>
+    <!-- ekf_global -->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_global_node" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_global_nami.yaml" />
+        <param name="publish_tf" value="false" />
+        <!-- inputs -->
+        <remap from="set_pose" to="ekf_global/set_pose"/>
+        <!-- outputs -->
+        <remap from="odometry/filtered" to="odometry/filtered/global"/>
+        <remap from="diagnostics" to="ekf_global_diagnostics"/>
+    </node>
+    <!-- navsat_transform -->
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" output="screen">
+        <rosparam command="load" file="$(find tigra_software)/config/robot_localization/navsat_transform_nami.yaml" />
+        <!-- inputs -->
+        <remap from="odometry/filtered" to="odometry/filtered/global"/>
+        <remap from="gps/fix" to="zed_f9p/fix"/>
+        <remap from="imu/data" to="rrs_camera/imu"/>
+        <!-- outputs -->
+        <remap from="odometry/gps" to="odometry/gps"/>
+        <remap from="gps/filtered" to="gps/filtered"/>
+    </node>
+    <!-- plotting graphs -->
+    <group if="$(eval odom_instance == 'local')">
+        <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
+            args="
+                /odometry/filtered/local/pose/covariance[0]
+                /odometry/filtered/local/pose/covariance[7]
+                /odometry/filtered/local/pose/covariance[35]
+                /odometry/filtered/local/twist/covariance[0]
+                /odometry/filtered/local/twist/covariance[7]
+                /odometry/filtered/local/twist/covariance[35]
+                "/>
+        <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
+            args="
+                --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_local.xml
+                --multiplot-run-all
+                "/>
+    </group>
+    <group if="$(eval odom_instance == 'global')">
+        <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
+            args="
+                /odometry/filtered/global/pose/covariance[0]
+                /odometry/filtered/global/pose/covariance[7]
+                /odometry/filtered/global/pose/covariance[35]
+                /odometry/filtered/global/twist/covariance[0]
+                /odometry/filtered/global/twist/covariance[7]
+                /odometry/filtered/global/twist/covariance[35]
+                "/>
+        <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
+            args="
+                --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_global.xml
+                --multiplot-run-all
+                "/>
+    </group>
+
+</launch>

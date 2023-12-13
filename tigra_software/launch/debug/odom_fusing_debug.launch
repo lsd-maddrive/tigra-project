@@ -97,7 +97,8 @@
                 /rear_rs_d435i_camera/imu
                 /front_rs_d455_camera/color/image_raw/compressed
                 /top_ublox_gps_sensor/fix
-                --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
+                --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag
+                "/>
     </group>
 
 </launch>
