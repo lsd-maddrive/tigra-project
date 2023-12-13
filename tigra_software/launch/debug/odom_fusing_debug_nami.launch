@@ -2,12 +2,15 @@
 <launch>
 
     <arg name="odom_instance" default="local" doc="[local, global]"/>
+    <param name="use_sim_time" value="true" />
 
     <!-- playing rosbag -->
     <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
         args="
+            --quiet
             --clock
             --topics
+                /tf_static
                 /rs_camera/color/image_raw
                 /rs_camera/aligned_depth_to_color/image_raw
                 /rs_camera/color/camera_info
@@ -15,14 +18,79 @@
                 /lslidar_point_cloud
                 /zed_f9p/fix
             --bags
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои документы/rosbags_nami/rosbag_nami_1.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_1.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_2.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_3.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_4.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_5.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_6.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_7.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_8.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_9.bag
             "/>
+
+    <node pkg="tf2_ros" type="static_transform_publisher"
+        name="base_footprint_2_base_link"
+        args="
+            0.0 0.0 0.25
+            0.0 0.0 0.0
+            /base_footprint /base_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
+        name="base_footprint_2_rear_axis_link"
+        args="
+            0.0 0.0 0.25
+            0.0 0.0 0.0
+            /base_footprint /rear_axis_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
+        name="rear_axis_link_2_front_axis_link"
+        args="
+            1.25 0.0 0.0
+            0.0 0.0 0.0
+            /rear_axis_link /front_axis_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
+    name="front_axis_link_2_rs_camera_link"
+        args="
+            -0.19 0.0 1.3
+            0.0 0.14 -0.02
+            /front_axis_link /rs_camera_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
+        name="rear_axis_link_2_rs_camera_rear_link"
+        args="
+            -0.19 0.0 0.52
+            3.1415 0.02 3.1415
+            /rear_axis_link /rs_camera_rear_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
+        name="front_axis_link_2_laser_link"
+        args="
+            0.07 0.0 0.715
+            1.530796327 0.0 0.04
+            /front_axis_link /laser_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher"
+        name="base_footprint_2_gps"
+        args="
+            0.0 0.0 3.0
+            0.0 0.0 0.0
+            /base_footprint /gps" />
+
+    <!-- imu_filter -->
+    <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+        <arg name="imu/data_raw" value="rs_camera/imu"/>
+        <arg name="imu/data_filtered" value="rs_camera/imu/filtered"/>
+    </include>
+    <!-- base_footprint_stabilized -->
+    <node pkg="rtabmap_util" type="imu_to_tf" name="rtabmap_imu_to_tf" output="screen">
+        <param name="fixed_frame_id" value="base_footprint_stabilized"/>
+        <param name="base_frame_id" value="base_footprint"/>
+        <remap from="imu/data" to="rs_camera/imu/filtered"/>
+    </node>
+
     <!-- rdbd_odometry and slam -->
     <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam_nami.launch">
         <arg name="localization" value="false" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
         <arg name="rtabmap_viz" value="false" />
     </include>
+
     <!-- ekf_local -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local_node" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_local_nami.yaml" />
@@ -46,11 +114,12 @@
         <!-- inputs -->
         <remap from="odometry/filtered" to="odometry/filtered/global"/>
         <remap from="gps/fix" to="zed_f9p/fix"/>
-        <remap from="imu/data" to="rrs_camera/imu"/>
+        <remap from="imu/data" to="rs_camera/imu"/>
         <!-- outputs -->
         <remap from="odometry/gps" to="odometry/gps"/>
         <remap from="gps/filtered" to="gps/filtered"/>
     </node>
+
     <!-- plotting graphs -->
     <group if="$(eval odom_instance == 'local')">
         <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
@@ -64,7 +133,7 @@
                 "/>
         <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
             args="
-                --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_local.xml
+                --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_local_nami.xml
                 --multiplot-run-all
                 "/>
     </group>
@@ -80,9 +149,11 @@
                 "/>
         <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
             args="
-                --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_global.xml
+                --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_global_nami.xml
                 --multiplot-run-all
                 "/>
     </group>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" />
 
 </launch>

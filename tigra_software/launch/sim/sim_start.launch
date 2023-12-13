@@ -99,7 +99,7 @@
 
     <!-- data visualization -->
     <group if="$(arg rviz)">
-        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rviz/common_sim.rviz" />
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/common_sim.rviz" />
     </group>
     <group if="$(arg foxglove)">
         <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
