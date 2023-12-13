@@ -14,7 +14,7 @@
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find maddrive_worlds)/worlds/room_with_pillars_asphalt.world"/>
+        <arg name="world" value="$(find maddrive_worlds)/worlds/ETU_asphalt_holes.world"/>
         <arg name="gui" value="$(arg gz_gui)" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
@@ -28,14 +28,14 @@
 
     <!-- imu_filter -->
     <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
-        <arg name="imu/data_raw" value="rear_rs_d435i_camera/imu"/>
-        <arg name="imu/data_filtered" value="rear_rs_d435i_camera/imu/filtered"/>
+        <arg name="imu/data_raw" value="front_rs_d455_camera/imu"/>
+        <arg name="imu/data_filtered" value="front_rs_d455_camera/imu/filtered"/>
     </include> -->
     <!-- base_footprint_stabilized -->
     <!-- <node pkg="rtabmap_util" type="imu_to_tf" name="rtabmap_imu_to_tf" output="screen">
         <param name="fixed_frame_id" value="base_footprint_stabilized"/>
         <param name="base_frame_id" value="base_footprint"/>
-        <remap from="imu/data" to="rear_rs_d435i_camera/imu/filtered"/>
+        <remap from="imu/data" to="front_rs_d455_camera/imu/filtered"/>
     </node> -->
 
     <!-- robot_localization-->
@@ -62,7 +62,7 @@
         <!-- inputs -->
         <remap from="odometry/filtered" to="odometry/filtered/global"/>
         <remap from="gps/fix" to="top_ublox_gps_sensor/fix"/>
-        <remap from="imu/data" to="rear_rs_d435i_camera/imu"/>
+        <remap from="imu/data" to="front_rs_d455_camera/imu"/>
         <!-- outputs -->
         <remap from="odometry/gps" to="odometry/gps"/>
         <remap from="gps/filtered" to="gps/filtered"/>

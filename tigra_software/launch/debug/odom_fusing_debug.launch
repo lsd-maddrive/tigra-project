@@ -2,7 +2,7 @@
 <launch>
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
-    <arg name="rosbag_filename" default="odom_fusing_ETU_with_holes_in_asphalt_with_a_little_stop_on_start_0.05_m_1_hz"/>
+    <arg name="rosbag_filename" default="odom_fusing_ETU_asphalt_holes"/>
     <arg name="odom_instance" default="local" doc="[local, global]"/>
 
     <group if="$(eval arg('rosbag_mode') == 'play')">
@@ -17,7 +17,7 @@
                     /ground_truth/state
                     /rtabmap/visual_odometry
                     /tigra/wheel_odom
-                    /rear_rs_d435i_camera/imu
+                    /front_rs_d455_camera/imu
                     /front_rs_d455_camera/color/image_raw/compressed
                     /top_ublox_gps_sensor/fix
                 --bags $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
@@ -44,7 +44,7 @@
             <!-- inputs -->
             <remap from="odometry/filtered" to="odometry/filtered/global"/>
             <remap from="gps/fix" to="top_ublox_gps_sensor/fix"/>
-            <remap from="imu/data" to="rear_rs_d435i_camera/imu"/>
+            <remap from="imu/data" to="front_rs_d455_camera/imu"/>
             <!-- outputs -->
             <remap from="odometry/gps" to="odometry/gps"/>
             <remap from="gps/filtered" to="gps/filtered"/>
@@ -94,7 +94,7 @@
                 /ground_truth/state
                 /rtabmap/visual_odometry
                 /tigra/wheel_odom
-                /rear_rs_d435i_camera/imu
+                /front_rs_d455_camera/imu
                 /front_rs_d455_camera/color/image_raw/compressed
                 /top_ublox_gps_sensor/fix
                 --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag

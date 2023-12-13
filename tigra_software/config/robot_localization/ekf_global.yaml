@@ -51,7 +51,7 @@ odom1_relative: false
 odom1_nodelay: false
 
 # IMU in RealSense D435i (20 Hz)
-imu0: /rear_rs_d435i_camera/imu
+imu0: /front_rs_d455_camera/imu
 imu0_config: [false, false, false,
               false, false, true,
               false, false, false,
