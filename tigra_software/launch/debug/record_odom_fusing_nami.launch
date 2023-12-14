@@ -10,7 +10,6 @@
             /tf_static
             /rtabmap/visual_odometry
             /rs_camera/imu
-            /rs_camera/color/image_raw
             /zed_f9p/fix
             --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag
             "/>

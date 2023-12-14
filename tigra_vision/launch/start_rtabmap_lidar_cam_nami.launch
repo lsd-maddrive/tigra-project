@@ -73,7 +73,7 @@
             <!-- outputs -->
             <remap from="odom" to="$(arg odom_topic)" />
 
-            <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/>
+            <!-- <param name="guess_frame_id"  type="string" value="$(arg frame_id)_stabilized"/> -->
             <param name="frame_id"        type="string" value="$(arg frame_id)"/>
             <param name="odom_frame_id"   type="string" value="odom"/>
             

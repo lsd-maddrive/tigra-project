@@ -131,16 +131,16 @@
             /base_footprint /gps" />
 
     <!-- imu_filter -->
-    <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
+    <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
         <arg name="imu/data_raw" value="rs_camera/imu"/>
         <arg name="imu/data_filtered" value="rs_camera/imu/filtered"/>
-    </include>
+    </include> -->
     <!-- base_footprint_stabilized -->
-    <node pkg="rtabmap_util" type="imu_to_tf" name="rtabmap_imu_to_tf" output="screen">
+    <!-- <node pkg="rtabmap_util" type="imu_to_tf" name="rtabmap_imu_to_tf" output="screen">
         <param name="fixed_frame_id" value="base_footprint_stabilized"/>
         <param name="base_frame_id" value="base_footprint"/>
         <remap from="imu/data" to="rs_camera/imu/filtered"/>
-    </node>
+    </node> -->
 
     <!-- rdbd_odometry and slam -->
     <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam_nami.launch">
