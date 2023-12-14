@@ -14,7 +14,6 @@
                 /tf_static
                 /rtabmap/visual_odometry
                 /rs_camera/imu
-                /rs_camera/color/image_raw
                 /zed_f9p/fix
             --bags $(find tigra_software)/bags/odom_fusing_nami.bag"/>
 
