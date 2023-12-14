@@ -2,7 +2,7 @@
 <launch>
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
-    <arg name="rosbag_filename" default="odom_fusing_ETU_asphalt_with_hq_gps_reference"/>
+    <arg name="rosbag_filename" default="odom_fusing_ETU_asphalt_holes_with_hq_gps_reference"/>
     <arg name="odom_instance" default="local" doc="[local, global]"/>
 
     <group if="$(eval arg('rosbag_mode') == 'play')">

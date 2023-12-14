@@ -2,7 +2,7 @@
 <launch>
 
     <arg name="odom_instance" default="local" doc="[local, global]"/>
-    <param name="use_sim_time" value="true" />
+    <!-- <param name="use_sim_time" value="true" /> -->
 
     <!-- playing rosbag -->
     <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
@@ -18,8 +18,6 @@
                 /lslidar_point_cloud
                 /zed_f9p/fix
             --bags
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_1.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_2.bag
                 /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_3.bag
                 /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_4.bag
                 /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_5.bag
@@ -218,6 +216,6 @@
         <arg name="port" value="8765" />
     </include>
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" /> -->
 
 </launch>
