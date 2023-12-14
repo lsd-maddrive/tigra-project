@@ -213,6 +213,10 @@
                 --multiplot-run-all
                 "/>
     </group>
+    <!-- viev gps data in foxglove -->
+    <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
+        <arg name="port" value="8765" />
+    </include>
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" />
 

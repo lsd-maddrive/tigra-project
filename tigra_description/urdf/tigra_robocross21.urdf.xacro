@@ -6,6 +6,7 @@
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/sector_lidar.urdf.xacro" />
 	<!-- <xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/elp_stereo.urdf.xacro" /> -->
 	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/gps.urdf.xacro" />
+	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/high_freq_zero_noise_gps.urdf.xacro" />
 
 	<xacro:sector_lidar
 		prefix="front"
@@ -30,6 +31,11 @@
 
 	<xacro:ublox_gps_sensor
 		prefix="top"
+		parent="base_link"
+		origin_xyz="0.0 0.0 ${body_heigth+0.1}"
+		origin_rpy="0.0 0.0 0.0" />
+	<xacro:high_freq_zero_noise_ublox_gps_sensor
+		prefix="high_freq_zero_noise"
 		parent="base_link"
 		origin_xyz="0.0 0.0 ${body_heigth+0.1}"
 		origin_rpy="0.0 0.0 0.0" />

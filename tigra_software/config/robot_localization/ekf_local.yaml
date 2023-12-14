@@ -2,7 +2,7 @@
 
 # base parameters
 
-frequency: 10
+frequency: 30
 sensor_timeout: 0.1
 two_d_mode: true
 
