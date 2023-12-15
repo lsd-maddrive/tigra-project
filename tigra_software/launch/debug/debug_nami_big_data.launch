@@ -2,7 +2,6 @@
 <launch>
 
     <arg name="odom_instance" default="local" doc="[local, global]"/>
-    <!-- <param name="use_sim_time" value="true" /> -->
 
     <!-- playing rosbag -->
     <node pkg="rosbag" type="play" name="rosbag_play" output="screen"

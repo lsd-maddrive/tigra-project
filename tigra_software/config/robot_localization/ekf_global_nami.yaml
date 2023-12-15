@@ -2,7 +2,7 @@
 
 # base parameters
 
-frequency: 10
+frequency: 30
 sensor_timeout: 0.1
 two_d_mode: true
 
@@ -30,7 +30,7 @@ initial_state: [0.0, 0.0, 0.0,
 odom0: /rtabmap/visual_odometry
 odom0_config:  [false, false, false,
                 false, false, true,
-                false, true, false,
+                true, true, false,
                 false, false, false,
                 false, false, false]
 odom0_queue_size: 5
@@ -41,7 +41,7 @@ odom0_nodelay: false
 # IMU in RealSense D435i (20 Hz)
 imu0: /rs_camera/imu
 imu0_config: [false, false, false,
-              false, false, true,
+              false, false, false,
               false, false, false,
               false, false, true,
               true, false, false]
@@ -52,16 +52,16 @@ imu0_nodelay: false
 imu0_remove_gravitational_acceleration: true
 
 # gps
-odom2: /odometry/gps # (1 Hz)
-odom2_config:  [true, true, false,
+odom1: /odometry/gps # (1 Hz)
+odom1_config:  [true, true, false,
                 false, false, false,
                 false, false, false,
                 false, false, false,
                 false, false, false]
-odom2_queue_size: 5
-odom2_differential: false
-odom2_relative: false
-odom2_nodelay: false
+odom1_queue_size: 5
+odom1_differential: false
+odom1_relative: false
+odom1_nodelay: false
 
 # advanced parameters
 
@@ -91,7 +91,7 @@ process_noise_covariance:  [0.0025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0.05,0, 0, 0, 0, 0, 0, 0, 0,
-                            0, 0, 0, 0, 0, 0, 0, 0.01,0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0.05,0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -111,7 +111,7 @@ initial_estimate_covariance: [0.004, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0.015, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, 0, 0,
-                              0, 0, 0, 0, 0, 0, 0, 0.015, 0, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
