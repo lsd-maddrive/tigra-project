@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
+    <arg name="rosbag_filename" default="odom_fusing_nami_shifted_2nd_part"/>
     <arg name="odom_instance" default="local" doc="[local, global]"/>
 
     <!-- playing rosbag -->
@@ -14,7 +15,7 @@
                 /rtabmap/visual_odometry
                 /rs_camera/imu
                 /zed_f9p/fix
-            --bags $(find tigra_software)/bags/odom_fusing_nami.bag"/>
+            --bags $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
 
     <!-- ekf_local -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local_node" clear_params="true" output="screen">
