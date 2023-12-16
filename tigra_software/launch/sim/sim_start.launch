@@ -19,11 +19,22 @@
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
-    <!-- rdbd_odometry and slam -->
-    <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
+    <!-- rdbd_odometry -->
+    <include file="$(find tigra_vision)/launch/rgbd_odom.launch">
+        <arg name="publish_tf" value="true" />
+        <arg name="camera_name" default="front_rs_d455_camera" />
+        <arg name="subscribe_rgbd" default="true" />
+    </include>
+
+    <!-- slam -->
+    <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(arg database_path)" />
         <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
+        <arg name="lidar_name" default="front_lslidar_c16_lidar" />
+        <arg name="camera_name" default="front_rs_d455_camera" />
+        <arg name="gps_name" default="top_ublox_gps_sensor"/>
+        <arg name="odom_topic" default="visual_odometry"/>
     </include>
 
     <!-- imu_filter -->

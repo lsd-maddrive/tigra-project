@@ -84,6 +84,7 @@
         <arg name="port" value="8765" />
     </include>
 
+    <!-- restoring tf_static -->
     <include file="$(find tigra_software)/launch/debug/restoring_tf_static.launch">
     </include>
 

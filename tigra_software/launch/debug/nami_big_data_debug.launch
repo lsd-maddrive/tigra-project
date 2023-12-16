@@ -2,6 +2,8 @@
 <launch>
 
     <arg name="odom_instance" default="local" doc="[local, global]"/>
+    <arg name="rviz" default="false" />
+    <param name="use_sim_time" value="true" />
 
     <!-- playing rosbag -->
     <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
@@ -40,102 +42,8 @@
             "/>
 
     <!-- restoring tf_static -->
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name="base_footprint_2_base_link"
-        args="
-            0.0 0.0 0.25
-            0.0 0.0 0.0
-            /base_footprint /base_link" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name="base_footprint_2_rear_axis_link"
-        args="
-            0.0 0.0 0.25
-            0.0 0.0 0.0
-            /base_footprint /rear_axis_link" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name="rear_axis_link_2_front_axis_link"
-        args="
-            1.25 0.0 0.0
-            0.0 0.0 0.0
-            /rear_axis_link /front_axis_link" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-    name="front_axis_link_2_rs_camera_link"
-        args="
-            -0.19 0.0 1.3
-            0.0 0.14 -0.02
-            /front_axis_link /rs_camera_link" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name="rear_axis_link_2_rs_camera_rear_link"
-        args="
-            -0.19 0.0 0.52
-            3.1415 0.02 3.1415
-            /rear_axis_link /rs_camera_rear_link" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name="front_axis_link_2_laser_link"
-        args="
-            0.07 0.0 0.715
-            1.530796327 0.0 0.04
-            /front_axis_link /laser_link" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            0.000 0.000 0.000
-            0.000 -0.000 0.000
-            /rs_camera_link /rs_camera_depth_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            0.000 0.000 0.000
-            -1.571 -0.000 -1.571
-            /rs_camera_depth_frame /rs_camera_depth_optical_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            -0.000 -0.059 -0.000
-            -0.001 -0.003 0.001
-            /rs_camera_link /rs_camera_color_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            -0.000 -0.059 -0.000
-            -0.001 -0.003 0.001
-            /rs_camera_link /rs_camera_aligned_depth_to_color_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            0.000 0.000 0.000
-            -1.571 -0.000 -1.571
-            /rs_camera_aligned_depth_to_color_frame /rs_camera_color_optical_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            -0.016 -0.030 0.007
-            0.000 -0.000 0.000
-            /rs_camera_link /rs_camera_gyro_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            0.000 0.000 0.000
-            -1.571 -0.000 -1.571
-            /rs_camera_gyro_frame /rs_camera_imu_optical_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            -0.016 -0.030 0.007
-            0.000 -0.000 0.000
-            /rs_camera_link /rs_camera_accel_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name=""
-        args="
-            0.000 0.000 0.000
-            -1.571 -0.000 -1.571
-            /rs_camera_accel_frame /rs_camera_accel_optical_frame" />
-    <node pkg="tf2_ros" type="static_transform_publisher"
-        name="base_footprint_2_gps"
-        args="
-            0.0 0.0 3.0
-            0.0 0.0 0.0
-            /base_footprint /gps" />
+    <include file="$(find tigra_software)/launch/debug/restoring_tf_static.launch">
+    </include>
 
     <!-- imu_filter -->
     <!-- <include file="$(find tigra_software)/launch/drivers/imu_filter.launch">
@@ -149,11 +57,22 @@
         <remap from="imu/data" to="rs_camera/imu/filtered"/>
     </node> -->
 
-    <!-- rdbd_odometry and slam -->
-    <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam_nami.launch">
+    <!-- rdbd_odometry -->
+    <include file="$(find tigra_vision)/launch/rgbd_odom.launch">
+        <arg name="publish_tf" value="true" />
+        <arg name="camera_name" default="rs_camera" />
+        <arg name="subscribe_rgbd" default="true" />
+    </include>
+
+    <!-- slam -->
+    <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
         <arg name="localization" value="false" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
         <arg name="rtabmap_viz" value="false" />
+        <arg name="lidar_name" default="lslidar" />
+        <arg name="camera_name" default="rs_camera" />
+        <arg name="gps_name" default="zed_f9p"/>
+        <arg name="odom_topic" default="visual_odometry"/>
     </include>
 
     <!-- ekf_local -->
@@ -223,6 +142,6 @@
         <arg name="port" value="8765" />
     </include>
 
-    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" /> -->
+    <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" />
 
 </launch>
