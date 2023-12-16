@@ -9,7 +9,6 @@
             --quiet
             --clock
             --topics
-                /tf_static
                 /rs_camera/color/image_raw
                 /rs_camera/aligned_depth_to_color/image_raw
                 /rs_camera/color/camera_info
@@ -17,13 +16,27 @@
                 /lslidar_point_cloud
                 /zed_f9p/fix
             --bags
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_3.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_4.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_5.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_6.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_7.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_8.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Мои\ документы/rosbags_nami/rosbag_nami_9.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_3.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_4.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_5.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_6.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_7.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_8.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_9.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_10_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_11_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_12_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_13_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_14_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_15_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_16_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_17_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_18_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_19_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_20_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_21_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_22_shifted.bag
+                /media/nikita/6E02E56B02E538AB/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_23_shifted.bag
             "/>
 
     <!-- restoring tf_static -->
