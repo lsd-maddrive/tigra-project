@@ -31,6 +31,7 @@ catkin build \
     nmea_msgs \
     ntrip_client \
     mavros \
+    rviz_satellite \
     -j$(($(nproc)-2)) \
     --cmake-args \
     -D OpenCV_DIR="/usr/local/lib/cmake/opencv4" \
