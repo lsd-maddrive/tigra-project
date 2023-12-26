@@ -103,6 +103,8 @@
         <remap from="odometry/gps" to="odometry/gps"/>
         <remap from="gps/filtered" to="gps/filtered"/>
     </node>
+        <!-- set initial datum -->
+        <node name="set_datum" pkg="tigra_software" type="set_datum.sh" output="screen" />
 
     <!-- plotting graphs -->
     <group if="$(eval odom_instance == 'local')">

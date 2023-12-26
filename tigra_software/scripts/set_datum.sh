@@ -1,5 +1,5 @@
 #!/bin/bash
-# Subscribes to /fix and calls service /datum with GPS lat/lon
+# Subscribes to /zed_f9p/fix and calls service /datum with GPS lat/lon
 
 latitude=$(rostopic echo -n1 /zed_f9p/fix/latitude | head -n1)
 longitude=$(rostopic echo -n1 /zed_f9p/fix/longitude | head -n1)
