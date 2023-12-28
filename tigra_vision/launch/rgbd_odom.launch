@@ -6,7 +6,9 @@
 
     <!--- rgbd odometry -->
     <group ns="rtabmap">
+
         <node pkg="rtabmap_odom" type="rgbd_odometry" name="rgbd_odometry" output="log">
+
             <!-- http://wiki.ros.org/rtabmap_odom -->
             <param name="subscribe_rgbd" type="bool" value="$(arg subscribe_rgbd)" />
             <!-- inputs if subscribe_rgbd=false -->
@@ -21,7 +23,7 @@
             <!-- <param name="guess_frame_id"  type="string" value="base_footprint_stabilized"/> -->
             <param name="frame_id" type="string" value="base_footprint" />
             <param name="odom_frame_id" type="string" value="odom" />
-            
+
             <param name="publish_tf" type="bool" value="$(arg publish_tf)" />
             <param name="wait_for_transform_duration" type="double" value="0.2" />
             <param name="publish_null_when_lost" type="bool" value="false" />
