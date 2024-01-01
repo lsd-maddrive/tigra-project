@@ -1,7 +1,5 @@
-# http://docs.ros.org/en/noetic/api/robot_localization/html/navsat_transform_node.html
-
 frequency: 30
-delay: 1
+delay: 5.0
 
 magnetic_declination_radians: 0 # https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml#declination
 yaw_offset: 0 # imu выдает "0" если его ось Х смотрит на восток

@@ -3,6 +3,7 @@
   <arg name="localization" default="true"/>
   <arg name="rtabmap_viz" default="true"/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db"/>
+  <arg name="publish_tf_map"  default="true"/>
 
   <arg name="camera"  default="true"/>
   <arg name="lidar3d" default="true"/>
@@ -68,6 +69,7 @@
     <arg name="frame_id" value="base_footprint" />
     <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
     <arg name="gps_topic" value="$(arg gps_topic)"/>
+    <arg name="publish_tf_map" value="$(arg publish_tf_map)"/>
     
     <!-- 3D LiDAR -->
     <arg name="subscribe_scan_cloud" value="$(arg lidar3d)" />
