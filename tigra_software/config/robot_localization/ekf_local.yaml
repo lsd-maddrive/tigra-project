@@ -24,6 +24,7 @@ initial_state: [0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0]
 
+# sim
 # rgbd odometry (~30 Hz)
 odom0: /rtabmap/visual_odometry
 odom0_config:  [true, true, false,
@@ -61,6 +62,32 @@ imu0_relative: false
 imu0_nodelay: false
 imu0_remove_gravitational_acceleration: true
 
+# real (nami dataset)
+# # rgbd odometry (~30 Hz)
+# odom0: /rtabmap/visual_odometry
+# odom0_config:  [true, true, false,
+#                 false, false, true,
+#                 true, true, false,
+#                 false, false, false,
+#                 false, false, false]
+# odom0_queue_size: 10
+# odom0_differential: false
+# odom0_relative: false
+# odom0_nodelay: true
+
+# # IMU in RealSense D435i (20 Hz)
+# imu0: /rs_camera/imu
+# imu0_config: [false, false, false,
+#               false, false, false,
+#               false, false, false,
+#               false, false, true,
+#               true, false, false]
+# imu0_queue_size: 10
+# imu0_differential: false
+# imu0_relative: false
+# imu0_nodelay: false
+# imu0_remove_gravitational_acceleration: true
+
 # advanced parameters
 
 use_control: false
@@ -81,14 +108,15 @@ history_length: 0.0
 debug: false
 debug_out_file: ekf_global.txt
 
-process_noise_covariance:  [0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (x)
-                            0, 0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (y)
+# sim
+process_noise_covariance:  [0.02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (x)
+                            0, 0.02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (y)
                             0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                            0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (yaw)
-                            0, 0, 0, 0, 0, 0, 0.05,0, 0, 0, 0, 0, 0, 0, 0, # /tigra/wheel_odom (v_x)
-                            0, 0, 0, 0, 0, 0, 0, 0.01,0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_y)
+                            0, 0, 0, 0, 0, 0.001, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (yaw)
+                            0, 0, 0, 0, 0, 0, 0.02,0, 0, 0, 0, 0, 0, 0, 0, # /tigra/wheel_odom (v_x)
+                            0, 0, 0, 0, 0, 0, 0, 0.02,0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_y)
                             0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0,
@@ -97,16 +125,14 @@ process_noise_covariance:  [0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /r
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3]
 
-dynamic_process_noise_covariance: true
-
-initial_estimate_covariance: [0.015, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (x)
-                              0, 0.015, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (y)
+initial_estimate_covariance: [0.025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (x)
+                              0, 0.025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (y)
                               0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                              0, 0, 0, 0, 0, 0.015, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (yaw)
-                              0, 0, 0, 0, 0, 0, 0.07, 0, 0, 0, 0, 0, 0, 0, 0, # /tigra/wheel_odom (v_x)
-                              0, 0, 0, 0, 0, 0, 0, 0.015, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_y)
+                              0, 0, 0, 0, 0, 0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (yaw)
+                              0, 0, 0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, 0, 0, # /tigra/wheel_odom (v_x)
+                              0, 0, 0, 0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_y)
                               0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0,
@@ -114,6 +140,41 @@ initial_estimate_covariance: [0.015, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, #
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.006, 0, 0, # /rs_camera/imu (a_x)
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9]
+
+# real (nami dataset)
+# process_noise_covariance:  [0.02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (x)
+#                             0, 0.02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (y)
+#                             0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0.001, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (yaw)
+#                             0, 0, 0, 0, 0, 0, 0.02,0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_x)
+#                             0, 0, 0, 0, 0, 0, 0, 0.02,0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_y)
+#                             0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, 0, # /rs_camera/imu (v_yaw)
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, # /rs_camera/imu (a_x)
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3]
+
+# initial_estimate_covariance: [0.025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (x)
+#                               0, 0.025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (y)
+#                               0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (yaw)
+#                               0, 0, 0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_x)
+#                               0, 0, 0, 0, 0, 0, 0, 0.025, 0, 0, 0, 0, 0, 0, 0, # /rtabmap/visual_odometry (v_y)
+#                               0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.006, 0, 0, 0, # /rs_camera/imu (v_yaw)
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.006, 0, 0, # /rs_camera/imu (a_x)
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9]
+
+dynamic_process_noise_covariance: true
 
 reset_on_time_jump: false
 predict_to_current_time: true
