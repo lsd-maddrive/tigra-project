@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
+    <param name="use_sim_time" value="true" />
+
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
     <arg name="rosbag_filename" default="ETU_asphalt"/>
     <arg name="rviz" default="false" />
@@ -65,8 +67,8 @@
             <rosparam command="load" file="$(find tigra_software)/config/robot_localization/navsat_transform.yaml" />
             <!-- inputs -->
             <remap from="odometry/filtered" to="odometry/filtered/global"/>
-            <remap from="gps/fix" to="zed_f9p/fix"/>
-            <remap from="imu/data" to="rs_camera/imu"/>
+            <remap from="gps/fix" to="top_ublox_gps_sensor/fix"/>
+            <remap from="imu/data" to="front_rs_d455_camera/imu"/>
             <!-- outputs -->
             <remap from="odometry/gps" to="odometry/gps"/>
             <remap from="gps/filtered" to="gps/filtered"/>
@@ -132,7 +134,9 @@
                 /tf_static
                 /ground_truth/state
                 /tigra/wheel_odom
-                /rtabmap/rgbd_image
+                /front_rs_d455_camera/color/image_raw
+                /front_rs_d455_camera/aligned_depth_to_color/image_raw
+                /front_rs_d455_camera/color/camera_info
                 /front_rs_d455_camera/imu
                 /front_lslidar_c16_lidar_point_cloud
                 /top_ublox_gps_sensor/fix
