@@ -90,7 +90,7 @@ imu0_remove_gravitational_acceleration: true
 # # IMU in RealSense D435i (20 Hz)
 # imu0: /rs_camera/imu
 # imu0_config: [false, false, false,
-#               false, false, true,
+#               false, false, false,
 #               false, false, false,
 #               false, false, true,
 #               true, false, false]

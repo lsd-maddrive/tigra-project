@@ -18,15 +18,11 @@
                 /rs_camera/imu
                 /lslidar_point_cloud
                 /zed_f9p/fix
-            --start=15
+            --start=0
             --bags
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_3.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_4.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_5.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_6.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_7.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_8.bag
-                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_9.bag
+                /media/nikita/5E74B81B74B7F43D/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_3.bag
+                /media/nikita/5E74B81B74B7F43D/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_4.bag
+                /media/nikita/5E74B81B74B7F43D/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_5.bag
             "/>
 
     <!-- restoring tf_static -->
@@ -97,15 +93,6 @@
 
     <!-- plotting graphs -->
     <group if="$(eval odom_instance == 'local')">
-        <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-            args="
-                /odometry/filtered/local/pose/covariance[0]
-                /odometry/filtered/local/pose/covariance[7]
-                /odometry/filtered/local/pose/covariance[35]
-                /odometry/filtered/local/twist/covariance[0]
-                /odometry/filtered/local/twist/covariance[7]
-                /odometry/filtered/local/twist/covariance[35]
-                "/>
         <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
             args="
                 --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_local_nami.xml
@@ -113,15 +100,6 @@
                 "/>
     </group>
     <group if="$(eval odom_instance == 'global')">
-        <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-            args="
-                /odometry/filtered/global/pose/covariance[0]
-                /odometry/filtered/global/pose/covariance[7]
-                /odometry/filtered/global/pose/covariance[35]
-                /odometry/filtered/global/twist/covariance[0]
-                /odometry/filtered/global/twist/covariance[7]
-                /odometry/filtered/global/twist/covariance[35]
-                "/>
         <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
             args="
                 --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_global_nami.xml
