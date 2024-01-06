@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="odom_instance" default="local" doc="[local, global]"/>
-    <arg name="rviz" default="false" />
     <param name="use_sim_time" value="true" />
+
+    <arg name="rviz" default="false" />
+    <arg name="rtabmap_viz" default="false" />
+    <arg name="odom_instance" default="local" doc="[local, global]"/>
 
     <!-- playing rosbag -->
     <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
@@ -18,11 +20,29 @@
                 /rs_camera/imu
                 /lslidar_point_cloud
                 /zed_f9p/fix
-            --start=0
+            --start=5
             --bags
-                /media/nikita/5E74B81B74B7F43D/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_3.bag
-                /media/nikita/5E74B81B74B7F43D/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_4.bag
-                /media/nikita/5E74B81B74B7F43D/Users/Nikita/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_5.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_3.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_4.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_5.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_6.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_7.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_8.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_9.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_10_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_11_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_12_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_13_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_13_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_15_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_16_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_17_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_18_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_19_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_20_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_21_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_22_shifted.bag
+                /media/nikita/2A44A5CE44A59CD7/Users/Nikitos/Documents/облачные\ хранилища/YandexDisk/универ/5\ уровень/тестовый_заезд/rosbag_nami_23_shifted.bag
             "/>
 
     <!-- restoring tf_static -->
@@ -52,7 +72,7 @@
     <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
         <arg name="localization" value="false" />
         <arg name="database_path" value="$(find tigra_maps)/3d_maps/new_map.db" />
-        <arg name="rtabmap_viz" value="false" />
+        <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
         <arg name="publish_tf_map" default="false"/>
         <arg name="lidar_name" default="lslidar" />
         <arg name="camera_name" default="rs_camera" />

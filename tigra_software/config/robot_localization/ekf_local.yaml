@@ -29,25 +29,13 @@ initial_state: [0.0, 0.0, 0.0,
 odom0: /rtabmap/visual_odometry
 odom0_config:  [true, true, false,
                 false, false, true,
-                false, true, false,
+                true, true, false,
                 false, false, false,
                 false, false, false]
 odom0_queue_size: 10
 odom0_differential: false
 odom0_relative: false
 odom0_nodelay: true
-
-# Wheel odometry (20 Hz)
-odom1: /tigra/wheel_odom
-odom1_config:  [false, false, false,
-                false, false, false,
-                true, false, false,
-                false, false, false,
-                false, false, false]
-odom1_queue_size: 10
-odom1_differential: false
-odom1_relative: false
-odom1_nodelay: true
 
 # IMU in RealSense D435i (20 Hz)
 imu0: /front_rs_d455_camera/imu

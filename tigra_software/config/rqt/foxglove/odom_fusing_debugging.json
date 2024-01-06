@@ -1,0 +1,548 @@
+{
+  "configById": {
+    "Plot!3l9bw74": {
+      "paths": [
+        {
+          "value": "/rtabmap/visual_odometry.pose.covariance[0:0]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "showLine": true,
+          "label": "/rtabmap/visual_odometry.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.pose.covariance[21:21]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "xAxisPath": {
+        "value": ""
+      },
+      "foxglovePanelTitle": "/rtabmap/visual_odometry.covariance"
+    },
+    "Plot!26dcsul": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rs_camera/imu.angular_velocity_covariance[8:8]",
+          "enabled": true,
+          "label": "/rs_camera/imu.v_yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rs_camera/imu.linear_acceleration_covariance[0:0]",
+          "enabled": true,
+          "label": "/rs_camera/imu.a_x.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/rs_camera/imu.covariance"
+    },
+    "Plot!e5qa5b": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.pose.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/filtered/local.covariance"
+    },
+    "Plot!z846x2": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/gps.pose.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/gps.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/gps.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/gps.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/zed_f9p/fix.position_covariance[0:0]",
+          "enabled": true,
+          "label": "/zed_f9p/fix.lat.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/zed_f9p/fix.position_covariance[4:4]",
+          "enabled": true,
+          "label": "/zed_f9p/fix.long.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/gps.covariance"
+    },
+    "Plot!r7y9p6": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.pose.covariance[35:35]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/filtered/local.covariance"
+    },
+    "Plot!cs7wvh": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rs_camera/imu.angular_velocity_covariance[8:8]",
+          "enabled": true,
+          "label": "/rs_camera/imu.v_yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rs_camera/imu.linear_acceleration_covariance[0:0]",
+          "enabled": true,
+          "label": "/rs_camera/imu.a_x.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/rs_camera/imu.covariance"
+    },
+    "Plot!zfnczu": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.pose.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/filtered/global.covariance"
+    },
+    "Plot!3j17e47": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.pose.covariance[0:0]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.pose.covariance[21:21]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/rtabmap/visual_odometry.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/rtabmap/visual_odometry.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/rtabmap/visual_odometry.covariance"
+    },
+    "Plot!3o0u8l0": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/front_rs_d455_camera/imu.angular_velocity_covariance[8:8]",
+          "enabled": true,
+          "label": "/front_rs_d455_camera/imu.v_yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/front_rs_d455_camera/imu.linear_acceleration_covariance[0:0]",
+          "enabled": true,
+          "label": "/front_rs_d455_camera/imu.a_x.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/front_rs_d455_camera/imu.covariance"
+    },
+    "Plot!tbj14v": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.pose.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/filtered/local.covariance"
+    },
+    "Plot!a3ohx4": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/gps.pose.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/gps.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/gps.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/gps.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/top_ublox_gps_sensor/fix.position_covariance[0:0]",
+          "enabled": true,
+          "label": "/top_ublox_gps_sensor/fix.lat.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/top_ublox_gps_sensor/fix.position_covariance[4:4]",
+          "enabled": true,
+          "label": "/top_ublox_gps_sensor/fix.long.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/gps.covariance"
+    },
+    "Plot!34apujt": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.pose.covariance[35:35]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/local.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/local.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/filtered/local.covariance"
+    },
+    "Plot!3cjxai": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/front_rs_d455_camera/imu.angular_velocity_covariance[8:8]",
+          "enabled": true,
+          "label": "/front_rs_d455_camera/imu.v_yaw.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/front_rs_d455_camera/imu.linear_acceleration_covariance[0:0]",
+          "enabled": true,
+          "label": "/front_rs_d455_camera/imu.a_x.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/front_rs_d455_camera/imu.covariance"
+    },
+    "Plot!1pdo2mh": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.pose.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.pose.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.y.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.twist.covariance[0:0]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.v_x.covariance"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/odometry/filtered/global.twist.covariance[7:7]",
+          "enabled": true,
+          "label": "/odometry/filtered/global.v_y.covariance"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": true,
+      "isSynced": false,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "/odometry/filtered/global.covariance"
+    },
+    "Tab!26zfcs4": {
+      "activeTabIdx": 2,
+      "tabs": [
+        {
+          "title": "local_nami",
+          "layout": {
+            "first": {
+              "first": "Plot!3l9bw74",
+              "second": "Plot!26dcsul",
+              "direction": "column"
+            },
+            "second": "Plot!e5qa5b",
+            "direction": "row"
+          }
+        },
+        {
+          "title": "global_nami",
+          "layout": {
+            "first": {
+              "first": "Plot!z846x2",
+              "second": {
+                "first": "Plot!r7y9p6",
+                "second": "Plot!cs7wvh",
+                "direction": "column",
+                "splitPercentage": 65.37842190016103
+              },
+              "direction": "column",
+              "splitPercentage": 37.27634194831014
+            },
+            "second": "Plot!zfnczu",
+            "direction": "row"
+          }
+        },
+        {
+          "title": "local_sim",
+          "layout": {
+            "first": {
+              "first": "Plot!3j17e47",
+              "second": "Plot!3o0u8l0",
+              "direction": "column"
+            },
+            "second": "Plot!tbj14v",
+            "direction": "row"
+          }
+        },
+        {
+          "title": "global_sim",
+          "layout": {
+            "first": {
+              "first": "Plot!a3ohx4",
+              "second": {
+                "first": "Plot!34apujt",
+                "second": "Plot!3cjxai",
+                "direction": "column"
+              },
+              "direction": "column",
+              "splitPercentage": 33.299284984678245
+            },
+            "second": "Plot!1pdo2mh",
+            "direction": "row"
+          }
+        }
+      ]
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": "Tab!26zfcs4"
+}

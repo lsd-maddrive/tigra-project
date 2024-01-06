@@ -19,12 +19,14 @@
                     /tf_static
                     /ground_truth/state
                     /tigra/wheel_odom
-                    /rtabmap/rgbd_image
+                    /front_rs_d455_camera/color/image_raw
+                    /front_rs_d455_camera/aligned_depth_to_color/image_raw
+                    /front_rs_d455_camera/color/camera_info
                     /front_rs_d455_camera/imu
                     /front_lslidar_c16_lidar_point_cloud
                     /top_ublox_gps_sensor/fix
                     /high_freq_zero_noise_ublox_gps_sensor/fix
-                --bags /media/nikita/5E74B81B74B7F43D/Users/Nikita/Downloads/ETU_asphalt_with_hq_gps_reference.bag"/>
+                --bags $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
 
         <!-- slam -->
         <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
@@ -121,7 +123,7 @@
 
         <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/common_sim.rviz" />
 
-        <node  name="rqt_console" pkg="rqt_console" type="rqt_console" />
+        <node name="rqt_console" pkg="rqt_console" type="rqt_console" />
 
     </group>
 
