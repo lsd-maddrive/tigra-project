@@ -79,16 +79,6 @@
         <!-- plotting graphs -->
         <group if="$(eval odom_instance == 'local')">
 
-            <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-                args="
-                    /odometry/filtered/local/pose/covariance[0]
-                    /odometry/filtered/local/pose/covariance[7]
-                    /odometry/filtered/local/pose/covariance[35]
-                    /odometry/filtered/local/twist/covariance[0]
-                    /odometry/filtered/local/twist/covariance[7]
-                    /odometry/filtered/local/twist/covariance[35]
-                    "/>
-
             <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
                 args="
                     --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/ekf_local.xml
@@ -97,16 +87,6 @@
 
         </group>
         <group if="$(eval odom_instance == 'global')">
-
-            <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-                args="
-                    /odometry/filtered/global/pose/covariance[0]
-                    /odometry/filtered/global/pose/covariance[7]
-                    /odometry/filtered/global/pose/covariance[35]
-                    /odometry/filtered/global/twist/covariance[0]
-                    /odometry/filtered/global/twist/covariance[7]
-                    /odometry/filtered/global/twist/covariance[35]
-                    "/>
 
             <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
                 args="
