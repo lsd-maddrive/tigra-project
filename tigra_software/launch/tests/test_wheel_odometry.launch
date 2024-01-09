@@ -4,7 +4,7 @@
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch">
     <arg name="publish_tf" value="true" />
   </include>
-  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
+  <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch" />
 
   
 

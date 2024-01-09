@@ -1,28 +1,120 @@
 # Configuration Settings for C94-M8P device
+# https://github.com/KumarRobotics/ublox
+# https://github.com/KumarRobotics/ublox/blob/master/ublox_gps/config/c94_m8p_rover.yaml
 
-debug: 1                    # Range 0-4 (0 means no debug statements will print)
+device: /dev/ttyACM0 # имя файла устройста (dmesg)
+raw_data: false
 
+# load: # загрузка конфига в NVRAM
+#     mask: 3103
+#     device: 4 # Save to EEPROM
 
+save: # сохранение конфига в NVRAM
+    mask: 3103
+    device: 4 # Save to EEPROM
 
-device: /dev/ttyACM0
-frame_id: gps
-config_on_startup: false
-rate: 1                     # in Hz
-nav_rate: 1                 # [# of measurement cycles], recommended 1 Hz, may 
-                            # be either 5 Hz (Dual constellation) or 
-                            # 8 Hz (GPS only)
 uart1:
-  baudrate: 19200           # C94-M8P specific
-  in: 32                    # RTCM 3
-  out: 0                    # No UART out for rover
+    baudrate: 19200
+    in: 32
+    out: 0
 
+# debug: 1
 
-inf: 
-  all: true                   # Whether to display all INF messages in console
+frame_id: gps # имя tf фрейма
+rate: 1 # частота получаемых в топик GPS данных
+nav_rate: 1 # частота формирования GPS данных в плате
+enable_ppp: false
+config_on_startup: false
 
-# Enable u-blox message publishers
+dynamic_model: automotive
+fix_mode: auto
+
+# конфигурация созвездий
+gnss:
+    gps: true
+    glonass: true
+    beidou: false
+    galileo: false
+    qzss: false
+    qzss_sig_cfg: false
+    imes: false
+
+nmea:
+    set: true
+    version: 65
+    num_sv: 8
+    sv_numbering: 1
+    compat: true
+    consider: true
+    limit82: true
+    high_prec: false
+    filter:
+        pos: true
+        msk_pos: true
+        time: true
+        date: true
+        sbas: true
+        gps_only: true
+        track: true
+    gnssToFilter:
+        gps: true
+        sbas: true
+        qzss: true
+        glonass: false
+        beidou: true
+    main_talker_id: 1
+    gsv_talker_id: 1
+    bds_talker_id: [0,0]
+
+save_on_shutdown: true
+clear_bbr: false
+
+dgnss_mode: 3 # 2 - FLOAT RTK; 3 - FIX RTK
+tmode3: 0 # режим для базы
+
+# сообщения в консоль
+inf:
+    debug: true
+    error: true
+    notice: true
+    test: true
+    warning: true
+
+# Enable u-blox message topics
 publish:
-  all: true
-nav:
- relposned: true
- heading: true
+    aid:
+        alm: true
+        eph: true
+        hui: true
+    rxm:
+        alm: true
+        eph: true
+        raw: true
+        rtcm: true
+        sfrb: true
+    mon:
+        hw: true
+    nav:
+        att: true
+        clock: true
+        posecef: true
+        posllh: true
+        pvt: true
+        relposned: true
+        heading: true
+        sat: true
+        sol: true
+        status: true
+        svin: true
+        svinfo: true
+        velned: true
+    esf:
+        alg: true
+        ins: true
+        meas: true
+        raw: true
+        status: true
+    hnr:
+        pvt: true
+    tim:
+        tm2: true

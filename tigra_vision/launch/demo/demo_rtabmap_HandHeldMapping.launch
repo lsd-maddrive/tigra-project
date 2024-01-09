@@ -8,7 +8,7 @@
 
     <!-- Select visualization -->
     <arg name="rviz" default="false" />
-    <arg name="rtabmapviz" default="true" />
+    <arg name="rtabmap_viz" default="true" />
 
     <!-- RealSense D435i RGB-D on -->
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
@@ -26,7 +26,7 @@
         <include file="$(find rtabmap_ros)/launch/rtabmap.launch">
             <arg name="rtabmap_args" value="--delete_db_on_start --Optimizer/GravitySigma 0.3" />
             <arg name="rviz" value="$(arg rviz)" />
-            <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+            <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
 
             <arg name="depth_topic" value="/camera/aligned_depth_to_color/image_raw" />
             <arg name="rgb_topic" value="/camera/color/image_raw" />
@@ -43,7 +43,7 @@
             <arg name="rtabmap_args" value="--Optimizer/GravitySigma 0.3" />
             <arg name="localization" value="true" />
             <arg name="rviz" value="$(arg rviz)" />
-            <arg name="rtabmapviz" value="$(arg rtabmapviz)" />
+            <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
 
             <arg name="depth_topic" value="/camera/aligned_depth_to_color/image_raw" />
             <arg name="rgb_topic" value="/camera/color/image_raw" />

@@ -1,3 +1,4 @@
+<launch>
 <arg name="rtabmap_args" default="--delete_db_on_start" />
 
 <group ns="rtabmap">
@@ -106,4 +107,5 @@
     </node>
 
 
-  </group>
+</group>
+</launch>

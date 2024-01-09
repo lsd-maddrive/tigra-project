@@ -1,25 +1,15 @@
 <?xml version="1.0"?>
 <launch>
+
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
-  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch" />
-
-	<include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch">
-	</include>
-
-  <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch">
-	</include>
-    
-  <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch">
-  </include>
-
-  <!-- <include file="$(find ti_mmwave_rospkg)/launch/radar.launch"> -->
-  <!-- </include> -->
-
-  <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch">
-  </include>
-  
+  <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch" />
+	<include file="$(find tigra_software)/launch/drivers/tigra_tf_transforms.launch"/>
+  <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/>
+  <include file="$(find tigra_vision)/launch/drivers/start_rs_camera.launch"/>
+  <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/>
   <include file="$(find tigra_software)/launch/view/rviz_start.launch">
     <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_cameras_view.rviz" />
   </include>
+
 </launch>

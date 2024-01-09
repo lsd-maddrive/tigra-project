@@ -1,7 +1,7 @@
 <!-- DO NOT EDIT THIS! - it`s copy of https://github.com/introlab/rtabmap_ros/blob/0.20.10-noetic/launch/rtabmap.launch -->
 <!-- -->
 <launch>
-  <!-- Convenience launch file to launch odometry, rtabmap and rtabmapviz nodes at once -->
+  <!-- Convenience launch file to launch odometry, rtabmap and rtabmap_viz nodes at once -->
 
   <!-- For stereo:=false
         Your RGB-D sensor should be already started with "depth_registration:=true".
@@ -21,7 +21,7 @@
   <arg unless="$(arg stereo)" name="depth"  default="true"/>
  
   <!-- Choose visualization -->
-  <arg name="rtabmapviz"              default="true" /> 
+  <arg name="rtabmap_viz"              default="true" /> 
   <arg name="rviz"                    default="false" />
   
   <!-- Localization-only mode -->
@@ -360,7 +360,7 @@
     </node>
   
     <!-- Visualisation RTAB-Map -->
-    <node if="$(arg rtabmapviz)" pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz" args="-d $(arg gui_cfg)" output="$(arg output)" launch-prefix="$(arg launch_prefix)">
+    <node if="$(arg rtabmap_viz)" pkg="rtabmap_viz" type="rtabmap_viz" name="rtabmap_viz" args="-d $(arg gui_cfg)" output="$(arg output)" launch-prefix="$(arg launch_prefix)">
       <param     if="$(arg stereo)" name="subscribe_depth"  type="bool" value="false"/>
       <param unless="$(arg stereo)" name="subscribe_depth"  type="bool" value="$(arg depth)"/>
       <param name="subscribe_rgbd"       type="bool"   value="$(eval subscribe_rgbd or use_odom_features)"/>

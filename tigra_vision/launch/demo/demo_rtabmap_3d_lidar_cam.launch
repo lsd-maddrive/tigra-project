@@ -22,7 +22,7 @@
   <arg name="navigation"   default="true"/>
   <arg name="localization" default="true"/>
   <arg name="icp_odometry" default="false"/>
-  <arg name="rtabmapviz"   default="true"/>
+  <arg name="rtabmap_viz"   default="true"/>
   <arg name="rtabmap"      default="true"/>
   
   <arg name="camera"       default="true"/>
@@ -72,7 +72,7 @@
     <arg name="imu_topic"       value="/imu/data" />
     <!-- <arg unless="$(arg icp_odometry)" name="odom_topic" value="/odometry/filtered" /> -->
     <arg name="frame_id"        value="base_link" />
-    <arg name="rtabmapviz"      value="$(arg rtabmapviz)" />
+    <arg name="rtabmap_viz"      value="$(arg rtabmap_viz)" />
     <arg name="gps_topic"       value="/navsat/fix"/>
     
     

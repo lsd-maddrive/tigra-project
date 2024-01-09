@@ -27,7 +27,7 @@
 
         <arg name="rtabmap_args" value="--delete_db_on_start --Vis/EstimationType 1 --Vis/MaxDepth 0 --GFTT/QualityLevel 0.00001 --Stereo/MinDisparity 0 --Stereo/MaxDisparity 64 --Vis/RoiRatios '0 0 0 .2' --Kp/RoiRatios '0 0 0 .2' --Odom/GuessMotion true --Vis/MinInliers 10 --Vis/BundleAdjustment 1 --OdomF2M/BundleAdjustment 1 --Vis/CorNNDR 0.6 --Vis/CorGuessWinSize 40 --GFTT/MinDistance 10 --Vis/PnPFlags 0 --Vis/PnPReprojError 1"/>
 
-        <arg name="rtabmapviz" value="true"/>
+        <arg name="rtabmap_viz" value="true"/>
         <arg name="rviz" value="true"/>
     </include>
 

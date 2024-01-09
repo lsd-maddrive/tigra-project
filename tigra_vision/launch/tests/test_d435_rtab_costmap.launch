@@ -24,7 +24,7 @@
     <arg name="imu_topic"         value="/rs_camera/imu/filtered"/>
 
     <arg name="rtabmap_args"      value="--delete_db_on_start --Grid/MaxGroundHeight 0.1 --Grid/MaxObstacleHeight 2 --Grid/NormalsSegmentation false"/>
-    <arg name="rtabmapviz"        value="true"/>
+    <arg name="rtabmap_viz"        value="true"/>
   </include>
   
   <include file="$(find tigra_software)/launch/view/rviz_start.launch">

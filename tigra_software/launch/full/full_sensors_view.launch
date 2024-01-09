@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- uc -->
+  <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
+  <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
+
+  <!-- joy_teleop -->
+  <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch" />
+
+  <!-- tf -->
+	<include file="$(find tigra_software)/launch/drivers/tf_transforms.launch"/>
+
+  <!-- sensors -->
+  <include file="$(find tigra_vision)/launch/drivers/start_multiply_rs_camera.launch"/>
+  <!-- <include file="$(find tigra_vision)/launch/drivers/start_head_stereo.launch"/> -->
+  <!-- <include file="$(find tigra_vision)/launch/drivers/start_elp_camera.launch"/> -->
+  <include file="$(find tigra_vision)/launch/drivers/start_lslidar_c16.launch">
+    <arg name="min_range" value="1.6" />
+  </include>
+
+  <!-- rviz -->
+  <include file="$(find tigra_software)/launch/view/rviz_start.launch">
+    <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_sensors_view.rviz" />
+  </include>
+
+</launch>

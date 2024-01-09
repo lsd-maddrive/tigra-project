@@ -1,0 +1,90 @@
+<launch>
+
+  <arg name="localization" default="true"/>
+  <arg name="rtabmap_viz" default="true"/>
+  <arg name="database_path" default="$(find tigra_maps)/3d_maps/new_map.db"/>
+  <arg name="publish_tf_map"  default="true"/>
+
+  <arg name="camera"  default="true"/>
+  <arg name="lidar3d" default="true"/>
+  <arg name="lidar3d_ray_tracing" default="true"/>
+  <arg name="slam2d" default="true"/>
+  <arg name="depth_from_lidar" default="false"/>
+  <arg name="odom_topic" default="visual_odometry"/>
+
+  <arg     if="$(arg lidar3d)" name="cell_size" default="0.2"/> <!--default 0.3-->
+  <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
+
+  <!-- sensor names -->
+  <arg name="lidar_name" default="front_lslidar_c16_lidar" />
+  <arg name="camera_name" default="front_rs_d455_camera" />
+  <arg name="gps_name" default="top_ublox_gps_sensor"/>
+
+  <!-- INPUTS -->
+  <arg name="rgb_topic" default="$(arg camera_name)/color/image_raw" />
+  <arg name="depth_topic" default="$(arg camera_name)/aligned_depth_to_color/image_raw" />
+  <arg name="camera_info_topic" default="$(arg camera_name)/color/camera_info" />
+  <arg name="imu_topic" default="$(arg camera_name)/imu"/>
+  <arg name="gps_topic" default="$(arg gps_name)/fix"/>
+
+  <arg name="frame_id" default="base_footprint"/> 
+
+  <arg if="$(arg lidar3d)" name="lidar_args" default="
+      --Reg/Strategy 1 
+      --RGBD/NeighborLinkRefining true 
+      --ICP/PM true 
+      --Icp/PMOutlierRatio 0.7 
+      --Icp/VoxelSize $(arg cell_size) 
+      --Icp/MaxCorrespondenceDistance 1 
+      --Icp/PointToPlaneGroundNormalsUp 0.9 
+      --Icp/Iterations 10 
+      --Icp/Epsilon 0.001 
+      --OdomF2M/ScanSubtractRadius $(arg cell_size) 
+      --OdomF2M/ScanMaxSize 15000 
+      --Grid/ClusterRadius 1 
+      --Grid/RangeMax 20 
+      --Grid/RayTracing $(arg lidar3d_ray_tracing) 
+      --Grid/CellSize $(arg cell_size) 
+      --Grid/MaxGroundHeight 0.1
+      --Grid/MaxObstacleHeight 1.5
+      --Icp/PointToPlaneRadius 0 
+      --Icp/PointToPlaneNormalK 10 
+      --Icp/MaxTranslation 1
+
+      --Vis/MinInliers 10
+      --RGBD/OptimizeMaxError 0
+      --RGBD/ProximityPathMaxNeighbors 1
+      --Grid/Sensor 0"/>
+
+  <!-- <remap from="/rtabmap/grid_map" to="/map"/> -->
+  <include file="$(find rtabmap_ros)/launch/rtabmap.launch">
+    <arg     if="$(arg localization)" name="args" value="--Reg/Force3DoF $(arg slam2d) $(arg lidar_args)" />
+    <arg unless="$(arg localization)" name="args" value="--Reg/Force3DoF $(arg slam2d) $(arg lidar_args) -d" /> <!-- create new map -->
+    <arg name="database_path" value="$(arg database_path)"/>
+    <arg name="localization" value="$(arg localization)" />
+    <arg name="visual_odometry" value="false" />
+    <arg name="approx_sync" value="$(eval camera or not icp_odometry)" />
+    <!-- <arg name="imu_topic" value="/$(arg imu_topic)/filtered" /> -->
+    <arg name="odom_topic" value="$(arg odom_topic)" />
+    <arg name="frame_id" value="base_footprint" />
+    <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
+    <arg name="gps_topic" value="$(arg gps_topic)"/>
+    <arg name="publish_tf_map" value="$(arg publish_tf_map)"/>
+    
+    <!-- 3D LiDAR -->
+    <arg name="subscribe_scan_cloud" value="$(arg lidar3d)" />
+    <arg     if="$(arg lidar3d)" name="scan_cloud_topic" value="/$(arg lidar_name)_point_cloud" />
+    <arg unless="$(arg lidar3d)" name="scan_cloud_topic" value="/lidar_point_cloud_not_used" />
+    
+    <!-- If camera is used -->
+    <arg name="depth" value="$(eval camera and not depth_from_lidar)" />
+    <arg name="subscribe_rgb" value="$(eval camera)" />
+    <arg name="rgbd_sync" value="$(eval camera and not depth_from_lidar)" />
+    <arg name="rgb_topic" value="/$(arg camera_name)/color/image_raw" />
+    <arg name="camera_info_topic" value="/$(arg camera_name)/color/camera_info" />
+    <arg name="depth_topic" value="/$(arg camera_name)/aligned_depth_to_color/image_raw" />
+    <arg name="approx_rgbd_sync" value="false" />
+    
+  </include>
+
+</launch>

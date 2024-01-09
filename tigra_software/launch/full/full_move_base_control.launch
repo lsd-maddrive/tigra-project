@@ -1,69 +1,62 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- <arg name="map_name" default="new_map_robocross_off_road1.db"/> -->
-  <arg name="map_name" default="robocross_11_07_23_with_start.db"/>
-  
 
-  <arg name="localization" default="true" /> <!-- set false to start mapping with move_base-->
-  <arg name="debug" default="false" />
+  <arg name="map_name" default="robocross_11_07_23_with_start.db"/>
+  <arg name="localization" default="true" doc="[false - slam]"/>
+  <arg name="debug" default="false" doc="[true - rqt_plot]"/>
   <arg name='rviz' default="true"/>
-  <arg name='rtabmapviz' default='true'/>
+  <arg name='rtabmap_viz' default='true'/>
   <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
   <arg name="nav_config" default="teb_local_planner_high_speed" />
 
-
+  <!-- Start hardware -->
   <include file="$(find tigra_software)/launch/drivers/uc_socket_server.launch" />
   <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
-
-  <!-- Start hardware -->
   <include file="$(find tigra_software)/launch/drivers/start_hardware.launch"/>
 
-
-  <!-- SLAM -->
+  <!-- rtabmap -->
   <include file="$(find tigra_vision)/launch/start_rtabmap_lidar_cam.launch">
     <arg name="localization" value="$(arg localization)" />
     <arg name="database_path" value="$(arg database_path)" />
-    <arg name="rtabmapviz" value="$(arg rtabmapviz)"/> 
+    <arg name="rtabmap_viz" value="$(arg rtabmap_viz)"/> 
   </include>
 
-  <!-- <node pkg="robot_localizatio
-if __name__ == '__main__':n" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+  <!-- robot_localization -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
     <rosparam command="load" file="$(find tigra_software)/config/ekf/ekf_vo.yaml" />
     <remap from="odometry/filtered" to="tigra/odometry/filtered/local" />
-  </node> -->
+  </node>
 
-  <!-- move_base -->
-  <include file="$(find tigra_software)/launch/drivers/move_base.launch">
-    <arg name="folder_name" value="move_base_vo" />
-    <arg name="cmd_topic" value="nav_vel" />
-    <arg name="teb_config" value="$(arg nav_config)" />
-
-  </include>
-  <!-- joy_teleop -->
-  <include file="$(find tigra_software)/launch/drivers/start_joy_teleop.launch">
+  <!-- joy teleop-->
+  <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch">
     <arg name="cmd_topic" value="joy_vel" />
   </include>
+  <!-- move_base -->
+  <include file="$(find tigra_software)/launch/drivers/move_base.launch">
+    <arg name="config_folder_name" value="move_base_vo" />
+    <arg name="cmd_topic" value="nav_vel" />
+    <arg name="teb_config" value="$(arg nav_config)" />
+  </include>
+  <!-- twist_mux -->
   <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
     <rosparam command="load" file="$(find tigra_software)/config/twist_mux/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="tigra/cmd_vel_raw"/>
   </node>
-
   <!-- Trafic Light -->
   <!-- <node pkg="tigra_software" type="sign_nums_subs.py" name="sign_nums_subs" output="screen"/> -->
 
-
-  <node pkg="tigra_software" type="steering_filter" name="steering_filter" output="screen">
-    <!-- <param name="steering_alpha" value="0.5"/> -->
-    <!-- NB - Disabled filter -->
+  <!-- cmd_vel filter -->
+  <node pkg="tigra_software" type="steering_filter" name="steering_filter" ns="tigra" output="screen">
     <param name="steering_alpha" value="0.9" />
-    <remap from="cmd_vel_raw" to="tigra/cmd_vel_raw" />
-    <remap from="cmd_vel" to="tigra/cmd_vel" />
+    <remap from="cmd_vel_raw" to="cmd_vel_raw" />
+    <remap from="cmd_vel" to="cmd_vel" />
   </node>
 
   <node if="$(arg debug)" pkg="rqt_plot" type="rqt_plot" name="steering_plot" output="screen" args="/tigra/cmd_vel_raw/angular/z /tigra/cmd_vel/angular/z" />
 
+  <!-- rviz -->
   <include if="$(arg rviz)" file="$(find tigra_software)/launch/view/rviz_start.launch">
     <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/full_move_base.rviz" />
-    <!-- <arg name="rvizconfig" value="$(find tigra_software)/config/rviz/rtab_obstacle.rviz" /> -->
   </include>
+
 </launch>

@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <!-- overwriting these args -->
+
+  <arg name="rviz" default="false" />
   <arg name="debug" default="false" />
+  <arg name="verbose" default="false" />
   <arg name="gui" default="true" />
   <arg name="pause" default="false" />
   <arg name="headless" default="false"/>
   <arg name="world" default="" />
   <arg name="use_sim_time" default="true"/>
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra_robocross21.urdf.xacro' robot_name:=tigra" />
-  <arg name="x" default="0" />
-  <arg name="y" default="0" />
-  <arg name="z" default="0.6" />
+  <arg name="robot_pose_x" default="0.0"/>
+  <arg name="robot_pose_y" default="0.0"/>
+  <arg name="robot_pose_z" default="0.1"/>
+  <arg name="robot_pose_R" default="0.0"/>
+  <arg name="robot_pose_P" default="0.0"/>
+  <arg name="robot_pose_Y" default="0.0"/>
 
-  <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model tigra -x $(arg x) -y $(arg y) -z $(arg z)" />
+  <param name="robot_description"
+    command="$(find xacro)/xacro '$(find tigra_description)/urdf/tigra_robocross21.urdf.xacro'
+    robot_name:=tigra" />
+
+  <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-x $(arg robot_pose_x)
+              -y $(arg robot_pose_y)
+              -z $(arg robot_pose_z)
+              -R $(arg robot_pose_R)
+              -P $(arg robot_pose_P)
+              -Y $(arg robot_pose_Y)
+              -urdf
+              -model tigra
+              -param robot_description" />
 
   <!-- include gazebo_ros launcher -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -22,7 +39,22 @@
     <arg name="gui" value="$(arg gui)" />
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="paused" value="$(arg pause)" />
+    <arg name="verbose" default="$(arg verbose)" />
   </include>
 
+  <!-- Publish static TFs (fixed joints) -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- Publish dynamic TFs (non-fixed joints) -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+  <!-- convert PointCloud to PointCloud2 massage from lidar -->
+  <node pkg="point_cloud_converter" name="point_cloud_converter" type="point_cloud_converter_node" >
+    <remap from="points_in" to="front_lslidar_c16_lidar_point_cloud_pcl1"/>
+    <remap from="points2_out" to="front_lslidar_c16_lidar_point_cloud" />
+</node>
+
+  <!-- rviz-->
+  <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_description)/rviz/overview.rviz" />
+
 </launch>

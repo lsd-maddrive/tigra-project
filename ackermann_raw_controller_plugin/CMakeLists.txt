@@ -1,41 +1,64 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(ackermann_raw_controller_plugin)
 
-find_package(catkin REQUIRED COMPONENTS
-    roscpp
-    rospy
-    std_msgs
-    sensor_msgs
-    tigra_msgs
-    message_generation
-    gazebo_ros
+find_package(catkin REQUIRED
+    COMPONENTS
+        roscpp
+        realtime_tools
+        tigra_msgs
+        gazebo_ros
+        gazebo_plugins
 )
 
 find_package(gazebo REQUIRED)
-link_directories(${GAZEBO_LIBRARY_DIRS})
+
+find_package(Threads REQUIRED)
+if(Threads_FOUND)
+    message("<<< Threads found >>>")
+else()
+    message(FATAL_ERROR "<<< Cannot find Thread >>>s")
+endif()
+
+find_package(Boost 1.7 REQUIRED
+    COMPONENTS
+        system
+)
+if(Boost_FOUND)
+    message("<<< Boost found >>>")
+else()
+    message(FATAL_ERROR "<<< Cannot find Boost >>>")
+endif()
 
 set(CAR_INTERFACE_PLUGIN ackermann_raw_controller_plugin)
 
-include_directories(
-    ${catkin_INCLUDE_DIRS} 
-    ${GAZEBO_INCLUDE_DIRS}
-    src
-)
-
 catkin_package(
+    INCLUDE_DIRS
+        include
+    CATKIN_DEPENDS
+        roscpp
+        realtime_tools
+        tigra_msgs
+        gazebo_ros
+        gazebo_plugins
     DEPENDS
-    roscpp
-    gazebo_ros
-    LIBRARIES
-    CATKIN_DEPENDS message_runtime
+        GAZEBO
 )
 
-add_library(${CAR_INTERFACE_PLUGIN}
-    src/plugin.cpp
+include_directories(
+    include
+    ${Boost_INCLUDE_DIR}
+    ${catkin_INCLUDE_DIRS}
+    ${GAZEBO_INCLUDE_DIRS}
 )
 
-target_link_libraries(${CAR_INTERFACE_PLUGIN}
+add_library(
+    ${CAR_INTERFACE_PLUGIN} src/plugin.cpp
+)
+
+target_link_libraries(
+    ${CAR_INTERFACE_PLUGIN}
     ${catkin_LIBRARIES}
     ${GAZEBO_LIBRARIES}
+    ${Boost_LIBRARIES}
+    Threads::Threads
 )
-

@@ -1,0 +1,193 @@
+# base parameters
+
+frequency: 10
+sensor_timeout: 0.1
+two_d_mode: true
+
+map_frame: map
+odom_frame: odom
+base_link_frame: base_footprint
+base_link_frame_output: base_footprint
+world_frame: map # "map_frame" if use GPS; "odom_frame" if not use GPS
+
+publish_tf: false # "world_frame" -> child_frame
+publish_acceleration: false
+permit_corrected_publication: false
+print_diagnostics: false
+
+transform_time_offset: 0.0
+transform_timeout: 0.0
+
+initial_state: [0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0]
+
+# sim
+# gps (1 Hz)
+odom0: /odometry/gps
+odom0_config:  [true, true, false,
+                false, false, false,
+                false, false, false,
+                false, false, false,
+                false, false, false]
+odom0_queue_size: 10
+odom0_differential: false
+odom0_relative: false
+odom0_nodelay: true
+
+# fused odometry (~30 Hz)
+odom1: /odometry/filtered/local
+odom1_config:  [false, false, false,
+                false, false, true,
+                true, true, false,
+                false, false, false,
+                false, false, false]
+odom1_queue_size: 10
+odom1_differential: false
+odom1_relative: false
+odom1_nodelay: true
+
+# IMU in RealSense D435i (20 Hz)
+imu0: /front_rs_d455_camera/imu
+imu0_config: [false, false, false,
+              false, false, false,
+              false, false, false,
+              false, false, true,
+              true, false, false]
+imu0_queue_size: 10
+imu0_differential: false
+imu0_relative: false
+imu0_nodelay: false
+imu0_remove_gravitational_acceleration: true
+
+# real (nami dataset)
+# # gps (1 Hz)
+# odom0: /odometry/gps
+# odom0_config:  [true, true, false,
+#                 false, false, false,
+#                 false, false, false,
+#                 false, false, false,
+#                 false, false, false]
+# odom0_queue_size: 10
+# odom0_differential: false
+# odom0_relative: false
+# odom0_nodelay: true
+
+# # fused odometry (~30 Hz)
+# odom1: /odometry/filtered/local
+# odom1_config:  [false, false, false,
+#                 false, false, true,
+#                 true, true, false,
+#                 false, false, false,
+#                 false, false, false]
+# odom1_queue_size: 10
+# odom1_differential: false
+# odom1_relative: false
+# odom1_nodelay: true
+
+# # IMU in RealSense D435i (20 Hz)
+# imu0: /rs_camera/imu
+# imu0_config: [false, false, false,
+#               false, false, false,
+#               false, false, false,
+#               false, false, true,
+#               true, false, false]
+# imu0_queue_size: 10
+# imu0_differential: false
+# imu0_relative: false
+# imu0_nodelay: false
+# imu0_remove_gravitational_acceleration: true
+
+# advanced parameters
+
+use_control: false
+stamped_control: false
+control_timeout: 1.0
+control_config:  [true, true, false,
+                  false, false, true]
+
+acceleration_limits: [0.0, 0.0, 0.0,
+                      0.0, 0.0, 0.0]
+acceleration_gains:  [0.0, 0.0, 0.0,
+                      0.0, 0.0, 0.0]
+deceleration_gains:  [0.0, 0.0, 0.0,
+                      0.0, 0.0, 0.0]
+
+smooth_lagged_data: false
+history_length: 0.0
+debug: false
+debug_out_file: ekf_global.txt
+
+# sim
+process_noise_covariance:  [0.002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (x)
+                            0, 0.002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (y)
+                            0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0.00001, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (yaw)
+                            0, 0, 0, 0, 0, 0, 0.00002,0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_x)
+                            0, 0, 0, 0, 0, 0, 0, 0.00002,0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_y)
+                            0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, 0, # /rs_camera/imu (v_yaw)
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, # /rs_camera/imu (a_x)
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3]
+
+initial_estimate_covariance: [0.002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (x)
+                              0, 0.002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (y)
+                              0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0.00001, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (yaw)
+                              0, 0, 0, 0, 0, 0, 0.00002,0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_x)
+                              0, 0, 0, 0, 0, 0, 0, 0.00002,0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_y)
+                              0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0,
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, 0, # /rs_camera/imu (v_yaw)
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, # /rs_camera/imu (a_x)
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0,
+                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3]
+
+# real (nami dataset)
+# process_noise_covariance:  [0.0002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (x)
+#                             0, 0.0002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (y)
+#                             0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0.001, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (yaw)
+#                             0, 0, 0, 0, 0, 0, 0.02,0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_x)
+#                             0, 0, 0, 0, 0, 0, 0, 0.02,0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_y)
+#                             0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0, 0, 0, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, 0, # /rs_camera/imu (v_yaw)
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.004,0, 0, # /rs_camera/imu (a_x)
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3, 0,
+#                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-3]
+
+# initial_estimate_covariance: [0.00025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (x)
+#                               0, 0.00025, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (y)
+#                               0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0.0015, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (yaw)
+#                               0, 0, 0, 0, 0, 0, 0.03, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_x)
+#                               0, 0, 0, 0, 0, 0, 0, 0.03, 0, 0, 0, 0, 0, 0, 0, # /odometry/filtered/local (v_y)
+#                               0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0, 0, 0, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.006, 0, 0, 0, # /rs_camera/imu (v_yaw)
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.006, 0, 0, # /rs_camera/imu (a_x)
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9, 0,
+#                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1e-9]
+
+dynamic_process_noise_covariance: true
+
+reset_on_time_jump: false
+predict_to_current_time: true
+disabled_at_startup: false

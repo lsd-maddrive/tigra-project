@@ -1,32 +1,26 @@
 cmake_minimum_required(VERSION 3.5)
 project(tigra_msgs)
 
-find_package(catkin REQUIRED COMPONENTS
-  message_generation
-  roscpp
-  rospy
+find_package(catkin REQUIRED
+  COMPONENTS
   std_msgs
+  message_generation
 )
 
-## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
+# Generate messages in the 'msg' folder
+add_message_files(FILES
   TigraState.msg
 )
 
-## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
+# Generate added messages and services with any dependencies listed here
+generate_messages(DEPENDENCIES
+  std_msgs
 )
 
 catkin_package(
-#  INCLUDE_DIRS include
- CATKIN_DEPENDS message_runtime
-#  DEPENDS system_lib
+  CATKIN_DEPENDS message_runtime
 )
 
 include_directories(
-# include
   ${catkin_INCLUDE_DIRS}
 )

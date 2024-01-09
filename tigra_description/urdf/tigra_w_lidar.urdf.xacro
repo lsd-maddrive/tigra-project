@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<robot name="tigra" xmlns:xacro="http://www.ros.org/wiki/xacro">
-
-	<xacro:include filename="$(find tigra_description)/urdf/tigra.urdf.xacro" />
-	<xacro:include filename="$(find maddrive_urdf_tools)/urdf/macros/lidar.urdf.xacro" />
-
-	<xacro:simple_lidar name="lidar_link" base_name="base_link" place_height="${lidar_location}" />
-</robot>
