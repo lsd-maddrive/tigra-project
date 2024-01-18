@@ -12,7 +12,7 @@
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find maddrive_worlds)/worlds/ETU_asphalt_holes.world"/>
+        <arg name="world" value="$(find maddrive_worlds)/worlds/ETU_asphalt.world"/>
         <arg name="gui" value="$(arg gz_gui)" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
@@ -86,7 +86,7 @@
         <arg name="steer/limit" value="45"/>
     </include>
     <!-- keyboard teleop-->
-    <include file="$(find maddrive_teleop)/launch/start_keyboard_teleop.launch">
+    <!-- <include file="$(find maddrive_teleop)/launch/start_keyboard_teleop.launch">
         <arg name="cmd_topic" value="key_vel" />
         <arg name="turbo/linear_steps" value="4" />
         <arg name="turbo/angular_steps" value="4" />
@@ -96,7 +96,7 @@
         <arg name="turbo/linear_backward_max" value="3" />
         <arg name="turbo/angular_min" value="0.05" />
         <arg name="turbo/angular_max" value="0.5" />
-    </include>
+    </include> -->
     <!-- move_base -->
     <include file="$(find tigra_software)/launch/drivers/move_base.launch">
         <arg name="cmd_topic" value="nav_vel" />
