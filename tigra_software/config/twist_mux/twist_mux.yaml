@@ -8,6 +8,11 @@ topics:
     name: joystick
     topic: joy_vel
     timeout: 0.5
+    priority: 110
+-
+    name: keyboard
+    topic: key_vel
+    timeout: 0.5
     priority: 100
 
 locks:
