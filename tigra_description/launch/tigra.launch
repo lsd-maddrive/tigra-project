@@ -48,12 +48,6 @@
   <!-- Publish dynamic TFs (non-fixed joints) -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
-  <!-- convert PointCloud to PointCloud2 massage from lidar -->
-  <node pkg="point_cloud_converter" name="point_cloud_converter" type="point_cloud_converter_node" >
-    <remap from="points_in" to="front_lslidar_c16_lidar_point_cloud_pcl1"/>
-    <remap from="points2_out" to="front_lslidar_c16_lidar_point_cloud" />
-</node>
-
   <!-- rviz-->
   <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_description)/rviz/overview.rviz" />
 

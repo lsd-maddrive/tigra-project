@@ -25,7 +25,7 @@ catkin build \
     realsense2_description \
     image_geometry \
     hector_gazebo \
-    point_cloud_converter \
+    velodyne_simulator \
     ublox \
     rtcm_msgs \
     nmea_msgs \

@@ -3,8 +3,6 @@
 
     <arg name="map_name" default="new_map.db" />
     <arg name="localization" default="false" /> <!-- set false to start mapping-->
-    <arg name="debug" default="false"/>
-    <arg name="fused_odom_debug" default="true"/>
     <arg name='rviz' default="true" />
     <arg name='foxglove' default="true" />
     <arg name='rtabmap_viz' default='false' />
@@ -14,14 +12,14 @@
 
     <!-- simulation with robot -->
     <include file="$(find tigra_description)/launch/tigra.launch">
-        <arg name="world" value="$(find maddrive_worlds)/worlds/ETU_asphalt_holes.world"/>
+        <arg name="world" value="$(find maddrive_worlds)/worlds/ETU_asphalt.world"/>
         <arg name="gui" value="$(arg gz_gui)" />
     </include>
     <include file="$(find tigra_software)/launch/drivers/uc_convertion_layer.launch" />
 
     <!-- rdbd_odometry -->
     <include file="$(find tigra_vision)/launch/rgbd_odom.launch">
-        <arg name="publish_tf" value="false" />
+        <arg name="publish_tf" value="true" />
         <arg name="camera_name" default="front_rs_d455_camera" />
         <arg name="subscribe_rgbd" default="true" />
     </include>
@@ -31,7 +29,7 @@
         <arg name="localization" value="$(arg localization)" />
         <arg name="database_path" value="$(arg database_path)" />
         <arg name="rtabmap_viz" value="$(arg rtabmap_viz)" />
-        <arg name="publish_tf_map" default="false"/>
+        <arg name="publish_tf_map" default="true"/>
         <arg name="lidar_name" default="front_lslidar_c16_lidar" />
         <arg name="camera_name" default="front_rs_d455_camera" />
         <arg name="gps_name" default="top_ublox_gps_sensor"/>
@@ -54,14 +52,14 @@
     <!-- ekf_local -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local_node" clear_params="true" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_local.yaml" />
-        <param name="publish_tf" value="true" />
+        <param name="publish_tf" value="false" />
         <remap from="odometry/filtered" to="odometry/filtered/local" />
         <remap from="diagnostics" to="ekf_local_diagnostics"/>
     </node>
     <!-- ekf_global -->
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_global_node" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/robot_localization/ekf_global.yaml" />
-        <param name="publish_tf" value="true" />
+        <param name="publish_tf" value="false" />
         <!-- inputs -->
         <remap from="set_pose" to="ekf_global/set_pose"/>
         <!-- outputs -->
@@ -83,16 +81,28 @@
     <!-- joy teleop-->
     <include file="$(find maddrive_teleop)/launch/start_joy_teleop.launch">
         <arg name="cmd_topic" value="joy_vel" />
-        <arg name="speed/frwd_limit" value="4"/>
-        <arg name="speed/bkwrd_limit" value="-3"/>
+        <arg name="speed/frwd_limit" value="1"/>
+        <arg name="speed/bkwrd_limit" value="-1"/>
         <arg name="steer/limit" value="45"/>
     </include>
-    <!-- move_base -->
-    <!-- <include file="$(find tigra_software)/launch/drivers/move_base.launch">
-        <arg name="config_folder_name" value="move_base_vo" />
-        <arg name="cmd_topic" value="nav_vel" />
-        <arg name="teb_config" value="$(arg nav_config)" />
+    <!-- keyboard teleop-->
+    <!-- <include file="$(find maddrive_teleop)/launch/start_keyboard_teleop.launch">
+        <arg name="cmd_topic" value="key_vel" />
+        <arg name="turbo/linear_steps" value="4" />
+        <arg name="turbo/angular_steps" value="4" />
+        <arg name="turbo/linear_forward_min" value="0.04" />
+        <arg name="turbo/linear_forward_max" value="4" />
+        <arg name="turbo/linear_backward_min" value="0.03" />
+        <arg name="turbo/linear_backward_max" value="3" />
+        <arg name="turbo/angular_min" value="0.05" />
+        <arg name="turbo/angular_max" value="0.5" />
     </include> -->
+    <!-- move_base -->
+    <include file="$(find tigra_software)/launch/drivers/move_base.launch">
+        <arg name="cmd_topic" value="nav_vel" />
+        <arg name="config_folder_name" value="move_base_vo" />
+        <arg name="teb_config" value="$(arg nav_config)" />
+    </include>
     <!-- twist_mux -->
     <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
         <rosparam command="load" file="$(find tigra_software)/config/twist_mux/twist_mux.yaml" />
