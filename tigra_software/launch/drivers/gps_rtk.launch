@@ -1,13 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-    <!-- ublox driver -->
-    <node pkg="ublox_gps" type="ublox_gps" name="zed_f9p"
-        output="screen" clear_params="true" respawn="true" respawn_delay="30">
-        <rosparam command="load" file="$(find tigra_software)/config/gps/zed_f9p_rover.yaml" />
-        <param name="device" value="/dev/ttyACM0"/>
-        <remap from="rtcm" to="ntrip_client/rtcm"/>
-    </node>
+    <!-- hw driver -->
+    <include file="$(find maddrive_hardware_tools)/launch/simpleRTK2B.launch"/>
 
     <!-- ntrip client -->
     <include file="$(find ntrip_client)/launch/ntrip_client.launch">
@@ -25,11 +20,5 @@
         <arg name="debug" value="true" />
         <arg name="rtcm_message_package" value="rtcm_msgs" />
     </include>
-
-    <node pkg="rqt_multiplot" type="rqt_multiplot" name="rqt_multiplot"
-        args="
-        --multiplot-config $(find tigra_software)/config/rqt/rqt_multiplot/gps_coords.xml
-        --multiplot-run-all">
-    </node>
 
 </launch>
