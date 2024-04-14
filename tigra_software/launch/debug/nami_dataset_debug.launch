@@ -115,6 +115,6 @@
     </include>
 
     <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" />
-    <node name="rqt_console" pkg="rqt_console" type="rqt_console" />
+    <node name="swri_console" pkg="swri_console" type="swri_console" />
 
 </launch>
