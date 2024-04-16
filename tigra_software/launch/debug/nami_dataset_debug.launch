@@ -26,6 +26,11 @@
                 $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_3.bag
                 $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_4.bag
                 $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_5.bag
+                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_6.bag
+                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_7.bag
+                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_8.bag
+                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_9.bag
+                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_10.bag
             "/>
 
     <!-- restoring tf_static -->
@@ -116,5 +121,15 @@
 
     <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/rosbag_nami.rviz" />
     <node name="swri_console" pkg="swri_console" type="swri_console" />
+
+    <node pkg="mapviz" type="mapviz" name="mapviz">
+        <param name="config" value="$(find tigra_software)/config/rqt/mapviz/rosbag_nami.mvc"/>
+    </node>
+
+    <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
+        <param name="local_xy_frame" value="map"/>
+        <param name="local_xy_origin" value="auto"/>
+        <remap from="fix" to="/zed_f9p/fix"/>
+    </node>
 
 </launch>

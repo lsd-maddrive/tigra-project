@@ -1,0 +1,128 @@
+capture_directory: "~"
+fixed_frame: map
+target_frame: base_footprint
+fix_orientation: true
+rotate_90: false
+enable_antialiasing: true
+show_displays: true
+show_status_bar: true
+show_capture_tools: true
+window_width: 3072
+window_height: 1600
+view_scale: 0.3216818
+offset_x: 0
+offset_y: 0
+use_latest_transforms: true
+background: "#a0a0a4"
+displays:
+  - type: mapviz_plugins/tile_map
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      custom_sources:
+        - base_url: http://maps.stamen.com/terrain/{level}/{x}/{y}.png
+          max_zoom: 15
+          name: maps.stamen.com
+          type: wmts
+      bing_api_key: ""
+      source: maps.stamen.com
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /odometry/filtered/local
+      color: "#00ff00"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: true
+      show_all_covariances: true
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /odometry/filtered/global
+      color: "#ff0000"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: true
+      show_all_covariances: true
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /odometry/gps
+      color: "#0000ff"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: true
+      show_all_covariances: true
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/image
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /rs_camera/color/image_raw
+      anchor: top left
+      units: pixels
+      offset_x: 0
+      offset_y: 0
+      width: 598
+      height: 449
+      keep_ratio: true
+      image_transport: default
+  - type: mapviz_plugins/navsat
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /zed_f9p/fix
+      color: "#204a87"
+      draw_style: points
+      position_tolerance: 1
+      buffer_size: 0
+  - type: mapviz_plugins/navsat
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /gps/filtered
+      color: "#c17d11"
+      draw_style: points
+      position_tolerance: 0
+      buffer_size: 0
+  - type: mapviz_plugins/pointcloud2
+    name: new display
+    config:
+      visible: true
+      collapsed: true
+      topic: /lslidar_point_cloud
+      size: 5
+      buffer_size: 1
+      alpha: 1
+      color_transformer: intensity
+      min_color: "#ffffff"
+      max_color: "#000000"
+      value_min: 0
+      value_max: 100
+      use_rainbow: true
+      use_automaxmin: true
+      unpack_rgb: false
