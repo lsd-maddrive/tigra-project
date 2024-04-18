@@ -16,7 +16,7 @@ use_latest_transforms: true
 background: "#a0a0a4"
 displays:
   - type: mapviz_plugins/tile_map
-    name: new display
+    name: localhost:8080
     config:
       visible: true
       collapsed: true
@@ -28,7 +28,7 @@ displays:
       bing_api_key: ""
       source: localhost
   - type: mapviz_plugins/odometry
-    name: new display
+    name: /odometry/filtered/local
     config:
       visible: true
       collapsed: true
@@ -44,7 +44,7 @@ displays:
       arrow_size: 25
       show_timestamps: 0
   - type: mapviz_plugins/odometry
-    name: new display
+    name: /odometry/filtered/global
     config:
       visible: true
       collapsed: true
@@ -60,7 +60,7 @@ displays:
       arrow_size: 25
       show_timestamps: 0
   - type: mapviz_plugins/odometry
-    name: new display
+    name: /odometry/gps
     config:
       visible: true
       collapsed: true
@@ -76,7 +76,7 @@ displays:
       arrow_size: 25
       show_timestamps: 0
   - type: mapviz_plugins/image
-    name: new display
+    name: /rs_camera/color/image_raw
     config:
       visible: true
       collapsed: true
@@ -90,7 +90,7 @@ displays:
       keep_ratio: true
       image_transport: default
   - type: mapviz_plugins/navsat
-    name: new display
+    name: /zed_f9p/fix
     config:
       visible: true
       collapsed: true
@@ -100,7 +100,7 @@ displays:
       position_tolerance: 1
       buffer_size: 0
   - type: mapviz_plugins/navsat
-    name: new display
+    name: /gps/filtered
     config:
       visible: true
       collapsed: true
@@ -110,7 +110,7 @@ displays:
       position_tolerance: 0
       buffer_size: 0
   - type: mapviz_plugins/pointcloud2
-    name: new display
+    name: /lslidar_point_cloud
     config:
       visible: true
       collapsed: true
