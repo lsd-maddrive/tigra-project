@@ -21,12 +21,12 @@ displays:
       visible: true
       collapsed: true
       custom_sources:
-        - base_url: http://maps.stamen.com/terrain/{level}/{x}/{y}.png
-          max_zoom: 15
-          name: maps.stamen.com
+        - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
+          max_zoom: 19
+          name: localhost
           type: wmts
       bing_api_key: ""
-      source: maps.stamen.com
+      source: localhost
   - type: mapviz_plugins/odometry
     name: new display
     config:
