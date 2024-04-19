@@ -1,0 +1,128 @@
+capture_directory: "~"
+fixed_frame: map
+target_frame: base_footprint
+fix_orientation: true
+rotate_90: false
+enable_antialiasing: true
+show_displays: true
+show_status_bar: true
+show_capture_tools: true
+window_width: 1920
+window_height: 948
+view_scale: 0.1515041
+offset_x: 0
+offset_y: 0
+use_latest_transforms: true
+background: "#a0a0a4"
+displays:
+  - type: mapviz_plugins/tile_map
+    name: localhost:8080
+    config:
+      visible: true
+      collapsed: true
+      custom_sources:
+        - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
+          max_zoom: 19
+          name: localhost
+          type: wmts
+      bing_api_key: ""
+      source: localhost
+  - type: mapviz_plugins/odometry
+    name: /odometry/filtered/local
+    config:
+      visible: true
+      collapsed: true
+      topic: /odometry/filtered/local
+      color: "#00ff00"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: true
+      show_all_covariances: true
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/odometry
+    name: /odometry/filtered/global
+    config:
+      visible: true
+      collapsed: true
+      topic: /odometry/filtered/global
+      color: "#ff0000"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: true
+      show_all_covariances: true
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/odometry
+    name: /odometry/gps
+    config:
+      visible: true
+      collapsed: true
+      topic: /odometry/gps
+      color: "#0000ff"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: true
+      show_all_covariances: true
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/image
+    name: /front_rs_d455_camera/color/image_raw
+    config:
+      visible: true
+      collapsed: true
+      topic: /front_rs_d455_camera/color/image_raw
+      anchor: top left
+      units: pixels
+      offset_x: 0
+      offset_y: 0
+      width: 598
+      height: 336
+      keep_ratio: true
+      image_transport: default
+  - type: mapviz_plugins/navsat
+    name: /top_ublox_gps_sensor/fix
+    config:
+      visible: true
+      collapsed: true
+      topic: /top_ublox_gps_sensor/fix
+      color: "#204a87"
+      draw_style: points
+      position_tolerance: 1
+      buffer_size: 0
+  - type: mapviz_plugins/navsat
+    name: /gps/filtered
+    config:
+      visible: true
+      collapsed: true
+      topic: /gps/filtered
+      color: "#c17d11"
+      draw_style: points
+      position_tolerance: 0
+      buffer_size: 0
+  - type: mapviz_plugins/pointcloud2
+    name: /front_lslidar_c16_lidar_point_cloud
+    config:
+      visible: true
+      collapsed: true
+      topic: /front_lslidar_c16_lidar_point_cloud
+      size: 5
+      buffer_size: 1
+      alpha: 1
+      color_transformer: ring
+      min_color: "#ffffff"
+      max_color: "#000000"
+      value_min: 0
+      value_max: 100
+      use_rainbow: true
+      use_automaxmin: true
+      unpack_rgb: false
