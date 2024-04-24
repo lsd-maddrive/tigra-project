@@ -9,7 +9,7 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1920
 window_height: 948
-view_scale: 0.1515041
+view_scale: 0.1798587
 offset_x: 0
 offset_y: 0
 use_latest_transforms: true
@@ -28,18 +28,66 @@ displays:
       bing_api_key: ""
       source: localhost
   - type: mapviz_plugins/odometry
-    name: /odometry/filtered/local
+    name: /ground_truth/state
     config:
       visible: true
       collapsed: true
-      topic: /odometry/filtered/local
+      topic: /ground_truth/state
       color: "#00ff00"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 100
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/odometry
+    name: /rtabmap/visual_odometry
+    config:
+      visible: true
+      collapsed: true
+      topic: /rtabmap/visual_odometry
+      color: "#0000ff"
       draw_style: lines
       position_tolerance: 0
       buffer_size: 0
       show_laps: false
       show_covariance: true
-      show_all_covariances: true
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/odometry
+    name: /tigra/wheel_odom
+    config:
+      visible: true
+      collapsed: true
+      topic: /tigra/wheel_odom
+      color: "#ff00ff"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+  - type: mapviz_plugins/odometry
+    name: /odometry/filtered/local
+    config:
+      visible: true
+      collapsed: true
+      topic: /odometry/filtered/local
+      color: "#ff0000"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: true
+      show_all_covariances: false
       static_arrow_sizes: false
       arrow_size: 25
       show_timestamps: 0
@@ -49,13 +97,13 @@ displays:
       visible: true
       collapsed: true
       topic: /odometry/filtered/global
-      color: "#ff0000"
+      color: "#ffff00"
       draw_style: lines
       position_tolerance: 0
       buffer_size: 0
       show_laps: false
       show_covariance: true
-      show_all_covariances: true
+      show_all_covariances: false
       static_arrow_sizes: false
       arrow_size: 25
       show_timestamps: 0
@@ -65,30 +113,16 @@ displays:
       visible: true
       collapsed: true
       topic: /odometry/gps
-      color: "#0000ff"
+      color: "#75507b"
       draw_style: lines
       position_tolerance: 0
       buffer_size: 0
       show_laps: false
       show_covariance: true
-      show_all_covariances: true
+      show_all_covariances: false
       static_arrow_sizes: false
       arrow_size: 25
       show_timestamps: 0
-  - type: mapviz_plugins/image
-    name: /front_rs_d455_camera/color/image_raw
-    config:
-      visible: true
-      collapsed: true
-      topic: /front_rs_d455_camera/color/image_raw
-      anchor: top left
-      units: pixels
-      offset_x: 0
-      offset_y: 0
-      width: 598
-      height: 336
-      keep_ratio: true
-      image_transport: default
   - type: mapviz_plugins/navsat
     name: /top_ublox_gps_sensor/fix
     config:
@@ -117,7 +151,7 @@ displays:
       topic: /front_lslidar_c16_lidar_point_cloud
       size: 5
       buffer_size: 1
-      alpha: 1
+      alpha: 0.2000000029802322
       color_transformer: ring
       min_color: "#ffffff"
       max_color: "#000000"
@@ -126,3 +160,17 @@ displays:
       use_rainbow: true
       use_automaxmin: true
       unpack_rgb: false
+  - type: mapviz_plugins/image
+    name: /front_rs_d455_camera/color/image_raw
+    config:
+      visible: true
+      collapsed: true
+      topic: /front_rs_d455_camera/color/image_raw
+      anchor: top left
+      units: percent
+      offset_x: 0
+      offset_y: 0
+      width: 30
+      height: 28.3
+      keep_ratio: true
+      image_transport: default
