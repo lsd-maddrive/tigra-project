@@ -41,10 +41,17 @@
       "isSynced": false,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "/rtabmap/visual_odometry.covariance"
+      "foxglovePanelTitle": "/rtabmap/visual_odometry.covariance",
+      "followingViewWidth": 10
     },
     "Plot!3o0u8l0": {
       "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/front_rs_d455_camera/imu.orientation_covariance[8:8]",
+          "enabled": true,
+          "label": "/front_rs_d455_camera/imu.yaw.covariance"
+        },
         {
           "timestampMethod": "receiveTime",
           "value": "/front_rs_d455_camera/imu.angular_velocity_covariance[8:8]",
@@ -78,7 +85,8 @@
       "isSynced": false,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "/front_rs_d455_camera/imu.covariance"
+      "foxglovePanelTitle": "/front_rs_d455_camera/imu.covariance",
+      "followingViewWidth": 10
     },
     "Plot!tbj14v": {
       "paths": [
@@ -127,7 +135,8 @@
       "isSynced": false,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "/odometry/filtered/local.covariance"
+      "foxglovePanelTitle": "/odometry/filtered/local.covariance",
+      "followingViewWidth": 10
     },
     "Plot!a3ohx4": {
       "paths": [
@@ -176,7 +185,8 @@
       "isSynced": false,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "/odometry/gps.covariance"
+      "foxglovePanelTitle": "/odometry/gps.covariance",
+      "followingViewWidth": 10
     },
     "Plot!34apujt": {
       "paths": [
@@ -207,7 +217,8 @@
       "isSynced": false,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "/odometry/filtered/local.covariance"
+      "foxglovePanelTitle": "/odometry/filtered/local.covariance",
+      "followingViewWidth": 10
     },
     "Plot!3cjxai": {
       "paths": [
@@ -244,7 +255,8 @@
       "isSynced": false,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "/front_rs_d455_camera/imu.covariance"
+      "foxglovePanelTitle": "/front_rs_d455_camera/imu.covariance",
+      "followingViewWidth": 10
     },
     "Plot!1pdo2mh": {
       "paths": [
@@ -293,7 +305,8 @@
       "isSynced": false,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "/odometry/filtered/global.covariance"
+      "foxglovePanelTitle": "/odometry/filtered/global.covariance",
+      "followingViewWidth": 10
     },
     "Tab!26zfcs4": {
       "activeTabIdx": 1,

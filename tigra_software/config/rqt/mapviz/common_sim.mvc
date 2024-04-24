@@ -34,9 +34,9 @@ displays:
       collapsed: true
       topic: /ground_truth/state
       color: "#00ff00"
-      draw_style: lines
+      draw_style: arrows
       position_tolerance: 0
-      buffer_size: 100
+      buffer_size: 1
       show_laps: false
       show_covariance: false
       show_all_covariances: false
@@ -50,9 +50,9 @@ displays:
       collapsed: true
       topic: /rtabmap/visual_odometry
       color: "#0000ff"
-      draw_style: lines
+      draw_style: arrows
       position_tolerance: 0
-      buffer_size: 0
+      buffer_size: 1
       show_laps: false
       show_covariance: true
       show_all_covariances: false
@@ -62,13 +62,13 @@ displays:
   - type: mapviz_plugins/odometry
     name: /tigra/wheel_odom
     config:
-      visible: true
+      visible: false
       collapsed: true
       topic: /tigra/wheel_odom
       color: "#ff00ff"
-      draw_style: lines
+      draw_style: arrows
       position_tolerance: 0
-      buffer_size: 0
+      buffer_size: 1
       show_laps: false
       show_covariance: false
       show_all_covariances: false
@@ -82,9 +82,9 @@ displays:
       collapsed: true
       topic: /odometry/filtered/local
       color: "#ff0000"
-      draw_style: lines
+      draw_style: arrows
       position_tolerance: 0
-      buffer_size: 0
+      buffer_size: 1
       show_laps: false
       show_covariance: true
       show_all_covariances: false
@@ -98,9 +98,9 @@ displays:
       collapsed: true
       topic: /odometry/filtered/global
       color: "#ffff00"
-      draw_style: lines
+      draw_style: arrows
       position_tolerance: 0
-      buffer_size: 0
+      buffer_size: 1
       show_laps: false
       show_covariance: true
       show_all_covariances: false
@@ -110,15 +110,15 @@ displays:
   - type: mapviz_plugins/odometry
     name: /odometry/gps
     config:
-      visible: true
+      visible: false
       collapsed: true
       topic: /odometry/gps
-      color: "#75507b"
-      draw_style: lines
+      color: "#00ffff"
+      draw_style: arrows
       position_tolerance: 0
-      buffer_size: 0
+      buffer_size: 1
       show_laps: false
-      show_covariance: true
+      show_covariance: false
       show_all_covariances: false
       static_arrow_sizes: false
       arrow_size: 25
@@ -171,6 +171,6 @@ displays:
       offset_x: 0
       offset_y: 0
       width: 30
-      height: 28.3
+      height: 26.9
       keep_ratio: true
       image_transport: default

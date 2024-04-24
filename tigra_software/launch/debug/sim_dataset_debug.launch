@@ -129,7 +129,6 @@
 
     </group>
 
-
     <!-- recording rosbag -->
     <group if="$(eval arg('rosbag_mode') == 'record')">
 

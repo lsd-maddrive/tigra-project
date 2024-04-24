@@ -131,7 +131,7 @@
     <!-- mapviz -->
     <group if="$(arg mapviz)">
         <node pkg="mapviz" type="mapviz" name="mapviz">
-            <param name="config" value="$(find tigra_software)/config/rqt/mapviz/rosbag_nami.mvc"/>
+            <param name="config" value="$(find tigra_software)/config/rqt/mapviz/common_sim.mvc"/>
         </node>
         <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
             <param name="local_xy_frame" value="map"/>
