@@ -121,8 +121,8 @@ debug: false
 debug_out_file: ekf_global.txt
 
 # sim
-process_noise_covariance:  [0.002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (x)
-                            0, 0.002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (y)
+process_noise_covariance:  [0.00002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (x)
+                            0, 0.00002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # /odometry/gps (y)
                             0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 1e-3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
