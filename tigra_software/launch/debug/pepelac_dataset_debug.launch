@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="rosbag_mode" default="play" doc="[play, record]"/>
+    <arg name="rosbag_filename" default="ETU_GPS_heading_imu_test3"/>
+
+    <arg name="rviz" default="false" />
+    <arg name="mapviz" default="false" />
+    <arg name="rtabmap_viz" default="false" />
+    <arg name="foxglove" default="false" />
+
+    <!-- playing rosbag -->
+    <group if="$(eval arg('rosbag_mode') == 'play')">
+
+        <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
+            args="
+                --quiet
+                --clock
+                --bags
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_0.bag
+                    "/>
+
+        <!-- restoring tf_static -->
+        <include file="$(find tigra_software)/launch/debug/pepelac_restoring_tf_static.launch">
+        </include>
+
+        <!-- rviz -->
+        <group if="$(arg rviz)">
+            <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/pepelac_debug.rviz" />
+        </group>
+
+        <!-- mapviz -->
+        <group if="$(arg mapviz)">
+            <node pkg="mapviz" type="mapviz" name="mapviz">
+                <param name="config" value="$(find tigra_software)/config/rqt/mapviz/common_sim.mvc"/>
+            </node>
+            <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
+                <param name="local_xy_frame" value="map"/>
+                <param name="local_xy_origin" value="auto"/>
+                <remap from="fix" to="/top_ublox_gps_sensor/fix"/>
+            </node>
+        </group>
+
+        <!-- foxglove -->
+        <group if="$(arg foxglove)">
+            <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
+                <arg name="port" value="8765" />
+            </include>
+        </group>
+
+        <!-- debug console -->
+        <node name="swri_console" pkg="swri_console" type="swri_console" />
+
+    </group>
+
+    <!-- recording rosbag -->
+    <group if="$(eval arg('rosbag_mode') == 'record')">
+
+        <include file="$(find maddrive_hardware_tools)/launch/yahboom_imu.launch">
+            <arg name="imu_output_topic" default="/yahboom/imu" />
+            <arg name="rviz" value="false" />
+        </include>
+
+        <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B"
+            output="screen" clear_params="true" respawn="true" ns="rover">
+            <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_rover.yaml" />
+            <remap from="rtcm" to="rtcm"/>
+        </node>
+
+        <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B"
+            output="screen" clear_params="true" respawn="true" ns="moving_base">
+            <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_moving_base.yaml" />
+            <remap from="rtcm" to="rtcm"/>
+        </node>
+
+        <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
+            args="
+                --all
+                --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag
+                --split
+                --size=10000
+                "/>
+
+    </group>
+
+</launch>

@@ -4,7 +4,7 @@
     <param name="use_sim_time" value="true" />
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
-    <arg name="rosbag_filename" default="ETU_sim_asphalt"/>
+    <arg name="rosbag_filename" default="ETU_sim_asphalt_drink/ETU_sim_asphalt_drink"/>
 
     <arg name="rviz" default="false" />
     <arg name="mapviz" default="false" />
@@ -30,7 +30,13 @@
                     /front_lslidar_c16_lidar_point_cloud
                     /top_ublox_gps_sensor/fix
                     /high_freq_zero_noise_ublox_gps_sensor/fix
-                --bags $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
+                --bags
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_0.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_1.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_2.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_3.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_4.bag
+                    "/>
 
         <!-- slam -->
         <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
@@ -145,6 +151,8 @@
                 /top_ublox_gps_sensor/fix
                 /high_freq_zero_noise_ublox_gps_sensor/fix
                 --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag
+                --split
+                --size=10000
                 "/>
 
     </group>
