@@ -32,12 +32,12 @@
         <!-- mapviz -->
         <group if="$(arg mapviz)">
             <node pkg="mapviz" type="mapviz" name="mapviz">
-                <param name="config" value="$(find tigra_software)/config/rqt/mapviz/common_sim.mvc"/>
+                <param name="config" value="$(find tigra_software)/config/rqt/mapviz/pepelac.mvc"/>
             </node>
             <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
-                <param name="local_xy_frame" value="map"/>
+                <param name="local_xy_frame" value="base_footprint"/>
                 <param name="local_xy_origin" value="auto"/>
-                <remap from="fix" to="/top_ublox_gps_sensor/fix"/>
+                <remap from="fix" to="/moving_base/simpleRTK2B/navsat"/>
             </node>
         </group>
 
@@ -57,7 +57,7 @@
     <group if="$(eval arg('rosbag_mode') == 'record')">
 
         <include file="$(find maddrive_hardware_tools)/launch/yahboom_imu.launch">
-            <arg name="imu_output_topic" default="/yahboom/imu" />
+            <arg name="imu_output_topic" value="/yahboom/imu" />
             <arg name="rviz" value="false" />
         </include>
 
