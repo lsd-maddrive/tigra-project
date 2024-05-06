@@ -4,7 +4,7 @@
     <param name="use_sim_time" value="true" />
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
-    <arg name="rosbag_filename" default="ETU_sim_asphalt_drink/ETU_sim_asphalt_drink"/>
+    <arg name="rosbag_filename" default="rosbags/ETU_sim_asphalt_drink/ETU_sim_asphalt_drink"/>
 
     <arg name="rviz" default="false" />
     <arg name="mapviz" default="false" />
@@ -36,6 +36,10 @@
                     $(find tigra_software)/bags/$(arg rosbag_filename)_2.bag
                     $(find tigra_software)/bags/$(arg rosbag_filename)_3.bag
                     $(find tigra_software)/bags/$(arg rosbag_filename)_4.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_5.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_6.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_7.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_8.bag
                     "/>
 
         <!-- slam -->
