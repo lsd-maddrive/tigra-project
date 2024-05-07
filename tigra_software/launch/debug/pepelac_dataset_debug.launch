@@ -16,15 +16,14 @@
             args="
                 --quiet
                 --clock
+                --topics
+                    /yahboom/imu/raw
+                    /yahboom/mag/raw
                 --bags
                     $(find tigra_software)/bags/$(arg rosbag_filename)_0.bag
                     "/>
 
-        <!-- restoring tf_static -->
-        <include file="$(find tigra_software)/launch/debug/pepelac_restoring_tf_static.launch">
-        </include>
-
-            <!-- http://wiki.ros.org/imu_filter_madgwick -->
+        <!-- http://wiki.ros.org/imu_filter_madgwick -->
         <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
             <param name="gain" value="0.5"/>
             <param name="world_frame" value="enu"/>
@@ -39,39 +38,38 @@
             <remap from="imu/data" to="/yahboom/imu/filtered"/>
         </node>
 
-
-        <!-- rviz -->
-        <group if="$(arg rviz)">
-            <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/pepelac_debug.rviz" />
-        </group>
-
-        <!-- mapviz -->
-        <group if="$(arg mapviz)">
-            <node pkg="mapviz" type="mapviz" name="mapviz">
-                <param name="config" value="$(find tigra_software)/config/rqt/mapviz/pepelac.mvc"/>
-            </node>
-            <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
-                <param name="local_xy_frame" value="base_footprint"/>
-                <param name="local_xy_origin" value="auto"/>
-                <remap from="fix" to="/moving_base/simpleRTK2B/navsat"/>
-            </node>
-        </group>
-
-        <!-- foxglove -->
-        <group if="$(arg foxglove)">
-            <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
-                <arg name="port" value="8765" />
-            </include>
-        </group>
-
-        <!-- debug console -->
-        <node name="swri_console" pkg="swri_console" type="swri_console" />
-
     </group>
 
     <!-- recording rosbag -->
     <group if="$(eval arg('rosbag_mode') == 'record')">
 
+        <!-- tf_statis -->
+        <node pkg="tf2_ros" type="static_transform_publisher"
+            name="base_footprint_2_base_link"
+            args="
+                0.0 0.0 0.25
+                0.0 0.0 0.0
+                /base_footprint /base_link" />
+        <node pkg="tf2_ros" type="static_transform_publisher"
+            name="base_link_2_imu_raw_link"
+            args="
+                0.0 0.0 0.25
+                0.0 0.0 0.0
+                /base_link /imu_raw_link" />
+        <!-- <node pkg="tf2_ros" type="static_transform_publisher"
+            name="base_link_2_gps_rover"
+            args="
+                0.0 0.0 3.0
+                0.0 0.0 0.0
+                /base_link /gps_rover" /> -->
+        <!-- <node pkg="tf2_ros" type="static_transform_publisher"
+            name="base_link_2_gps_moving_base"
+            args="
+                0.0 0.0 3.0
+                0.0 0.0 0.0
+                /base_link /gps_moving_base" /> -->
+
+        <!-- yahboom_imu -->
         <include file="$(find maddrive_hardware_tools)/launch/yahboom_imu.launch">
             <arg name="port" value="/dev/tty_Yahboom0" />
             <arg name="baud" value="115200" />
@@ -81,17 +79,19 @@
             <arg name="rviz" value="false" />
         </include>
 
-        <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B"
-            output="screen" clear_params="true" respawn="true" ns="rover">
+        <!-- rover -->
+        <!-- <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B/rover"
+            output="screen" clear_params="true" respawn="true">
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_rover.yaml" />
             <remap from="rtcm" to="rtcm"/>
-        </node>
+        </node> -->
 
-        <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B"
-            output="screen" clear_params="true" respawn="true" ns="moving_base">
+        <!-- moving base -->
+        <!-- <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B/moving_base"
+            output="screen" clear_params="true" respawn="true">
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_moving_base.yaml" />
             <remap from="rtcm" to="rtcm"/>
-        </node>
+        </node> -->
 
         <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
             args="
@@ -102,5 +102,32 @@
                 "/>
 
     </group>
+
+    <!-- rviz -->
+    <group if="$(arg rviz)">
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/pepelac_debug.rviz" />
+    </group>
+
+    <!-- mapviz -->
+    <group if="$(arg mapviz)">
+        <node pkg="mapviz" type="mapviz" name="mapviz">
+            <param name="config" value="$(find tigra_software)/config/rqt/mapviz/pepelac.mvc"/>
+        </node>
+        <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
+            <param name="local_xy_frame" value="base_footprint"/>
+            <param name="local_xy_origin" value="auto"/>
+            <remap from="fix" to="/moving_base/simpleRTK2B/navsat"/>
+        </node>
+    </group>
+
+    <!-- foxglove -->
+    <group if="$(arg foxglove)">
+        <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
+            <arg name="port" value="8765" />
+        </include>
+    </group>
+
+    <!-- debug console -->
+    <node name="swri_console" pkg="swri_console" type="swri_console" />
 
 </launch>
