@@ -56,18 +56,18 @@
                 0.0 0.0 0.25
                 0.0 0.0 0.0
                 /base_link /imu_raw_link" />
-        <!-- <node pkg="tf2_ros" type="static_transform_publisher"
+        <node pkg="tf2_ros" type="static_transform_publisher"
             name="base_link_2_gps_rover"
             args="
                 0.0 0.0 3.0
                 0.0 0.0 0.0
-                /base_link /gps_rover" /> -->
-        <!-- <node pkg="tf2_ros" type="static_transform_publisher"
+                /base_link /gps_rover" />
+        <node pkg="tf2_ros" type="static_transform_publisher"
             name="base_link_2_gps_moving_base"
             args="
                 0.0 0.0 3.0
                 0.0 0.0 0.0
-                /base_link /gps_moving_base" /> -->
+                /base_link /gps_moving_base" />
 
         <!-- yahboom_imu -->
         <include file="$(find maddrive_hardware_tools)/launch/yahboom_imu.launch">
@@ -80,18 +80,18 @@
         </include>
 
         <!-- rover -->
-        <!-- <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B/rover"
+        <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B_rover"
             output="screen" clear_params="true" respawn="true">
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_rover.yaml" />
-            <remap from="rtcm" to="rtcm"/>
-        </node> -->
+            <remap from="rtcm" to="simpleRTK2B_rover/rtcm"/>
+        </node>
 
         <!-- moving base -->
-        <!-- <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B/moving_base"
+        <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B_moving_base"
             output="screen" clear_params="true" respawn="true">
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_moving_base.yaml" />
-            <remap from="rtcm" to="rtcm"/>
-        </node> -->
+            <remap from="rtcm" to="simpleRTK2B_moving_base/rtcm"/>
+        </node>
 
         <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
             args="
