@@ -23,6 +23,18 @@
                     $(find tigra_software)/bags/$(arg rosbag_filename)_0.bag
                     "/>
 
+        <!-- SLAM START-->
+        <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
+            <arg name="lidar_name" default="front_lslidar_c16_lidar" />
+            <arg name="localization" value="$(arg localization)" />
+            <arg name="database_path" value="$(arg database_path)" />
+            <arg name="rtabmap_viz" value="$(arg rtabmap_viz)"/>
+        </include>
+        <include file="$(find tigra_vision)/launch/rgbd_odom.launch">
+            <arg name="publish_tf" value="true" />
+            <arg name="camera_name" value="front_rs_d455_camera" />
+        </include>
+
         <!-- http://wiki.ros.org/imu_filter_madgwick -->
         <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
             <param name="gain" value="0.5"/>
@@ -44,31 +56,46 @@
     <group if="$(eval arg('rosbag_mode') == 'record')">
 
         <!-- tf_statis -->
+        <!-- TF pepelac high is 0.8-->
         <node pkg="tf2_ros" type="static_transform_publisher"
-            name="base_footprint_2_base_link"
+            name="base_footprint_2_laser_link"
+            args="
+                0.0 0.0 1.02
+                1.57 0.0 0.0
+                /base_footprint /laser_link" />
+        <node pkg="tf2_ros" type="static_transform_publisher"
+            name="base_footprint_2_front_rs_d455_camera_link"
+            args="
+                0.0 0.0 1.15
+                0.0 0.0 0.0
+                /base_footprint /front_rs_d455_camera_link" />
+        <node pkg="tf2_ros" type="static_transform_publisher"
+            name="base_footprint_2_imu_raw_link"
             args="
                 0.0 0.0 0.25
                 0.0 0.0 0.0
-                /base_footprint /base_link" />
+                /base_footprint /imu_raw_link" />
         <node pkg="tf2_ros" type="static_transform_publisher"
-            name="base_link_2_imu_raw_link"
-            args="
-                0.0 0.0 0.25
-                0.0 0.0 0.0
-                /base_link /imu_raw_link" />
-        <node pkg="tf2_ros" type="static_transform_publisher"
-            name="base_link_2_gps_rover"
+            name="base_footprint_2_gps_rover"
             args="
                 0.0 0.0 3.0
                 0.0 0.0 0.0
-                /base_link /gps_rover" />
+                /base_footprint /gps_rover" />
         <node pkg="tf2_ros" type="static_transform_publisher"
-            name="base_link_2_gps_moving_base"
+            name="base_footprint_2_gps_moving_base"
             args="
                 0.0 0.0 3.0
                 0.0 0.0 0.0
-                /base_link /gps_moving_base" />
+                /base_footprint /gps_moving_base" />
 
+        <!-- hardware -->
+        <!-- lslidar_c16 -->
+        <include file="$(find maddrive_hardware_tools)/launch/start_lslidar_c16.launch">
+            <arg name="min_range" value="1.0" />  
+            <arg name="topic_name" value="front_lslidar_c16_lidar_point_cloud" />  
+        </include>
+        <!-- rs_camera -->
+        <include file="$(find maddrive_hardware_tools)/launch/start_rs_camera_ir.launch"/>
         <!-- yahboom_imu -->
         <include file="$(find maddrive_hardware_tools)/launch/yahboom_imu.launch">
             <arg name="port" value="/dev/tty_Yahboom0" />
@@ -78,15 +105,13 @@
             <arg name="mag_output_topic" value="/yahboom/mag/raw" />
             <arg name="rviz" value="false" />
         </include>
-
-        <!-- rover -->
+        <!-- simpleRTK2B_rover -->
         <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B_rover"
             output="screen" clear_params="true" respawn="true">
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_rover.yaml" />
             <remap from="rtcm" to="simpleRTK2B_rover/rtcm"/>
         </node>
-
-        <!-- moving base -->
+        <!-- simpleRTK2B_moving_base -->
         <node pkg="ublox_gps" type="ublox_gps" name="simpleRTK2B_moving_base"
             output="screen" clear_params="true" respawn="true">
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_moving_base.yaml" />
@@ -95,7 +120,46 @@
 
         <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
             args="
-                --all
+                /tf_static
+                /yahboom/imu/raw
+                /yahboom/mag/raw
+                /simpleRTK2B_moving_base/fix
+                /simpleRTK2B_moving_base/fix_velocity
+                /simpleRTK2B_moving_base/hp_fix
+                /simpleRTK2B_moving_base/monhw
+                /simpleRTK2B_moving_base/navclock
+                /simpleRTK2B_moving_base/navheading
+                /simpleRTK2B_moving_base/navhpposecef
+                /simpleRTK2B_moving_base/navhpposllh
+                /simpleRTK2B_moving_base/navposecef
+                /simpleRTK2B_moving_base/navpvt
+                /simpleRTK2B_moving_base/navrelposned
+                /simpleRTK2B_moving_base/navsat
+                /simpleRTK2B_moving_base/navstatus
+                /simpleRTK2B_rover/fix
+                /simpleRTK2B_rover/fix_velocity
+                /simpleRTK2B_rover/hp_fix
+                /simpleRTK2B_rover/monhw
+                /simpleRTK2B_rover/navclock
+                /simpleRTK2B_rover/navheading
+                /simpleRTK2B_rover/navhpposecef
+                /simpleRTK2B_rover/navhpposllh
+                /simpleRTK2B_rover/navposecef
+                /simpleRTK2B_rover/navpvt
+                /simpleRTK2B_rover/navrelposned
+                /simpleRTK2B_rover/navsat
+                /simpleRTK2B_rover/navstatus
+                /simpleRTK2B_rover/rtcm
+                /simpleRTK2B_rover/rxmrtcm
+                /front_rs_d455_camera/infra1/image_rect_raw/compressed
+                /front_rs_d455_camera/infra2/image_rect_raw/compressed
+                /front_rs_d455_camera/infra1/camera_info 
+                /front_rs_d455_camera/infra2/camera_info 
+                /front_rs_d455_camera/color/image_raw/compressed
+                /front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed
+                /front_rs_d455_camera/color/camera_info
+                /front_rs_d455_camera/imu/filtered
+                /front_lslidar_c16_lidar_point_cloud
                 --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag
                 --split
                 --size=10000
@@ -106,6 +170,7 @@
     <!-- rviz -->
     <group if="$(arg rviz)">
         <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/pepelac_debug.rviz" />
+        <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find maddrive_launch)/launch/full_slam_pepelac_view.rviz" /> -->
     </group>
 
     <!-- mapviz -->
