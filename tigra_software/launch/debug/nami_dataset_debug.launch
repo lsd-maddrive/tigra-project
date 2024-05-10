@@ -3,7 +3,7 @@
 
     <param name="use_sim_time" value="true" />
 
-    <arg name="rosbag_filename" default="ETU_asphalt"/>
+    <arg name="rosbag_filename" default="rosbags/тестовый_заезд/rosbag_nami"/>
 
     <arg name="rviz" default="false" />
     <arg name="mapviz" default="false" />
@@ -27,18 +27,18 @@
                 /zed_f9p/fix
             --start=5
             --bags
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_3.bag
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_4.bag
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_5.bag
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_6.bag
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_7.bag
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_8.bag
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_9.bag
-                $(find tigra_software)/bags/тестовый_заезд/rosbag_nami_10.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_3.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_4.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_5.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_6.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_7.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_8.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_9.bag
+                $(find tigra_software)/bags/$(arg rosbag_filename)_10.bag
             "/>
 
     <!-- restoring tf_static -->
-    <include file="$(find tigra_software)/launch/debug/restoring_tf_static.launch">
+    <include file="$(find tigra_software)/launch/debug/nami_restoring_tf_static.launch">
     </include>
 
     <!-- imu_filter -->
