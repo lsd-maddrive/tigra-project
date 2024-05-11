@@ -2,7 +2,11 @@
 <launch>
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
-    <arg name="rosbag_filename" default="ETU_GPS_heading_imu_test3"/>
+    <arg name="rosbag_filename" default="rosbag_filename"/>
+
+    <arg name="map_name" default="pepelac_test.db"/>
+    <arg name="localization" default="false" doc="[false - slam]"/>
+    <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
 
     <arg name="rviz" default="false" />
     <arg name="mapviz" default="false" />
@@ -17,26 +21,53 @@
                 --quiet
                 --clock
                 --topics
+                    /tf_static
                     /yahboom/imu/raw
                     /yahboom/mag/raw
+                    /simpleRTK2B_moving_base/fix
+                    /simpleRTK2B_rover/navheading
+                    /front_rs_d455_camera/infra1/image_rect_raw/compressed
+                    /front_rs_d455_camera/infra2/image_rect_raw/compressed
+                    /front_rs_d455_camera/infra1/camera_info
+                    /front_rs_d455_camera/infra2/camera_info
+                    /front_rs_d455_camera/color/image_raw/compressed
+                    /front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed
+                    /front_rs_d455_camera/color/camera_info
+                    /front_rs_d455_camera/imu/filtered
+                    /front_lslidar_c16_lidar_point_cloud
                 --bags
                     $(find tigra_software)/bags/$(arg rosbag_filename)_0.bag
                     "/>
 
-        <!-- SLAM START-->
+        <node name="color_republish" pkg="image_transport" type="republish" args="compressed raw">
+            <remap from="in" to="/front_rs_d455_camera/color/image_raw" />
+            <remap from="out" to="/front_rs_d455_camera/color/image_raw" />
+        </node>
+
+        <node name="aligned_depth_to_color_republish" pkg="image_transport" type="republish" args="compressed raw">
+            <remap from="in" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
+            <remap from="out" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
+            <param name="compressed/mode" value="color"/>
+        </node>
+
+        <!-- rtabmap_slam -->
         <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
             <arg name="lidar_name" default="front_lslidar_c16_lidar" />
+            <arg name="publish_tf_map" default="true"/>
             <arg name="localization" value="$(arg localization)" />
             <arg name="database_path" value="$(arg database_path)" />
             <arg name="rtabmap_viz" value="$(arg rtabmap_viz)"/>
         </include>
+
+        <!-- rgbd_odom -->
         <include file="$(find tigra_vision)/launch/rgbd_odom.launch">
             <arg name="publish_tf" value="true" />
             <arg name="camera_name" value="front_rs_d455_camera" />
+            <arg name="subscribe_rgbd" value="false" />
         </include>
 
         <!-- http://wiki.ros.org/imu_filter_madgwick -->
-        <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
+        <!-- <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
             <param name="gain" value="0.5"/>
             <param name="world_frame" value="enu"/>
             <param name="use_mag" value="true"/>
@@ -48,7 +79,7 @@
             <remap from="imu/data_raw" to="/yahboom/imu/raw"/>
             <remap from="imu/mag" to="/yahboom/mag/raw"/>
             <remap from="imu/data" to="/yahboom/imu/filtered"/>
-        </node>
+        </node> -->
 
     </group>
 
@@ -153,8 +184,8 @@
                 /simpleRTK2B_rover/rxmrtcm
                 /front_rs_d455_camera/infra1/image_rect_raw/compressed
                 /front_rs_d455_camera/infra2/image_rect_raw/compressed
-                /front_rs_d455_camera/infra1/camera_info 
-                /front_rs_d455_camera/infra2/camera_info 
+                /front_rs_d455_camera/infra1/camera_info
+                /front_rs_d455_camera/infra2/camera_info
                 /front_rs_d455_camera/color/image_raw/compressed
                 /front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed
                 /front_rs_d455_camera/color/camera_info
@@ -169,8 +200,8 @@
 
     <!-- rviz -->
     <group if="$(arg rviz)">
-        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/pepelac_debug.rviz" />
-        <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find maddrive_launch)/launch/full_slam_pepelac_view.rviz" /> -->
+        <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/pepelac_debug.rviz" /> -->
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/full_slam_pepelac_view.rviz" />
     </group>
 
     <!-- mapviz -->

@@ -1,16 +1,14 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 138
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /visual_odom1/Shape1
-        - /Imu1/Status1
-        - /Imu1/Box properties1
-        - /Imu2/Box properties1
-      Splitter Ratio: 0.22118088603019714
-    Tree Height: 1628
+        - //rtabmap/visual_odometry1/Shape1
+        - //yahboom/imu/raw1/Box properties1
+        - //simpleRTK2B_rover/navheading1/Box properties1
+      Splitter Ratio: 0.989230751991272
+    Tree Height: 892
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -28,7 +26,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: lslidar points
+    SyncSource: /front_rs_d455_camera/color/image_raw/compressed
   - Class: rviz/Views
     Expanded:
       - /Current View1
@@ -57,7 +55,7 @@ Visualization Manager:
         Z: 0
       Plane: XY
       Plane Cell Count: 20
-      Reference Frame: <Fixed Frame>
+      Reference Frame: map
       Value: true
     - Class: rviz/TF
       Enabled: true
@@ -67,7 +65,7 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_footprint:
-          Value: false
+          Value: true
         front_rs_d455_camera_accel_frame:
           Value: true
         front_rs_d455_camera_accel_optical_frame:
@@ -184,7 +182,7 @@ Visualization Manager:
         Value: false
       Enabled: true
       Keep: 10
-      Name: visual_odom
+      Name: /rtabmap/visual_odometry
       Position Tolerance: 0.10000000149011612
       Queue Size: 10
       Shape:
@@ -197,42 +195,7 @@ Visualization Manager:
         Shaft Length: 2
         Shaft Radius: 0.10000000149011612
         Value: Arrow
-      Topic: /tigra/vo
-      Unreliable: false
-      Value: true
-    - Angle Tolerance: 0.10000000149011612
-      Class: rviz/Odometry
-      Covariance:
-        Orientation:
-          Alpha: 0.5
-          Color: 255; 255; 127
-          Color Style: Unique
-          Frame: Local
-          Offset: 1
-          Scale: 1
-          Value: true
-        Position:
-          Alpha: 0.30000001192092896
-          Color: 204; 51; 204
-          Scale: 1
-          Value: true
-        Value: true
-      Enabled: true
-      Keep: 100
-      Name: wheel_odom
-      Position Tolerance: 0.10000000149011612
-      Queue Size: 10
-      Shape:
-        Alpha: 1
-        Axes Length: 1
-        Axes Radius: 0.10000000149011612
-        Color: 255; 25; 0
-        Head Length: 0.30000001192092896
-        Head Radius: 0.10000000149011612
-        Shaft Length: 1
-        Shaft Radius: 0.05000000074505806
-        Value: Arrow
-      Topic: /tigra/wheel_odom
+      Topic: /rtabmap/visual_odometry
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -297,7 +260,7 @@ Visualization Manager:
       Color Scheme: map
       Draw Behind: false
       Enabled: true
-      Name: Map
+      Name: /rtabmap/grid_map
       Topic: /rtabmap/grid_map
       Unreliable: false
       Use Timestamp: false
@@ -346,7 +309,7 @@ Visualization Manager:
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
-      Name: lslidar points
+      Name: /front_lslidar_c16_lidar_point_cloud
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
@@ -412,7 +375,7 @@ Visualization Manager:
         z_scale: 1
       Class: rviz_imu_plugin/Imu
       Enabled: true
-      Name: Imu
+      Name: /yahboom/imu/raw
       Queue Size: 10
       Topic: /yahboom/imu/raw
       Unreliable: false
@@ -436,17 +399,41 @@ Visualization Manager:
         z_scale: 1
       Class: rviz_imu_plugin/Imu
       Enabled: true
-      Name: Imu
+      Name: /simpleRTK2B_rover/navheading
       Queue Size: 10
       Topic: /simpleRTK2B_rover/navheading
       Unreliable: false
       Value: true
       fixed_frame_orientation: true
+    - Class: rviz/Image
+      Enabled: true
+      Image Topic: /front_rs_d455_camera/color/image_raw
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: /front_rs_d455_camera/color/image_raw/compressed
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: compressed
+      Unreliable: false
+      Value: true
+    - Class: rviz/Image
+      Enabled: true
+      Image Topic: /front_rs_d455_camera/aligned_depth_to_color/image_raw
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: /front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: compressed
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_footprint
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -470,7 +457,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.499495506286621
+      Distance: 24.91260528564453
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -478,25 +465,29 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.1687125712633133
-        Y: -0.3782302737236023
-        Z: 2.4797778129577637
+        X: 0
+        Y: 0
+        Z: 0
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3497975170612335
+      Pitch: 0.7853981852531433
       Target Frame: <Fixed Frame>
-      Yaw: 3.670400619506836
+      Yaw: 0.7853981852531433
     Saved: ~
 Window Geometry:
+  /front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed:
+    collapsed: false
+  /front_rs_d455_camera/color/image_raw/compressed:
+    collapsed: false
   Displays:
     collapsed: false
-  Height: 2032
+  Height: 1043
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000042d00000754fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b000000b000fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000006e000007540000018200fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000015f00000754fc0200000006fb0000000a00560069006500770073010000006e000007540000013200fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d0000035a0000013200fffffffb000000240048006500610064002000730074006500720065006f002000630061006d00650072006100000001de000000e60000000000000000fb000000140045004c0050002000430061006d00650072006100000001de000001b90000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003efc0100000002fb0000000800540069006d00650000000000000007380000077d00fffffffb0000000800540069006d00650100000000000004500000000000000000000008bc0000075400000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001b2000003b9fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000003b9000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000023a000003b9fc0200000008fb0000000a00560069006500770073010000003d00000187000000a400fffffffb00000082002f00660072006f006e0074005f00720073005f0064003400350035005f00630061006d006500720061002f0061006c00690067006e00650064005f00640065007000740068005f0074006f005f0063006f006c006f0072002f0069006d006100670065005f007200610077002f0063006f006d007000720065007300730065006401000001ca000001100000001600fffffffb00000060002f00660072006f006e0074005f00720073005f0064003400350035005f00630061006d006500720061002f0063006f006c006f0072002f0069006d006100670065005f007200610077002f0063006f006d007000720065007300730065006401000002e0000001160000001600fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d0000035a000000a400fffffffb000000240048006500610064002000730074006500720065006f002000630061006d00650072006100000001de000000e60000000000000000fb000000140045004c0050002000430061006d00650072006100000001de000001b90000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003efc0100000002fb0000000800540069006d00650000000000000007380000041800fffffffb0000000800540069006d0065010000000000000450000000000000000000000388000003b900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -505,6 +496,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 3680
-  X: 160
-  Y: 54
+  Width: 1920
+  X: 0
+  Y: 0
