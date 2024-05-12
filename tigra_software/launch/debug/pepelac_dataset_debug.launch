@@ -39,15 +39,14 @@
                     $(find tigra_software)/bags/$(arg rosbag_filename)_0.bag
                     "/>
 
+        <!-- image decompress -->
         <node name="color_republish" pkg="image_transport" type="republish" args="compressed raw">
             <remap from="in" to="/front_rs_d455_camera/color/image_raw" />
             <remap from="out" to="/front_rs_d455_camera/color/image_raw" />
         </node>
-
         <node name="aligned_depth_to_color_republish" pkg="image_transport" type="republish" args="compressed raw">
             <remap from="in" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
             <remap from="out" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
-            <param name="compressed/mode" value="color"/>
         </node>
 
         <!-- rtabmap_slam -->
@@ -63,7 +62,7 @@
         <include file="$(find tigra_vision)/launch/rgbd_odom.launch">
             <arg name="publish_tf" value="true" />
             <arg name="camera_name" value="front_rs_d455_camera" />
-            <arg name="subscribe_rgbd" value="false" />
+            <arg name="subscribe_rgbd" value="true" />
         </include>
 
         <!-- http://wiki.ros.org/imu_filter_madgwick -->
@@ -147,6 +146,14 @@
             output="screen" clear_params="true" respawn="true">
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_moving_base.yaml" />
             <remap from="rtcm" to="simpleRTK2B_moving_base/rtcm"/>
+        </node>
+
+        <!-- image compress -->
+        <param name="/front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed/format" value="png" />
+        <param name="/front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed/png_level" value="5" />
+        <node name="aligned_depth_to_color_republish" pkg="image_transport" type="republish" args="raw compressed">
+            <remap from="in" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
+            <remap from="out" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
         </node>
 
         <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
