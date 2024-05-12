@@ -40,13 +40,22 @@
                     "/>
 
         <!-- image decompress -->
-        <node name="color_republish" pkg="image_transport" type="republish" args="compressed raw">
+        <node name="front_rs_d455_camera_color_image_raw_decompress"
+            pkg="image_transport" type="republish" args="compressed raw">
             <remap from="in" to="/front_rs_d455_camera/color/image_raw" />
             <remap from="out" to="/front_rs_d455_camera/color/image_raw" />
         </node>
-        <node name="aligned_depth_to_color_republish" pkg="image_transport" type="republish" args="compressed raw">
+        <node name="front_rs_d455_camera_aligned_depth_to_color_image_raw_decompress"
+            pkg="image_transport" type="republish" args="compressed raw">
+            <!-- <param name="compressed/mode" value="color" /> -->
             <remap from="in" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
             <remap from="out" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
+        </node>
+        <!-- PC decompress -->
+        <node name="front_lslidar_c16_lidar_point_cloud_decompress"
+            pkg="point_cloud_transport" type="republish" args="draco raw">
+            <remap from="in" to="/front_lslidar_c16_lidar_point_cloud" />
+            <remap from="out" to="/front_lslidar_c16_lidar_point_cloud" />
         </node>
 
         <!-- rtabmap_slam -->
@@ -149,11 +158,23 @@
         </node>
 
         <!-- image compress -->
+        <node name="front_rs_d455_camera_color_image_raw_compress"
+            pkg="image_transport" type="republish" args="raw compressed">
+            <remap from="in" to="/front_rs_d455_camera/color/image_raw" />
+            <remap from="out" to="/front_rs_d455_camera/color/image_raw" />
+        </node>
         <param name="/front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed/format" value="png" />
         <param name="/front_rs_d455_camera/aligned_depth_to_color/image_raw/compressed/png_level" value="5" />
-        <node name="aligned_depth_to_color_republish" pkg="image_transport" type="republish" args="raw compressed">
+        <node name="front_rs_d455_camera_aligned_depth_to_color_image_raw_compress"
+            pkg="image_transport" type="republish" args="raw compressed">
             <remap from="in" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
             <remap from="out" to="/front_rs_d455_camera/aligned_depth_to_color/image_raw" />
+        </node>
+        <!-- PC compress -->
+        <node name="front_lslidar_c16_lidar_point_cloud_compress"
+            pkg="point_cloud_transport" type="republish" args="raw draco">
+            <remap from="in" to="/front_lslidar_c16_lidar_point_cloud" />
+            <remap from="out" to="/front_lslidar_c16_lidar_point_cloud" />
         </node>
 
         <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
