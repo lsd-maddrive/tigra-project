@@ -130,8 +130,8 @@
         <!-- hardware -->
         <!-- lslidar_c16 -->
         <include file="$(find maddrive_hardware_tools)/launch/start_lslidar_c16.launch">
-            <arg name="min_range" value="1.0" />  
-            <arg name="topic_name" value="front_lslidar_c16_lidar_point_cloud" />  
+            <arg name="min_range" value="1.0" />
+            <arg name="topic_name" value="front_lslidar_c16_lidar_point_cloud" />
         </include>
         <!-- rs_camera -->
         <include file="$(find maddrive_hardware_tools)/launch/start_rs_camera_ir.launch"/>
@@ -156,6 +156,22 @@
             <rosparam command="load" file="$(find maddrive_hardware_tools)/config/gps/simpleRTK2B_moving_base.yaml" />
             <remap from="rtcm" to="simpleRTK2B_moving_base/rtcm"/>
         </node>
+        <!-- ntrip client -->
+        <include file="$(find ntrip_client)/launch/ntrip_client.launch">
+            <arg name="host" value="rtcm.smartnetrtk.ru"/>
+            <arg name="port" value="8007" />
+            <arg name="mountpoint" value="VRS.MSM5" />
+            <arg name="authenticate" value="true" />
+            <arg name="username" value="lapopka" />
+            <arg name="password" value="Gzfdis90WM" />
+            <arg name="ntrip_version" value="" />
+            <arg name="ssl" value="false" />
+            <arg name="cert" value="false" />
+            <arg name="key" value="false" />
+            <arg name="ca_cert" value="false" />
+            <arg name="debug" value="true" />
+            <arg name="rtcm_message_package" value="rtcm_msgs" />
+        </include>
 
         <!-- image compress -->
         <node name="front_rs_d455_camera_color_image_raw_compress"
