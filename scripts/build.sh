@@ -3,14 +3,6 @@
 export CMAKE_PREFIX_PATH=/usr/local/lib/cmake:$CMAKE_PREFIX_PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
-cd src/maddrive_ros_shared/third_party/Lslidar_ROS1_driver
-git checkout C16_V2.6/2.8/3.0
-cd -
-
-if catkin list | grep -q "lslidar_driver"; then
-    catkin clean lslidar_driver
-fi
-
 catkin build \
     tigra-project \
     maddrive_ros_shared \
@@ -20,7 +12,7 @@ catkin build \
     cv_bridge \
     stereo_image_proc \
     camera_calibration \
-    lslidar_driver \
+    lslidar_c16_driver \
     realsense2_camera \
     realsense2_description \
     image_geometry \
