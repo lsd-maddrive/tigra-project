@@ -3,11 +3,15 @@
 
     <arg name="map_name" default="new_map.db" />
     <arg name="localization" default="false" /> <!-- set false to start mapping-->
-    <arg name='rviz' default="true" />
-    <arg name='foxglove' default="true" />
-    <arg name='rtabmap_viz' default='false' />
+
+    <arg name="rviz" default="false" />
+    <arg name="mapviz" default="false" />
+    <arg name="rtabmap_viz" default="false" />
+    <arg name="foxglove" default="false" />
+
     <arg name="database_path" default="$(find tigra_maps)/3d_maps/$(arg map_name)"/>
     <arg name="nav_config" default="teb_local_planner_high_speed" />
+
     <arg name="gz_gui" default="false" />
 
     <!-- simulation with robot -->
@@ -119,14 +123,31 @@
         <remap from="cmd_vel" to="tigra/cmd_vel" />
     </node>
 
-    <!-- data visualization -->
+    <!-- rviz -->
     <group if="$(arg rviz)">
         <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/common_sim.rviz" />
     </group>
+    
+    <!-- mapviz -->
+    <group if="$(arg mapviz)">
+        <node pkg="mapviz" type="mapviz" name="mapviz">
+            <param name="config" value="$(find tigra_software)/config/rqt/mapviz/common_sim.mvc"/>
+        </node>
+        <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
+            <param name="local_xy_frame" value="map"/>
+            <param name="local_xy_origin" value="auto"/>
+            <remap from="fix" to="/top_ublox_gps_sensor/fix"/>
+        </node>
+    </group>
+
+    <!-- foxglove -->
     <group if="$(arg foxglove)">
         <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
             <arg name="port" value="8765" />
         </include>
     </group>
+
+    <!-- debug console -->
+    <node name="swri_console" pkg="swri_console" type="swri_console" />
 
 </launch>

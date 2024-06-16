@@ -4,9 +4,13 @@
     <param name="use_sim_time" value="true" />
 
     <arg name="rosbag_mode" default="play" doc="[play, record]"/>
-    <arg name="rosbag_filename" default="ETU_asphalt"/>
+    <arg name="rosbag_filename" default="rosbags/ETU_sim_asphalt_drink/ETU_sim_asphalt_drink"/>
+
     <arg name="rviz" default="false" />
-    <arg name='rtabmap_viz' default='false' />
+    <arg name="mapviz" default="false" />
+    <arg name='rtabmap_viz' default="false" />
+    <arg name="foxglove" default="false" />
+
     <arg name="odom_instance" default="local" doc="[local, global]"/>
 
     <group if="$(eval arg('rosbag_mode') == 'play')">
@@ -26,7 +30,17 @@
                     /front_lslidar_c16_lidar_point_cloud
                     /top_ublox_gps_sensor/fix
                     /high_freq_zero_noise_ublox_gps_sensor/fix
-                --bags $(find tigra_software)/bags/$(arg rosbag_filename).bag"/>
+                --bags
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_0.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_1.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_2.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_3.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_4.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_5.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_6.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_7.bag
+                    $(find tigra_software)/bags/$(arg rosbag_filename)_8.bag
+                    "/>
 
         <!-- slam -->
         <include file="$(find tigra_vision)/launch/rtabmap_slam.launch">
@@ -96,17 +110,34 @@
 
         </group>
 
-        <!-- viev gps data in foxglove -->
-        <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
-            <arg name="port" value="8765" />
-        </include>
+        <!-- rviz -->
+        <group if="$(arg rviz)">
+            <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/common_sim.rviz" />
+        </group>
 
-        <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find tigra_software)/config/rqt/rviz/common_sim.rviz" />
+        <!-- mapviz -->
+        <group if="$(arg mapviz)">
+            <node pkg="mapviz" type="mapviz" name="mapviz">
+                <param name="config" value="$(find tigra_software)/config/rqt/mapviz/common_sim.mvc"/>
+            </node>
+            <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin">
+                <param name="local_xy_frame" value="map"/>
+                <param name="local_xy_origin" value="auto"/>
+                <remap from="fix" to="/top_ublox_gps_sensor/fix"/>
+            </node>
+        </group>
 
-        <node name="rqt_console" pkg="rqt_console" type="rqt_console" />
+        <!-- foxglove -->
+        <group if="$(arg foxglove)">
+            <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch">
+                <arg name="port" value="8765" />
+            </include>
+        </group>
+
+        <!-- debug console -->
+        <node name="swri_console" pkg="swri_console" type="swri_console" />
 
     </group>
-
 
     <!-- recording rosbag -->
     <group if="$(eval arg('rosbag_mode') == 'record')">
@@ -124,6 +155,8 @@
                 /top_ublox_gps_sensor/fix
                 /high_freq_zero_noise_ublox_gps_sensor/fix
                 --output-name $(find tigra_software)/bags/$(arg rosbag_filename).bag
+                --split
+                --size=10000
                 "/>
 
     </group>
